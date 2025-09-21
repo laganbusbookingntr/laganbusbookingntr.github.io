@@ -1198,11 +1198,36 @@
         .then(data => {
             Swal.close();
             if (data && data.length > 0) {
-                const latestBooking = data[data.length - 1];
-                showPassengerDetails(latestBooking);
-            } else {
-                Swal.fire('Not Found', 'No booking found for this contact number', 'error');
+    // If only 1 booking, show directly
+    if (data.length === 1) {
+        showPassengerDetails(data[0]);
+    } else {
+        // If multiple bookings, let passenger choose
+        let options = data.map((p, i) => `
+            <button class="booking-option" data-index="${i}">
+                ${p.date} - ${p.bus} (Seat ${p.seat})
+            </button>
+        `).join("<br>");
+
+        Swal.fire({
+            title: 'Multiple bookings found',
+            html: options,
+            showConfirmButton: false,
+            didOpen: () => {
+                document.querySelectorAll('.booking-option').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const index = btn.getAttribute('data-index');
+                        showPassengerDetails(data[index]);
+                        Swal.close();
+                    });
+                });
             }
+        });
+    }
+} else {
+    Swal.fire('Not Found', 'No booking found for this contact number', 'error');
+}
+
         })
         .catch(err => {
             Swal.close();
