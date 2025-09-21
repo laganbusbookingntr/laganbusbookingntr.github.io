@@ -1008,26 +1008,25 @@
         <img src="" id="bus-image" class="bus-image" alt="Bus Image">
         
         <div class="details-card">
-<div class="detail-item">
-    <h4><i class="fas fa-bus"></i> Seat & Bus</h4>
-    <p><strong>Seat Number:</strong> <span id="detail-seat"></span></p>
-    <p><strong>Bus:</strong> <span id="detail-bus"></span></p>
-</div>
-
-<div class="detail-item">
-    <h4><i class="fas fa-user"></i> Passenger Information</h4>
-    <p><strong>Name:</strong> <span id="detail-name"></span></p>
-    <p><strong>Contact:</strong> <span id="detail-contact"></span></p>
-</div>
-
-<div class="detail-item">
-    <h4><i class="fas fa-info-circle"></i> Journey Details</h4>
-    <p><strong>Time:</strong> <span id="detail-time"></span></p>
-    <p><strong>Date:</strong> <span id="detail-date"></span></p>
-    <p><strong>Pickup Location:</strong> <span id="detail-pickup"></span></p>
-    <p><strong>Payment Status:</strong> <span id="detail-payment"></span></p>
-</div>
-
+            <div class="detail-item">
+                <h4><i class="fas fa-user"></i> Passenger Information</h4>
+                <p><strong>Name:</strong> <span id="detail-name"></span></p>
+                <p><strong>Contact:</strong> <span id="detail-contact"></span></p>
+            </div>
+            
+            <div class="detail-item">
+                <h4><i class="fas fa-bus"></i> Journey Details</h4>
+                <p><strong>Bus:</strong> <span id="detail-bus"></span></p>
+                <p><strong>Time:</strong> <span id="detail-time"></span></p>
+                <p><strong>Date:</strong> <span id="detail-date"></span></p>
+            </div>
+            
+            <div class="detail-item">
+                <h4><i class="fas fa-info-circle"></i> Booking Information</h4>
+                <p><strong>Seat Number:</strong> <span id="detail-seat"></span></p>
+                <p><strong>Pickup Location:</strong> <span id="detail-pickup"></span></p>
+                <p><strong>Payment Status:</strong> <span id="detail-payment"></span></p>
+            </div>
         </div>
     </div>
 
@@ -1176,17 +1175,14 @@
             }
         }
         
- function checkPassengerBooking() {
+        function checkPassengerBooking() {
     const contact = passengerContact.value.trim();
-
-    // Allow only numbers, length 7–15
-    const phoneRegex = /^[0-9]{7,15}$/;
-
-    if (!phoneRegex.test(contact)) {
-        Swal.fire('Invalid Number', 'Please enter a valid phone number', 'warning');
+    if (!contact) {
+        showNotification(passengerError, 'Please enter a contact number');
         return;
     }
 
+    // Show loading spinner/message
     Swal.fire({
         title: 'Searching for booking...',
         text: 'Please wait while we find your booking details',
@@ -1196,60 +1192,74 @@
         }
     });
 
-    fetch(`${scriptURL}?contact=${encodeURIComponent(contact)}`)
+    // Fetch ALL passenger data from Google Sheets
+    fetch(scriptURL)
         .then(res => res.json())
-        .then(data => {
-            Swal.close();
-            if (data && data.length > 0) {
-                showAllPassengerBookings(data);
-            } else {
-                Swal.fire('Not Found', 'No booking found for this contact number', 'error');
+        .then(allPassengers => {
+            Swal.close(); // Close the loading popup
+
+            // Filter the data to find ALL bookings for this contact number
+            const matchingBookings = allPassengers.filter(passenger =>
+                passenger.contact.toString().includes(contact) // Use 'includes' for partial match or '===' for exact match
+            );
+
+            if (matchingBookings.length === 0) {
+                // Show a message if no bookings are found
+                Swal.fire({
+                    icon: 'info',
+                    title: 'No Bookings Found',
+                    text: 'No bookings were found for the provided contact number.'
+                });
+                return;
             }
+
+            // Hide the main container and show the passenger details view
+            container.style.display = 'none';
+            document.querySelector('.mobile-toggle').style.display = 'none';
+            passengerDetails.style.display = 'block';
+
+            // --- MODIFICATION STARTS HERE ---
+            // Clear the existing single-detail view
+            const detailsCard = document.querySelector('.details-card');
+            detailsCard.innerHTML = ''; // Clear previous content
+
+            // Sort bookings by date for better presentation (optional but recommended)
+            matchingBookings.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            // Create a new detail card for EACH booking
+            matchingBookings.forEach(booking => {
+                const bookingCard = document.createElement('div');
+                bookingCard.className = 'detail-item';
+
+                // Set the bus image for this specific booking
+                const busImgSrc = busImages[booking.bus] || busImages["Super Line"];
+
+                // Populate the card with booking details
+                bookingCard.innerHTML = `
+                    <img src="${busImgSrc}" alt="${booking.bus}" style="max-width:100%; max-height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
+                    <h4><i class="fas fa-calendar-day"></i> ${booking.date}</h4>
+                    <p><strong>Bus:</strong> ${booking.bus}</p>
+                    <p><strong>Time:</strong> ${booking.time}</p>
+                    <p><strong>Seat Number:</strong> ${booking.seat}</p>
+                    <p><strong>Pickup Location:</strong> ${booking.pickup || "Not specified"}</p>
+                    <p><strong>Payment Status:</strong> ${booking.payment || "Pending"}</p>
+                `;
+
+                // Append this booking card to the details container
+                detailsCard.appendChild(bookingCard);
+            });
+            // --- MODIFICATION ENDS HERE ---
         })
         .catch(err => {
             Swal.close();
-            Swal.fire('Error', 'Unable to fetch booking details', 'error');
+            console.error('Error fetching data:', err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Search Failed',
+                text: 'An error occurred while searching for your bookings. Please try again later.'
+            });
         });
 }
-
-// Show ALL bookings for a passenger
-function showAllPassengerBookings(bookings) {
-    container.style.display = 'none';
-    document.querySelector('.mobile-toggle').style.display = 'none';
-    passengerDetails.style.display = 'block';
-
-    // Clear old details
-    const detailsCard = passengerDetails.querySelector('.details-card');
-    detailsCard.innerHTML = '';
-
-    // Sort by date
-    bookings.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-    // Show bus image (first booking’s bus)
-    busImage.src = busImages[bookings[0].bus] || busImages["Super Line"];
-    busImage.alt = bookings[0].bus;
-
-    // Loop through all bookings
-    bookings.forEach(passenger => {
-        const bookingDiv = document.createElement('div');
-        bookingDiv.classList.add('detail-item');
-
-        bookingDiv.innerHTML = `
-            <h4><i class="fas fa-calendar-day"></i> ${passenger.date}</h4>
-            <p><strong>Passenger:</strong> ${passenger.name}</p>
-            <p><strong>Contact:</strong> ${passenger.contact}</p>
-            <p><strong>Bus:</strong> ${passenger.bus}</p>
-            <p><strong>Seat:</strong> ${passenger.seat}</p>
-            <p><strong>Time:</strong> ${passenger.time}</p>
-            <p><strong>Pickup:</strong> ${passenger.pickup || "Not specified"}</p>
-            <p><strong>Payment:</strong> ${passenger.payment || "Pending"}</p>
-        `;
-
-        detailsCard.appendChild(bookingDiv);
-    });
-}
-
-
         
         function adminLogin() {
             const email = adminEmail.value.trim();
