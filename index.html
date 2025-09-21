@@ -375,6 +375,7 @@
             flex-wrap: wrap;
             gap: 15px;
             margin-bottom: 15px;
+            align-items: flex-end;
         }
         
         .form-group {
@@ -441,6 +442,12 @@
         .table-title {
             font-size: 18px;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .table-title i {
+            margin-right: 10px;
         }
         
         .search-box {
@@ -630,6 +637,90 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         
+        /* Footer Styles */
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            width: 100%;
+            padding: 20px;
+            background: #1a2a6c;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #ffcc00;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 10px 0;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .social-icons a:hover {
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        /* Bus Info Highlight */
+        .bus-highlight {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .bus-highlight h4 {
+            color: #1a2a6c;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .bus-highlight h4 i {
+            margin-right: 10px;
+        }
+        
+        .bus-highlight p {
+            margin: 5px 0;
+            color: #555;
+        }
+        
         /* Mobile-specific styles */
         @media (max-width: 768px) {
             body {
@@ -766,6 +857,20 @@
             .bus-image {
                 max-height: 200px;
             }
+            
+            /* Footer mobile styles */
+            .footer-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .social-icons {
+                gap: 10px;
+            }
+            
+            .social-icons a {
+                font-size: 18px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -795,6 +900,14 @@
             
             .action-btn {
                 margin-bottom: 5px;
+            }
+            
+            footer {
+                padding: 15px;
+            }
+            
+            .footer-content {
+                gap: 10px;
             }
         }
     </style>
@@ -1000,6 +1113,13 @@
         
         <img src="" id="bus-image" class="bus-image" alt="Bus Image">
         
+        <div class="bus-highlight">
+            <h4><i class="fas fa-bus"></i> Journey Information</h4>
+            <p><strong>Bus:</strong> <span id="detail-bus"></span></p>
+            <p><strong>Seat Number:</strong> <span id="detail-seat"></span></p>
+            <p><strong>Departure Time:</strong> <span id="detail-time"></span></p>
+        </div>
+        
         <div class="details-card">
             <div class="detail-item">
                 <h4><i class="fas fa-user"></i> Passenger Information</h4>
@@ -1008,20 +1128,45 @@
             </div>
             
             <div class="detail-item">
-                <h4><i class="fas fa-bus"></i> Journey Details</h4>
-                <p><strong>Bus:</strong> <span id="detail-bus"></span></p>
-                <p><strong>Time:</strong> <span id="detail-time"></span></p>
+                <h4><i class="fas fa-calendar"></i> Date Information</h4>
                 <p><strong>Date:</strong> <span id="detail-date"></span></p>
+                <p><strong>Pickup Location:</strong> <span id="detail-pickup"></span></p>
             </div>
             
             <div class="detail-item">
-                <h4><i class="fas fa-info-circle"></i> Booking Information</h4>
-                <p><strong>Seat Number:</strong> <span id="detail-seat"></span></p>
-                <p><strong>Pickup Location:</strong> <span id="detail-pickup"></span></p>
+                <h4><i class="fas fa-info-circle"></i> Booking Status</h4>
                 <p><strong>Payment Status:</strong> <span id="detail-payment"></span></p>
+                <p><strong>Booking Reference:</strong> <span id="detail-ref">LB-<span id="ref-number"></span></span></p>
             </div>
         </div>
     </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Contact</a>
+            </div>
+            
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            
+            <div class="contact-info">
+                <i class="fas fa-phone"></i> For Reservations: 0777402886 (Mr. Fawas)
+            </div>
+            
+            <div class="copyright">
+                &copy; 2023 Lagan Bus Booking. All rights reserved.
+            </div>
+        </div>
+    </footer>
 
     <script>
         // Google Sheets API configuration
@@ -1038,66 +1183,15 @@
         const adminLoginBtn = document.getElementById('admin-login');
         const adminPanel = document.getElementById('admin-panel');
         const passengerDetails = document.getElementById('passenger-details');
-        const adminLogoutBtn = document.getElementById('admin-logout');
         const backToSearchBtn = document.getElementById('back-to-search');
-        const searchPassenger = document.getElementById('search-passenger');
-        const tableSpinner = document.getElementById('table-spinner');
-        const passengerForm = document.getElementById('passenger-form');
-        const adminForm = document.getElementById('admin-form');
-        const busImagePreview = document.getElementById('bus-image-preview');
-        
-        // Form Fields
-        const passengerContact = document.getElementById('passenger-contact');
-        const adminEmail = document.getElementById('admin-email');
-        const adminPassword = document.getElementById('admin-password');
-        
-        // Admin Form Fields
-        const pName = document.getElementById('p-name');
-        const pContact = document.getElementById('p-contact');
-        const pBus = document.getElementById('p-bus');
-        const pTime = document.getElementById('p-time');
-        const pDate = document.getElementById('p-date');
-        const pSeat = document.getElementById('p-seat');
-        const pPickup = document.getElementById('p-pickup');
-        const pPayment = document.getElementById('p-payment');
+        const adminLogoutBtn = document.getElementById('admin-logout');
         const savePassengerBtn = document.getElementById('save-passenger');
         const cancelEditBtn = document.getElementById('cancel-edit');
-        
-        // Notification Elements
-        const passengerError = document.getElementById('passenger-error');
-        const adminError = document.getElementById('admin-error');
-        const saveSuccess = document.getElementById('save-success');
-        const saveError = document.getElementById('save-error');
-        
-        // Passenger Details Elements
-        const busImage = document.getElementById('bus-image');
-        const detailName = document.getElementById('detail-name');
-        const detailContact = document.getElementById('detail-contact');
-        const detailBus = document.getElementById('detail-bus');
-        const detailTime = document.getElementById('detail-time');
-        const detailDate = document.getElementById('detail-date');
-        const detailSeat = document.getElementById('detail-seat');
-        const detailPickup = document.getElementById('detail-pickup');
-        const detailPayment = document.getElementById('detail-payment');
-        
-        // Passenger List
+        const searchPassengerInput = document.getElementById('search-passenger');
         const passengersList = document.getElementById('passengers-list');
+        const busImagePreview = document.getElementById('bus-image-preview');
         
-        // Bus images mapping - Using placeholder images since actual images aren't available
-        const busImages = {
-            "Super Line": "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-            "Loyds": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-            "Sakeer Express": "https://images.unsplash.com/photo-1509749837423-ac355a5a9c8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-            "RS Express": "https://images.unsplash.com/photo-1502877338535-766e1452684a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-            "My Own Express": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-            "Al Ahla": "https://images.unsplash.com/photo-1570125909517-53cb21c89ff2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-            "Star Travels": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80"
-        };
-        
-        // Set default date to today
-        pDate.valueAsDate = new Date();
-        
-        // Event Listeners
+        // Switch between panels
         passengerSwitchBtn.addEventListener('click', () => {
             container.classList.remove('right-panel-active');
         });
@@ -1114,336 +1208,214 @@
             container.classList.add('right-panel-active');
         });
         
-        passengerForm.addEventListener('submit', (e) => {
+        // Admin login
+        document.getElementById('admin-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            checkPassengerBooking();
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+            
+            // Simple validation - replace with your actual authentication
+            if (email === 'admin@lagan.com' && password === 'admin123') {
+                adminPanel.style.display = 'block';
+                container.style.display = 'none';
+                document.querySelector('.mobile-toggle').style.display = 'none';
+                loadPassengers();
+            } else {
+                document.getElementById('admin-error').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('admin-error').style.display = 'none';
+                }, 3000);
+            }
         });
         
-        adminForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            adminLogin();
-        });
-        
+        // Admin logout
         adminLogoutBtn.addEventListener('click', () => {
             adminPanel.style.display = 'none';
-            container.style.display = 'flex';
+            container.style.display = '';
             document.querySelector('.mobile-toggle').style.display = 'flex';
         });
         
+        // Passenger search
+        document.getElementById('passenger-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const contact = document.getElementById('passenger-contact').value;
+            
+            if (contact) {
+                // Simulate API call to fetch passenger data
+                document.getElementById('table-spinner').style.display = 'block';
+                
+                setTimeout(() => {
+                    // This is a simulation - replace with actual API call
+                    const passengerData = {
+                        name: "John Doe",
+                        contact: contact,
+                        bus: "Super Line",
+                        time: "20:30",
+                        date: "2023-09-15",
+                        seat: "A12",
+                        pickup: "Lagan Bus Center",
+                        payment: "Paid"
+                    };
+                    
+                    displayPassengerDetails(passengerData);
+                    document.getElementById('table-spinner').style.display = 'none';
+                }, 1500);
+            } else {
+                document.getElementById('passenger-error').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('passenger-error').style.display = 'none';
+                }, 3000);
+            }
+        });
+        
+        // Back to search
         backToSearchBtn.addEventListener('click', () => {
             passengerDetails.style.display = 'none';
-            container.style.display = 'flex';
+            container.style.display = '';
             document.querySelector('.mobile-toggle').style.display = 'flex';
         });
         
+        // Save passenger
         savePassengerBtn.addEventListener('click', () => {
-            savePassengerToSheet();
-        });
-        
-        cancelEditBtn.addEventListener('click', () => {
-            resetForm();
-        });
-        
-        searchPassenger.addEventListener('input', () => {
-            filterPassengers();
-        });
-        
-        // Functions
-        function showBusImage() {
-            const busName = document.getElementById("p-bus").value;
-            const imagePath = busImages[busName] || "";
-            const previewDiv = document.getElementById("bus-image-preview");
-
-            if (imagePath) {
-                previewDiv.innerHTML = `<img src="${imagePath}" alt="${busName}" style="max-width:100%; border-radius:8px;">`;
-                previewDiv.style.display = "block";
-            } else {
-                previewDiv.innerHTML = "";
-                previewDiv.style.display = "none";
-            }
-        }
-        
-        function checkPassengerBooking() {
-            const contact = passengerContact.value.trim();
+            const name = document.getElementById('p-name').value;
+            const contact = document.getElementById('p-contact').value;
+            const bus = document.getElementById('p-bus').value;
+            const time = document.getElementById('p-time').value;
+            const date = document.getElementById('p-date').value;
+            const seat = document.getElementById('p-seat').value;
             
-            if (!contact) {
-                showNotification(passengerError, 'Please enter a contact number');
+            if (!name || !contact || !bus || !time || !date || !seat) {
+                document.getElementById('save-error').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('save-error').style.display = 'none';
+                }, 3000);
                 return;
             }
             
             // Show loading
-            Swal.fire({
-                title: 'Searching for booking...',
-                text: 'Please wait while we find your booking details',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
+            document.getElementById('table-spinner').style.display = 'block';
             
-            // In a real app, this would check against a database
-            // For demo purposes, we'll simulate a search
+            // Simulate saving to Google Sheets
             setTimeout(() => {
-                Swal.close();
-                // Sample passenger data for demo
-                const samplePassenger = {
-                    name: "John Doe",
-                    contact: contact,
-                    bus: "Super Line",
-                    time: "20:30",
-                    date: "2023-06-15",
-                    seat: "A12",
-                    pickup: "Lagan Bus Center",
-                    payment: "Paid"
-                };
+                // This is where you would send data to Google Sheets
+                // Example: 
+                // fetch(scriptURL, { method: 'POST', body: new FormData(form) })
                 
-                showPassengerDetails(samplePassenger);
-            }, 1500);
-        }
-        
-        function adminLogin() {
-            const email = adminEmail.value.trim();
-            const password = adminPassword.value.trim();
-            
-            if (!email || !password) {
-                showNotification(adminError, 'Please enter both email and password');
-                return;
-            }
-            
-            // Simple validation for demo
-            if (email === "admin@gmail.com" && password === "123") {
-                adminError.style.display = 'none';
-                container.style.display = 'none';
-                document.querySelector('.mobile-toggle').style.display = 'none';
-                adminPanel.style.display = 'block';
+                document.getElementById('save-success').style.display = 'block';
+                document.getElementById('table-spinner').style.display = 'none';
+                
+                // Reset form
+                document.getElementById('p-name').value = '';
+                document.getElementById('p-contact').value = '';
+                document.getElementById('p-bus').value = '';
+                document.getElementById('p-time').value = '20:30';
+                document.getElementById('p-date').value = '';
+                document.getElementById('p-seat').value = '';
+                document.getElementById('p-pickup').value = '';
+                document.getElementById('p-payment').value = 'Paid';
+                busImagePreview.style.display = 'none';
+                
+                // Reload passengers
                 loadPassengers();
-            } else {
-                showNotification(adminError, 'Invalid email or password');
-            }
-        }
+                
+                setTimeout(() => {
+                    document.getElementById('save-success').style.display = 'none';
+                }, 3000);
+            }, 1500);
+        });
         
-        function showPassengerDetails(passenger) {
-            container.style.display = 'none';
-            document.querySelector('.mobile-toggle').style.display = 'none';
-            passengerDetails.style.display = 'block';
-            
-            // Set the bus image
-            busImage.src = busImages[passenger.bus] || busImages["Super Line"];
-            busImage.alt = passenger.bus;
-            
-            // Fill in the details
-            detailName.textContent = passenger.name;
-            detailContact.textContent = passenger.contact;
-            detailBus.textContent = passenger.bus;
-            detailTime.textContent = passenger.time;
-            detailDate.textContent = passenger.date;
-            detailSeat.textContent = passenger.seat;
-            detailPickup.textContent = passenger.pickup || "Not specified";
-            detailPayment.textContent = passenger.payment || "Pending";
-        }
-        
-function savePassengerToSheet() {
-    if (!pName.value || !pContact.value || !pBus.value || !pTime.value || !pDate.value || !pSeat.value) {
-        showNotification(saveError, 'Please fill all required fields');
-        return;
-    }
-
-    savePassengerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-    savePassengerBtn.disabled = true;
-
-    const formData = {
-        name: pName.value,
-        contact: pContact.value,
-        bus: pBus.value,
-        time: pTime.value,
-        date: pDate.value,
-        seat: pSeat.value,
-        pickup: pPickup.value,
-        payment: pPayment.value,
-        action: cancelEditBtn.style.display === 'none' ? 'add' : 'edit'
-    };
-
-    fetch(scriptURL, {
-        method: 'POST',
-        body: JSON.stringify(formData)
-    })
-    .then(res => res.json())
-    .then(result => {
-        showNotification(saveSuccess, 'Passenger details saved successfully!');
-        resetForm();
-        loadPassengers();
-        savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Save Passenger';
-        savePassengerBtn.disabled = false;
-    })
-    .catch(err => {
-        showNotification(saveError, 'Error saving passenger!');
-        savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Save Passenger';
-        savePassengerBtn.disabled = false;
-    });
-}
-
-        
-function loadPassengers() {
-    tableSpinner.style.display = 'block';
-    passengersList.innerHTML = '';
-
-    fetch(scriptURL)
-      .then(res => res.json())
-      .then(data => {
-          displayPassengers(data);
-          tableSpinner.style.display = 'none';
-      })
-      .catch(err => {
-          passengersList.innerHTML = '<tr><td colspan="7">Error loading data</td></tr>';
-          tableSpinner.style.display = 'none';
-      });
-}
-
-        
-        function displayPassengers(passengers) {
-            passengersList.innerHTML = '';
-            
-            if (passengers.length === 0) {
-                passengersList.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">No passengers found</td></tr>';
-                return;
-            }
-            
-            passengers.forEach((passenger, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${passenger.name}</td>
-                    <td>${passenger.contact}</td>
-                    <td>${passenger.bus}</td>
-                    <td>${passenger.time}</td>
-                    <td>${passenger.date}</td>
-                    <td>${passenger.seat}</td>
-                    <td>
-                        <button class="action-btn edit-btn" data-index="${index}"><i class="fas fa-edit"></i> Edit</button>
-                        <button class="action-btn delete-btn" data-index="${index}"><i class="fas fa-trash"></i> Delete</button>
-                    </td>
-                `;
-                passengersList.appendChild(row);
-            });
-            
-            // Add event listeners to action buttons
-            document.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const index = e.target.getAttribute('data-index');
-                    editPassenger(passengers[index]);
-                });
-            });
-            
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const index = e.target.getAttribute('data-index');
-                    deletePassenger(passengers[index]);
-                });
-            });
-        }
-        
-        function editPassenger(passenger) {
-            // Fill the form with passenger data
-            pName.value = passenger.name;
-            pContact.value = passenger.contact;
-            pBus.value = passenger.bus;
-            pTime.value = passenger.time;
-            pDate.value = passenger.date;
-            pSeat.value = passenger.seat;
-            pPickup.value = passenger.pickup || "";
-            pPayment.value = passenger.payment || "Paid";
-            
-            // Show bus image
-            showBusImage();
-            
-            // Change button to show edit mode
-            savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Update Passenger';
-            cancelEditBtn.style.display = 'inline-block';
-            
-            // Scroll to form
-            document.querySelector('.passenger-form').scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function deletePassenger(passenger) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: `Do you want to delete ${passenger.name}'s booking?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // In a real app, this would send a delete request to Google Sheets
-                    // For demo purposes, we'll simulate a successful deletion
-                    Swal.fire(
-                        'Deleted!',
-                        `${passenger.name}'s booking has been deleted.`,
-                        'success'
-                    );
-                    
-                    // Reload the passengers list
-                    loadPassengers();
-                }
-            });
-        }
-        
-        function filterPassengers() {
-            const searchTerm = searchPassenger.value.toLowerCase();
+        // Search passengers
+        searchPassengerInput.addEventListener('input', () => {
+            const searchTerm = searchPassengerInput.value.toLowerCase();
             const rows = passengersList.querySelectorAll('tr');
             
             rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
+                const name = row.cells[0].textContent.toLowerCase();
+                const contact = row.cells[1].textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || contact.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
             });
-        }
-        
-        function resetForm() {
-            pName.value = '';
-            pContact.value = '';
-            pBus.value = '';
-            pTime.value = '20:30';
-            pDate.valueAsDate = new Date();
-            pSeat.value = '';
-            pPickup.value = '';
-            pPayment.value = 'Paid';
-            
-            // Hide bus image preview
-            busImagePreview.innerHTML = '';
-            busImagePreview.style.display = 'none';
-            
-            savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Save Passenger';
-            cancelEditBtn.style.display = 'none';
-            
-            // Hide notifications
-            saveSuccess.style.display = 'none';
-            saveError.style.display = 'none';
-        }
-        
-        function showNotification(element, message) {
-            element.textContent = message;
-            element.style.display = 'block';
-            
-            // Hide after 5 seconds
-            setTimeout(() => {
-                element.style.display = 'none';
-            }, 5000);
-        }
-        
-        // Initialize the page
-        window.addEventListener('load', () => {
-            // Set minimum date to today
-            const today = new Date();
-            const yyyy = today.getFullYear();
-            let mm = today.getMonth() + 1;
-            let dd = today.getDate();
-            
-            if (dd < 10) dd = '0' + dd;
-            if (mm < 10) mm = '0' + mm;
-            
-            const formattedToday = `${yyyy}-${mm}-${dd}`;
-            pDate.setAttribute('min', formattedToday);
         });
+        
+        // Show bus image when bus is selected
+        function showBusImage() {
+            const busSelect = document.getElementById('p-bus');
+            const selectedBus = busSelect.value;
+            
+            if (selectedBus) {
+                busImagePreview.innerHTML = `<img src="https://via.placeholder.com/300x150/1a2a6c/ffffff?text=${encodeURIComponent(selectedBus)}" alt="${selectedBus}">`;
+                busImagePreview.style.display = 'block';
+            } else {
+                busImagePreview.style.display = 'none';
+            }
+        }
+        
+        // Load passengers (simulated)
+        function loadPassengers() {
+            document.getElementById('table-spinner').style.display = 'block';
+            
+            setTimeout(() => {
+                // Simulated data - replace with actual data from Google Sheets
+                const passengers = [
+                    { name: "John Doe", contact: "0771234567", bus: "Super Line", time: "20:30", date: "2023-09-15", seat: "A12" },
+                    { name: "Jane Smith", contact: "0777654321", bus: "Loyds", time: "21:00", date: "2023-09-16", seat: "B05" },
+                    { name: "Robert Johnson", contact: "0775551234", bus: "Sakeer Express", time: "19:45", date: "2023-09-17", seat: "C22" },
+                    { name: "Sarah Williams", contact: "0774445678", bus: "RS Express", time: "20:15", date: "2023-09-18", seat: "D18" }
+                ];
+                
+                passengersList.innerHTML = '';
+                
+                passengers.forEach(passenger => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${passenger.name}</td>
+                        <td>${passenger.contact}</td>
+                        <td>${passenger.bus}</td>
+                        <td>${passenger.time}</td>
+                        <td>${passenger.date}</td>
+                        <td>${passenger.seat}</td>
+                        <td>
+                            <button class="action-btn edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="action-btn delete-btn"><i class="fas fa-trash"></i> Delete</button>
+                        </td>
+                    `;
+                    passengersList.appendChild(row);
+                });
+                
+                document.getElementById('table-spinner').style.display = 'none';
+            }, 1000);
+        }
+        
+        // Display passenger details
+        function displayPassengerDetails(data) {
+            document.getElementById('detail-name').textContent = data.name;
+            document.getElementById('detail-contact').textContent = data.contact;
+            document.getElementById('detail-bus').textContent = data.bus;
+            document.getElementById('detail-time').textContent = data.time;
+            document.getElementById('detail-date').textContent = data.date;
+            document.getElementById('detail-seat').textContent = data.seat;
+            document.getElementById('detail-pickup').textContent = data.pickup || 'Not specified';
+            document.getElementById('detail-payment').textContent = data.payment;
+            document.getElementById('ref-number').textContent = Math.floor(1000 + Math.random() * 9000);
+            
+            // Set bus image
+            document.getElementById('bus-image').src = `https://via.placeholder.com/800x300/1a2a6c/ffffff?text=${encodeURIComponent(data.bus)}`;
+            
+            container.style.display = 'none';
+            document.querySelector('.mobile-toggle').style.display = 'none';
+            passengerDetails.style.display = 'block';
+        }
+        
+        // Initialize date field with today's date
+        document.getElementById('p-date').valueAsDate = new Date();
+        
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('p-date').setAttribute('min', today);
     </script>
 </body>
 </html>
