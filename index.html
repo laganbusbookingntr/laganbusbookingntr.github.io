@@ -1198,8 +1198,8 @@
         .then(data => {
             Swal.close();
             if (data && data.length > 0) {
-                // Show the first matching passenger
-                showPassengerDetails(data[0]);
+                const latestBooking = data[data.length - 1];
+                showPassengerDetails(latestBooking);
             } else {
                 Swal.fire('Not Found', 'No booking found for this contact number', 'error');
             }
