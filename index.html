@@ -1092,13 +1092,13 @@
         
         // Bus images mapping - Using local images from your images folder
         const busImages = {
-            "Super Line": "images/super_line.jpg",
-            "Loyds": "images/loyds.jpg",
-            "Sakeer Express": "images/sakeer_express.jpg",
-            "RS Express": "images/rs_express.jpg",
-            "My Own Express": "images/my_own_express.jpg",
-            "Al Ahla": "images/al_ahla.jpg",
-            "Star Travels": "images/star_travels.jpg"
+            "Super Line": "super_line.jpg",
+            "Loyds": "loyds.jpg",
+            "Sakeer Express": "sakeer_express.jpg",
+            "RS Express": "rs_express.jpg",
+            "My Own Express": "my_own_express.jpg",
+            "Al Ahla": "al_ahla.jpg",
+            "Star Travels": "star_travels.jpg"
         };
         
         // Set default date to today
@@ -1193,25 +1193,6 @@
                 }
             });
             
-            // In a real app, this would check against a database
-            // For demo purposes, we'll simulate a search
-            setTimeout(() => {
-                Swal.close();
-                // Sample passenger data for demo
-                const samplePassenger = {
-                    name: "John Doe",
-                    contact: 123456,
-                    bus: "Super Line",
-                    time: "20:30",
-                    date: "2023-06-15",
-                    seat: "A12",
-                    pickup: "Lagan Bus Center",
-                    payment: "Paid"
-                };
-                
-                showPassengerDetails(samplePassenger);
-            }, 1500);
-        }
         
         function adminLogin() {
             const email = adminEmail.value.trim();
