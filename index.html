@@ -1201,32 +1201,7 @@
         .then(data => {
             Swal.close();
             if (data && data.length > 0) {
-                // If only 1 booking, show directly
-                if (data.length === 1) {
-                    showPassengerDetails(data[0]);
-                } else {
-                    // If multiple bookings, let passenger choose
-                    let options = data.map((p, i) => `
-                        <button class="booking-option" data-index="${i}">
-                            ${p.date} - ${p.bus} (Seat ${p.seat})
-                        </button>
-                    `).join("<br>");
-
-                    Swal.fire({
-                        title: 'Multiple bookings found',
-                        html: options,
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            document.querySelectorAll('.booking-option').forEach(btn => {
-                                btn.addEventListener('click', () => {
-                                    const index = btn.getAttribute('data-index');
-                                    showPassengerDetails(data[index]);
-                                    Swal.close();
-                                });
-                            });
-                        }
-                    });
-                }
+                showAllPassengerBookings(data);
             } else {
                 Swal.fire('Not Found', 'No booking found for this contact number', 'error');
             }
@@ -1235,6 +1210,43 @@
             Swal.close();
             Swal.fire('Error', 'Unable to fetch booking details', 'error');
         });
+}
+
+// Show ALL bookings for a passenger
+function showAllPassengerBookings(bookings) {
+    container.style.display = 'none';
+    document.querySelector('.mobile-toggle').style.display = 'none';
+    passengerDetails.style.display = 'block';
+
+    // Clear old details
+    const detailsCard = passengerDetails.querySelector('.details-card');
+    detailsCard.innerHTML = '';
+
+    // Sort by date
+    bookings.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    // Show bus image (first booking’s bus)
+    busImage.src = busImages[bookings[0].bus] || busImages["Super Line"];
+    busImage.alt = bookings[0].bus;
+
+    // Loop through all bookings
+    bookings.forEach(passenger => {
+        const bookingDiv = document.createElement('div');
+        bookingDiv.classList.add('detail-item');
+
+        bookingDiv.innerHTML = `
+            <h4><i class="fas fa-calendar-day"></i> ${passenger.date}</h4>
+            <p><strong>Passenger:</strong> ${passenger.name}</p>
+            <p><strong>Contact:</strong> ${passenger.contact}</p>
+            <p><strong>Bus:</strong> ${passenger.bus}</p>
+            <p><strong>Seat:</strong> ${passenger.seat}</p>
+            <p><strong>Time:</strong> ${passenger.time}</p>
+            <p><strong>Pickup:</strong> ${passenger.pickup || "Not specified"}</p>
+            <p><strong>Payment:</strong> ${passenger.payment || "Pending"}</p>
+        `;
+
+        detailsCard.appendChild(bookingDiv);
+    });
 }
 
 
