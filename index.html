@@ -1008,25 +1008,26 @@
         <img src="" id="bus-image" class="bus-image" alt="Bus Image">
         
         <div class="details-card">
-            <div class="detail-item">
-                <h4><i class="fas fa-user"></i> Passenger Information</h4>
-                <p><strong>Name:</strong> <span id="detail-name"></span></p>
-                <p><strong>Contact:</strong> <span id="detail-contact"></span></p>
-            </div>
-            
-            <div class="detail-item">
-                <h4><i class="fas fa-bus"></i> Journey Details</h4>
-                <p><strong>Bus:</strong> <span id="detail-bus"></span></p>
-                <p><strong>Time:</strong> <span id="detail-time"></span></p>
-                <p><strong>Date:</strong> <span id="detail-date"></span></p>
-            </div>
-            
-            <div class="detail-item">
-                <h4><i class="fas fa-info-circle"></i> Booking Information</h4>
-                <p><strong>Seat Number:</strong> <span id="detail-seat"></span></p>
-                <p><strong>Pickup Location:</strong> <span id="detail-pickup"></span></p>
-                <p><strong>Payment Status:</strong> <span id="detail-payment"></span></p>
-            </div>
+<div class="detail-item">
+    <h4><i class="fas fa-bus"></i> Seat & Bus</h4>
+    <p><strong>Seat Number:</strong> <span id="detail-seat"></span></p>
+    <p><strong>Bus:</strong> <span id="detail-bus"></span></p>
+</div>
+
+<div class="detail-item">
+    <h4><i class="fas fa-user"></i> Passenger Information</h4>
+    <p><strong>Name:</strong> <span id="detail-name"></span></p>
+    <p><strong>Contact:</strong> <span id="detail-contact"></span></p>
+</div>
+
+<div class="detail-item">
+    <h4><i class="fas fa-info-circle"></i> Journey Details</h4>
+    <p><strong>Time:</strong> <span id="detail-time"></span></p>
+    <p><strong>Date:</strong> <span id="detail-date"></span></p>
+    <p><strong>Pickup Location:</strong> <span id="detail-pickup"></span></p>
+    <p><strong>Payment Status:</strong> <span id="detail-payment"></span></p>
+</div>
+
         </div>
     </div>
 
@@ -1175,43 +1176,40 @@
             }
         }
         
-        function checkPassengerBooking() {
-            const contact = passengerContact.value.trim();
-            
-            if (!contact) {
-                showNotification(passengerError, 'Please enter a contact number');
-                return;
-            }
-            
-            // Show loading
-            Swal.fire({
-                title: 'Searching for booking...',
-                text: 'Please wait while we find your booking details',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-            
-            // In a real app, this would check against a database
-            // For demo purposes, we'll simulate a search
-            setTimeout(() => {
-                Swal.close();
-                // Sample passenger data for demo
-                const samplePassenger = {
-                    name: "Ahshaan",
-                    contact: 0742663484,
-                    bus: "RS Express",
-                    time: "20:30",
-                    date: "2025-09-21",
-                    seat: "12",
-                    pickup: "Lagan Bus Center",
-                    payment: "Paid"
-                };
-                
-                showPassengerDetails(samplePassenger);
-            }, 1500);
+ function checkPassengerBooking() {
+    const contact = passengerContact.value.trim();
+
+    if (!contact) {
+        showNotification(passengerError, 'Please enter a contact number');
+        return;
+    }
+
+    Swal.fire({
+        title: 'Searching for booking...',
+        text: 'Please wait while we find your booking details',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
         }
+    });
+
+    fetch(`${scriptURL}?contact=${encodeURIComponent(contact)}`)
+        .then(res => res.json())
+        .then(data => {
+            Swal.close();
+            if (data && data.length > 0) {
+                // Show the first matching passenger
+                showPassengerDetails(data[0]);
+            } else {
+                Swal.fire('Not Found', 'No booking found for this contact number', 'error');
+            }
+        })
+        .catch(err => {
+            Swal.close();
+            Swal.fire('Error', 'Unable to fetch booking details', 'error');
+        });
+}
+
         
         function adminLogin() {
             const email = adminEmail.value.trim();
