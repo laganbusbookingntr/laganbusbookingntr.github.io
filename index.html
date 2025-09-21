@@ -1198,11 +1198,18 @@
         .then(data => {
             Swal.close();
             if (data && data.length > 0) {
-                // Show the first matching passenger
-                showPassengerDetails(data[0]);
-            } else {
-                Swal.fire('Not Found', 'No booking found for this contact number', 'error');
-            }
+    // Find the exact match for contact number
+    const passenger = data.find(p => p.contact === contact);
+
+    if (passenger) {
+        showPassengerDetails(passenger);
+    } else {
+        Swal.fire('Not Found', 'No booking found for this contact number', 'error');
+    }
+} else {
+    Swal.fire('Not Found', 'No booking found for this contact number', 'error');
+}
+
         })
         .catch(err => {
             Swal.close();
