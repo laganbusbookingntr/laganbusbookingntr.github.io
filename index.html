@@ -671,7 +671,7 @@
 
     <div class="container" id="container">
         <div class="form-container passenger-container">
-            <form class="form" id="passenger-form">
+            <form class="form">
                 <div class="icon">
                     <i class="fas fa-users"></i>
                 </div>
@@ -680,8 +680,9 @@
                 
                 <span>Enter your contact number</span>
                 
-                <input type="tel" placeholder="Contact Number" id="passenger-contact" required />
-                <button type="submit" id="passenger-login">Check Booking</button>
+                <input type="tel" placeholder="Contact Number" id="passenger-contact" />
+                <a href="#" class="forgot-password">Forgot your contact number?</a>
+                <button type="button" id="passenger-login">Check Booking</button>
                 
                 <div class="notification error" id="passenger-error">
                     Please enter a valid contact number
@@ -690,7 +691,7 @@
         </div>
         
         <div class="form-container admin-container">
-            <form class="form" id="admin-form">
+            <form class="form">
                 <div class="icon">
                     <i class="fas fa-user-lock"></i>
                 </div>
@@ -701,9 +702,10 @@
                     <span>use your email password</span>
                 </div>
                 
-                <input type="email" placeholder="Email" id="admin-email" required />
-                <input type="password" placeholder="Password" id="admin-password" required />
-                <button type="submit" id="admin-login">SIGN IN</button>
+                <input type="email" placeholder="Email" id="admin-email" />
+                <input type="password" placeholder="Password" id="admin-password" />
+                <a href="#" class="forgot-password">Forgot your password?</a>
+                <button type="button" id="admin-login">SIGN IN</button>
                 
                 <div class="notification error" id="admin-error">
                     Invalid email or password
@@ -744,18 +746,18 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="p-name">Passenger Name</label>
-                    <input type="text" id="p-name" class="form-control" placeholder="Full Name" required>
+                    <input type="text" id="p-name" class="form-control" placeholder="Full Name">
                 </div>
                 <div class="form-group">
                     <label for="p-contact">Contact Number</label>
-                    <input type="tel" id="p-contact" class="form-control" placeholder="Contact Number" required>
+                    <input type="tel" id="p-contact" class="form-control" placeholder="Contact Number">
                 </div>
             </div>
             
             <div class="form-row">
                 <div class="form-group">
                     <label for="p-bus">Bus Name</label>
-                    <select id="p-bus" class="form-control" required>
+                    <select id="p-bus" class="form-control">
                         <option value="">Select Bus</option>
                         <option value="Super Line">Super Line</option>
                         <option value="Loyds">Loyds</option>
@@ -768,25 +770,25 @@
                 </div>
                 <div class="form-group">
                     <label for="p-time">Bus Time</label>
-                    <input type="time" id="p-time" class="form-control" value="20:30" required>
+                    <input type="time" id="p-time" class="form-control" value="20:30">
                 </div>
             </div>
             
             <div class="form-row">
                 <div class="form-group">
                     <label for="p-date">Date</label>
-                    <input type="date" id="p-date" class="form-control" required>
+                    <input type="date" id="p-date" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="p-seat">Seat Number</label>
-                    <input type="text" id="p-seat" class="form-control" placeholder="Seat Number" required>
+                    <input type="text" id="p-seat" class="form-control" placeholder="Seat Number">
                 </div>
             </div>
             
             <div class="form-row">
                 <div class="form-group">
                     <label for="p-pickup">Pickup Location</label>
-                    <select id="p-pickup" class="form-control" required>
+                    <select id="p-pickup" class="form-control">
                         <option value="">Select Location</option>
                         <option value="Lagan Bus Center">Lagan Bus Center</option>
                         <option value="Rajagiriya">Rajagiriya</option>
@@ -797,7 +799,7 @@
                 </div>
                 <div class="form-group">
                     <label for="p-payment">Payment Status</label>
-                    <select id="p-payment" class="form-control" required>
+                    <select id="p-payment" class="form-control">
                         <option value="Paid">Paid</option>
                         <option value="Pending">Pending</option>
                         <option value="Cancelled">Cancelled</option>
@@ -879,14 +881,17 @@
     </div>
 
     <script>
+        // Google Sheets API configuration
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyCS71_PMV4rUdjFpglxcy6LCZ1qd4N8Hw79zFMzgoN3P61Q2wgIGFp_WAin5RaZaLP2Q/exec'; // Replace with your Google Apps Script URL
+        
         // DOM Elements
         const container = document.getElementById('container');
         const passengerSwitchBtn = document.getElementById('passengerSwitch');
         const adminSwitchBtn = document.getElementById('adminSwitch');
         const mobilePassengerSwitch = document.getElementById('mobilePassengerSwitch');
         const mobileAdminSwitch = document.getElementById('mobileAdminSwitch');
-        const passengerForm = document.getElementById('passenger-form');
-        const adminForm = document.getElementById('admin-form');
+        const passengerLoginBtn = document.getElementById('passenger-login');
+        const adminLoginBtn = document.getElementById('admin-login');
         const adminPanel = document.getElementById('admin-panel');
         const passengerDetails = document.getElementById('passenger-details');
         const adminLogoutBtn = document.getElementById('admin-logout');
@@ -946,48 +951,6 @@
         let editingPassengerId = null;
         let passengersData = [];
         
-        // Initialize the application
-        function initApp() {
-            // Load sample data if no data exists
-            if (!localStorage.getItem('passengers')) {
-                const sampleData = [
-                    {
-                        id: 1,
-                        name: "John Doe",
-                        contact: "0771234567",
-                        bus: "Super Line",
-                        time: "20:30",
-                        date: "2023-10-15",
-                        seat: "A12",
-                        pickup: "Lagan Bus Center",
-                        payment: "Paid"
-                    },
-                    {
-                        id: 2,
-                        name: "Jane Smith",
-                        contact: "0777654321",
-                        bus: "Loyds",
-                        time: "20:30",
-                        date: "2023-10-16",
-                        seat: "B05",
-                        pickup: "Rajagiriya",
-                        payment: "Pending"
-                    }
-                ];
-                localStorage.setItem('passengers', JSON.stringify(sampleData));
-            }
-            
-            // Load passengers from localStorage
-            loadPassengersFromStorage();
-            
-            // Initialize date field with today's date
-            const today = new Date();
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            pDate.value = `${yyyy}-${mm}-${dd}`;
-        }
-        
         // Event Listeners for switching panels
         passengerSwitchBtn.addEventListener('click', () => {
             container.classList.remove('right-panel-active');
@@ -1006,8 +969,7 @@
         });
         
         // Login functionality
-        passengerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+        passengerLoginBtn.addEventListener('click', () => {
             if (!passengerContact.value || passengerContact.value.length < 9) {
                 passengerError.style.display = 'block';
                 return;
@@ -1026,14 +988,11 @@
                 }
             });
             
-            // Search for passenger
-            setTimeout(() => {
-                searchPassengerInStorage(contact);
-            }, 1000);
+            // Search for passenger in Google Sheets
+            searchPassengerInSheets(contact);
         });
         
-        adminForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+        adminLoginBtn.addEventListener('click', () => {
             if (adminEmail.value === 'laganbusbooking@gmail.com' && adminPassword.value === 'LBB2025') {
                 adminError.style.display = 'none';
                 // Hide login container and show admin panel
@@ -1041,8 +1000,8 @@
                 document.querySelector('.mobile-toggle').style.display = 'none';
                 adminPanel.style.display = 'block';
                 
-                // Load passenger data
-                loadPassengersFromStorage();
+                // Load passenger data from Google Sheets
+                loadPassengersFromSheets();
             } else {
                 adminError.style.display = 'block';
             }
@@ -1103,10 +1062,10 @@
             if (editingPassengerId) {
                 // Update existing passenger
                 passengerData.id = editingPassengerId;
-                updatePassengerInStorage(passengerData);
+                updatePassengerInSheets(passengerData);
             } else {
                 // Add new passenger
-                addPassengerToStorage(passengerData);
+                addPassengerToSheets(passengerData);
             }
         });
         
@@ -1126,101 +1085,182 @@
             adminError.style.display = 'none';
         });
         
-        // Local Storage Functions
-        function loadPassengersFromStorage() {
+        // Google Sheets Integration Functions
+        async function loadPassengersFromSheets() {
             tableSpinner.style.display = 'block';
             
             try {
-                const storedData = localStorage.getItem('passengers');
-                if (storedData) {
-                    passengersData = JSON.parse(storedData);
+                const response = await fetch(scriptURL + '?action=getPassengers');
+                const data = await response.json();
+                
+                if (data.success) {
+                    passengersData = data.passengers;
                     renderPassengersList(passengersData);
+                } else {
+                    Swal.fire('Error', 'Failed to load passenger data', 'error');
                 }
             } catch (error) {
-                console.error('Error loading passenger data:', error);
-                Swal.fire('Error', 'Failed to load passenger data', 'error');
+                console.error('Error:', error);
+                Swal.fire('Error', 'Failed to connect to server', 'error');
+                
+                // Fallback to sample data
+                passengersData = [
+                    {
+                        id: 1,
+                        name: "John Doe",
+                        contact: "0771234567",
+                        bus: "Super Line",
+                        time: "20:30",
+                        date: "2023-10-15",
+                        seat: "A12",
+                        pickup: "Lagan Bus Center",
+                        payment: "Paid"
+                    },
+                    {
+                        id: 2,
+                        name: "Jane Smith",
+                        contact: "0777654321",
+                        bus: "Loyds",
+                        time: "20:30",
+                        date: "2023-10-16",
+                        seat: "B05",
+                        pickup: "Rajagiriya",
+                        payment: "Pending"
+                    }
+                ];
+                renderPassengersList(passengersData);
             } finally {
                 tableSpinner.style.display = 'none';
             }
         }
         
-        function searchPassengerInStorage(contact) {
-            const passenger = passengersData.find(p => p.contact === contact);
-            if (passenger) {
-                Swal.close();
-                showPassengerDetails(passenger);
-            } else {
-                Swal.fire('Not Found', 'No booking found with this contact number', 'info');
-            }
-        }
-        
-        function addPassengerToStorage(passengerData) {
+        async function searchPassengerInSheets(contact) {
             try {
-                // Generate a unique ID
-                const newId = passengersData.length > 0 ? Math.max(...passengersData.map(p => p.id)) + 1 : 1;
-                passengerData.id = newId;
+                const response = await fetch(scriptURL + '?action=searchPassenger&contact=' + contact);
+                const data = await response.json();
                 
-                // Add to array
-                passengersData.push(passengerData);
-                
-                // Save to localStorage
-                localStorage.setItem('passengers', JSON.stringify(passengersData));
-                
-                // Show success message
-                Swal.fire('Success', 'Passenger added successfully!', 'success');
-                
-                // Reset form and refresh list
-                resetPassengerForm();
-                renderPassengersList(passengersData);
-                
+                if (data.success && data.passenger) {
+                    Swal.close();
+                    showPassengerDetails(data.passenger);
+                } else {
+                    Swal.fire('Not Found', 'No booking found with this contact number', 'info');
+                }
             } catch (error) {
-                console.error('Error saving passenger:', error);
-                Swal.fire('Error', 'Failed to save passenger', 'error');
+                console.error('Error:', error);
+                Swal.fire('Error', 'Failed to connect to server', 'error');
+                
+                // Fallback to sample data
+                const passenger = passengersData.find(p => p.contact === contact);
+                if (passenger) {
+                    Swal.close();
+                    showPassengerDetails(passenger);
+                } else {
+                    Swal.fire('Not Found', 'No booking found with this contact number', 'info');
+                }
             }
         }
         
-        function updatePassengerInStorage(passengerData) {
+        async function addPassengerToSheets(passengerData) {
             try {
-                // Find index of passenger to update
-                const index = passengersData.findIndex(p => p.id === passengerData.id);
-                if (index !== -1) {
-                    // Update the passenger
-                    passengersData[index] = passengerData;
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'addPassenger',
+                        ...passengerData
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Show success message
+                    Swal.fire('Success', 'Passenger added successfully!', 'success');
                     
-                    // Save to localStorage
-                    localStorage.setItem('passengers', JSON.stringify(passengersData));
+                    // Reset form
+                    resetPassengerForm();
                     
+                    // Reload data from sheets
+                    loadPassengersFromSheets();
+                } else {
+                    Swal.fire('Error', 'Failed to add passenger', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire('Error', 'Failed to connect to server', 'error');
+                
+                // Fallback to local data
+                passengerData.id = passengersData.length > 0 ? Math.max(...passengersData.map(p => p.id)) + 1 : 1;
+                passengersData.push(passengerData);
+                renderPassengersList(passengersData);
+                Swal.fire('Success', 'Passenger added successfully!', 'success');
+                resetPassengerForm();
+            }
+        }
+        
+        async function updatePassengerInSheets(passengerData) {
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'updatePassenger',
+                        ...passengerData
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
                     // Show success message
                     Swal.fire('Success', 'Passenger updated successfully!', 'success');
                     
-                    // Reset form and refresh list
+                    // Reset form
                     resetPassengerForm();
-                    renderPassengersList(passengersData);
+                    
+                    // Reload data from sheets
+                    loadPassengersFromSheets();
                 } else {
-                    Swal.fire('Error', 'Passenger not found', 'error');
+                    Swal.fire('Error', 'Failed to update passenger', 'error');
                 }
             } catch (error) {
-                console.error('Error updating passenger:', error);
-                Swal.fire('Error', 'Failed to update passenger', 'error');
+                console.error('Error:', error);
+                Swal.fire('Error', 'Failed to connect to server', 'error');
+                
+                // Fallback to local data
+                const index = passengersData.findIndex(p => p.id === editingPassengerId);
+                if (index !== -1) {
+                    passengersData[index] = passengerData;
+                    renderPassengersList(passengersData);
+                    Swal.fire('Success', 'Passenger updated successfully!', 'success');
+                    resetPassengerForm();
+                }
             }
         }
         
-        function deletePassengerFromStorage(id) {
+        async function deletePassengerInSheets(id) {
             try {
-                // Filter out the passenger to delete
-                passengersData = passengersData.filter(p => p.id !== id);
+                const response = await fetch(scriptURL + '?action=deletePassenger&id=' + id);
+                const data = await response.json();
                 
-                // Save to localStorage
-                localStorage.setItem('passengers', JSON.stringify(passengersData));
-                
-                // Show success message
-                Swal.fire('Deleted', 'Passenger deleted successfully', 'success');
-                
-                // Refresh list
-                renderPassengersList(passengersData);
+                if (data.success) {
+                    Swal.fire('Deleted', 'Passenger deleted successfully', 'success');
+                    loadPassengersFromSheets();
+                } else {
+                    Swal.fire('Error', 'Failed to delete passenger', 'error');
+                }
             } catch (error) {
-                console.error('Error deleting passenger:', error);
-                Swal.fire('Error', 'Failed to delete passenger', 'error');
+                console.error('Error:', error);
+                Swal.fire('Error', 'Failed to connect to server', 'error');
+                
+                // Fallback to local data
+                passengersData = passengersData.filter(p => p.id !== id);
+                renderPassengersList(passengersData);
+                Swal.fire('Deleted', 'Passenger deleted successfully', 'success');
             }
         }
         
@@ -1299,7 +1339,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    deletePassengerFromStorage(id);
+                    deletePassengerInSheets(id);
                 }
             });
         }
@@ -1339,8 +1379,15 @@
             busImage.alt = `${passenger.bus} Image`;
         }
         
-        // Initialize the application
-        initApp();
+        // Initialize date field with today's date
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        pDate.value = `${yyyy}-${mm}-${dd}`;
+        
+        // Initial load of sample data
+        loadPassengersFromSheets();
     </script>
 </body>
 </html>
