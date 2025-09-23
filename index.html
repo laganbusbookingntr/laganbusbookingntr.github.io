@@ -18,7 +18,7 @@
             background: linear-gradient(135deg, #e0f7fa 0%, #f3e5f5 100%);
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             flex-direction: column;
             min-height: 100vh;
             margin: 0;
@@ -33,50 +33,60 @@
         }
         h1 {
             color: #0d47a1;
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             margin-bottom: 10px;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: 0.5px;
         }
         .subtitle {
             color: #546e7a;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             margin-bottom: 15px;
             font-weight: 500;
         }
         .contact-info {
-            background: #e3f2fd;
-            padding: 12px 18px;
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
+            padding: 12px 25px;
             border-radius: 50px;
             display: inline-block;
             margin-top: 12px;
-            color: #0d47a1;
+            color: white;
             font-weight: 600;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
-            font-size: 0.9rem;
-            border: 1px solid #bbdefb;
+            box-shadow: 0 5px 15px rgba(13, 71, 161, 0.3);
+            font-size: 1rem;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .contact-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(13, 71, 161, 0.4);
         }
         .contact-info i {
             margin-right: 10px;
-            color: #0d47a1;
+            color: white;
         }
 
         /* ===== MAIN CONTAINER ===== */
         .container {
             background-color: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.18);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
             position: relative;
             overflow: hidden;
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             min-height: 500px;
             margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        .container:hover {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
 
         /* ===== FORMS ===== */
         .form-container {
-            padding: 30px 25px;
+            padding: 35px 30px;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -90,29 +100,29 @@
         .form h2 {
             color: #0d47a1;
             margin-bottom: 15px;
-            font-size: 1.5rem;
+            font-size: 1.7rem;
             font-weight: 700;
             position: relative;
         }
         .form h2:after {
             content: '';
             display: block;
-            width: 50px;
-            height: 3px;
-            background: #0d47a1;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, #0d47a1, #42a5f5);
             margin: 10px auto 20px;
             border-radius: 3px;
         }
         .form p {
             color: #546e7a;
-            font-size: 14px;
+            font-size: 15px;
             margin-bottom: 25px;
-            line-height: 1.5;
+            line-height: 1.6;
         }
         .form input, .form select {
             background-color: #f5f9ff;
             border: 2px solid #e3f2fd;
-            padding: 14px 16px;
+            padding: 15px 18px;
             margin: 12px 0;
             width: 100%;
             border-radius: 12px;
@@ -127,49 +137,53 @@
             box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.15);
         }
         .icon {
-            font-size: 32px;
+            font-size: 36px;
             margin-bottom: 20px;
             color: #0d47a1;
-            background: #e3f2fd;
-            width: 70px;
-            height: 70px;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
 
         /* ===== BUTTONS ===== */
         button {
             border-radius: 50px;
             border: none;
-            background-color: #0d47a1;
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
             color: #FFFFFF;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
-            padding: 14px 40px;
+            padding: 15px 45px;
             letter-spacing: 1px;
             text-transform: uppercase;
             transition: all 0.3s ease;
             margin-top: 20px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+            box-shadow: 0 5px 15px rgba(13, 71, 161, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(13, 71, 161, 0.4);
+            box-shadow: 0 8px 20px rgba(13, 71, 161, 0.4);
         }
         button:active {
             transform: scale(0.97);
         }
         button.ghost {
-            background-color: #e3f2fd;
+            background-color: transparent;
             color: #0d47a1;
             border: 2px solid #0d47a1;
         }
         button.ghost:hover {
-            background-color: #bbdefb;
+            background-color: #e3f2fd;
         }
 
         /* ===== NOTIFICATIONS ===== */
@@ -194,21 +208,42 @@
             border: 1px solid #c8e6c9;
         }
 
-        /* ===== ADMIN PANEL (Hidden on Mobile by Default) ===== */
+        /* ===== ADMIN LOGIN ===== */
+        .admin-login-container {
+            display: none;
+            padding: 30px 25px;
+            width: 100%;
+            max-width: 450px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        .admin-login-container h2 {
+            color: #0d47a1;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+        .admin-login-container input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
+            border: 2px solid #e3f2fd;
+            font-size: 16px;
+        }
+
+        /* ===== ADMIN PANEL ===== */
         .admin-panel {
             display: none;
-            padding: 25px;
+            padding: 30px;
             width: 100%;
             max-width: 1200px;
             margin: 20px auto;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        }
-        @media (min-width: 769px) {
-            .admin-panel {
-                display: block;
-            }
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
         }
         .admin-header {
             display: flex;
@@ -220,36 +255,39 @@
         }
         .admin-title {
             color: #00695c;
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 700;
         }
         .admin-title i {
             margin-right: 10px;
         }
         .logout-btn {
-            background: #c62828;
+            background: linear-gradient(135deg, #c62828, #d32f2f);
             border: none;
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-size: 14px;
             border-radius: 50px;
             font-weight: 600;
+            color: white;
+            box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
         }
         .logout-btn:hover {
-            background: #b71c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(198, 40, 40, 0.4);
         }
 
         /* ===== PASSENGER FORM (Admin) ===== */
         .passenger-form {
             background: linear-gradient(135deg, #f1f8e9, #e8f5e9);
-            padding: 25px;
-            border-radius: 18px;
+            padding: 30px;
+            border-radius: 20px;
             margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
         }
         .form-title {
             color: #00695c;
             margin-bottom: 20px;
-            font-size: 20px;
+            font-size: 22px;
             display: flex;
             align-items: center;
             font-weight: 700;
@@ -257,7 +295,7 @@
         .form-title i {
             margin-right: 12px;
             background: #e0f2f1;
-            padding: 8px;
+            padding: 10px;
             border-radius: 50%;
         }
         .form-row {
@@ -280,9 +318,9 @@
         }
         .form-control {
             width: 100%;
-            padding: 12px 15px;
+            padding: 14px 16px;
             border: 2px solid #e0f2f1;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 15px;
             transition: all 0.3s;
         }
@@ -297,39 +335,45 @@
             flex-wrap: wrap;
         }
         .save-btn {
-            background: #2e7d32;
+            background: linear-gradient(135deg, #2e7d32, #388e3c);
             border: none;
-            padding: 12px 25px;
+            padding: 14px 30px;
             border-radius: 50px;
             font-weight: 600;
             font-size: 15px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
         }
         .save-btn:hover {
-            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(46, 125, 50, 0.4);
         }
         .cancel-btn {
-            background: #546e7a;
+            background: linear-gradient(135deg, #546e7a, #607d8b);
             border: none;
-            padding: 12px 25px;
+            padding: 14px 30px;
             border-radius: 50px;
             font-weight: 600;
             font-size: 15px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(84, 110, 122, 0.3);
         }
         .cancel-btn:hover {
-            background: #455a64;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(84, 110, 122, 0.4);
         }
 
         /* ===== PASSENGERS TABLE ===== */
         .passengers-table-container {
             background: white;
-            border-radius: 18px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
         }
         .table-header {
-            background: #00695c;
+            background: linear-gradient(135deg, #00695c, #00897b);
             color: white;
-            padding: 15px 20px;
+            padding: 18px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -337,7 +381,7 @@
             gap: 15px;
         }
         .table-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -350,8 +394,8 @@
             align-items: center;
             background: rgba(255,255,255,0.2);
             border-radius: 50px;
-            padding: 8px 15px;
-            min-width: 250px;
+            padding: 10px 18px;
+            min-width: 280px;
         }
         .search-box input {
             background: transparent;
@@ -375,7 +419,7 @@
         }
         .passengers-table th,
         .passengers-table td {
-            padding: 14px 18px;
+            padding: 16px 20px;
             text-align: left;
             border-bottom: 1px solid #eee;
             font-size: 14px;
@@ -408,34 +452,35 @@
             align-items: center;
             justify-content: center;
             min-width: 80px;
+            gap: 5px;
         }
         .edit-btn {
-            background: #ffab00;
+            background: linear-gradient(135deg, #ffab00, #ffa000);
             color: #000;
         }
         .edit-btn:hover {
-            background: #ff9100;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 171, 0, 0.3);
         }
         .delete-btn {
-            background: #d32f2f;
+            background: linear-gradient(135deg, #d32f2f, #c62828);
             color: white;
         }
         .delete-btn:hover {
-            background: #c62828;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(211, 47, 47, 0.3);
         }
 
-        /* ===== PASSENGER DETAILS VIEW (Beautiful for Mobile) ===== */
+        /* ===== PASSENGER DETAILS VIEW ===== */
         .passenger-details {
             display: none;
-            padding: 25px 20px;
+            padding: 30px 25px;
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             margin: 20px auto;
             background: white;
             border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
         }
         .details-header {
             display: flex;
@@ -447,31 +492,33 @@
         }
         .details-header h2 {
             color: #0d47a1;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
         }
         .details-header h2 i {
             margin-right: 10px;
         }
         .back-btn {
-            background: #546e7a;
+            background: linear-gradient(135deg, #546e7a, #607d8b);
             border: none;
             padding: 10px 20px;
             border-radius: 50px;
             font-size: 14px;
             font-weight: 600;
+            color: white;
         }
         .back-btn:hover {
-            background: #455a64;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(84, 110, 122, 0.3);
         }
 
-        /* --- KEY IMPROVEMENT: BUS CARD --- */
+        /* ===== BUS CARD ===== */
         .bus-card {
             background: linear-gradient(135deg, #e3f2fd, #bbdefb);
             border-radius: 20px;
             padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -483,7 +530,7 @@
             left: 0;
             right: 0;
             height: 5px;
-            background: #0d47a1;
+            background: linear-gradient(to right, #0d47a1, #42a5f5);
         }
         .bus-image-container {
             width: 100%;
@@ -515,10 +562,10 @@
             margin-bottom: 15px;
         }
 
-        /* --- KEY IMPROVEMENT: SEAT BADGE --- */
+        /* ===== SEAT BADGE ===== */
         .seat-badge {
             display: inline-block;
-            background: #0d47a1;
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
             color: white;
             width: 60px;
             height: 60px;
@@ -530,7 +577,7 @@
             box-shadow: 0 4px 10px rgba(13, 71, 161, 0.3);
         }
 
-        /* --- KEY IMPROVEMENT: INFO GRID --- */
+        /* ===== INFO GRID ===== */
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -588,13 +635,38 @@
             border: 3px solid #e3f2fd;
         }
 
+        /* ===== ADMIN ACCESS BUTTON ===== */
+        .admin-access-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .admin-access-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
         /* ===== MOBILE OPTIMIZATIONS ===== */
         @media (max-width: 768px) {
             body {
                 padding: 10px 5px;
             }
             h1 {
-                font-size: 1.6rem;
+                font-size: 1.8rem;
             }
             .container {
                 max-width: 100%;
@@ -605,7 +677,7 @@
                 padding: 25px 20px;
             }
             .form h2 {
-                font-size: 1.4rem;
+                font-size: 1.5rem;
             }
             .form input, .form select {
                 padding: 14px 15px;
@@ -684,11 +756,17 @@
             .info-value {
                 font-size: 15px;
             }
+            .admin-access-btn {
+                bottom: 10px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 12px;
+            }
         }
 
         @media (max-width: 480px) {
             h1 {
-                font-size: 1.4rem;
+                font-size: 1.5rem;
             }
             .form h2 {
                 font-size: 1.3rem;
@@ -746,6 +824,7 @@
             <i class="fas fa-phone"></i> For Reservations: <strong>0777 402 886</strong>
         </div>
     </div>
+    
     <div class="container" id="container">
         <div class="form-container passenger-container">
             <div class="icon">
@@ -760,6 +839,21 @@
                     Please enter your contact number
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Admin Login -->
+    <div class="admin-login-container" id="admin-login-container">
+        <div class="icon">
+            <i class="fas fa-lock"></i>
+        </div>
+        <h2>Admin Login</h2>
+        <p>Enter admin password to access dashboard</p>
+        <input type="password" placeholder="Admin Password" id="admin-password" required />
+        <button type="button" id="admin-login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button type="button" id="admin-login-cancel" class="ghost"><i class="fas fa-times"></i> Cancel</button>
+        <div class="notification error" id="admin-login-error">
+            Incorrect password
         </div>
     </div>
 
@@ -882,6 +976,11 @@
         <!-- Dynamic content for each booking will be inserted here -->
     </div>
 
+    <!-- Admin Access Button -->
+    <button class="admin-access-btn" id="admin-access-btn">
+        <i class="fas fa-user-shield"></i> Admin
+    </button>
+
     <script>
         // Google Sheets API configuration
         const scriptURL = 'https://script.google.com/macros/s/AKfycbww-1nv4nbjxNRdEpAvKZisqhS7sPLhNLbp6-12TLG5I8vNEbs0jhe6fawAa75H2CGJbA/exec';
@@ -891,265 +990,239 @@
         const passengerForm = document.getElementById('passenger-form');
         const adminPanel = document.getElementById('admin-panel');
         const passengerDetails = document.getElementById('passenger-details');
+        const adminLoginContainer = document.getElementById('admin-login-container');
+        const adminAccessBtn = document.getElementById('admin-access-btn');
+        const adminLoginBtn = document.getElementById('admin-login-btn');
+        const adminLoginCancel = document.getElementById('admin-login-cancel');
         const adminLogoutBtn = document.getElementById('admin-logout');
         const backToSearchBtn = document.getElementById('back-to-search');
         const searchPassenger = document.getElementById('search-passenger');
         const tableSpinner = document.getElementById('table-spinner');
         const busImagePreview = document.getElementById('bus-image-preview');
 
-        // Form Fields
-        const passengerContact = document.getElementById('passenger-contact');
-
-        // Admin Form Fields
-        const pName = document.getElementById('p-name');
-        const pContact = document.getElementById('p-contact');
-        const pBus = document.getElementById('p-bus');
-        const pTime = document.getElementById('p-time');
-        const pDate = document.getElementById('p-date');
-        const pSeat = document.getElementById('p-seat');
-        const pPickup = document.getElementById('p-pickup');
-        const pPayment = document.getElementById('p-payment');
-        const savePassengerBtn = document.getElementById('save-passenger');
-        const cancelEditBtn = document.getElementById('cancel-edit');
-
-        // Notification Elements
-        const passengerError = document.getElementById('passenger-error');
-        const saveSuccess = document.getElementById('save-success');
-        const saveError = document.getElementById('save-error');
-
-        // Passenger List
-        const passengersList = document.getElementById('passengers-list');
-
         // Bus images mapping
         const busImages = {
-            "Super Line": "super_line.jpg",
-            "Loyds": "loyds.jpg",
-            "Sakeer Express": "sakeer_express.jpg",
-            "RS Express": "rs_express.jpg",
-            "My Own Express": "my_own_express.jpg",
-            "Al Ahla": "al_ahla.jpg",
-            "Star Travels": "star_travels.jpg"
+            'Super Line': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60',
+            'Loyds': 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60',
+            'Sakeer Express': 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60',
+            'RS Express': 'https://images.unsplash.com/photo-1506462945848-ac8ea6f609cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60',
+            'My Own Express': 'https://images.unsplash.com/photo-1506462945848-ac8ea6f609cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60',
+            'Al Ahla': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60',
+            'Star Travels': 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60'
         };
 
-        // Set default date to today
-        pDate.valueAsDate = new Date();
-
-        // Event Listeners
-        passengerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            checkPassengerBooking();
-        });
-
-        adminLogoutBtn.addEventListener('click', () => {
-            adminPanel.style.display = 'none';
-            container.style.display = 'block';
-            passengerContact.value = '';
-        });
-
-        backToSearchBtn.addEventListener('click', () => {
-            passengerDetails.style.display = 'none';
-            container.style.display = 'block';
-            passengerContact.value = '';
-        });
-
-        savePassengerBtn.addEventListener('click', () => {
-            savePassengerToSheet();
-        });
-
-        cancelEditBtn.addEventListener('click', () => {
-            resetForm();
-        });
-
-        searchPassenger.addEventListener('input', () => {
-            filterPassengers();
-        });
-
-        // Functions
+        // Show bus image when bus is selected
         function showBusImage() {
-            const busName = pBus.value;
-            const imagePath = busImages[busName] || "";
-            const previewDiv = document.getElementById("bus-image-preview");
-            if (imagePath) {
-                previewDiv.innerHTML = `<img src="${imagePath}" alt="${busName}">`;
-                previewDiv.style.display = "block";
+            const busSelect = document.getElementById('p-bus');
+            const selectedBus = busSelect.value;
+            
+            if (busImages[selectedBus]) {
+                busImagePreview.innerHTML = `<img src="${busImages[selectedBus]}" alt="${selectedBus}">`;
+                busImagePreview.style.display = 'block';
             } else {
-                previewDiv.innerHTML = "";
-                previewDiv.style.display = "none";
+                busImagePreview.style.display = 'none';
             }
         }
 
-        function checkPassengerBooking() {
-            const contact = passengerContact.value.trim();
-            if (!contact) {
-                showNotification(passengerError, 'Please enter your contact number');
-                return;
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('p-date').value = today;
+            
+            // Load passengers for admin panel
+            if (adminPanel.style.display === 'block') {
+                loadPassengers();
             }
+        });
 
-            Swal.fire({
-                title: 'Searching...',
-                text: 'Finding your bookings',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
+        // Admin Access Button
+        adminAccessBtn.addEventListener('click', function() {
+            adminLoginContainer.style.display = 'block';
+            container.style.display = 'none';
+            passengerDetails.style.display = 'none';
+        });
+
+        // Admin Login
+        adminLoginBtn.addEventListener('click', function() {
+            const password = document.getElementById('admin-password').value;
+            
+            // Simple password check (in production, this should be more secure)
+            if (password === 'admin123') {
+                adminLoginContainer.style.display = 'none';
+                adminPanel.style.display = 'block';
+                loadPassengers();
+            } else {
+                document.getElementById('admin-login-error').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('admin-login-error').style.display = 'none';
+                }, 3000);
+            }
+        });
+
+        // Admin Login Cancel
+        adminLoginCancel.addEventListener('click', function() {
+            adminLoginContainer.style.display = 'none';
+            container.style.display = 'block';
+        });
+
+        // Admin Logout
+        adminLogoutBtn.addEventListener('click', function() {
+            adminPanel.style.display = 'none';
+            container.style.display = 'block';
+            document.getElementById('admin-password').value = '';
+        });
+
+        // Back to Search Button
+        backToSearchBtn.addEventListener('click', function() {
+            passengerDetails.style.display = 'none';
+            container.style.display = 'block';
+        });
+
+        // Search Passengers
+        searchPassenger.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#passengers-list tr');
+            
+            rows.forEach(row => {
+                const name = row.cells[0].textContent.toLowerCase();
+                const contact = row.cells[1].textContent.toLowerCase();
+                const bus = row.cells[2].textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || contact.includes(searchTerm) || bus.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
                 }
             });
+        });
 
-            fetch(scriptURL)
-                .then(res => res.json())
-                .then(allPassengers => {
-                    Swal.close();
-                    const matchingBookings = allPassengers.filter(passenger =>
-                        passenger.contact.toString().includes(contact)
-                    );
-
-                    if (matchingBookings.length === 0) {
+        // Passenger Form Submission
+        passengerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const contact = document.getElementById('passenger-contact').value.trim();
+            
+            if (!contact) {
+                document.getElementById('passenger-error').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('passenger-error').style.display = 'none';
+                }, 3000);
+                return;
+            }
+            
+            // Show loading spinner
+            const spinner = document.createElement('div');
+            spinner.className = 'spinner';
+            passengerForm.appendChild(spinner);
+            spinner.style.display = 'block';
+            
+            // Search for passenger bookings
+            fetch(scriptURL + '?action=getPassenger&contact=' + contact)
+                .then(response => response.json())
+                .then(data => {
+                    spinner.style.display = 'none';
+                    
+                    if (data.success && data.bookings.length > 0) {
+                        displayPassengerBookings(data.bookings);
+                    } else {
                         Swal.fire({
                             icon: 'info',
                             title: 'No Bookings Found',
-                            text: 'We couldn\'t find any bookings for this number.'
+                            text: 'No bookings found for this contact number.',
+                            confirmButtonColor: '#0d47a1'
                         });
-                        return;
                     }
-
-                    container.style.display = 'none';
-                    passengerDetails.style.display = 'block';
-
-                    // Clear previous results
-                    const detailsContainer = document.querySelector('.passenger-details .details-header + div');
-                    if (detailsContainer) detailsContainer.remove();
-
-                    // Sort by date
-                    matchingBookings.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-                    // Create a container for all bookings
-                    const bookingsContainer = document.createElement('div');
-                    bookingsContainer.style.display = 'flex';
-                    bookingsContainer.style.flexDirection = 'column';
-                    bookingsContainer.style.gap = '25px';
-
-                    matchingBookings.forEach(booking => {
-                        const bookingCard = document.createElement('div');
-                        bookingCard.className = 'bus-card';
-
-                        const busImgSrc = busImages[booking.bus] || busImages["Super Line"];
-
-                        bookingCard.innerHTML = `
-                            <div class="bus-image-container">
-                                <img src="${busImgSrc}" alt="${booking.bus}">
-                            </div>
-                            <div class="bus-name">${booking.bus}</div>
-                            <div class="bus-time">${booking.time}</div>
-                            <div class="seat-badge">${booking.seat}</div>
-                            <div class="info-grid">
-                                <div class="info-item">
-                                    <div class="info-label">Date</div>
-                                    <div class="info-value">${booking.date}</div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="info-label">Pickup</div>
-                                    <div class="info-value">${booking.pickup || "Not specified"}</div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="info-label">Contact</div>
-                                    <div class="info-value">${booking.contact}</div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="info-label">Status</div>
-                                    <div class="info-value">${booking.payment || "Pending"}</div>
-                                </div>
-                            </div>
-                        `;
-
-                        bookingsContainer.appendChild(bookingCard);
-                    });
-
-                    // Insert the container after the header
-                    const header = document.querySelector('.passenger-details .details-header');
-                    header.parentNode.insertBefore(bookingsContainer, header.nextSibling);
                 })
-                .catch(err => {
-                    Swal.close();
-                    console.error('Error:', err);
+                .catch(error => {
+                    spinner.style.display = 'none';
+                    console.error('Error:', error);
                     Swal.fire({
                         icon: 'error',
-                        title: 'Oops!',
-                        text: 'Something went wrong. Please try again.'
+                        title: 'Error',
+                        text: 'Failed to retrieve bookings. Please try again.',
+                        confirmButtonColor: '#0d47a1'
                     });
                 });
-        }
+        });
 
-        function adminLogin() {
-            // Since you said admin login is working, this is kept simple.
-            // In a real app, you'd validate against a backend.
+        // Display passenger bookings
+        function displayPassengerBookings(bookings) {
+            passengerDetails.innerHTML = `
+                <div class="details-header">
+                    <h2><i class="fas fa-ticket-alt"></i> My Bookings</h2>
+                    <button class="back-btn" id="back-to-search"><i class="fas fa-arrow-left"></i> Back</button>
+                </div>
+            `;
+            
+            bookings.forEach(booking => {
+                const bookingCard = document.createElement('div');
+                bookingCard.className = 'bus-card';
+                bookingCard.innerHTML = `
+                    <div class="bus-image-container">
+                        <img src="${busImages[booking.bus] || 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60'}" alt="${booking.bus}">
+                    </div>
+                    <div class="bus-name">${booking.bus}</div>
+                    <div class="bus-time">${booking.time} | ${booking.date}</div>
+                    <div class="seat-badge">${booking.seat}</div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Passenger</div>
+                            <div class="info-value">${booking.name}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Contact</div>
+                            <div class="info-value">${booking.contact}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Pickup</div>
+                            <div class="info-value">${booking.pickup || 'Lagan Bus Center'}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Payment</div>
+                            <div class="info-value">${booking.payment || 'Paid'}</div>
+                        </div>
+                    </div>
+                `;
+                passengerDetails.appendChild(bookingCard);
+            });
+            
             container.style.display = 'none';
-            adminPanel.style.display = 'block';
-            loadPassengers();
-        }
-
-        function savePassengerToSheet() {
-            if (!pName.value || !pContact.value || !pBus.value || !pTime.value || !pDate.value || !pSeat.value) {
-                showNotification(saveError, 'Please fill all required fields');
-                return;
-            }
-
-            savePassengerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-            savePassengerBtn.disabled = true;
-
-            const formData = {
-                name: pName.value,
-                contact: pContact.value,
-                bus: pBus.value,
-                time: pTime.value,
-                date: pDate.value,
-                seat: pSeat.value,
-                pickup: pPickup.value,
-                payment: pPayment.value,
-                action: cancelEditBtn.style.display === 'none' ? 'add' : 'edit'
-            };
-
-            fetch(scriptURL, {
-                method: 'POST',
-                body: JSON.stringify(formData)
-            })
-            .then(res => res.json())
-            .then(result => {
-                showNotification(saveSuccess, 'Passenger saved successfully!');
-                resetForm();
-                loadPassengers();
-                savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Save Passenger';
-                savePassengerBtn.disabled = false;
-            })
-            .catch(err => {
-                showNotification(saveError, 'Error saving passenger!');
-                savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Save Passenger';
-                savePassengerBtn.disabled = false;
+            passengerDetails.style.display = 'block';
+            
+            // Re-attach event listener to back button
+            document.getElementById('back-to-search').addEventListener('click', function() {
+                passengerDetails.style.display = 'none';
+                container.style.display = 'block';
             });
         }
 
+        // Load passengers for admin panel
         function loadPassengers() {
             tableSpinner.style.display = 'block';
-            passengersList.innerHTML = '';
-
-            fetch(scriptURL)
-              .then(res => res.json())
-              .then(data => {
-                  displayPassengers(data);
-                  tableSpinner.style.display = 'none';
-              })
-              .catch(err => {
-                  passengersList.innerHTML = '<tr><td colspan="7">Error loading data</td></tr>';
-                  tableSpinner.style.display = 'none';
-              });
+            
+            fetch(scriptURL + '?action=getAll')
+                .then(response => response.json())
+                .then(data => {
+                    tableSpinner.style.display = 'none';
+                    
+                    if (data.success) {
+                        displayPassengers(data.passengers);
+                    } else {
+                        console.error('Failed to load passengers');
+                    }
+                })
+                .catch(error => {
+                    tableSpinner.style.display = 'none';
+                    console.error('Error:', error);
+                });
         }
 
+        // Display passengers in admin panel
         function displayPassengers(passengers) {
-            passengersList.innerHTML = '';
-            if (passengers.length === 0) {
-                passengersList.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">No passengers found</td></tr>';
-                return;
-            }
-
-            passengers.forEach((passenger, index) => {
+            const tbody = document.getElementById('passengers-list');
+            tbody.innerHTML = '';
+            
+            passengers.forEach(passenger => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${passenger.name}</td>
@@ -1159,140 +1232,230 @@
                     <td>${passenger.date}</td>
                     <td>${passenger.seat}</td>
                     <td>
-                        <button class="action-btn edit-btn" data-index="${index}"><i class="fas fa-edit"></i> Edit</button>
-                        <button class="action-btn delete-btn" data-index="${index}"><i class="fas fa-trash"></i> Delete</button>
+                        <button class="action-btn edit-btn" data-id="${passenger.id}">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${passenger.id}">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
                     </td>
                 `;
-                passengersList.appendChild(row);
+                tbody.appendChild(row);
             });
-
-            // Add event listeners
-            document.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const index = e.target.closest('.edit-btn').getAttribute('data-index');
-                    editPassenger(passengers[index]);
+            
+            // Add event listeners to edit buttons
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const passengerId = this.getAttribute('data-id');
+                    editPassenger(passengerId, passengers);
                 });
             });
-
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const index = e.target.closest('.delete-btn').getAttribute('data-index');
-                    deletePassenger(passengers[index], index); // Pass index for deletion
+            
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const passengerId = this.getAttribute('data-id');
+                    deletePassenger(passengerId);
                 });
             });
         }
 
-        function editPassenger(passenger) {
-            pName.value = passenger.name;
-            pContact.value = passenger.contact;
-            pBus.value = passenger.bus;
-            pTime.value = passenger.time;
-            pDate.value = passenger.date;
-            pSeat.value = passenger.seat;
-            pPickup.value = passenger.pickup || "";
-            pPayment.value = passenger.payment || "Paid";
-
-            showBusImage();
-
-            savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Update Passenger';
-            cancelEditBtn.style.display = 'inline-block';
-
-            // Scroll to form
-            document.querySelector('.passenger-form').scrollIntoView({ behavior: 'smooth' });
+        // Edit passenger
+        function editPassenger(passengerId, passengers) {
+            const passenger = passengers.find(p => p.id == passengerId);
+            
+            if (passenger) {
+                document.getElementById('p-name').value = passenger.name;
+                document.getElementById('p-contact').value = passenger.contact;
+                document.getElementById('p-bus').value = passenger.bus;
+                document.getElementById('p-time').value = passenger.time;
+                document.getElementById('p-date').value = passenger.date;
+                document.getElementById('p-seat').value = passenger.seat;
+                document.getElementById('p-pickup').value = passenger.pickup || '';
+                document.getElementById('p-payment').value = passenger.payment || 'Paid';
+                
+                // Show bus image
+                showBusImage();
+                
+                // Change save button to update mode
+                const saveBtn = document.getElementById('save-passenger');
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> Update Passenger';
+                saveBtn.setAttribute('data-edit-id', passengerId);
+                
+                // Show cancel button
+                document.getElementById('cancel-edit').style.display = 'inline-block';
+                
+                // Scroll to form
+                document.querySelector('.passenger-form').scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
-        function deletePassenger(passenger, index) {
+        // Cancel edit
+        document.getElementById('cancel-edit').addEventListener('click', function() {
+            resetPassengerForm();
+        });
+
+        // Reset passenger form
+        function resetPassengerForm() {
+            document.getElementById('p-name').value = '';
+            document.getElementById('p-contact').value = '';
+            document.getElementById('p-bus').value = '';
+            document.getElementById('p-time').value = '20:30';
+            document.getElementById('p-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('p-seat').value = '';
+            document.getElementById('p-pickup').value = '';
+            document.getElementById('p-payment').value = 'Paid';
+            
+            // Reset save button
+            const saveBtn = document.getElementById('save-passenger');
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Passenger';
+            saveBtn.removeAttribute('data-edit-id');
+            
+            // Hide cancel button
+            document.getElementById('cancel-edit').style.display = 'none';
+            
+            // Hide bus image
+            busImagePreview.style.display = 'none';
+        }
+
+        // Save/Update passenger
+        document.getElementById('save-passenger').addEventListener('click', function() {
+            const name = document.getElementById('p-name').value.trim();
+            const contact = document.getElementById('p-contact').value.trim();
+            const bus = document.getElementById('p-bus').value;
+            const time = document.getElementById('p-time').value;
+            const date = document.getElementById('p-date').value;
+            const seat = document.getElementById('p-seat').value.trim();
+            const pickup = document.getElementById('p-pickup').value;
+            const payment = document.getElementById('p-payment').value;
+            
+            if (!name || !contact || !bus || !time || !date || !seat) {
+                document.getElementById('save-error').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('save-error').style.display = 'none';
+                }, 3000);
+                return;
+            }
+            
+            const passengerData = {
+                name: name,
+                contact: contact,
+                bus: bus,
+                time: time,
+                date: date,
+                seat: seat,
+                pickup: pickup,
+                payment: payment
+            };
+            
+            const isEdit = this.hasAttribute('data-edit-id');
+            
+            if (isEdit) {
+                passengerData.id = this.getAttribute('data-edit-id');
+                passengerData.action = 'update';
+            } else {
+                passengerData.action = 'create';
+            }
+            
+            // Show loading
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(passengerData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                this.disabled = false;
+                this.innerHTML = isEdit ? '<i class="fas fa-save"></i> Update Passenger' : '<i class="fas fa-save"></i> Save Passenger';
+                
+                if (data.success) {
+                    document.getElementById('save-success').style.display = 'block';
+                    setTimeout(() => {
+                        document.getElementById('save-success').style.display = 'none';
+                    }, 3000);
+                    
+                    resetPassengerForm();
+                    loadPassengers();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to save passenger. Please try again.',
+                        confirmButtonColor: '#0d47a1'
+                    });
+                }
+            })
+            .catch(error => {
+                this.disabled = false;
+                this.innerHTML = isEdit ? '<i class="fas fa-save"></i> Update Passenger' : '<i class="fas fa-save"></i> Save Passenger';
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to save passenger. Please try again.',
+                    confirmButtonColor: '#0d47a1'
+                });
+            });
+        });
+
+        // Delete passenger
+        function deletePassenger(passengerId) {
             Swal.fire({
                 title: 'Are you sure?',
-                text: `Delete ${passenger.name}'s booking?`,
+                text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d32f2f',
                 cancelButtonColor: '#546e7a',
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'Cancel'
+                confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Send DELETE request
                     fetch(scriptURL, {
-                        method: 'DELETE',
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: 'delete',
+                            id: passengerId
+                        }),
                         headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ index: index }) // Send index to delete
+                            'Content-Type': 'application/json'
+                        }
                     })
-                    .then(res => res.json())
-                    .then(result => {
-                        Swal.fire(
-                            'Deleted!',
-                            'The booking has been deleted.',
-                            'success'
-                        );
-                        loadPassengers(); // Refresh the list
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'Passenger has been deleted.',
+                                confirmButtonColor: '#0d47a1'
+                            });
+                            loadPassengers();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Failed to delete passenger. Please try again.',
+                                confirmButtonColor: '#0d47a1'
+                            });
+                        }
                     })
-                    .catch(err => {
-                        Swal.fire(
-                            'Error!',
-                            'Failed to delete the booking.',
-                            'error'
-                        );
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to delete passenger. Please try again.',
+                            confirmButtonColor: '#0d47a1'
+                        });
                     });
                 }
             });
         }
-
-        function filterPassengers() {
-            const searchTerm = searchPassenger.value.toLowerCase();
-            const rows = passengersList.querySelectorAll('tr');
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
-        }
-
-        function resetForm() {
-            pName.value = '';
-            pContact.value = '';
-            pBus.value = '';
-            pTime.value = '20:30';
-            pDate.valueAsDate = new Date();
-            pSeat.value = '';
-            pPickup.value = '';
-            pPayment.value = 'Paid';
-            busImagePreview.innerHTML = '';
-            busImagePreview.style.display = 'none';
-            savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Save Passenger';
-            cancelEditBtn.style.display = 'none';
-            saveSuccess.style.display = 'none';
-            saveError.style.display = 'none';
-        }
-
-        function showNotification(element, message) {
-            element.textContent = message;
-            element.style.display = 'block';
-            setTimeout(() => {
-                element.style.display = 'none';
-            }, 5000);
-        }
-
-        // Initialize
-        window.addEventListener('load', () => {
-            const today = new Date().toISOString().split('T')[0];
-            pDate.setAttribute('min', today);
-
-            // If you want a simple admin login button for demo, uncomment below.
-            // Otherwise, you can trigger adminLogin() from your existing logic.
-            /*
-            const adminLoginBtn = document.createElement('button');
-            adminLoginBtn.textContent = 'Admin Login (Demo)';
-            adminLoginBtn.style.position = 'fixed';
-            adminLoginBtn.style.bottom = '20px';
-            adminLoginBtn.style.right = '20px';
-            adminLoginBtn.style.zIndex = '1000';
-            adminLoginBtn.onclick = adminLogin;
-            document.body.appendChild(adminLoginBtn);
-            */
-        });
     </script>
 </body>
 </html>
