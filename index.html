@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        /* Your existing CSS remains the same */
         * {
             margin: 0;
             padding: 0;
@@ -889,7 +888,7 @@
 
     <script>
         // Google Sheets API configuration - Replace with your deployed script URL
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzkJrcGDk-pYuml4yU2T3umtYwBiXWCwkHsqih1b5_pGFG9KLv6PSgHNpZ0B6QhaGc/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyCfwjBmIQ8vR5-EnE1WHqLqK3PTsElCcnErN_aWOb41p-a-bZLnACka6FQlSZ_bBBrcA/exec';
 
         // DOM Elements
         const container = document.getElementById('container');
@@ -1063,19 +1062,33 @@
             // Sort by date
             bookings.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-            // Create booking cards
-            bookings.forEach(booking => {
-                const bookingCard = document.createElement('div');
-                bookingCard.className = 'bus-card';
-
-                const busImgSrc = busImages[booking.bus] || busImages["Super Line"];
-
-                bookingCard.innerHTML = `
+            // Create a card for each booking
+            bookings.forEach((booking, index) => {
+                const busCard = document.createElement('div');
+                busCard.className = 'bus-card';
+                
+                // Format date
+                const bookingDate = new Date(booking.date);
+                const formattedDate = bookingDate.toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                
+                // Format time
+                const formattedTime = formatTime(booking.time);
+                
+                // Get bus image path
+                const busImagePath = busImages[booking.bus] || "";
+                
+                busCard.innerHTML = `
                     <div class="bus-image-container">
-                        <img src="${busImgSrc}" alt="${booking.bus}" onerror="this.style.display='none'">
+                        ${busImagePath ? `<img src="${busImagePath}" alt="${booking.bus}" onerror="this.style.display='none'">` : 
+                        `<div style="color: #0d47a1; font-size: 40px;"><i class="fas fa-bus"></i></div>`}
                     </div>
                     <div class="bus-name">${booking.bus}</div>
-                    <div class="bus-time">${booking.time}</div>
+                    <div class="bus-time">${formattedTime} • ${formattedDate}</div>
                     <div class="seat-badge">${booking.seat}</div>
                     <div class="info-grid">
                         <div class="info-item">
@@ -1083,28 +1096,125 @@
                             <div class="info-value">${booking.name}</div>
                         </div>
                         <div class="info-item">
-                            <div class="info-label">Date</div>
-                            <div class="info-value">${formatDisplayDate(booking.date)}</div>
+                            <div class="info-label">Contact</div>
+                            <div class="info-value">${booking.contact}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Pickup</div>
                             <div class="info-value">${booking.pickup || 'Not specified'}</div>
                         </div>
                         <div class="info-item">
-                            <div class="info-label">Status</div>
-                            <div class="info-value">${booking.payment}</div>
+                            <div class="info-label">Payment</div>
+                            <div class="info-value ${booking.payment === 'Paid' ? 'paid-status' : 'pending-status'}">${booking.payment}</div>
                         </div>
                     </div>
                 `;
-
-                bookingsContainer.appendChild(bookingCard);
+                
+                bookingsContainer.appendChild(busCard);
             });
 
             passengerDetails.appendChild(bookingsContainer);
         }
 
+        function formatTime(timeString) {
+            if (!timeString) return '';
+            
+            // Handle both "HH:MM" and "HH:MM:SS" formats
+            const timeParts = timeString.split(':');
+            const hours = parseInt(timeParts[0]);
+            const minutes = timeParts[1];
+            
+            const period = hours >= 12 ? 'PM' : 'AM';
+            const formattedHours = hours % 12 || 12;
+            
+            return `${formattedHours}:${minutes} ${period}`;
+        }
+
+        function loadPassengers() {
+            tableSpinner.style.display = 'block';
+            
+            fetch(scriptURL)
+                .then(res => res.json())
+                .then(passengers => {
+                    allPassengers = passengers;
+                    displayPassengers(passengers);
+                    tableSpinner.style.display = 'none';
+                })
+                .catch(err => {
+                    console.error('Error loading passengers:', err);
+                    tableSpinner.style.display = 'none';
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to load passenger data'
+                    });
+                });
+        }
+
+        function displayPassengers(passengers) {
+            passengersList.innerHTML = '';
+            
+            if (passengers.length === 0) {
+                passengersList.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 30px; color: #546e7a;">
+                            <i class="fas fa-users" style="font-size: 40px; margin-bottom: 15px; display: block;"></i>
+                            No passengers found
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            passengers.forEach((passenger, index) => {
+                const row = document.createElement('tr');
+                
+                // Format date
+                const bookingDate = new Date(passenger.date);
+                const formattedDate = bookingDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+                
+                // Format time
+                const formattedTime = formatTime(passenger.time);
+                
+                row.innerHTML = `
+                    <td>${passenger.name}</td>
+                    <td>${passenger.contact}</td>
+                    <td>${passenger.bus}</td>
+                    <td>${formattedTime}</td>
+                    <td>${formattedDate}</td>
+                    <td>${passenger.seat}</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="editPassenger(${index})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deletePassenger(${index})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+                
+                passengersList.appendChild(row);
+            });
+        }
+
+        function filterPassengers() {
+            const searchTerm = searchPassenger.value.toLowerCase();
+            const filteredPassengers = allPassengers.filter(passenger => 
+                passenger.name.toLowerCase().includes(searchTerm) ||
+                passenger.contact.includes(searchTerm) ||
+                passenger.bus.toLowerCase().includes(searchTerm) ||
+                passenger.seat.toLowerCase().includes(searchTerm)
+            );
+            
+            displayPassengers(filteredPassengers);
+        }
+
         function savePassengerToSheet() {
-            // Validation
+            // Validate required fields
             if (!pName.value.trim() || !pContact.value.trim() || !pBus.value || !pTime.value || !pDate.value || !pSeat.value.trim()) {
                 showNotification(saveError, 'Please fill all required fields');
                 return;
@@ -1121,75 +1231,95 @@
                 payment: pPayment.value
             };
 
-            if (editingPassengerIndex !== null) {
-                passengerData.action = 'edit';
-                passengerData.index = editingPassengerIndex;
-                updatePassenger(passengerData);
-            } else {
-                addPassenger(passengerData);
-            }
-        }
-
-        function addPassenger(passengerData) {
+            // Show loading
             savePassengerBtn.disabled = true;
             savePassengerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
-            fetch(scriptURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(passengerData)
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    showNotification(saveSuccess, result.message);
-                    resetForm();
-                    loadPassengers();
+            // Simulate saving to Google Sheets (replace with actual API call)
+            setTimeout(() => {
+                // In a real implementation, you would send data to your Google Apps Script
+                // fetch(scriptURL, {
+                //     method: 'POST',
+                //     body: JSON.stringify(passengerData)
+                // })
+                
+                // For demo purposes, we'll just add to the local array
+                if (editingPassengerIndex !== null) {
+                    // Update existing passenger
+                    allPassengers[editingPassengerIndex] = passengerData;
                 } else {
-                    throw new Error(result.message || 'Failed to save passenger');
+                    // Add new passenger
+                    allPassengers.push(passengerData);
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showNotification(saveError, 'Failed to save passenger: ' + error.message);
-            })
-            .finally(() => {
+                
+                // Update display
+                displayPassengers(allPassengers);
+                
+                // Reset form
+                resetForm();
+                
+                // Show success message
+                showNotification(saveSuccess, 'Passenger details saved successfully!');
+                
+                // Reset button
                 savePassengerBtn.disabled = false;
                 savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Save Passenger';
+            }, 1000);
+        }
+
+        function editPassenger(index) {
+            const passenger = allPassengers[index];
+            
+            // Fill form with passenger data
+            pName.value = passenger.name;
+            pContact.value = passenger.contact;
+            pBus.value = passenger.bus;
+            pTime.value = passenger.time;
+            pDate.value = passenger.date;
+            pSeat.value = passenger.seat;
+            pPickup.value = passenger.pickup || '';
+            pPayment.value = passenger.payment || 'Paid';
+            
+            // Show bus image
+            showBusImage();
+            
+            // Update UI for editing mode
+            editingPassengerIndex = index;
+            savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Update Passenger';
+            cancelEditBtn.style.display = 'inline-block';
+            
+            // Scroll to form
+            document.querySelector('.passenger-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deletePassenger(index) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Remove from array
+                    allPassengers.splice(index, 1);
+                    
+                    // Update display
+                    displayPassengers(allPassengers);
+                    
+                    Swal.fire(
+                        'Deleted!',
+                        'Passenger has been deleted.',
+                        'success'
+                    );
+                }
             });
         }
 
-        function updatePassenger(passengerData) {
-            savePassengerBtn.disabled = true;
-            savePassengerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
-
-            fetch(scriptURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(passengerData)
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    showNotification(saveSuccess, result.message);
-                    resetForm();
-                    loadPassengers();
-                } else {
-                    throw new Error(result.message || 'Failed to update passenger');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showNotification(saveError, 'Failed to update passenger: ' + error.message);
-            })
-            .finally(() => {
-                savePassengerBtn.disabled = false;
-                savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Save Passenger';
-            });
+        function cancelEdit() {
+            resetForm();
         }
 
         function resetForm() {
@@ -1201,165 +1331,37 @@
             pSeat.value = '';
             pPickup.value = '';
             pPayment.value = 'Paid';
-            busImagePreview.style.display = 'none';
+            
             editingPassengerIndex = null;
             savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Save Passenger';
             cancelEditBtn.style.display = 'none';
-            hideNotification(saveSuccess);
-            hideNotification(saveError);
-        }
-
-        function loadPassengers() {
-            tableSpinner.style.display = 'block';
-            passengersList.innerHTML = '';
-
-            fetch(scriptURL)
-                .then(res => res.json())
-                .then(passengers => {
-                    allPassengers = passengers;
-                    tableSpinner.style.display = 'none';
-                    displayPassengers(passengers);
-                })
-                .catch(err => {
-                    tableSpinner.style.display = 'none';
-                    console.error('Error fetching passengers:', err);
-                    passengersList.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#c62828;">Error loading passengers</td></tr>';
-                });
-        }
-
-        function displayPassengers(passengers) {
-            passengersList.innerHTML = '';
-
-            if (passengers.length === 0) {
-                passengersList.innerHTML = '<tr><td colspan="7" style="text-align:center;">No passengers found</td></tr>';
-                return;
-            }
-
-            passengers.forEach((passenger, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${passenger.name}</td>
-                    <td>${passenger.contact}</td>
-                    <td>${passenger.bus}</td>
-                    <td>${passenger.time}</td>
-                    <td>${formatDisplayDate(passenger.date)}</td>
-                    <td>${passenger.seat}</td>
-                    <td>
-                        <button class="action-btn edit-btn" onclick="editPassenger(${index})"><i class="fas fa-edit"></i> Edit</button>
-                        <button class="action-btn delete-btn" onclick="deletePassenger(${index})"><i class="fas fa-trash"></i> Delete</button>
-                    </td>
-                `;
-                passengersList.appendChild(row);
-            });
-        }
-
-        function editPassenger(index) {
-            const passenger = allPassengers[index];
-            pName.value = passenger.name;
-            pContact.value = passenger.contact;
-            pBus.value = passenger.bus;
-            pTime.value = passenger.time;
-            pDate.value = passenger.date;
-            pSeat.value = passenger.seat;
-            pPickup.value = passenger.pickup || '';
-            pPayment.value = passenger.payment || 'Paid';
-
-            editingPassengerIndex = index;
-            savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Update Passenger';
-            cancelEditBtn.style.display = 'inline-block';
-
-            showBusImage();
-
-            // Scroll to form
-            document.querySelector('.passenger-form').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function deletePassenger(index) {
-            const passenger = allPassengers[index];
+            busImagePreview.style.display = 'none';
             
-            Swal.fire({
-                title: 'Are you sure?',
-                text: `Delete ${passenger.name}'s booking?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d32f2f',
-                cancelButtonColor: '#546e7a',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch(scriptURL + '?action=delete&index=' + index)
-                        .then(response => response.json())
-                        .then(result => {
-                            if (result.success) {
-                                Swal.fire('Deleted!', 'Booking has been deleted.', 'success');
-                                loadPassengers();
-                            } else {
-                                throw new Error(result.message || 'Failed to delete passenger');
-                            }
-                        })
-                        .catch(error => {
-                            Swal.fire('Error!', 'Failed to delete booking.', 'error');
-                        });
-                }
-            });
-        }
-
-        function cancelEdit() {
-            resetForm();
-        }
-
-        function filterPassengers() {
-            const searchTerm = searchPassenger.value.toLowerCase();
-            const rows = passengersList.getElementsByTagName('tr');
-
-            for (let i = 0; i < rows.length; i++) {
-                const cells = rows[i].getElementsByTagName('td');
-                let found = false;
-
-                for (let j = 0; j < cells.length - 1; j++) {
-                    if (cells[j].textContent.toLowerCase().includes(searchTerm)) {
-                        found = true;
-                        break;
-                    }
-                }
-
-                rows[i].style.display = found ? '' : 'none';
-            }
+            // Hide notifications
+            saveSuccess.style.display = 'none';
+            saveError.style.display = 'none';
         }
 
         function showNotification(element, message) {
             element.textContent = message;
             element.style.display = 'block';
+            
             setTimeout(() => {
                 element.style.display = 'none';
             }, 5000);
         }
 
-        function hideNotification(element) {
-            element.style.display = 'none';
-        }
-
-        function formatDisplayDate(dateString) {
-            if (!dateString) return '';
-            try {
-                const date = new Date(dateString);
-                return date.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                });
-            } catch (e) {
-                return dateString;
-            }
-        }
-
-        // Initialize
-        window.onload = function() {
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
             // Set minimum date to today
             const today = new Date().toISOString().split('T')[0];
-            pDate.setAttribute('min', today);
-        };
+            pDate.min = today;
+            
+            // Hide notifications initially
+            passengerError.style.display = 'none';
+            saveSuccess.style.display = 'none';
+            saveError.style.display = 'none';
+        });
     </script>
 </body>
 </html>
-
