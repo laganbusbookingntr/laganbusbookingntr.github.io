@@ -896,7 +896,7 @@
 
     <script>
         // Google Sheets API configuration - Replace with your deployed script URL
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzzt6yUTO94D18IEgXOIJWczYk2vtkkK54UL35lftmTbiySQv6oSBfzkMgaxDXxDygc9A/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycby_AilTbFi2IY3Id4pHi8ti57Kim2yRRq0yAEJSfbwPjmhwu7clMsizUd5_r1cSPMw6PA/exec';
 
         // DOM Elements
         const container = document.getElementById('container');
@@ -935,13 +935,13 @@
 
         // Bus images mapping
         const busImages = {
-            "Super Line": "images/super_line.jpg",
-            "Loyds": "images/loyds.jpg",
-            "Sakeer Express": "images/sakeer_express.jpg",
-            "RS Express": "images/rs_express.jpg",
-            "My Own Express": "images/my_own_express.jpg",
-            "Al Ahla": "images/al_ahla.jpg",
-            "Star Travels": "images/star_travels.jpg"
+            "Super Line": "super_line.jpg",
+            "Loyds": "loyds.jpg",
+            "Sakeer Express": "sakeer_express.jpg",
+            "RS Express": "rs_express.jpg",
+            "My Own Express": "my_own_express.jpg",
+            "Al Ahla": "al_ahla.jpg",
+            "Star Travels": "star_travels.jpg"
         };
 
         // Set default date to today
@@ -1025,9 +1025,9 @@
 
             fetch(scriptURL)
                 .then(res => res.json())
-                .then(allPassengers => {
+                .then(passengers => {
                     Swal.close();
-                    const matchingBookings = allPassengers.filter(passenger =>
+                    const matchingBookings = passengers.filter(passenger =>
                         passenger.contact && passenger.contact.toString().includes(contact)
                     );
 
@@ -1225,7 +1225,8 @@
                 passenger.name.toLowerCase().includes(searchTerm) ||
                 passenger.contact.includes(searchTerm) ||
                 passenger.bus.toLowerCase().includes(searchTerm) ||
-                passenger.seat.toLowerCase().includes(searchTerm)
+                passenger.seat.toLowerCase().includes(searchTerm) ||
+                (passenger.pickup && passenger.pickup.toLowerCase().includes(searchTerm))
             );
             
             displayPassengers(filteredPassengers);
@@ -1267,7 +1268,7 @@
             // If editing, add the index
             if (editingPassengerIndex !== null) {
                 formData.append('action', 'edit');
-                formData.append('index', editingPassengerIndex);
+                formData.append('index', allPassengers[editingPassengerIndex].index);
             }
 
             // Send data to Google Sheets
@@ -1280,6 +1281,7 @@
                 if (result.success) {
                     showNotification(saveSuccess, result.message);
                     resetForm();
+                    // Reload passengers from server to get updated data
                     loadPassengers();
                 } else {
                     throw new Error(result.message || 'Failed to save passenger');
@@ -1336,7 +1338,7 @@
                     // Send delete request to Google Sheets
                     const formData = new FormData();
                     formData.append('action', 'delete');
-                    formData.append('index', index);
+                    formData.append('index', passenger.index);
                     
                     fetch(scriptURL, {
                         method: 'POST',
@@ -1346,6 +1348,7 @@
                     .then(result => {
                         if (result.success) {
                             Swal.fire('Deleted!', 'Booking has been deleted.', 'success');
+                            // Reload passengers from server
                             loadPassengers();
                         } else {
                             throw new Error(result.message || 'Failed to delete passenger');
