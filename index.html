@@ -70,7 +70,7 @@
             width: 100%;
             max-width: 450px;
             min-height: 500px;
-            margin-bottom: 30px;
+            margin: 0 auto 30px;
         }
 
         /* ===== FORMS ===== */
@@ -193,7 +193,7 @@
             border: 1px solid #c8e6c9;
         }
 
-        /* ===== ADMIN PANEL (Hidden on Mobile by Default) ===== */
+        /* ===== ADMIN PANEL (Hidden by Default) ===== */
         .admin-panel {
             display: none;
             padding: 25px;
@@ -203,11 +203,6 @@
             background: white;
             border-radius: 20px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        }
-        @media (min-width: 769px) {
-            .admin-panel {
-                display: block;
-            }
         }
         .admin-header {
             display: flex;
@@ -587,6 +582,17 @@
             border: 3px solid #e3f2fd;
         }
 
+        /* Payment Status Colors */
+        .paid-status {
+            color: #2e7d32 !important;
+        }
+        .pending-status {
+            color: #ff9800 !important;
+        }
+        .cancelled-status {
+            color: #c62828 !important;
+        }
+
         /* ===== MOBILE OPTIMIZATIONS ===== */
         @media (max-width: 768px) {
             body {
@@ -866,6 +872,8 @@
                         <th>Time</th>
                         <th>Date</th>
                         <th>Seat</th>
+                        <th>Pickup</th>
+                        <th>Payment</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -888,7 +896,7 @@
 
     <script>
         // Google Sheets API configuration - Replace with your deployed script URL
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyCfwjBmIQ8vR5-EnE1WHqLqK3PTsElCcnErN_aWOb41p-a-bZLnACka6FQlSZ_bBBrcA/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzzt6yUTO94D18IEgXOIJWczYk2vtkkK54UL35lftmTbiySQv6oSBfzkMgaxDXxDygc9A/exec';
 
         // DOM Elements
         const container = document.getElementById('container');
@@ -1082,6 +1090,10 @@
                 // Get bus image path
                 const busImagePath = busImages[booking.bus] || "";
                 
+                // Determine payment status class
+                const paymentClass = booking.payment === 'Paid' ? 'paid-status' : 
+                                   booking.payment === 'Pending' ? 'pending-status' : 'cancelled-status';
+                
                 busCard.innerHTML = `
                     <div class="bus-image-container">
                         ${busImagePath ? `<img src="${busImagePath}" alt="${booking.bus}" onerror="this.style.display='none'">` : 
@@ -1105,7 +1117,7 @@
                         </div>
                         <div class="info-item">
                             <div class="info-label">Payment</div>
-                            <div class="info-value ${booking.payment === 'Paid' ? 'paid-status' : 'pending-status'}">${booking.payment}</div>
+                            <div class="info-value ${paymentClass}">${booking.payment}</div>
                         </div>
                     </div>
                 `;
@@ -1157,7 +1169,7 @@
             if (passengers.length === 0) {
                 passengersList.innerHTML = `
                     <tr>
-                        <td colspan="7" style="text-align: center; padding: 30px; color: #546e7a;">
+                        <td colspan="9" style="text-align: center; padding: 30px; color: #546e7a;">
                             <i class="fas fa-users" style="font-size: 40px; margin-bottom: 15px; display: block;"></i>
                             No passengers found
                         </td>
@@ -1180,6 +1192,10 @@
                 // Format time
                 const formattedTime = formatTime(passenger.time);
                 
+                // Determine payment status class
+                const paymentClass = passenger.payment === 'Paid' ? 'paid-status' : 
+                                   passenger.payment === 'Pending' ? 'pending-status' : 'cancelled-status';
+                
                 row.innerHTML = `
                     <td>${passenger.name}</td>
                     <td>${passenger.contact}</td>
@@ -1187,6 +1203,8 @@
                     <td>${formattedTime}</td>
                     <td>${formattedDate}</td>
                     <td>${passenger.seat}</td>
+                    <td>${passenger.pickup || 'Not specified'}</td>
+                    <td class="${paymentClass}">${passenger.payment}</td>
                     <td>
                         <button class="action-btn edit-btn" onclick="editPassenger(${index})">
                             <i class="fas fa-edit"></i> Edit
@@ -1235,36 +1253,46 @@
             savePassengerBtn.disabled = true;
             savePassengerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
-            // Simulate saving to Google Sheets (replace with actual API call)
-            setTimeout(() => {
-                // In a real implementation, you would send data to your Google Apps Script
-                // fetch(scriptURL, {
-                //     method: 'POST',
-                //     body: JSON.stringify(passengerData)
-                // })
-                
-                // For demo purposes, we'll just add to the local array
-                if (editingPassengerIndex !== null) {
-                    // Update existing passenger
-                    allPassengers[editingPassengerIndex] = passengerData;
+            // Prepare the data for Google Sheets
+            const formData = new FormData();
+            formData.append('name', passengerData.name);
+            formData.append('contact', passengerData.contact);
+            formData.append('bus', passengerData.bus);
+            formData.append('time', passengerData.time);
+            formData.append('date', passengerData.date);
+            formData.append('seat', passengerData.seat);
+            formData.append('pickup', passengerData.pickup);
+            formData.append('payment', passengerData.payment);
+
+            // If editing, add the index
+            if (editingPassengerIndex !== null) {
+                formData.append('action', 'edit');
+                formData.append('index', editingPassengerIndex);
+            }
+
+            // Send data to Google Sheets
+            fetch(scriptURL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    showNotification(saveSuccess, result.message);
+                    resetForm();
+                    loadPassengers();
                 } else {
-                    // Add new passenger
-                    allPassengers.push(passengerData);
+                    throw new Error(result.message || 'Failed to save passenger');
                 }
-                
-                // Update display
-                displayPassengers(allPassengers);
-                
-                // Reset form
-                resetForm();
-                
-                // Show success message
-                showNotification(saveSuccess, 'Passenger details saved successfully!');
-                
-                // Reset button
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification(saveError, 'Failed to save passenger: ' + error.message);
+            })
+            .finally(() => {
                 savePassengerBtn.disabled = false;
                 savePassengerBtn.innerHTML = '<i class="fas fa-save"></i> Save Passenger';
-            }, 1000);
+            });
         }
 
         function editPassenger(index) {
@@ -1293,9 +1321,11 @@
         }
 
         function deletePassenger(index) {
+            const passenger = allPassengers[index];
+            
             Swal.fire({
                 title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                text: `Delete ${passenger.name}'s booking?`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
@@ -1303,17 +1333,27 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Remove from array
-                    allPassengers.splice(index, 1);
+                    // Send delete request to Google Sheets
+                    const formData = new FormData();
+                    formData.append('action', 'delete');
+                    formData.append('index', index);
                     
-                    // Update display
-                    displayPassengers(allPassengers);
-                    
-                    Swal.fire(
-                        'Deleted!',
-                        'Passenger has been deleted.',
-                        'success'
-                    );
+                    fetch(scriptURL, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            Swal.fire('Deleted!', 'Booking has been deleted.', 'success');
+                            loadPassengers();
+                        } else {
+                            throw new Error(result.message || 'Failed to delete passenger');
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire('Error!', 'Failed to delete booking.', 'error');
+                    });
                 }
             });
         }
