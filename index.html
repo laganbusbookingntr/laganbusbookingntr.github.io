@@ -5,24 +5,18 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Lagan Bus Booking — Check Your Seat</title>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{
   --blue:#3a7bd5;
   --blue2:#67b8f7;
-  --blue3:#1a5cb0;
+  --blue-dark:#1a5cb0;
   --bg:#eef3f8;
   --muted:#66788A;
   --border:#dce4ec;
   --road-dark:#333;
   --lane-white:#fff;
   --success:#10b981;
-  --warning:#f59e0b;
   --danger:#ef4444;
-  --gradient-primary: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
-  --gradient-secondary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --shadow-light: 0 10px 30px rgba(9,20,40,0.08);
-  --shadow-medium: 0 15px 40px rgba(9,20,40,0.12);
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI', system-ui, -apple-system, sans-serif}
@@ -34,88 +28,11 @@ body{
   align-items:center;
   min-height:100vh;
   padding:14px;
-  position: relative;
-  overflow-x: hidden;
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(58, 123, 213, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(103, 184, 247, 0.05) 0%, transparent 50%);
-  z-index: -1;
-}
-
-.header-container {
-  text-align: center;
-  margin-bottom: 20px;
-  position: relative;
-}
-
-.logo-container {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-  padding: 8px 20px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 50px;
-  box-shadow: var(--shadow-light);
-  border: 1px solid rgba(220, 228, 236, 0.5);
-}
-
-.logo-emoji {
-  font-size: 2rem;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-}
-
-.brand {
-  font-weight: 800;
-  font-size: 1.8rem;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.5px;
-}
-
-.tagline {
-  color: var(--muted);
-  font-size: 0.95rem;
-  margin-bottom: 6px;
-}
-
-.contact-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, rgba(58, 123, 213, 0.1), rgba(103, 184, 247, 0.1));
-  padding: 8px 16px;
-  border-radius: 50px;
-  font-weight: 600;
-  color: var(--blue3);
-  border: 1px solid rgba(58, 123, 213, 0.2);
-  margin-top: 4px;
-}
-
-.contact-badge i {
-  font-size: 1.1rem;
-}
-
-/* SKY ANIMATION */
+/* Sky Animation - Keep original */
 .sky-container{
-  width:100%;max-width:860px;height:150px;margin:0 auto 14px;border-radius:18px;
-  position:relative;overflow:hidden;box-shadow: var(--shadow-medium);
+  width:100%;max-width:860px;height:150px;margin:0 auto 14px;border-radius:14px;position:relative;overflow:hidden;
   animation: skyCycle 20s linear infinite;
 }
 @keyframes skyCycle{
@@ -127,159 +44,45 @@ body::before {
   100% { background:linear-gradient(#bfe4ff,#eaf6ff); }
 }
 
-.sun{ 
-  width:70px;height:70px;border-radius:50%; 
-  background: radial-gradient(circle at 30% 30%, #FFD93D, #FFB347);
-  position:absolute; left:28px; bottom:-20px; 
-  box-shadow:0 0 30px rgba(255,217,61,0.8), 0 0 60px rgba(255,217,61,0.4);
-  animation:sunCycle 20s linear infinite; 
-}
+.sun{ width:70px;height:70px;border-radius:50%; background:#FFD93D; position:absolute; left:28px; bottom:-20px; box-shadow:0 0 22px rgba(255,217,61,0.7); animation:sunCycle 20s linear infinite; }
+@keyframes sunCycle{ 0%{transform:translateY(40px);opacity:1} 25%{transform:translateY(-10px);opacity:1} 40%{opacity:0} 70%{opacity:0} 90%{opacity:1;transform:translateY(-10px)} 100%{opacity:1;transform:translateY(40px)} }
 
-@keyframes sunCycle{ 
-  0%{transform:translateY(40px);opacity:1} 
-  25%{transform:translateY(-10px);opacity:1} 
-  40%{opacity:0} 
-  70%{opacity:0} 
-  90%{opacity:1;transform:translateY(-10px)} 
-  100%{opacity:1;transform:translateY(40px)} 
-}
+.moon{ width:55px;height:55px;border-radius:50%; background:#fff; position:absolute; right:40px; top:24px; box-shadow:0 0 12px rgba(255,255,255,0.7); opacity:0; animation:moonCycle 20s linear infinite;}
+@keyframes moonCycle{ 0%,30%{opacity:0} 45%,70%{opacity:1} 85%,100%{opacity:0} }
 
-.moon{ 
-  width:55px;height:55px;border-radius:50%; 
-  background: radial-gradient(circle at 30% 30%, #fff, #f0f0f0);
-  position:absolute; right:40px; top:24px; 
-  box-shadow:0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.3);
-  opacity:0; animation:moonCycle 20s linear infinite;
-}
+.cloud{ position:absolute; width:70px;height:30px;background:#fff;border-radius:40px; box-shadow:25px 10px 0 #fff,45px 15px 0 #fff; opacity:.88; animation: cloudMove 30s linear infinite; }
+.c1{ top:25px; left:-120px; animation-delay:-5s } 
+.c2{ top:45px; left:8%; transform:scale(1.15); animation-delay:-12s }
+.c3{ top:60px; left:60%; transform:scale(0.92); animation-delay:-18s } 
+.c4{ top:35px; left:82%; transform:scale(1.05); animation-delay:-22s }
+@keyframes cloudMove{ 0%{ left:-120px } 100%{ left:120% } }
 
-@keyframes moonCycle{ 
-  0%,30%{opacity:0} 
-  45%,70%{opacity:1} 
-  85%,100%{opacity:0} 
-}
-
-.cloud{ 
-  position:absolute; 
-  background:#fff;
-  border-radius:40px; 
-  box-shadow:25px 10px 0 #fff,45px 15px 0 #fff; 
-  opacity:.92; 
-  animation: cloudMove 30s linear infinite; 
-  filter: drop-shadow(0 5px 5px rgba(0,0,0,0.05));
-}
-
-.c1{ top:25px; left:-120px; width:70px; height:30px; animation-delay:-5s } 
-.c2{ top:45px; left:8%; width:80px; height:35px; animation-delay:-12s }
-.c3{ top:60px; left:60%; width:65px; height:28px; animation-delay:-18s } 
-.c4{ top:35px; left:82%; width:75px; height:32px; animation-delay:-22s }
-
-@keyframes cloudMove{ 
-  0%{ left:-120px } 
-  100%{ left:120% } 
-}
-
-.stars{ 
-  position:absolute; top:0; left:0; width:100%; height:100%;
+.stars{ position:absolute; top:0; left:0; width:100%; height:100%;
   background:
-    radial-gradient(3px 3px at 20% 30%, rgba(255,255,255,0.95) 90%, transparent),
-    radial-gradient(2px 2px at 40% 60%, rgba(255,255,255,0.9) 90%, transparent),
-    radial-gradient(3px 3px at 60% 50%, rgba(255,255,255,0.85) 90%, transparent),
-    radial-gradient(2px 2px at 80% 40%, rgba(255,255,255,0.9) 90%, transparent);
-  opacity:0; animation: starCycle 20s linear infinite; 
-}
+    radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.95) 90%, transparent),
+    radial-gradient(2px 2px at 60% 50%, rgba(255,255,255,0.9) 90%, transparent),
+    radial-gradient(2px 2px at 80% 40%, rgba(255,255,255,0.85) 90%, transparent),
+    radial-gradient(2px 2px at 30% 80%, rgba(255,255,255,0.85) 90%, transparent);
+  opacity:0; animation: starCycle 20s linear infinite; }
+@keyframes starCycle{ 0%,30%{opacity:0} 40%,70%{opacity:1} 90%,100%{opacity:0} }
 
-@keyframes starCycle{ 
-  0%,30%{opacity:0} 
-  40%,70%{opacity:1} 
-  90%,100%{opacity:0} 
-}
+.shooting-star{ position:absolute;width:3px;height:3px;border-radius:50%; background:white; top:20px; left:-100px; opacity:0; animation: shoot 5s ease-in-out infinite; }
+@keyframes shoot{ 0%{opacity:0;transform:translate(0,0)} 10%{opacity:1} 40%{opacity:1;transform:translate(300px,80px)} 60%{opacity:.4} 100%{opacity:0;transform:translate(520px,140px)} }
 
-.shooting-star{ 
-  position:absolute;width:3px;height:3px;border-radius:50%; 
-  background: linear-gradient(90deg, rgba(255,255,255,0), white, rgba(255,255,255,0));
-  top:20px; left:-100px; opacity:0; 
-  animation: shoot 5s ease-in-out infinite; 
-  box-shadow: 0 0 10px white;
-}
+/* Road Animation - Keep original */
+.road-container{ width:100%; max-width:860px; height:110px; margin:0 auto 20px; position:relative; overflow:hidden; }
+.road{ width:260%; height:18px; background:repeating-linear-gradient(to right, var(--road-dark) 0, var(--road-dark) 40px, var(--lane-white) 40px, var(--lane-white) 80px); position:absolute; bottom:8px; left:0; animation: roadMove 5s linear infinite; box-shadow: inset 0 -6px 12px rgba(0,0,0,0.15);}
+@keyframes roadMove{ from{transform:translateX(0)} to{transform:translateX(-20%)} }
 
-@keyframes shoot{ 
-  0%{opacity:0;transform:translate(0,0)} 
-  10%{opacity:1} 
-  40%{opacity:1;transform:translate(300px,80px)} 
-  60%{opacity:.4} 
-  100%{opacity:0;transform:translate(520px,140px)} 
-}
+.lane-glow{ position:absolute; bottom:14px; left:0; width:100%; height:6px; background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0)); mix-blend-mode:screen; opacity:0.8; }
 
-/* ROAD */
-.road-container{ 
-  width:100%; max-width:860px; height:110px; margin:0 auto 20px; 
-  position:relative; overflow:hidden; border-radius: 12px;
-  box-shadow: inset 0 -10px 20px rgba(0,0,0,0.1);
-}
-
-.road{ 
-  width:260%; height:18px; 
-  background:repeating-linear-gradient(to right, 
-    var(--road-dark) 0, 
-    var(--road-dark) 40px, 
-    var(--lane-white) 40px, 
-    var(--lane-white) 80px); 
-  position:absolute; bottom:8px; left:0; 
-  animation: roadMove 5s linear infinite; 
-  box-shadow: inset 0 -6px 12px rgba(0,0,0,0.2);
-}
-
-@keyframes roadMove{ 
-  from{transform:translateX(0)} 
-  to{transform:translateX(-20%)} 
-}
-
-.lane-glow{ 
-  position:absolute; bottom:14px; left:0; width:100%; height:6px; 
-  background:linear-gradient(90deg, 
-    rgba(255,255,255,0) 0%, 
-    rgba(255,255,255,0.15) 15%, 
-    rgba(255,255,255,0.3) 50%, 
-    rgba(255,255,255,0.15) 85%, 
-    rgba(255,255,255,0) 100%); 
-  mix-blend-mode:screen; 
-  opacity:0.8; 
-  filter: blur(1px);
-}
-
-.roadside {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 30px;
-  background: linear-gradient(to right, #2e7d32, #4caf50, #2e7d32);
-  z-index: 1;
-}
-
-.tree {
-  position: absolute;
-  bottom: 30px;
-  width: 25px;
-  height: 40px;
-  background: #2e7d32;
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-}
-
-.tree:nth-child(1) { left: 10%; }
-.tree:nth-child(2) { left: 30%; transform: scale(0.9); }
-.tree:nth-child(3) { left: 50%; transform: scale(1.1); }
-.tree:nth-child(4) { left: 70%; transform: scale(0.8); }
-.tree:nth-child(5) { left: 90%; }
-
-/* BUS */
+/* Bus Animation - Keep original */
 .bus-wrap{
   position:absolute;
-  left:100vw; bottom:30px; width:220px; height:140px; 
-  display:flex; align-items:flex-end; justify-content:center; 
-  transform-origin:center;
+  left:100vw; bottom:30px; width:220px; height:140px; pointer-events:none;
+  display:flex; align-items:flex-end; justify-content:center; transform-origin:center;
   animation: wrapMove 12s linear infinite;
   animation-delay:2s;
-  z-index: 10;
 }
 
 @keyframes wrapMove{
@@ -287,77 +90,15 @@ body::before {
   100%{ transform: translateX(-140vw) }
 }
 
-.bus{ 
-  position:relative; 
-  display:flex; 
-  align-items:center; 
-  justify-content:center; 
-  transform-origin:center; 
-  font-size:48px; 
-  transform:scale(1); 
-  z-index:4;
-  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
-}
+.bus{ position:relative; display:flex; align-items:center; justify-content:center; transform-origin:center; font-size:48px; transform:scale(1); z-index:4; }
+.bus .emoji{ display:inline-block; animation: busBounce 0.7s ease-in-out infinite; transform-origin:center; }
+@keyframes busBounce{ 0%,100%{ transform:translateY(0)} 50%{ transform:translateY(-2px)} }
 
-.bus .emoji{ 
-  display:inline-block; 
-  animation: busBounce 0.7s ease-in-out infinite; 
-  transform-origin:center;
-  text-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
+.beam{ position:absolute; right:-26px; width:170px; height:46px; border-radius:10px; background: linear-gradient(90deg, rgba(255,255,200,0.0), rgba(255,255,200,0.12), rgba(255,255,200,0.06)); filter:blur(6px); opacity:0; mix-blend-mode:screen; transform:skewX(-12deg); box-shadow:0 0 40px rgba(255,230,160,0.12); animation: beamCycle 20s linear infinite; z-index:3; }
 
-@keyframes busBounce{ 
-  0%,100%{ transform:translateY(0)} 
-  50%{ transform:translateY(-3px)} 
-}
+.ref{ position:absolute; bottom:-12px; left:50%; transform:translateX(-50%); width:150px; height:22px; border-radius:50%; background: radial-gradient(closest-side, rgba(255,230,160,0.14), rgba(255,230,160,0.06), rgba(0,0,0,0)); filter:blur(6px); opacity:0; animation: beamCycle 20s linear infinite; z-index:2; }
 
-.beam{ 
-  position:absolute; 
-  right:-26px; 
-  width:180px; 
-  height:50px; 
-  border-radius:10px; 
-  background: linear-gradient(90deg, 
-    rgba(255,255,200,0) 0%, 
-    rgba(255,255,200,0.25) 20%, 
-    rgba(255,255,200,0.15) 50%, 
-    rgba(255,255,200,0.05) 80%, 
-    rgba(255,255,200,0) 100%); 
-  filter:blur(8px); 
-  opacity:0; 
-  mix-blend-mode:screen; 
-  transform:skewX(-12deg); 
-  box-shadow:0 0 60px rgba(255,230,160,0.2);
-  animation: beamCycle 20s linear infinite; 
-  z-index:3;
-}
-
-.ref{ 
-  position:absolute; 
-  bottom:-12px; 
-  left:50%; 
-  transform:translateX(-50%); 
-  width:160px; 
-  height:25px; 
-  border-radius:50%; 
-  background: radial-gradient(ellipse at center, 
-    rgba(255,230,160,0.25) 0%, 
-    rgba(255,230,160,0.1) 30%, 
-    rgba(0,0,0,0) 70%); 
-  filter:blur(8px); 
-  opacity:0; 
-  animation: beamCycle 20s linear infinite; 
-  z-index:2;
-}
-
-@keyframes beamCycle{ 
-  0%{opacity:0} 
-  35%{opacity:0} 
-  40%{opacity:1} 
-  60%{opacity:1} 
-  70%{opacity:0} 
-  100%{opacity:0} 
-}
+@keyframes beamCycle{ 0%{opacity:0} 35%{opacity:0} 40%{opacity:1} 60%{opacity:1} 70%{opacity:0} 100%{opacity:0} }
 
 .shadow{
   position:absolute;
@@ -383,366 +124,310 @@ body::before {
   100%{ transform:translateX(-50%) scale(1.7); opacity:0.30; filter:blur(12px); }
 }
 
-/* MAIN CONTENT */
+/* ================= IMPROVED UI ================= */
 .wrap{ 
   width:100%; 
   max-width:760px; 
-  animation: fadeIn 1s ease-out;
+  animation: fadeIn 0.5s ease;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.card{ 
-  background: rgba(255, 255, 255, 0.95);
+/* Header */
+.header{
+  text-align:center;
+  margin-bottom:20px;
+  padding:15px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
   backdrop-filter: blur(10px);
-  padding: 28px; 
-  border-radius: 20px; 
-  border: 1px solid rgba(220, 228, 236, 0.4); 
-  box-shadow: var(--shadow-medium);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 50px rgba(9,20,40,0.15);
-}
-
-.card-header {
-  text-align: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(220, 228, 236, 0.5);
-}
-
-.card-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--blue3);
+.brand{ 
+  font-weight:800; 
+  font-size:1.8rem; 
+  color:var(--blue-dark);
+  margin-bottom:5px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
 }
 
-.card-title i {
-  color: var(--blue);
+.welcome{ 
+  margin-top:6px; 
+  font-weight:600;
+  color: #444;
+  font-size: 1.1rem;
 }
 
-.input-group {
-  position: relative;
-  margin-bottom: 20px;
+.sub{ 
+  color:var(--muted); 
+  margin-top:8px; 
+  font-size:0.95rem;
+  background: rgba(58, 123, 213, 0.1);
+  padding: 8px 15px;
+  border-radius: 50px;
+  display: inline-block;
 }
 
-.input-icon {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--muted);
-  font-size: 1.2rem;
+/* Card */
+.card{ 
+  background:#fff; 
+  padding:25px; 
+  border-radius:15px; 
+  border:1px solid var(--border); 
+  box-shadow:0 10px 30px rgba(9,20,40,0.08);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
 }
 
 .input{ 
   width:100%; 
-  padding: 16px 16px 16px 48px;
-  border-radius:12px; 
-  border: 2px solid rgba(220, 228, 236, 0.8);
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.9);
+  padding:15px; 
+  border-radius:10px; 
+  border:2px solid #e0e0e0;
+  font-size:16px;
+  transition: all 0.3s;
+  background: #f8f9fa;
 }
 
 .input:focus {
   outline: none;
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
   background: white;
+  box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
 }
 
 .btn{ 
   width:100%; 
-  margin-top: 8px; 
-  padding: 16px; 
-  border-radius:12px; 
+  margin-top:15px; 
+  padding:15px; 
+  border-radius:10px; 
   border:none; 
-  background: var(--gradient-primary);
+  background:linear-gradient(135deg, var(--blue2), var(--blue)); 
   color:#fff; 
   font-weight:700; 
-  font-size: 1.1rem;
+  font-size:1rem;
   cursor:pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  letter-spacing: 0.5px;
+  gap: 8px;
 }
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(58, 123, 213, 0.3);
+  box-shadow: 0 8px 20px rgba(58, 123, 213, 0.3);
 }
 
 .btn:active {
   transform: translateY(0);
 }
 
-.btn i {
-  font-size: 1.2rem;
-}
-
+/* Results Box */
 #box{ 
-  margin-top:24px; 
-  padding: 20px; 
-  border-radius:16px; 
-  border: 1px solid rgba(220, 228, 236, 0.6);
-  background: linear-gradient(135deg, rgba(248, 251, 255, 0.8), rgba(240, 247, 255, 0.8));
+  margin-top:20px; 
+  padding:20px; 
+  border-radius:12px; 
+  border:1px solid var(--border); 
+  background: #f8fafc;
   display:none;
-  animation: slideDown 0.5s ease-out;
+  animation: slideIn 0.5s ease;
 }
 
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-20px); }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .booking-detail {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(220, 228, 236, 0.4);
-}
-
-.booking-detail:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-}
-
-.detail-icon {
-  width: 36px;
-  height: 36px;
+  background: white;
+  padding: 15px;
   border-radius: 10px;
-  background: rgba(58, 123, 213, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--blue);
-  font-size: 1.1rem;
-  flex-shrink: 0;
-}
-
-.detail-text {
-  flex: 1;
+  margin-bottom: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
 }
 
 .detail-label {
-  font-size: 0.85rem;
+  font-size: 12px;
   color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
   font-weight: 600;
 }
 
 .detail-value {
-  font-size: 1.1rem;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--blue3);
+  color: var(--blue-dark);
 }
 
-.seats-container {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.seats-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--blue3);
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
+/* Seats */
 .right{ 
   display:flex; 
-  gap: 16px; 
+  gap:15px; 
   flex-wrap:wrap; 
   justify-content:center; 
-  margin-top:10px 
+  margin-top:15px 
 }
 
 .seat{ 
-  width: 100px; 
-  height: 100px; 
-  border-radius: 50%; 
+  width:90px; 
+  height:90px; 
+  border-radius:50%; 
   display:flex; 
   align-items:center; 
   justify-content:center; 
   flex-direction:column; 
-  background: linear-gradient(135deg, #e7f3ff, #b6d8ff);
-  border: 2px solid #c7dff4; 
-  font-weight: 900; 
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 20px rgba(103, 184, 247, 0.2);
-  position: relative;
-  overflow: hidden;
+  background:linear-gradient(135deg, #e7f3ff, #b6d8ff);
+  border:2px solid #c7dff4; 
+  font-weight:900; 
+  font-size:1.15rem;
+  transition: all 0.3s;
+  box-shadow: 0 5px 15px rgba(103, 184, 247, 0.2);
 }
 
 .seat:hover {
   transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 12px 25px rgba(103, 184, 247, 0.3);
+  box-shadow: 0 8px 20px rgba(103, 184, 247, 0.3);
 }
 
 .seat span{ 
-  font-size: 32px;
+  font-size:28px;
   margin-bottom: 5px;
 }
 
+.seat-number {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--blue-dark);
+}
+
+/* Feedback */
 #feedbackBox{ 
-  margin-top:24px; 
+  margin-top:20px; 
   display:none; 
   text-align:center; 
   padding:20px; 
-  border-radius:16px; 
-  background: linear-gradient(135deg, rgba(247, 251, 255, 0.9), rgba(235, 245, 255, 0.9));
-  border: 1px solid rgba(207, 227, 255, 0.6);
-  animation: fadeIn 0.5s ease-out;
+  border-radius:12px; 
+  background:#f7fbff; 
+  border:1px solid #dbeeff;
+  animation: fadeIn 0.5s ease;
 }
 
 .feedback-title {
-  font-weight: 700;
-  margin-bottom: 12px;
-  color: var(--blue3);
+  font-weight:700;
+  margin-bottom:15px;
+  color: var(--blue-dark);
   font-size: 1.1rem;
 }
 
 .fb-row{ 
   display:flex; 
-  gap:16px; 
+  gap:15px; 
   justify-content:center; 
-  margin-top:12px 
+  margin-top:10px 
 }
 
 .fb-btn{ 
-  padding: 14px 24px; 
-  border-radius:12px; 
-  border: 2px solid rgba(207, 227, 255, 0.8); 
+  padding:12px 25px; 
+  border-radius:10px; 
+  border:2px solid #cfe3ff; 
   background:#fff; 
   font-weight:700; 
   cursor:pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
   display: flex;
   align-items: center;
   gap: 8px;
-  min-width: 120px;
-  justify-content: center;
+  min-width: 100px;
 }
 
 .fb-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .fb-btn:first-child:hover {
+  background: #e8f5e9;
   border-color: var(--success);
-  background: rgba(16, 185, 129, 0.05);
 }
 
 .fb-btn:last-child:hover {
+  background: #ffebee;
   border-color: var(--danger);
-  background: rgba(239, 68, 68, 0.05);
 }
 
+/* Footer */
 .footer{ 
   text-align:center; 
-  margin-top:24px; 
+  margin-top:20px; 
   color:#8b9aad;
-  padding-top: 16px;
-  border-top: 1px solid rgba(220, 228, 236, 0.5);
+  padding-top: 15px;
+  border-top: 1px solid #eee;
 }
 
-.company-name {
+.company {
   font-weight: 800;
   color: var(--blue);
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
-.status-indicator {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.status-confirmed {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--success);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-}
-
-.status-pending {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--warning);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-}
-
-.loading-spinner {
+/* Status Badge */
+.status-badge {
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(255,255,255,0.3);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.status-paid {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* Loading Spinner */
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
   border-radius: 50%;
   border-top-color: white;
-  animation: spin 1s ease-in-out infinite;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-@media (max-width: 768px) {
-  .card { padding: 20px; }
-  .bus-wrap { width: 180px; height: 120px; }
-  .bus .emoji { font-size: 36px; }
-  .seat { width: 85px; height: 85px; }
-  .fb-row { flex-direction: column; }
-  .fb-btn { width: 100%; }
-}
-
-@media (max-width: 520px){
-  .bus{ font-size:36px } 
+/* Responsive */
+@media (max-width:520px){
+  .bus{ font-size:40px } 
   .sun{ left:10px } 
   .moon{ right:10px; top:18px }
-  .logo-container { flex-direction: column; gap: 8px; }
-  .brand { font-size: 1.5rem; }
+  .card { padding: 20px; }
+  .seat { width: 80px; height: 80px; }
+  .fb-row { flex-direction: column; }
+  .fb-btn { width: 100%; }
 }
 </style>
 </head>
 <body>
 
 <div class="wrap">
-
-  <!-- Animated Header -->
-  <div class="header-container">
-    <div class="logo-container">
-      <div class="logo-emoji">🚌</div>
-      <div class="brand">Lagan Bus Booking</div>
-    </div>
-    <div class="tagline">Your Journey, Our Priority</div>
-    <div class="contact-badge">
-      <i class="fas fa-phone-alt"></i>
-      <span>For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></span>
-    </div>
-  </div>
 
   <!-- SKY -->
   <div class="sky-container" id="sky">
@@ -761,14 +446,6 @@ body::before {
 
   <!-- ROAD + BUS -->
   <div class="road-container" id="roadWrap">
-    <!-- Roadside elements -->
-    <div class="roadside"></div>
-    <div class="tree"></div>
-    <div class="tree"></div>
-    <div class="tree"></div>
-    <div class="tree"></div>
-    <div class="tree"></div>
-    
     <div class="road"></div>
     <div class="lane-glow"></div>
 
@@ -784,88 +461,58 @@ body::before {
     </div>
   </div>
 
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">
+      Welcome To Lagan Bus Booking
+    </div>
+    <div class="welcome">Safe Travels. May God Bless Your Journey.</div>
+    <div class="sub">For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></div>
+  </div>
+
   <!-- Booking Card -->
   <div class="card">
-    <div class="card-header">
-      <div class="card-title">
-        <i class="fas fa-search"></i>
-        Check Your Booking
-      </div>
-    </div>
-    
-    <div class="input-group">
-      <div class="input-icon">
-        <i class="fas fa-phone-alt"></i>
-      </div>
-      <input id="phone" class="input" placeholder="Enter your phone number (0777...)" inputmode="tel" maxlength="10" />
-    </div>
-    
+    <input id="phone" class="input" placeholder="Enter phone number (077⨯⨯⨯)" inputmode="tel" maxlength="10" />
     <button id="searchBtn" class="btn">
-      <i class="fas fa-search"></i>
+      <span>🔍</span>
       Check My Booking
     </button>
 
     <div id="box">
-      <!-- Passenger Info -->
+      <!-- Passenger Name -->
       <div class="booking-detail">
-        <div class="detail-icon">
-          <i class="fas fa-user"></i>
-        </div>
-        <div class="detail-text">
-          <div class="detail-label">Passenger</div>
-          <div id="passengerName" class="detail-value"></div>
-        </div>
+        <div class="detail-label">Passenger</div>
+        <div id="passengerName" class="detail-value">-</div>
       </div>
       
-      <!-- Bus Info -->
+      <!-- Bus Name -->
       <div class="booking-detail">
-        <div class="detail-icon">
-          <i class="fas fa-bus"></i>
-        </div>
-        <div class="detail-text">
-          <div class="detail-label">Bus Name</div>
-          <div id="busName" class="detail-value"></div>
-        </div>
+        <div class="detail-label">Bus</div>
+        <div id="busName" class="detail-value">-</div>
       </div>
       
       <!-- Date & Time -->
       <div class="booking-detail">
-        <div class="detail-icon">
-          <i class="fas fa-calendar-alt"></i>
-        </div>
-        <div class="detail-text">
-          <div class="detail-label">Date & Time</div>
-          <div id="dateTime" class="detail-value"></div>
-        </div>
+        <div class="detail-label">Date & Time</div>
+        <div id="dateTime" class="detail-value">-</div>
       </div>
       
-      <!-- Pickup Location -->
+      <!-- Pickup -->
       <div class="booking-detail">
-        <div class="detail-icon">
-          <i class="fas fa-map-marker-alt"></i>
-        </div>
-        <div class="detail-text">
-          <div class="detail-label">Pickup Location</div>
-          <div id="pickupLocation" class="detail-value"></div>
-        </div>
+        <div class="detail-label">Pickup Location</div>
+        <div id="pickupLocation" class="detail-value">-</div>
       </div>
       
-      <!-- Payment Status -->
+      <!-- Payment -->
       <div class="booking-detail">
-        <div class="detail-icon">
-          <i class="fas fa-credit-card"></i>
-        </div>
-        <div class="detail-text">
-          <div class="detail-label">Payment Status</div>
-          <div id="paymentStatus" class="detail-value"></div>
-        </div>
+        <div class="detail-label">Payment</div>
+        <div id="paymentAmount" class="detail-value">-</div>
       </div>
 
       <!-- Seats -->
-      <div class="seats-container">
-        <div class="seats-title">
-          <i class="fas fa-chair"></i>
-          Your Seat Numbers
+      <div style="text-align:center; margin:20px 0 10px;">
+        <div style="font-weight:700;color:#444;margin-bottom:15px;font-size:1.1rem;">
+          <span>💺</span> Your Seat Numbers
         </div>
         <div class="right" id="seatsBox"></div>
       </div>
@@ -875,23 +522,18 @@ body::before {
         <div class="feedback-title">Did you get your seat number correctly?</div>
         <div class="fb-row">
           <button class="fb-btn" onclick="sendFeedback('Yes')">
-            <i class="fas fa-check-circle"></i>
-            😊 Yes
+            <span>👍</span> Yes
           </button>
           <button class="fb-btn" onclick="sendFeedback('No')">
-            <i class="fas fa-times-circle"></i>
-            😕 No
+            <span>👎</span> No
           </button>
         </div>
       </div>
     </div>
 
     <div class="footer">
-      Made with <i class="fas fa-heart" style="color:#e74c3c;"></i> by 
-      <span class="company-name">WEDOXA</span>
-      <div style="font-size:0.85rem;margin-top:8px;color:#a0aec0;">
-        <i class="fas fa-shield-alt"></i> Your data is secure
-      </div>
+      Made with <span style="color:#e74c3c;">❤</span> by 
+      <span class="company">WEDOXA</span>
     </div>
   </div>
 </div>
@@ -902,12 +544,7 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWg
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
-  createFloatingParticles();
-  setupInputValidation();
-});
-
-// Phone input validation
-function setupInputValidation() {
+  // Phone input validation
   const phoneInput = document.getElementById('phone');
   phoneInput.addEventListener('input', function(e) {
     let value = e.target.value.replace(/\D/g, '');
@@ -916,297 +553,215 @@ function setupInputValidation() {
     }
     e.target.value = value;
   });
-}
 
-// Search booking
-document.getElementById('searchBtn').addEventListener('click', search);
-document.getElementById('phone').addEventListener('keydown', e => { 
-  if(e.key === 'Enter') search(); 
+  // Enter key to search
+  phoneInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      searchBooking();
+    }
+  });
 });
 
-function search() {
+// Search booking
+function searchBooking() {
   const phone = document.getElementById('phone').value.trim();
   const btn = document.getElementById('searchBtn');
-  const originalText = btn.innerHTML;
   
-  if(!phone || phone.length < 9){ 
-    showError("Please enter a valid phone number (10 digits)");
-    return; 
+  if (!phone || phone.length < 9) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Enter Phone Number',
+      text: 'Please enter a valid 10-digit phone number',
+      confirmButtonColor: '#3a7bd5'
+    });
+    return;
   }
-  
-  // Show loading state
-  btn.innerHTML = '<div class="loading-spinner"></div> Checking...';
+
+  // Show loading
+  btn.innerHTML = '<div class="spinner"></div> Searching...';
   btn.disabled = true;
-  
-  Swal.fire({ 
-    title: "Checking Booking...", 
-    didOpen: () => Swal.showLoading(),
-    background: 'rgba(255, 255, 255, 0.9)',
-    backdrop: 'rgba(0, 0, 0, 0.1)'
+
+  Swal.fire({
+    title: 'Finding your booking...',
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
   });
-  
+
+  // Fetch from Google Sheets
   fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}`)
-    .then(r => r.json())
-    .then(j => {
-      btn.innerHTML = originalText;
+    .then(response => response.json())
+    .then(data => {
+      btn.innerHTML = '<span>🔍</span> Check My Booking';
+      btn.disabled = false;
+      Swal.close();
+
+      if (!data.success) {
+        Swal.fire({
+          icon: 'error',
+          title: 'No Booking Found',
+          text: 'We could not find a booking with this phone number',
+          confirmButtonColor: '#3a7bd5'
+        });
+        return;
+      }
+
+      // Display results
+      showBooking(data.booking);
+    })
+    .catch(error => {
+      btn.innerHTML = '<span>🔍</span> Check My Booking';
       btn.disabled = false;
       Swal.close();
       
-      if(!j.success){ 
-        showError("No booking found for this number");
-        return; 
-      }
-      
-      showSuccess();
-      showBooking(j.booking);
-    })
-    .catch(e => {
-      btn.innerHTML = originalText;
-      btn.disabled = false;
-      Swal.close(); 
-      showError("Connection error. Please check your internet and try again.");
-      console.error(e); 
+      Swal.fire({
+        icon: 'error',
+        title: 'Connection Error',
+        text: 'Please check your internet connection and try again',
+        confirmButtonColor: '#3a7bd5'
+      });
+      console.error('Error:', error);
     });
 }
 
-function showSuccess() {
-  const box = document.getElementById('box');
-  box.style.display = 'block';
+// Display booking
+function showBooking(b) {
+  console.log('Booking data:', b);
   
-  box.style.animation = 'none';
-  setTimeout(() => {
-    box.style.animation = 'slideDown 0.5s ease-out';
-  }, 10);
-  
-  createConfetti();
-}
+  // Extract data (handles your exact column names)
+  const name = b.Name || '-';
+  const bus = b.Bus || '-';
+  const time = b.Time || '-';
+  const date = b.Date || '-';
+  const seat = b.Seat || '';
+  const pickup = b.Pickup || '-';
+  const payment = b.Payment || '-';
 
-function showError(message) {
-  Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: message,
-    confirmButtonColor: '#3a7bd5',
-    background: 'rgba(255, 255, 255, 0.95)'
-  });
-}
-
-function showBooking(b){
-  console.log('Booking data:', b); // For debugging
-  
-  // Handle different field names (pacnger/passenger/Name)
-  const passengerName = b.pacnger || b.passenger || b.Name || b['Passenger Name'] || 'Passenger';
-  const busName = b.bus || b.Bus || b['Bus Name'] || 'Bus';
-  const date = b.date || b.Date || b['Journey Date'] || '';
-  const time = b.time || b.Time || b['Departure Time'] || '';
-  const pickup = b.pickup || b.Pickup || b['Pickup Location'] || '';
-  const seat = b.seat || b.Seat || b['Seat Number'] || '';
-  const payment = b.payment || b.Payment || b['Payment Status'] || '';
-  
-  // Update UI
-  document.getElementById('passengerName').innerText = passengerName;
-  document.getElementById('busName').innerText = busName;
+  // Update display with proper formatting
+  document.getElementById('passengerName').textContent = name;
+  document.getElementById('busName').textContent = bus;
   
   // Format date
-  let formattedDate = date;
-  if(date && typeof date === 'string') {
-    if(date.includes('T')) {
-      formattedDate = new Date(date).toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-    } else {
-      // Try to format any date string
-      try {
-        const dateObj = new Date(date);
-        if(!isNaN(dateObj)) {
-          formattedDate = dateObj.toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          });
-        }
-      } catch (e) {
-        // Keep original date if formatting fails
-      }
+  let displayDate = date;
+  if (date && date.includes('/')) {
+    // Format as DD/MM/YYYY to DD Mon YYYY
+    const parts = date.split('/');
+    if (parts.length === 3) {
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const monthName = months[parseInt(parts[1]) - 1] || parts[1];
+      displayDate = `${parts[0]} ${monthName} ${parts[2]}`;
     }
   }
   
-  document.getElementById('dateTime').innerText = `${formattedDate} • ${time || "-"}`;
-  document.getElementById('pickupLocation').innerText = pickup || "-";
+  document.getElementById('dateTime').textContent = `${displayDate} • ${time}`;
+  document.getElementById('pickupLocation').textContent = pickup;
   
-  // Payment status with indicator
-  const payElement = document.getElementById('paymentStatus');
-  payElement.innerText = payment || "-";
+  // Payment with badge
+  const paymentElement = document.getElementById('paymentAmount');
+  paymentElement.textContent = payment;
   
-  const paymentLower = payment.toLowerCase();
-  if (paymentLower.includes('paid') || paymentLower.includes('confirmed') || paymentLower.includes('complete')) {
-    payElement.innerHTML += ' <span class="status-indicator status-confirmed">Confirmed</span>';
-  } else if (paymentLower.includes('pending') || paymentLower.includes('waiting')) {
-    payElement.innerHTML += ' <span class="status-indicator status-pending">Pending</span>';
+  if (payment && (payment.includes('/-') || payment.includes('Paid'))) {
+    paymentElement.innerHTML = payment + ' <span class="status-badge status-paid">Paid</span>';
   }
 
   // Display seats
-  const seatsBox = document.getElementById('seatsBox'); 
-  seatsBox.innerHTML = "";
+  const seatsBox = document.getElementById('seatsBox');
+  seatsBox.innerHTML = '';
   
-  if(!seat || seat.trim() === '') {
-    addSeat("Not Assigned");
-  } else {
-    // Split by comma, space, or slash
-    const seats = String(seat).split(/[, \/]+/).filter(s => s.trim() !== '');
-    if(seats.length === 0) {
-      addSeat("Not Assigned");
+  if (seat && seat.trim() !== '' && seat !== 'Not Updated') {
+    // Split seats by comma or space
+    const seats = seat.split(/[, ]+/).filter(s => s.trim() !== '');
+    
+    if (seats.length > 0) {
+      seats.forEach(seatNum => {
+        const seatElement = document.createElement('div');
+        seatElement.className = 'seat';
+        seatElement.innerHTML = `
+          <span>💺</span>
+          <div class="seat-number">${seatNum.trim()}</div>
+        `;
+        seatsBox.appendChild(seatElement);
+      });
     } else {
-      seats.forEach(s => addSeat(s.trim()));
+      seatsBox.innerHTML = '<div style="color:#666;font-style:italic;">No seat assigned</div>';
     }
+  } else {
+    seatsBox.innerHTML = '<div style="color:#666;font-style:italic;">No seat assigned</div>';
   }
-  
-  // Show feedback box
+
+  // Show results
+  document.getElementById('box').style.display = 'block';
   document.getElementById('feedbackBox').style.display = 'block';
   
-  // Auto-scroll to results
+  // Smooth scroll to results
   setTimeout(() => {
-    document.getElementById('box').scrollIntoView({ 
-      behavior: 'smooth', 
-      block: 'nearest' 
+    document.getElementById('box').scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
     });
   }, 300);
 }
 
-function addSeat(seatNumber) { 
-  const el = document.createElement('div'); 
-  el.className = 'seat'; 
-  el.innerHTML = `
-    <span>💺</span>
-    <div style="font-size: 0.9rem; margin-top: 4px; color: #1a5cb0;">Seat</div>
-    <div style="font-size: 1.4rem; font-weight: 800;">${seatNumber}</div>
-  `; 
-  document.getElementById('seatsBox').appendChild(el); 
-}
-
-function sendFeedback(ans){
+// Send feedback
+function sendFeedback(answer) {
   const phone = document.getElementById('phone').value.trim();
   const feedbackBox = document.getElementById('feedbackBox');
   
+  // Show sending state
   const originalHTML = feedbackBox.innerHTML;
-  feedbackBox.innerHTML = `<div style="padding: 20px; text-align: center;">
-    <div class="loading-spinner" style="margin: 0 auto 10px;"></div>
-    <div>Sending feedback...</div>
-  </div>`;
-  
-  fetch(`${SCRIPT_URL}?action=feedback&phone=${encodeURIComponent(phone)}&answer=${encodeURIComponent(ans)}`)
-    .then(r => r.json())
-    .then(j => { 
-      if(j.success){ 
-        Swal.fire({
-          icon: 'success',
-          title: 'Thank you!',
-          text: 'Your feedback has been recorded.',
-          confirmButtonColor: '#3a7bd5',
-          timer: 2000,
-          showConfirmButton: false
-        }); 
-        
+  feedbackBox.innerHTML = `
+    <div style="text-align:center; padding:10px;">
+      <div class="spinner" style="margin:0 auto 10px;"></div>
+      <p>Sending feedback...</p>
+    </div>
+  `;
+
+  // Send to Google Sheets
+  fetch(`${SCRIPT_URL}?action=feedback&phone=${encodeURIComponent(phone)}&answer=${encodeURIComponent(answer)}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Hide feedback with animation
         feedbackBox.style.opacity = '0';
-        feedbackBox.style.transition = 'opacity 0.5s ease';
+        feedbackBox.style.transition = 'opacity 0.3s ease';
         setTimeout(() => {
           feedbackBox.style.display = 'none';
-          feedbackBox.style.opacity = '1';
-        }, 500);
+          feedbackBox.innerHTML = originalHTML;
+        }, 300);
+        
+        // Thank you message
+        Swal.fire({
+          icon: 'success',
+          title: 'Thank You!',
+          text: 'Your feedback has been recorded.',
+          confirmButtonColor: '#3a7bd5',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      } else {
+        feedbackBox.innerHTML = originalHTML;
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: 'Could not send feedback. Please try again.',
+          confirmButtonColor: '#3a7bd5'
+        });
       }
     })
-    .catch(() => {
+    .catch(error => {
       feedbackBox.innerHTML = originalHTML;
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Failed to send feedback. Please try again.',
+        text: 'Please check your connection and try again.',
         confirmButtonColor: '#3a7bd5'
       });
     });
 }
 
-/* Background particles */
-function createFloatingParticles() {
-  const particlesContainer = document.createElement('div');
-  particlesContainer.style.position = 'fixed';
-  particlesContainer.style.top = '0';
-  particlesContainer.style.left = '0';
-  particlesContainer.style.width = '100%';
-  particlesContainer.style.height = '100%';
-  particlesContainer.style.pointerEvents = 'none';
-  particlesContainer.style.zIndex = '-1';
-  document.body.appendChild(particlesContainer);
-  
-  for (let i = 0; i < 15; i++) {
-    const particle = document.createElement('div');
-    particle.style.position = 'absolute';
-    particle.style.width = Math.random() * 5 + 2 + 'px';
-    particle.style.height = particle.style.width;
-    particle.style.background = 'rgba(58, 123, 213, 0.1)';
-    particle.style.borderRadius = '50%';
-    particle.style.left = Math.random() * 100 + '%';
-    particle.style.top = Math.random() * 100 + '%';
-    
-    particlesContainer.appendChild(particle);
-    
-    particle.animate([
-      { transform: 'translateY(0px)' },
-      { transform: `translateY(${Math.random() * 100 - 50}px)` },
-      { transform: 'translateY(0px)' }
-    ], {
-      duration: Math.random() * 10000 + 5000,
-      iterations: Infinity,
-      easing: 'ease-in-out'
-    });
-  }
-}
+// Add event listener
+document.getElementById('searchBtn').addEventListener('click', searchBooking);
 
-/* Confetti effect */
-function createConfetti() {
-  const colors = ['#3a7bd5', '#67b8f7', '#10b981', '#f59e0b', '#ef4444'];
-  const confettiContainer = document.createElement('div');
-  confettiContainer.style.position = 'fixed';
-  confettiContainer.style.top = '0';
-  confettiContainer.style.left = '0';
-  confettiContainer.style.width = '100%';
-  confettiContainer.style.height = '100%';
-  confettiContainer.style.pointerEvents = 'none';
-  confettiContainer.style.zIndex = '1000';
-  document.body.appendChild(confettiContainer);
-  
-  for (let i = 0; i < 40; i++) {
-    const confetti = document.createElement('div');
-    confetti.style.position = 'absolute';
-    confetti.style.width = '10px';
-    confetti.style.height = '10px';
-    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-    confetti.style.left = Math.random() * 100 + '%';
-    confetti.style.top = '-20px';
-    
-    confettiContainer.appendChild(confetti);
-    
-    confetti.animate([
-      { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
-      { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
-    ], {
-      duration: Math.random() * 2000 + 1000,
-      easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
-    }).onfinish = () => {
-      confetti.remove();
-      if (confettiContainer.children.length === 0) {
-        confettiContainer.remove();
-      }
-    };
-  }
-}
-
-/* Soft lightning */
+/* Soft lightning overlay */
 (function softLightning(){
   const el = document.createElement('div');
   el.style.position='fixed';
