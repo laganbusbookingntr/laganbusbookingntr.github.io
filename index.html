@@ -4,7 +4,6 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Lagan Bus Booking – Animated</title>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -21,26 +20,26 @@
 
 *{box-sizing:border-box;margin:0;padding:0}
 
-/* ============================
+/* ======================================================
    SKY + DAY/NIGHT CYCLE
-============================ */
+====================================================== */
 .sky-container{
   width:100%;
-  max-width:750px;
-  height:140px;
+  max-width:820px;
+  height:150px;
   position:relative;
-  margin:0 auto 10px auto;
+  margin:0 auto 14px auto;
   overflow:hidden;
-  border-radius:14px;
+  border-radius:16px;
   animation: skyCycle 20s linear infinite;
 }
 
 @keyframes skyCycle{
-  0%   { background:linear-gradient(#bfe4ff, #eaf6ff); }
-  20%  { background:linear-gradient(#ffcf8c,#ffd2a4); }
-  40%  { background:linear-gradient(#2d2f5d,#1d1f3f); }
-  60%  { background:linear-gradient(#0a0a20,#000000); }
-  80%  { background:linear-gradient(#9d7cff,#f9c0ff); }
+  0%   { background:linear-gradient(#bfe4ff,#eaf6ff); }
+  20%  { background:linear-gradient(#ffcf9b,#ffa96e); }
+  40%  { background:linear-gradient(#2e3160,#1b1d38); }
+  60%  { background:linear-gradient(#000010,#000); }
+  80%  { background:linear-gradient(#8f6cff,#ffcaf9); }
   100% { background:linear-gradient(#bfe4ff,#eaf6ff); }
 }
 
@@ -48,8 +47,7 @@
 .sun{
   width:70px;height:70px;border-radius:50%;
   background:#FFD93D;
-  position:absolute;
-  left:30px;bottom:-20px;
+  position:absolute;left:30px;bottom:-20px;
   box-shadow:0 0 22px rgba(255,217,61,0.7);
   animation: sunCycle 20s linear infinite;
 }
@@ -67,7 +65,7 @@
 .moon{
   width:55px;height:55px;border-radius:50%;
   background:white;
-  position:absolute;right:40px;top:25px;
+  position:absolute;right:40px;top:28px;
   box-shadow:0 0 12px rgba(255,255,255,0.7);
   opacity:0;
   animation: moonCycle 20s linear infinite;
@@ -82,23 +80,20 @@
 /* CLOUDS */
 .cloud{
   position:absolute;
-  width:55px;height:25px;
-  background:white;
+  width:55px;height:25px;background:white;
   border-radius:40px;
   box-shadow:20px 8px 0 #fff,40px 12px 0 #fff;
   opacity:0.9;
   animation: cloudMove 25s linear infinite, cloudTint 20s linear infinite;
 }
-
 .cloud.c1{ top:20px; }
-.cloud.c2{ top:35px; transform:scale(1.3); animation-duration:32s; }
-.cloud.c3{ top:60px; transform:scale(0.9); animation-duration:38s; }
+.cloud.c2{ top:38px; transform:scale(1.3); animation-duration:32s; }
+.cloud.c3{ top:65px; transform:scale(0.9); animation-duration:38s; }
 
 @keyframes cloudMove{
-  0%{ left:-120px }
+  0%{ left:-130px }
   100%{ left:120% }
 }
-
 @keyframes cloudTint{
   0%{ filter:brightness(1) }
   40%{ filter:brightness(0.8) }
@@ -109,121 +104,133 @@
 
 /* STARS */
 .stars{
-  position:absolute;
-  width:100%;height:100%;
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;
   background:
     radial-gradient(2px 2px at 20% 30%, white 90%, transparent),
-    radial-gradient(2px 2px at 50% 70%, white 90%, transparent),
+    radial-gradient(2px 2px at 60% 50%, white 90%, transparent),
     radial-gradient(2px 2px at 80% 40%, white 90%, transparent),
-    radial-gradient(2px 2px at 30% 80%, white 90%, transparent);
+    radial-gradient(2px 2px at 30% 80%, white 90%, transparent),
+    radial-gradient(2px 2px at 70% 20%, white 90%, transparent);
   opacity:0;
-  animation: starCycle 20s linear infinite, twinkle 3s ease-in-out infinite;
+  animation: starCycle 20s linear infinite;
 }
 
 @keyframes starCycle{
   0%,30% { opacity:0 }
-  45%,70% { opacity:1 }
+  40%,70% { opacity:1 }
   90%,100% { opacity:0 }
 }
-@keyframes twinkle{
-  0%,100%{ opacity:1; transform:scale(1) }
-  50%{ opacity:0.5; transform:scale(1.3) }
+
+/* SHOOTING STAR */
+.shooting-star{
+  position:absolute;
+  width:3px;height:3px;
+  background:white;
+  border-radius:50%;
+  top:20px;left:-100px;
+  box-shadow:0 0 12px white;
+  opacity:0;
+  animation: shoot 5s ease-in-out infinite;
 }
 
-/* ============================
-   ROAD + BUS + SHADOW
-============================ */
+@keyframes shoot{
+  0% { transform:translate(0,0); opacity:0; }
+  10% { opacity:1; }
+  40% { transform:translate(300px,80px); opacity:1; }
+  60% { opacity:0.4; }
+  100% { opacity:0; transform:translate(500px,140px); }
+}
+
+/* ======================================================
+   ROAD + BUS + SHADOW (SLOW + FULL WIDTH)
+====================================================== */
 .road-container{
-  width:100%;max-width:750px;height:70px;
-  margin:0 auto 18px auto;position:relative;overflow:hidden;
+  width:100%;max-width:820px;height:75px;
+  margin:0 auto 20px auto;position:relative;overflow:hidden;
 }
 .road{
-  width:200%;height:10px;background:repeating-linear-gradient(
+  width:260%;height:10px;
+  background:repeating-linear-gradient(
     to right,#444 0px,#444 40px,#fff 40px,#fff 80px
   );
   position:absolute;bottom:0;
-  animation: roadMove 3s linear infinite;
+  animation: roadMove 5s linear infinite;
 }
 @keyframes roadMove{
   from{ transform:translateX(0) }
-  to{ transform:translateX(-40%) }
+  to{ transform:translateX(-20%) }
 }
 
 /* BUS */
 .bus-anim{
-  font-size:44px;
+  font-size:48px;
   position:absolute;
-  bottom:18px;
-  left:-120px;
-  animation: busDrive 7s ease-in-out infinite;
+  bottom:20px;
+  left:-150px;
+  animation: busDrive 12s linear infinite;
 }
 
 @keyframes busDrive{
-  0%{ transform:translateX(0) }
-  40%{ transform:translateX(150%) translateY(-2px) }
-  70%{ transform:translateX(280%) translateY(2px) }
-  100%{ transform:translateX(420%) }
+  0%   { transform:translateX(-150px) }
+  40%  { transform:translateX(40vw) }
+  70%  { transform:translateX(75vw) }
+  100% { transform:translateX(115vw) }
 }
 
-/* BUS SHADOW */
+/* SHADOW */
 .bus-shadow{
-  width:70px;height:12px;
-  background:rgba(0,0,0,0.25);
-  border-radius:50%;filter:blur(4px);
-  position:absolute;bottom:12px;left:-100px;
-  animation: busShadowMove 7s ease-in-out infinite;
+  width:80px;height:14px;background:rgba(0,0,0,0.25);
+  border-radius:50%;filter:blur(5px);
+  position:absolute;bottom:12px;left:-150px;
+  animation: shadowDrive 12s linear infinite;
 }
 
-@keyframes busShadowMove{
-  0%{ transform:translateX(0) scale(1) }
-  50%{ transform:translateX(160%) scale(1.2) }
-  100%{ transform:translateX(320%) scale(1) }
+@keyframes shadowDrive{
+  0%{ transform:translateX(-150px) scale(1) }
+  50%{ transform:translateX(50vw) scale(1.2) }
+  100%{ transform:translateX(115vw) scale(1) }
 }
 
-/* ============================
-   MAIN PAGE CONTENT
-============================ */
-
-body{
-  background:var(--bg);
-  display:flex;
-  justify-content:center;
-}
-
+/* ======================================================
+   MAIN UI
+====================================================== */
+body{background:var(--bg);display:flex;justify-content:center}
 .wrap{ width:100%; max-width:720px; }
 
 .header{text-align:center;margin-bottom:12px}
 .brand{font-size:1.6rem;font-weight:800;color:var(--blue)}
-.welcome{margin-top:6px;font-weight:600;font-size:1.1rem}
+.welcome{font-size:1.1rem;font-weight:600;margin-top:6px}
 .sub{color:var(--muted);margin-top:4px}
 
 .card{
-  background:var(--card);
-  padding:22px;border-radius:14px;
-  border:1px solid var(--border);
-  box-shadow:0 8px 20px rgba(0,0,0,0.06)
+  background:var(--card);padding:22px;
+  border-radius:14px;border:1px solid var(--border);
+  box-shadow:0 8px 20px rgba(0,0,0,0.06);
 }
 
 .input{width:100%;padding:14px;border-radius:10px;border:1px solid var(--border)}
 .btn{
-  width:100%;padding:14px;margin-top:10px;border:none;
-  border-radius:10px;background:linear-gradient(var(--blue2),var(--blue));
-  font-weight:700;color:#fff;cursor:pointer
+  width:100%;padding:14px;margin-top:10px;
+  border:none;border-radius:10px;
+  background:linear-gradient(var(--blue2),var(--blue));
+  color:white;font-weight:700;cursor:pointer;
 }
 
-#box{margin-top:16px;padding:18px;border-radius:12px;border:1px solid var(--border);display:none;background:white}
+#box{margin-top:16px;padding:18px;border:1px solid var(--border);
+  border-radius:12px;background:white;display:none}
 
-/* Seat Animations */
+/* SEAT ICON */
 .right{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 .seat{
   width:92px;height:92px;border-radius:50%;
   background:linear-gradient(#e7f3ff,#b6d8ff);
   border:1px solid #c7dff4;
-  display:flex;align-items:center;justify-content:center;flex-direction:column;
-  font-size:1.3rem;font-weight:900;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  font-weight:900;font-size:1.3rem;
   animation: seatPop 0.7s ease-out;
 }
-.seat span{font-size:28px;margin-bottom:4px}
+.seat span{font-size:28px}
 
 @keyframes seatPop{
   0%{ transform:scale(0.2);opacity:0 }
@@ -234,26 +241,21 @@ body{
 
 /* FEEDBACK */
 #feedbackBox{
-  margin-top:18px;padding:16px;border-radius:12px;
-  background:#f7fbff;border:1px solid #dbeeff;
-  display:none;text-align:center
+  margin-top:16px;padding:16px;border-radius:12px;
+  background:#f7fbff;border:1px solid #dbeeff;text-align:center;display:none;
 }
 
 .fb-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .fb-btn{
   padding:12px 18px;border-radius:12px;background:white;
   border:1px solid #cfe3ff;font-weight:700;cursor:pointer;
-  transition:0.15s
+  transition:0.15s;
 }
-.fb-btn:hover{
-  transform:translateY(-4px);
-  box-shadow:0 8px 20px rgba(0,0,0,0.12)
-}
+.fb-btn:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.12)}
 .fb-yes{color:#0b7a3d;border-color:#bfe8cf}
 .fb-no{color:#b82828;border-color:#f2b7b7}
 
 .footer{text-align:center;margin-top:16px;color:#8b9aad}
-
 </style>
 </head>
 
@@ -261,7 +263,7 @@ body{
 
 <div class="wrap">
 
-  <!-- SKY + CLOUDS + SUN + MOON + STARS -->
+  <!-- SKY WITH CLOUDS, SUN, MOON, STARS, SHOOTING STAR -->
   <div class="sky-container">
     <div class="sun"></div>
     <div class="moon"></div>
@@ -269,6 +271,7 @@ body{
     <div class="cloud c2"></div>
     <div class="cloud c3"></div>
     <div class="stars"></div>
+    <div class="shooting-star"></div>
   </div>
 
   <!-- ROAD + BUS -->
@@ -278,28 +281,26 @@ body{
     <div class="bus-anim">🚌</div>
   </div>
 
-  <!-- HEADER TEXT -->
+  <!-- HEADER -->
   <div class="header">
-    <div class="brand">Lagan Bus Booking</div>
-    <div class="welcome">Welcome to Lagan Bus Booking</div>
+    <div class="brand">Welcome to Lagan Bus Booking</div>
     <div class="sub">For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></div>
   </div>
 
-  <!-- SEARCH BOX -->
+  <!-- MAIN CARD -->
   <div class="card">
-    <input id="phone" class="input" placeholder="Enter phone number (0777...)" inputmode="tel"/>
+    <input id="phone" class="input" placeholder="Enter phone number (0777...)">
     <button class="btn" id="searchBtn">Check My Booking</button>
 
     <div id="box">
       <div id="bname" style="font-size:1.4rem;font-weight:800;color:#204264"></div>
-      <div id="dtime" style="margin-top:6px;color:#667"></div>
+      <div id="dtime" style="margin-top:6px"></div>
       <div id="pickup" style="margin-top:8px"></div>
       <div id="pay" style="margin-top:8px"></div>
-
       <div class="right" id="seatsBox"></div>
 
       <div id="feedbackBox">
-        <div class="feedback-title">Did you get your seat number correctly?</div>
+        <div style="font-weight:700;margin-bottom:10px;">Did you get your seat number correctly?</div>
         <div class="fb-row">
           <button class="fb-btn fb-yes" onclick="sendFeedback('Yes')">😊 Yes</button>
           <button class="fb-btn fb-no" onclick="sendFeedback('No')">😕 No</button>
@@ -311,31 +312,29 @@ body{
   </div>
 </div>
 
-
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
 
-const phoneInput = document.getElementById('phone');
-document.getElementById('searchBtn').addEventListener('click', search);
+document.getElementById('searchBtn').onclick = search;
 
 function search(){
-  const phone = phoneInput.value.trim();
+  const phone = document.getElementById('phone').value.trim();
   if(!phone){ Swal.fire("Enter phone number"); return; }
 
-  Swal.fire({title:'Checking...', didOpen:()=>Swal.showLoading()});
+  Swal.fire({title:"Checking...", didOpen:()=>Swal.showLoading()});
 
-  fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}`)
+  fetch(`${SCRIPT_URL}?phone=${phone}`)
     .then(r=>r.json())
-    .then(d=>{
+    .then(j=>{
       Swal.close();
-      if(!d.success){ Swal.fire("No booking found"); return; }
-      showBooking(d.booking);
+      if(!j.success){ Swal.fire("No booking found"); return; }
+      show(j.booking);
     });
 }
 
-function showBooking(b){
-  document.getElementById('box').style.display='block';
-  document.getElementById('feedbackBox').style.display='block';
+function show(b){
+  document.getElementById('box').style.display="block";
+  document.getElementById('feedbackBox').style.display="block";
 
   let date = b.Date || "";
   if(date.includes("T")) date = date.split("T")[0];
@@ -345,38 +344,33 @@ function showBooking(b){
   document.getElementById('pickup').innerText = "Pickup — " + (b.Pickup || "-");
   document.getElementById('pay').innerText = "Payment — " + (b.Payment || "-");
 
-  const seatsBox = document.getElementById('seatsBox');
-  seatsBox.innerHTML = "";
+  const box = document.getElementById('seatsBox');
+  box.innerHTML="";
 
   const seats = String(b.Seat || "").split(/[, ]+/).filter(Boolean);
-
-  if(seats.length === 0){
-    addSeat("-");
-  } else {
-    seats.forEach((s,i)=> addSeat(s, i===0));
-  }
+  if(seats.length===0){ addSeat("-"); }
+  else seats.forEach((s)=> addSeat(s));
 }
 
-function addSeat(num, glow){
+function addSeat(n){
   const el = document.createElement("div");
-  el.className = "seat" + (glow ? " glow" : "");
-  el.innerHTML = `<span>💺</span>${num}`;
+  el.className = "seat";
+  el.innerHTML = `<span>💺</span>${n}`;
   document.getElementById('seatsBox').appendChild(el);
 }
 
-function sendFeedback(answer){
-  const phone = phoneInput.value.trim();
+function sendFeedback(ans){
+  const phone = document.getElementById('phone').value.trim();
 
-  fetch(`${SCRIPT_URL}?action=feedback&phone=${encodeURIComponent(phone)}&answer=${encodeURIComponent(answer)}`)
+  fetch(`${SCRIPT_URL}?action=feedback&phone=${phone}&answer=${ans}`)
     .then(r=>r.json())
-    .then(res=>{
-      if(res.success){
+    .then(j=>{
+      if(j.success){
         Swal.fire("Thank you!");
         document.getElementById('feedbackBox').style.display="none";
       }
     });
 }
 </script>
-
 </body>
 </html>
