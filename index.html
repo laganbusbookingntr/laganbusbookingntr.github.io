@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Lagan Seat Lookup</title>
+<title>Lagan Bus Booking – Animated</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -19,152 +19,241 @@
   --border:#dce4ec;
 }
 
-*{box-sizing:border-box;}
+*{box-sizing:border-box;margin:0;padding:0}
+
+/* ============================
+   SKY + DAY/NIGHT CYCLE
+============================ */
+.sky-container{
+  width:100%;
+  max-width:750px;
+  height:140px;
+  position:relative;
+  margin:0 auto 10px auto;
+  overflow:hidden;
+  border-radius:14px;
+  animation: skyCycle 20s linear infinite;
+}
+
+@keyframes skyCycle{
+  0%   { background:linear-gradient(#bfe4ff, #eaf6ff); }
+  20%  { background:linear-gradient(#ffcf8c,#ffd2a4); }
+  40%  { background:linear-gradient(#2d2f5d,#1d1f3f); }
+  60%  { background:linear-gradient(#0a0a20,#000000); }
+  80%  { background:linear-gradient(#9d7cff,#f9c0ff); }
+  100% { background:linear-gradient(#bfe4ff,#eaf6ff); }
+}
+
+/* SUN */
+.sun{
+  width:70px;height:70px;border-radius:50%;
+  background:#FFD93D;
+  position:absolute;
+  left:30px;bottom:-20px;
+  box-shadow:0 0 22px rgba(255,217,61,0.7);
+  animation: sunCycle 20s linear infinite;
+}
+
+@keyframes sunCycle{
+  0%   { transform:translateY(40px); opacity:1 }
+  25%  { transform:translateY(-10px); opacity:1 }
+  40%  { opacity:0 }
+  70%  { opacity:0 }
+  90%  { opacity:1; transform:translateY(-10px) }
+  100% { opacity:1; transform:translateY(40px) }
+}
+
+/* MOON */
+.moon{
+  width:55px;height:55px;border-radius:50%;
+  background:white;
+  position:absolute;right:40px;top:25px;
+  box-shadow:0 0 12px rgba(255,255,255,0.7);
+  opacity:0;
+  animation: moonCycle 20s linear infinite;
+}
+
+@keyframes moonCycle{
+  0%,30% { opacity:0 }
+  45%,70% { opacity:1 }
+  85%,100% { opacity:0 }
+}
+
+/* CLOUDS */
+.cloud{
+  position:absolute;
+  width:55px;height:25px;
+  background:white;
+  border-radius:40px;
+  box-shadow:20px 8px 0 #fff,40px 12px 0 #fff;
+  opacity:0.9;
+  animation: cloudMove 25s linear infinite, cloudTint 20s linear infinite;
+}
+
+.cloud.c1{ top:20px; }
+.cloud.c2{ top:35px; transform:scale(1.3); animation-duration:32s; }
+.cloud.c3{ top:60px; transform:scale(0.9); animation-duration:38s; }
+
+@keyframes cloudMove{
+  0%{ left:-120px }
+  100%{ left:120% }
+}
+
+@keyframes cloudTint{
+  0%{ filter:brightness(1) }
+  40%{ filter:brightness(0.8) }
+  60%{ filter:brightness(0.6) }
+  80%{ filter:brightness(0.9) }
+  100%{ filter:brightness(1) }
+}
+
+/* STARS */
+.stars{
+  position:absolute;
+  width:100%;height:100%;
+  background:
+    radial-gradient(2px 2px at 20% 30%, white 90%, transparent),
+    radial-gradient(2px 2px at 50% 70%, white 90%, transparent),
+    radial-gradient(2px 2px at 80% 40%, white 90%, transparent),
+    radial-gradient(2px 2px at 30% 80%, white 90%, transparent);
+  opacity:0;
+  animation: starCycle 20s linear infinite, twinkle 3s ease-in-out infinite;
+}
+
+@keyframes starCycle{
+  0%,30% { opacity:0 }
+  45%,70% { opacity:1 }
+  90%,100% { opacity:0 }
+}
+@keyframes twinkle{
+  0%,100%{ opacity:1; transform:scale(1) }
+  50%{ opacity:0.5; transform:scale(1.3) }
+}
+
+/* ============================
+   ROAD + BUS + SHADOW
+============================ */
+.road-container{
+  width:100%;max-width:750px;height:70px;
+  margin:0 auto 18px auto;position:relative;overflow:hidden;
+}
+.road{
+  width:200%;height:10px;background:repeating-linear-gradient(
+    to right,#444 0px,#444 40px,#fff 40px,#fff 80px
+  );
+  position:absolute;bottom:0;
+  animation: roadMove 3s linear infinite;
+}
+@keyframes roadMove{
+  from{ transform:translateX(0) }
+  to{ transform:translateX(-40%) }
+}
+
+/* BUS */
+.bus-anim{
+  font-size:44px;
+  position:absolute;
+  bottom:18px;
+  left:-120px;
+  animation: busDrive 7s ease-in-out infinite;
+}
+
+@keyframes busDrive{
+  0%{ transform:translateX(0) }
+  40%{ transform:translateX(150%) translateY(-2px) }
+  70%{ transform:translateX(280%) translateY(2px) }
+  100%{ transform:translateX(420%) }
+}
+
+/* BUS SHADOW */
+.bus-shadow{
+  width:70px;height:12px;
+  background:rgba(0,0,0,0.25);
+  border-radius:50%;filter:blur(4px);
+  position:absolute;bottom:12px;left:-100px;
+  animation: busShadowMove 7s ease-in-out infinite;
+}
+
+@keyframes busShadowMove{
+  0%{ transform:translateX(0) scale(1) }
+  50%{ transform:translateX(160%) scale(1.2) }
+  100%{ transform:translateX(320%) scale(1) }
+}
+
+/* ============================
+   MAIN PAGE CONTENT
+============================ */
 
 body{
-  margin:0;
-  padding:28px;
   background:var(--bg);
-  font-family:"Poppins", sans-serif;
   display:flex;
   justify-content:center;
-  align-items:center;
-  min-height:100vh;
-  color:var(--text);
 }
 
-.wrap{
-  width:100%;
-  max-width:640px;
-}
+.wrap{ width:100%; max-width:720px; }
 
-.header{
-  text-align:center;
-  margin-bottom:10px;
-}
-.brand{
-  font-size:1.6rem;
-  font-weight:800;
-  color:var(--blue);
-}
-.sub{
-  color:var(--muted);
-  margin-top:4px;
-}
+.header{text-align:center;margin-bottom:12px}
+.brand{font-size:1.6rem;font-weight:800;color:var(--blue)}
+.welcome{margin-top:6px;font-weight:600;font-size:1.1rem}
+.sub{color:var(--muted);margin-top:4px}
 
 .card{
   background:var(--card);
-  padding:22px;
-  border-radius:14px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.06);
+  padding:22px;border-radius:14px;
   border:1px solid var(--border);
+  box-shadow:0 8px 20px rgba(0,0,0,0.06)
 }
 
-.input{
-  width:100%;
-  padding:14px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  font-size:1rem;
-}
-
+.input{width:100%;padding:14px;border-radius:10px;border:1px solid var(--border)}
 .btn{
-  width:100%;
-  padding:14px;
-  margin-top:12px;
-  border-radius:10px;
-  border:none;
-  background:linear-gradient(180deg,var(--blue2),var(--blue));
-  color:white;
-  font-weight:700;
-  font-size:1rem;
-  cursor:pointer;
-  box-shadow:0 6px 14px rgba(58,123,213,0.25);
+  width:100%;padding:14px;margin-top:10px;border:none;
+  border-radius:10px;background:linear-gradient(var(--blue2),var(--blue));
+  font-weight:700;color:#fff;cursor:pointer
 }
 
-#box{
-  margin-top:20px;
-  background:white;
-  padding:20px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  box-shadow:0 4px 14px rgba(0,0,0,0.07);
-}
+#box{margin-top:16px;padding:18px;border-radius:12px;border:1px solid var(--border);display:none;background:white}
 
-.row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:18px;
-}
-.left{flex:1}
-
-#bname{
-  font-size:1.4rem;
-  font-weight:800;
-  color:#204264;
-}
-#dtime{
-  color:var(--muted);
-  margin-top:6px;
-  font-weight:600;
-}
-#pickup,#pay{
-  margin-top:10px;
-  font-size:0.95rem;
-  color:#3a4653;
-}
-
-/* ROUND SEAT BADGES WITH ICON (STYLE A) */
-.right{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-  align-items:center;
-  justify-content:center;
-}
-
+/* Seat Animations */
+.right{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 .seat{
-  width:86px;
-  height:86px;
-  border-radius:50%;
-  background:linear-gradient(180deg,#e7f3ff,#b6d8ff);
+  width:92px;height:92px;border-radius:50%;
+  background:linear-gradient(#e7f3ff,#b6d8ff);
   border:1px solid #c7dff4;
-  box-shadow:0 8px 18px rgba(0,0,0,0.10);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  font-weight:800;
-  font-size:1.3rem;
-  color:#1b2733;
-  text-align:center;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  font-size:1.3rem;font-weight:900;
+  animation: seatPop 0.7s ease-out;
+}
+.seat span{font-size:28px;margin-bottom:4px}
+
+@keyframes seatPop{
+  0%{ transform:scale(0.2);opacity:0 }
+  60%{ transform:scale(1.12);opacity:1 }
+  85%{ transform:scale(0.95) }
+  100%{ transform:scale(1) }
 }
 
-.seat span{
-  font-size:26px;
-  margin-bottom:2px;
-  display:block;
+/* FEEDBACK */
+#feedbackBox{
+  margin-top:18px;padding:16px;border-radius:12px;
+  background:#f7fbff;border:1px solid #dbeeff;
+  display:none;text-align:center
 }
 
-/* MOBILE */
-@media(max-width:520px){
-  .row{
-    flex-direction:column;
-    text-align:center;
-  }
-  .right{
-    flex-direction:row;
-    flex-wrap:wrap;
-  }
+.fb-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.fb-btn{
+  padding:12px 18px;border-radius:12px;background:white;
+  border:1px solid #cfe3ff;font-weight:700;cursor:pointer;
+  transition:0.15s
 }
+.fb-btn:hover{
+  transform:translateY(-4px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.12)
+}
+.fb-yes{color:#0b7a3d;border-color:#bfe8cf}
+.fb-no{color:#b82828;border-color:#f2b7b7}
 
-.footer{
-  text-align:center;
-  margin-top:14px;
-  font-size:0.95rem;
-  color:#8b9aad;
-}
+.footer{text-align:center;margin-top:16px;color:#8b9aad}
+
 </style>
 </head>
 
@@ -172,100 +261,120 @@ body{
 
 <div class="wrap">
 
-  <div class="header">
-    <div class="brand">Lagan Seat Lookup</div>
-    <div class="sub">For Reservations: <strong>0777 402 886</strong></div>
+  <!-- SKY + CLOUDS + SUN + MOON + STARS -->
+  <div class="sky-container">
+    <div class="sun"></div>
+    <div class="moon"></div>
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+    <div class="stars"></div>
   </div>
 
+  <!-- ROAD + BUS -->
+  <div class="road-container">
+    <div class="road"></div>
+    <div class="bus-shadow"></div>
+    <div class="bus-anim">🚌</div>
+  </div>
+
+  <!-- HEADER TEXT -->
+  <div class="header">
+    <div class="brand">Lagan Bus Booking</div>
+    <div class="welcome">Welcome to Lagan Bus Booking</div>
+    <div class="sub">For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></div>
+  </div>
+
+  <!-- SEARCH BOX -->
   <div class="card">
+    <input id="phone" class="input" placeholder="Enter phone number (0777...)" inputmode="tel"/>
+    <button class="btn" id="searchBtn">Check My Booking</button>
 
-    <input id="p" class="input" placeholder="Enter Phone Number (0777...)">
-    <button class="btn" onclick="search()">Check My Booking</button>
+    <div id="box">
+      <div id="bname" style="font-size:1.4rem;font-weight:800;color:#204264"></div>
+      <div id="dtime" style="margin-top:6px;color:#667"></div>
+      <div id="pickup" style="margin-top:8px"></div>
+      <div id="pay" style="margin-top:8px"></div>
 
-    <div id="box" style="display:none">
+      <div class="right" id="seatsBox"></div>
 
-      <div class="row">
-
-        <!-- Left Info -->
-        <div class="left">
-          <div id="bname">Bus Name</div>
-          <div id="dtime">Date • Time</div>
-          <div id="pickup">Pickup —</div>
-          <div id="pay">Payment —</div>
+      <div id="feedbackBox">
+        <div class="feedback-title">Did you get your seat number correctly?</div>
+        <div class="fb-row">
+          <button class="fb-btn fb-yes" onclick="sendFeedback('Yes')">😊 Yes</button>
+          <button class="fb-btn fb-no" onclick="sendFeedback('No')">😕 No</button>
         </div>
-
-        <!-- Right Seats -->
-        <div id="seatsBox" class="right"></div>
-
       </div>
-
     </div>
 
     <div class="footer">Made by <strong>WEDOXA</strong></div>
-
   </div>
 </div>
 
 
 <script>
-const SCRIPT_URL="https://script.google.com/macros/s/AKfycbwtADuWek0zWGZROj4HRsS_h-WRjhMRMCShOmaAxnReTULgHHiFPA-hEDQa2v6iQYPPnA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
+
+const phoneInput = document.getElementById('phone');
+document.getElementById('searchBtn').addEventListener('click', search);
 
 function search(){
-  const phone=document.getElementById('p').value.trim();
-  if(!phone){
-    Swal.fire("Please enter phone number");
-    return;
-  }
+  const phone = phoneInput.value.trim();
+  if(!phone){ Swal.fire("Enter phone number"); return; }
 
-  Swal.fire({title:"Loading...",didOpen:()=>Swal.showLoading(),allowOutsideClick:false});
+  Swal.fire({title:'Checking...', didOpen:()=>Swal.showLoading()});
 
-  fetch(SCRIPT_URL+"?phone="+encodeURIComponent(phone))
-  .then(r=>r.json())
-  .then(d=>{
-    Swal.close();
-    if(!d.success){
-      Swal.fire("No Booking Found");
-      return;
-    }
-    render(d.booking);
-  })
-  .catch(()=>{
-    Swal.close();
-    Swal.fire("Error connecting to server");
-  });
+  fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}`)
+    .then(r=>r.json())
+    .then(d=>{
+      Swal.close();
+      if(!d.success){ Swal.fire("No booking found"); return; }
+      showBooking(d.booking);
+    });
 }
 
-function render(b){
-  document.getElementById("box").style.display="block";
+function showBooking(b){
+  document.getElementById('box').style.display='block';
+  document.getElementById('feedbackBox').style.display='block';
 
-  document.getElementById("bname").innerText=b.Bus||"-";
+  let date = b.Date || "";
+  if(date.includes("T")) date = date.split("T")[0];
 
-  let d=b.Date||"";
-  if(typeof d==="string" && d.includes("T")) d=d.split("T")[0];
-  document.getElementById("dtime").innerText=d+" • "+(b.Time||"-");
+  document.getElementById('bname').innerText = b.Bus || "-";
+  document.getElementById('dtime').innerText = `${date} • ${b.Time || "-"}`;
+  document.getElementById('pickup').innerText = "Pickup — " + (b.Pickup || "-");
+  document.getElementById('pay').innerText = "Payment — " + (b.Payment || "-");
 
-  document.getElementById("pickup").innerText="Pickup — "+(b.Pickup||"-");
-  document.getElementById("pay").innerText="Payment — "+(b.Payment||"-");
+  const seatsBox = document.getElementById('seatsBox');
+  seatsBox.innerHTML = "";
 
-  const seatBox=document.getElementById("seatsBox");
-  seatBox.innerHTML="";
+  const seats = String(b.Seat || "").split(/[, ]+/).filter(Boolean);
 
-  const seats=String(b.Seat||"").split(/[, ]+/).filter(x=>x);
-
-  if(seats.length===0){
-    seatBox.innerHTML='<div class="seat"><span>💺</span>-</div>';
-    return;
+  if(seats.length === 0){
+    addSeat("-");
+  } else {
+    seats.forEach((s,i)=> addSeat(s, i===0));
   }
+}
 
-  seats.forEach(s=>{
-    let el=document.createElement("div");
-    el.className="seat";
+function addSeat(num, glow){
+  const el = document.createElement("div");
+  el.className = "seat" + (glow ? " glow" : "");
+  el.innerHTML = `<span>💺</span>${num}`;
+  document.getElementById('seatsBox').appendChild(el);
+}
 
-    // STYLE A: seat icon + number
-    el.innerHTML = `<span>💺</span>${s}`;
+function sendFeedback(answer){
+  const phone = phoneInput.value.trim();
 
-    seatBox.appendChild(el);
-  });
+  fetch(`${SCRIPT_URL}?action=feedback&phone=${encodeURIComponent(phone)}&answer=${encodeURIComponent(answer)}`)
+    .then(r=>r.json())
+    .then(res=>{
+      if(res.success){
+        Swal.fire("Thank you!");
+        document.getElementById('feedbackBox').style.display="none";
+      }
+    });
 }
 </script>
 
