@@ -76,99 +76,13 @@ body {
   padding: 20px;
 }
 
-/* ===================== HEADER & NAVIGATION ===================== */
-.main-header {
-  text-align: center;
-  margin-bottom: 30px;
-  padding: 20px;
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border-light);
-  position: relative;
-  overflow: hidden;
-}
-
-.main-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
-}
-
-.brand {
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--dark-blue);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.tagline {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-  font-weight: 500;
-}
-
-.contact-info {
-  display: inline-block;
-  background: var(--light-blue);
-  padding: 8px 20px;
-  border-radius: 50px;
-  font-weight: 600;
-  color: var(--dark-blue);
-  border: 1px solid rgba(58, 123, 213, 0.2);
-  font-size: 0.95rem;
-}
-
-/* ===================== THEME TOGGLE IN RIGHT SIDE CORNER ===================== */
-.theme-toggle-container {
-  position: fixed;
-  right: 20px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.theme-btn {
-  background: var(--bg-card);
-  border: 2px solid var(--border-light);
-  color: var(--text-primary);
-  padding: 10px 20px;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: var(--shadow-md);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-}
-
-.theme-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--primary-blue);
-}
-
-/* ===================== AMAZING SKY DESIGN ===================== */
+/* ===================== COMPACT SKY SECTION ===================== */
 .sky-container {
   position: relative;
   width: 100%;
-  height: 280px;
+  height: 150px; /* Reduced from 280px */
   border-radius: var(--radius-lg);
-  margin-bottom: 90px;
+  margin-bottom: 20px; /* Reduced from 90px */
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -199,23 +113,23 @@ body {
   );
 }
 
-/* ===================== SUN DESIGN - LEFT SIDE ===================== */
+/* ===================== COMPACT SUN DESIGN ===================== */
 .sun-container {
   position: absolute;
-  left: 100px;
-  top: 180px;
+  left: 50px;
+  top: 100px;
   transform: translateY(0);
   transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   z-index: 10;
 }
 
 .sun-risen .sun-container {
-  top: 40px;
+  top: 20px;
 }
 
 .sun-main {
-  width: 100px;
-  height: 100px;
+  width: 60px; /* Reduced from 100px */
+  height: 60px; /* Reduced from 100px */
   border-radius: 50%;
   background: radial-gradient(
     circle at 30% 30%,
@@ -225,10 +139,10 @@ body {
     #FF6347 100%     /* Tomato */
   );
   box-shadow: 
-    0 0 80px rgba(255, 215, 0, 0.9),
-    0 0 160px rgba(255, 140, 0, 0.7),
-    0 0 240px rgba(255, 69, 0, 0.5),
-    0 0 320px rgba(255, 99, 71, 0.3);
+    0 0 50px rgba(255, 215, 0, 0.9),
+    0 0 100px rgba(255, 140, 0, 0.7),
+    0 0 150px rgba(255, 69, 0, 0.5),
+    0 0 200px rgba(255, 99, 71, 0.3);
   animation: sunPulse 4s ease-in-out infinite;
   position: relative;
 }
@@ -253,18 +167,18 @@ body {
   0%, 100% { 
     transform: scale(1);
     box-shadow: 
-      0 0 80px rgba(255, 215, 0, 0.9),
-      0 0 160px rgba(255, 140, 0, 0.7),
-      0 0 240px rgba(255, 69, 0, 0.5),
-      0 0 320px rgba(255, 99, 71, 0.3);
+      0 0 50px rgba(255, 215, 0, 0.9),
+      0 0 100px rgba(255, 140, 0, 0.7),
+      0 0 150px rgba(255, 69, 0, 0.5),
+      0 0 200px rgba(255, 99, 71, 0.3);
   }
   50% { 
     transform: scale(1.05);
     box-shadow: 
-      0 0 100px rgba(255, 215, 0, 1),
-      0 0 200px rgba(255, 140, 0, 0.8),
-      0 0 300px rgba(255, 69, 0, 0.6),
-      0 0 400px rgba(255, 99, 71, 0.4);
+      0 0 60px rgba(255, 215, 0, 1),
+      0 0 120px rgba(255, 140, 0, 0.8),
+      0 0 180px rgba(255, 69, 0, 0.6),
+      0 0 240px rgba(255, 99, 71, 0.4);
   }
 }
 
@@ -278,11 +192,11 @@ body {
   transform: translateY(100px) scale(0.5);
 }
 
-/* ===================== MOON DESIGN - RIGHT SIDE ===================== */
+/* ===================== COMPACT MOON DESIGN ===================== */
 .moon-container {
   position: absolute;
-  right: 100px;
-  top: 180px;
+  right: 50px;
+  top: 100px;
   transform: translateY(0);
   transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   opacity: 0;
@@ -290,13 +204,13 @@ body {
 }
 
 .moon-risen .moon-container {
-  top: 45px;
+  top: 25px;
   opacity: 1;
 }
 
 .moon-main {
-  width: 90px;
-  height: 90px;
+  width: 55px; /* Reduced from 90px */
+  height: 55px; /* Reduced from 90px */
   border-radius: 50%;
   background: radial-gradient(
     circle at 70% 30%,
@@ -306,12 +220,12 @@ body {
     #DDA0DD 100%     /* Plum */
   );
   box-shadow: 
-    0 0 60px rgba(248, 248, 255, 0.8),
-    0 0 120px rgba(230, 230, 250, 0.6),
-    0 0 180px rgba(216, 191, 216, 0.4),
-    0 0 240px rgba(221, 160, 221, 0.2),
-    inset -15px -15px 30px rgba(0, 0, 0, 0.3),
-    inset 10px 10px 20px rgba(255, 255, 255, 0.2);
+    0 0 40px rgba(248, 248, 255, 0.8),
+    0 0 80px rgba(230, 230, 250, 0.6),
+    0 0 120px rgba(216, 191, 216, 0.4),
+    0 0 160px rgba(221, 160, 221, 0.2),
+    inset -10px -10px 20px rgba(0, 0, 0, 0.3),
+    inset 5px 5px 10px rgba(255, 255, 255, 0.2);
   animation: moonGlow 6s ease-in-out infinite;
   position: relative;
   overflow: hidden;
@@ -332,24 +246,24 @@ body {
 }
 
 .moon-crater.large {
-  width: 20px;
-  height: 20px;
-  top: 25px;
-  left: 25px;
+  width: 15px;
+  height: 15px;
+  top: 15px;
+  left: 15px;
 }
 
 .moon-crater.medium {
-  width: 12px;
-  height: 12px;
-  top: 50px;
-  right: 20px;
+  width: 10px;
+  height: 10px;
+  top: 35px;
+  right: 15px;
 }
 
 .moon-crater.small {
-  width: 8px;
-  height: 8px;
-  bottom: 30px;
-  left: 40px;
+  width: 6px;
+  height: 6px;
+  bottom: 20px;
+  left: 25px;
 }
 
 .moon-glow {
@@ -372,18 +286,18 @@ body {
   0%, 100% { 
     transform: scale(1);
     box-shadow: 
-      0 0 60px rgba(248, 248, 255, 0.8),
-      0 0 120px rgba(230, 230, 250, 0.6),
-      0 0 180px rgba(216, 191, 216, 0.4),
-      0 0 240px rgba(221, 160, 221, 0.2);
+      0 0 40px rgba(248, 248, 255, 0.8),
+      0 0 80px rgba(230, 230, 250, 0.6),
+      0 0 120px rgba(216, 191, 216, 0.4),
+      0 0 160px rgba(221, 160, 221, 0.2);
   }
   50% { 
     transform: scale(1.03);
     box-shadow: 
-      0 0 80px rgba(248, 248, 255, 0.9),
-      0 0 160px rgba(230, 230, 250, 0.7),
-      0 0 240px rgba(216, 191, 216, 0.5),
-      0 0 320px rgba(221, 160, 221, 0.3);
+      0 0 60px rgba(248, 248, 255, 0.9),
+      0 0 120px rgba(230, 230, 250, 0.7),
+      0 0 180px rgba(216, 191, 216, 0.5),
+      0 0 240px rgba(221, 160, 221, 0.3);
   }
 }
 
@@ -397,7 +311,7 @@ body {
   transform: translateY(100px) scale(0.5);
 }
 
-/* ===================== IMPROVED DAY CLOUDS - BOTH SIDES ===================== */
+/* ===================== COMPACT CLOUDS ===================== */
 .day-clouds {
   position: absolute;
   width: 100%;
@@ -441,141 +355,140 @@ body {
   border-radius: 50%;
 }
 
-/* Left side clouds (near sun) with improved movement */
+/* Compact left side clouds */
 .left-cloud-1 {
-  width: 120px;
-  height: 40px;
-  top: 60px;
-  left: 50px;
+  width: 80px;
+  height: 25px;
+  top: 30px;
+  left: 30px;
   animation: cloudFloat1 60s linear infinite;
 }
 
 .left-cloud-1::before {
-  width: 70px;
-  height: 70px;
-  top: -35px;
-  left: 20px;
+  width: 45px;
+  height: 45px;
+  top: -20px;
+  left: 15px;
 }
 
 .left-cloud-1::after {
-  width: 90px;
-  height: 90px;
-  top: -45px;
-  right: 10px;
+  width: 60px;
+  height: 60px;
+  top: -30px;
+  right: 5px;
 }
 
 .left-cloud-2 {
-  width: 100px;
-  height: 35px;
-  top: 150px;
-  left: 80px;
+  width: 70px;
+  height: 22px;
+  top: 80px;
+  left: 50px;
   animation: cloudFloat2 70s linear infinite 15s;
 }
 
 .left-cloud-2::before {
-  width: 60px;
-  height: 60px;
-  top: -30px;
-  left: 15px;
+  width: 40px;
+  height: 40px;
+  top: -20px;
+  left: 10px;
 }
 
 .left-cloud-2::after {
-  width: 80px;
-  height: 80px;
-  top: -40px;
-  right: 15px;
+  width: 55px;
+  height: 55px;
+  top: -25px;
+  right: 10px;
 }
 
 .left-cloud-3 {
-  width: 80px;
-  height: 30px;
-  top: 220px;
-  left: 120px;
+  width: 60px;
+  height: 20px;
+  top: 120px;
+  left: 80px;
   animation: cloudFloat3 80s linear infinite 30s;
 }
 
 .left-cloud-3::before {
-  width: 50px;
-  height: 50px;
-  top: -25px;
-  left: 10px;
+  width: 35px;
+  height: 35px;
+  top: -15px;
+  left: 5px;
 }
 
 .left-cloud-3::after {
-  width: 70px;
-  height: 70px;
-  top: -35px;
-  right: 20px;
+  width: 50px;
+  height: 50px;
+  top: -20px;
+  right: 15px;
 }
 
-/* Right side clouds with improved movement */
+/* Compact right side clouds */
 .right-cloud-1 {
-  width: 110px;
-  height: 38px;
-  top: 80px;
-  right: 60px;
+  width: 75px;
+  height: 25px;
+  top: 40px;
+  right: 40px;
   animation: cloudFloat2 65s linear infinite 5s;
 }
 
 .right-cloud-1::before {
-  width: 65px;
-  height: 65px;
-  top: -32px;
-  left: 15px;
+  width: 45px;
+  height: 45px;
+  top: -20px;
+  left: 10px;
 }
 
 .right-cloud-1::after {
-  width: 85px;
-  height: 85px;
-  top: -42px;
-  right: 15px;
+  width: 60px;
+  height: 60px;
+  top: -30px;
+  right: 10px;
 }
 
 .right-cloud-2 {
-  width: 95px;
-  height: 32px;
-  top: 170px;
-  right: 100px;
+  width: 65px;
+  height: 22px;
+  top: 90px;
+  right: 70px;
   animation: cloudFloat1 75s linear infinite 20s;
 }
 
 .right-cloud-2::before {
-  width: 55px;
-  height: 55px;
-  top: -27px;
-  left: 20px;
+  width: 40px;
+  height: 40px;
+  top: -20px;
+  left: 15px;
 }
 
 .right-cloud-2::after {
-  width: 75px;
-  height: 75px;
-  top: -37px;
-  right: 10px;
+  width: 55px;
+  height: 55px;
+  top: -25px;
+  right: 5px;
 }
 
 .right-cloud-3 {
-  width: 85px;
-  height: 28px;
-  top: 240px;
-  right: 140px;
+  width: 55px;
+  height: 20px;
+  top: 130px;
+  right: 100px;
   animation: cloudFloat3 85s linear infinite 35s;
 }
 
 .right-cloud-3::before {
-  width: 45px;
-  height: 45px;
-  top: -22px;
-  left: 15px;
+  width: 35px;
+  height: 35px;
+  top: -15px;
+  left: 10px;
 }
 
 .right-cloud-3::after {
-  width: 65px;
-  height: 65px;
-  top: -32px;
-  right: 20px;
+  width: 50px;
+  height: 50px;
+  top: -20px;
+  right: 15px;
 }
 
-/* IMPROVED CLOUD ANIMATIONS (from first code) */
 @keyframes cloudFloat1 {
   0% { transform: translateX(-200px); }
   100% { transform: translateX(calc(100vw + 200px)); }
@@ -592,7 +505,7 @@ body {
   100% { transform: translateX(calc(100vw + 150px)) translateY(0); }
 }
 
-/* ===================== IMPROVED NIGHT CLOUDS - LEFT SIDE ONLY ===================== */
+/* ===================== COMPACT NIGHT CLOUDS ===================== */
 .night-clouds {
   position: absolute;
   width: 40%;
@@ -623,74 +536,74 @@ body {
   border-radius: 50%;
 }
 
-/* Night clouds on left side only with improved movement */
+/* Compact night clouds */
 .night-cloud-1 {
-  width: 100px;
-  height: 35px;
-  top: 70px;
-  left: 60px;
+  width: 70px;
+  height: 25px;
+  top: 40px;
+  left: 40px;
   animation: cloudFloat1 80s linear infinite;
 }
 
 .night-cloud-1::before {
-  width: 60px;
-  height: 60px;
-  top: -30px;
-  left: 15px;
+  width: 45px;
+  height: 45px;
+  top: -20px;
+  left: 10px;
 }
 
 .night-cloud-1::after {
-  width: 80px;
-  height: 80px;
-  top: -40px;
-  right: 10px;
+  width: 60px;
+  height: 60px;
+  top: -30px;
+  right: 5px;
 }
 
 .night-cloud-2 {
-  width: 85px;
-  height: 30px;
-  top: 160px;
-  left: 90px;
+  width: 60px;
+  height: 22px;
+  top: 90px;
+  left: 60px;
   animation: cloudFloat2 95s linear infinite 25s;
 }
 
 .night-cloud-2::before {
-  width: 50px;
-  height: 50px;
-  top: -25px;
-  left: 10px;
+  width: 40px;
+  height: 40px;
+  top: -20px;
+  left: 5px;
 }
 
 .night-cloud-2::after {
-  width: 70px;
-  height: 70px;
-  top: -35px;
-  right: 15px;
+  width: 55px;
+  height: 55px;
+  top: -25px;
+  right: 10px;
 }
 
 .night-cloud-3 {
-  width: 70px;
-  height: 25px;
-  top: 230px;
-  left: 130px;
+  width: 50px;
+  height: 20px;
+  top: 130px;
+  left: 90px;
   animation: cloudFloat3 110s linear infinite 50s;
 }
 
 .night-cloud-3::before {
-  width: 40px;
-  height: 40px;
-  top: -20px;
-  left: 15px;
+  width: 35px;
+  height: 35px;
+  top: -15px;
+  left: 10px;
 }
 
 .night-cloud-3::after {
-  width: 60px;
-  height: 60px;
-  top: -30px;
-  right: 10px;
+  width: 50px;
+  height: 50px;
+  top: -20px;
+  right: 5px;
 }
 
-/* ===================== STARS FOR NIGHT ===================== */
+/* ===================== COMPACT STARS ===================== */
 .stars-container {
   position: absolute;
   width: 100%;
@@ -732,13 +645,6 @@ body {
   box-shadow: 0 0 4px white, 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
-.star.xlarge {
-  width: 4px;
-  height: 4px;
-  --twinkle-duration: 5s;
-  box-shadow: 0 0 6px white, 0 0 12px rgba(255, 255, 255, 0.5);
-}
-
 @keyframes starTwinkle {
   0%, 100% { 
     opacity: 0.2; 
@@ -750,38 +656,99 @@ body {
   }
 }
 
-/* Shooting stars */
-.shooting-star {
-  position: absolute;
-  width: 100px;
-  height: 2px;
-  background: linear-gradient(90deg, 
-    rgba(255,255,255,0) 0%, 
-    rgba(255,255,255,1) 30%, 
-    rgba(255,255,255,0) 100%);
-  opacity: 0;
-  transform: rotate(-45deg);
+/* ===================== HEADER & NAVIGATION ===================== */
+.main-header {
+  text-align: center;
+  margin-bottom: 25px; /* Reduced spacing */
+  padding: 15px 20px; /* Reduced padding */
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Constellations */
-.constellation {
+.main-header::before {
+  content: '';
   position: absolute;
-  opacity: 0.3;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
 }
 
-.constellation-line {
-  position: absolute;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.3);
-  transform-origin: 0 0;
+.brand {
+  font-size: 1.8rem; /* Slightly smaller */
+  font-weight: 800;
+  color: var(--dark-blue);
+  margin-bottom: 5px; /* Reduced */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.tagline {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px; /* Reduced */
+  font-weight: 500;
+}
+
+.contact-info {
+  display: inline-block;
+  background: var(--light-blue);
+  padding: 6px 16px; /* Reduced */
+  border-radius: 50px;
+  font-weight: 600;
+  color: var(--dark-blue);
+  border: 1px solid rgba(58, 123, 213, 0.2);
+  font-size: 0.9rem;
+}
+
+/* ===================== THEME TOGGLE ===================== */
+.theme-toggle-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-btn {
+  background: var(--bg-card);
+  border: 2px solid var(--border-light);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.theme-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-blue);
 }
 
 /* ===================== MAIN LAYOUT ===================== */
 .main-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  margin-bottom: 30px;
+  gap: 25px; /* Reduced gap */
+  margin-bottom: 25px;
 }
 
 @media (max-width: 992px) {
@@ -794,7 +761,7 @@ body {
 .search-card {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
-  padding: 30px;
+  padding: 25px; /* Reduced */
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border-light);
   height: fit-content;
@@ -803,30 +770,30 @@ body {
 }
 
 .card-title {
-  font-size: 1.5rem;
+  font-size: 1.4rem; /* Reduced */
   font-weight: 700;
   color: var(--dark-blue);
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Reduced */
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .input-group {
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Reduced */
 }
 
 .input-label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 6px; /* Reduced */
   font-weight: 600;
   color: var(--text-secondary);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .input-field {
   width: 100%;
-  padding: 14px 16px;
+  padding: 12px 14px; /* Reduced */
   border-radius: var(--radius-md);
   border: 2px solid var(--border-light);
   background: var(--bg-light);
@@ -844,19 +811,19 @@ body {
 
 .search-btn {
   width: 100%;
-  padding: 16px;
+  padding: 14px; /* Reduced */
   background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
   color: white;
   border: none;
   border-radius: var(--radius-md);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   margin-top: 10px;
 }
 
@@ -875,15 +842,22 @@ body {
   transform: none !important;
 }
 
+.search-card > div:last-child {
+  margin-top: 15px;
+  padding: 12px;
+  background: var(--light-blue);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+}
+
 /* ===================== RESULTS CARD ===================== */
 .results-card {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
-  padding: 0;
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border-light);
   overflow: hidden;
-  min-height: 400px;
+  min-height: 300px; /* Reduced */
   display: flex;
   flex-direction: column;
 }
@@ -891,7 +865,7 @@ body {
 .results-header {
   background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
   color: white;
-  padding: 25px 30px;
+  padding: 20px 25px; /* Reduced */
   text-align: center;
   position: relative;
 }
@@ -913,18 +887,18 @@ body {
 }
 
 .results-title {
-  font-size: 1.8rem;
+  font-size: 1.6rem; /* Reduced */
   font-weight: 800;
   margin-bottom: 5px;
 }
 
 .results-subtitle {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   opacity: 0.9;
 }
 
 .results-body {
-  padding: 30px;
+  padding: 25px; /* Reduced */
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -934,19 +908,19 @@ body {
 .no-results {
   text-align: center;
   color: var(--text-muted);
-  font-size: 1.1rem;
-  padding: 40px 20px;
+  font-size: 1rem;
+  padding: 30px 20px; /* Reduced */
 }
 
 .no-results-icon {
-  font-size: 48px;
-  margin-bottom: 20px;
+  font-size: 40px; /* Reduced */
+  margin-bottom: 15px;
   opacity: 0.5;
 }
 
 .no-results-title {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
+  font-size: 1.2rem; /* Reduced */
+  margin-bottom: 8px;
   color: var(--text-secondary);
 }
 
@@ -954,135 +928,31 @@ body {
 .ticket-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-/* Mobile-specific ticket styling */
-@media (max-width: 768px) {
-  .ticket-info {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-  
-  .results-body {
-    padding: 20px;
-  }
-  
-  .info-card {
-    padding: 15px;
-    margin-bottom: 10px;
-  }
-  
-  .info-label {
-    font-size: 0.75rem;
-  }
-  
-  .info-value {
-    font-size: 1rem;
-  }
-  
-  #passengerName {
-    font-size: 1.3rem;
-    padding: 10px 0;
-    margin-bottom: 15px;
-  }
-  
-  .seats-section {
-    padding: 20px;
-    margin: 15px -20px;
-  }
-  
-  .seat {
-    width: 70px;
-    height: 70px;
-  }
-  
-  .seat-icon {
-    font-size: 20px;
-  }
-  
-  .seat-number {
-    font-size: 1rem;
-  }
-}
-
-/* Mobile modal overlay for better ticket viewing */
-@media (max-width: 768px) {
-  .ticket-modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 1001;
-    overflow-y: auto;
-    padding: 20px;
-  }
-  
-  .ticket-modal {
-    background: var(--bg-card);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-    max-width: 500px;
-    margin: 0 auto;
-    position: relative;
-    animation: slideUp 0.3s ease;
-  }
-  
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(50px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .close-modal {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: var(--danger);
-    color: white;
-    border: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1002;
-  }
+  gap: 15px; /* Reduced */
+  margin-bottom: 20px; /* Reduced */
 }
 
 .info-card {
   background: var(--bg-light);
-  padding: 20px;
+  padding: 15px; /* Reduced */
   border-radius: var(--radius-md);
   border: 1px solid var(--border-light);
 }
 
 .info-label {
-  font-size: 0.85rem;
+  font-size: 0.8rem; /* Reduced */
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 8px;
+  margin-bottom: 6px; /* Reduced */
   font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 
 .info-value {
-  font-size: 1.2rem;
+  font-size: 1.1rem; /* Reduced */
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.4;
@@ -1090,10 +960,10 @@ body {
 
 /* Passenger name special styling */
 #passengerName {
-  font-size: 1.5rem;
+  font-size: 1.3rem; /* Reduced */
   color: var(--dark-blue);
   font-weight: 800;
-  padding-bottom: 10px;
+  padding-bottom: 8px; /* Reduced */
   border-bottom: 2px dashed var(--border-light);
   margin-bottom: 5px;
 }
@@ -1101,34 +971,34 @@ body {
 /* ===================== SEATS STYLING ===================== */
 .seats-section {
   background: linear-gradient(135deg, rgba(58, 123, 213, 0.05), rgba(103, 184, 247, 0.02));
-  padding: 25px;
+  padding: 20px; /* Reduced */
   border-radius: var(--radius-md);
   border: 1px dashed var(--border-light);
-  margin-bottom: 25px;
+  margin-bottom: 20px; /* Reduced */
 }
 
 .section-title {
-  font-size: 1.2rem;
+  font-size: 1.1rem; /* Reduced */
   font-weight: 700;
   color: var(--dark-blue);
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Reduced */
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .seats-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 12px; /* Reduced */
   justify-content: center;
 }
 
 .seat {
-  width: 80px;
-  height: 80px;
+  width: 70px; /* Reduced */
+  height: 70px; /* Reduced */
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -1150,19 +1020,19 @@ body {
 }
 
 .seat-icon {
-  font-size: 24px;
-  margin-bottom: 5px;
+  font-size: 20px; /* Reduced */
+  margin-bottom: 4px; /* Reduced */
 }
 
 .seat-number {
-  font-size: 1.1rem;
+  font-size: 1rem; /* Reduced */
 }
 
 .no-seats {
   text-align: center;
   color: var(--text-muted);
   font-style: italic;
-  padding: 20px;
+  padding: 15px; /* Reduced */
   background: var(--bg-light);
   border-radius: var(--radius-md);
   border: 2px dashed var(--border-light);
@@ -1170,20 +1040,20 @@ body {
 
 /* ===================== DOWNLOAD BUTTON ===================== */
 .download-section {
-  margin-top: 25px;
+  margin-top: 20px; /* Reduced */
   text-align: center;
 }
 
 .download-btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 28px;
+  gap: 8px;
+  padding: 12px 24px; /* Reduced */
   background: linear-gradient(135deg, var(--success), #059669);
   color: white;
   border: none;
   border-radius: var(--radius-md);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s;
@@ -1198,8 +1068,8 @@ body {
 
 /* ===================== FEEDBACK ===================== */
 .feedback-section {
-  margin-top: 25px;
-  padding: 25px;
+  margin-top: 20px; /* Reduced */
+  padding: 20px; /* Reduced */
   background: var(--bg-light);
   border-radius: var(--radius-md);
   border: 1px solid var(--border-light);
@@ -1207,20 +1077,20 @@ body {
 }
 
 .feedback-title {
-  font-size: 1.1rem;
+  font-size: 1rem; /* Reduced */
   font-weight: 700;
   color: var(--dark-blue);
-  margin-bottom: 15px;
+  margin-bottom: 12px; /* Reduced */
 }
 
 .feedback-buttons {
   display: flex;
-  gap: 15px;
+  gap: 12px; /* Reduced */
   justify-content: center;
 }
 
 .feedback-btn {
-  padding: 12px 24px;
+  padding: 10px 20px; /* Reduced */
   border-radius: var(--radius-md);
   border: 2px solid var(--border-light);
   background: var(--bg-card);
@@ -1230,8 +1100,8 @@ body {
   transition: all 0.3s;
   display: flex;
   align-items: center;
-  gap: 8px;
-  min-width: 120px;
+  gap: 6px;
+  min-width: 110px; /* Reduced */
 }
 
 .feedback-btn:hover {
@@ -1254,11 +1124,11 @@ body {
 /* ===================== FOOTER ===================== */
 .main-footer {
   text-align: center;
-  padding: 20px;
+  padding: 15px; /* Reduced */
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   border-top: 1px solid var(--border-light);
-  margin-top: 30px;
+  margin-top: 20px; /* Reduced */
 }
 
 .company-name {
@@ -1270,9 +1140,9 @@ body {
 /* ===================== LOADING SPINNER ===================== */
 .spinner {
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(255,255,255,0.3);
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
   border-radius: 50%;
   border-top-color: white;
   animation: spin 1s linear infinite;
@@ -1284,12 +1154,12 @@ body {
 
 /* ===================== ANIMATIONS ===================== */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .fade-in {
-  animation: fadeIn 0.5s ease;
+  animation: fadeIn 0.4s ease;
 }
 
 /* ===================== RESPONSIVE ===================== */
@@ -1298,13 +1168,46 @@ body {
     padding: 15px;
   }
   
+  .sky-container {
+    height: 120px;
+    margin-bottom: 15px;
+  }
+  
+  .sun-container {
+    left: 30px;
+    top: 80px;
+  }
+  
+  .sun-risen .sun-container {
+    top: 15px;
+  }
+  
+  .sun-main {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .moon-container {
+    right: 30px;
+    top: 80px;
+  }
+  
+  .moon-risen .moon-container {
+    top: 20px;
+  }
+  
+  .moon-main {
+    width: 45px;
+    height: 45px;
+  }
+  
   .main-header {
-    padding: 15px;
+    padding: 12px 15px;
     margin-bottom: 20px;
   }
   
   .brand {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
   
   .search-card {
@@ -1317,75 +1220,68 @@ body {
   }
   
   .theme-toggle-container {
-    top: auto;
-    bottom: 80px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
   }
   
   .theme-btn {
-    padding: 8px 16px;
+    padding: 6px 12px;
     font-size: 0.85rem;
   }
   
-  .sky-container {
-    height: 200px;
-    margin-bottom: 70px;
-  }
-  
-  .sun-container {
-    left: 40px;
-    top: 150px;
-  }
-  
-  .sun-risen .sun-container {
-    top: 30px;
-  }
-  
-  .sun-main {
-    width: 70px;
-    height: 70px;
-  }
-  
-  .moon-container {
-    right: 40px;
-    top: 150px;
-  }
-  
-  .moon-risen .moon-container {
-    top: 35px;
-  }
-  
-  .moon-main {
-    width: 65px;
-    height: 65px;
-  }
-  
-  /* Adjust cloud positions for mobile */
+  /* Adjust clouds for mobile */
   .left-cloud-1 {
-    width: 80px;
-    height: 30px;
-    left: 20px;
-    top: 50px;
+    width: 60px;
+    height: 20px;
+    left: 15px;
+    top: 25px;
   }
   
   .right-cloud-1 {
-    width: 75px;
-    height: 28px;
-    right: 25px;
-    top: 60px;
+    width: 55px;
+    height: 18px;
+    right: 20px;
+    top: 30px;
   }
   
   .night-cloud-1 {
-    width: 70px;
-    height: 25px;
-    left: 25px;
-    top: 50px;
+    width: 50px;
+    height: 18px;
+    left: 20px;
+    top: 30px;
   }
-}
-
-@media (max-width: 480px) {
-  .brand {
-    font-size: 1.4rem;
+  
+  .ticket-info {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .info-card {
+    padding: 12px;
+  }
+  
+  #passengerName {
+    font-size: 1.2rem;
+    padding: 8px 0;
+    margin-bottom: 12px;
+  }
+  
+  .seats-section {
+    padding: 15px;
+    margin: 12px -15px;
+  }
+  
+  .seat {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .seat-icon {
+    font-size: 16px;
+  }
+  
+  .seat-number {
+    font-size: 0.9rem;
   }
   
   .feedback-buttons {
@@ -1395,50 +1291,48 @@ body {
   .feedback-btn {
     width: 100%;
   }
-  
-  .theme-btn {
-    padding: 6px 12px;
-    font-size: 0.8rem;
+}
+
+@media (max-width: 480px) {
+  .brand {
+    font-size: 1.3rem;
   }
   
   .sky-container {
-    height: 180px;
-    margin-bottom: 60px;
+    height: 100px;
   }
   
   .sun-container {
-    left: 30px;
-    top: 140px;
+    left: 20px;
+    top: 70px;
   }
   
   .sun-risen .sun-container {
-    top: 25px;
+    top: 10px;
   }
   
   .sun-main {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
   }
   
   .moon-container {
-    right: 30px;
-    top: 140px;
+    right: 20px;
+    top: 70px;
   }
   
   .moon-risen .moon-container {
-    top: 30px;
+    top: 15px;
   }
   
   .moon-main {
-    width: 55px;
-    height: 55px;
+    width: 38px;
+    height: 38px;
   }
-}
-
-/* Desktop specific */
-@media (min-width: 769px) {
-  .theme-toggle-container {
-    top: 310px; /* Position under the sky */
+  
+  .theme-btn {
+    padding: 5px 10px;
+    font-size: 0.8rem;
   }
 }
 </style>
@@ -1446,7 +1340,7 @@ body {
 <body>
 <div class="container">
   
-  <!-- Amazing Sky Container -->
+  <!-- Compact Sky Container -->
   <div class="sky-container" id="skyContainer">
     <!-- Sun on Left Side -->
     <div class="sun-container">
@@ -1525,8 +1419,8 @@ body {
         <span>🔍</span> Check My Booking
       </button>
       
-      <div style="margin-top: 20px; padding: 15px; background: var(--light-blue); border-radius: var(--radius-md);">
-        <p style="font-size: 0.9rem; color: var(--dark-blue); margin-bottom: 8px; font-weight: 600;">📝 Instructions:</p>
+      <div>
+        <p style="font-weight: 600; color: var(--dark-blue); margin-bottom: 5px;">📝 Instructions:</p>
         <p style="font-size: 0.85rem; color: var(--text-secondary);">
           1. Enter the phone number used for booking<br>
           2. Click "Check My Booking"<br>
@@ -1629,14 +1523,6 @@ body {
   </footer>
 </div>
 
-<!-- Mobile Ticket Modal -->
-<div class="ticket-modal-overlay" id="mobileTicketModal">
-  <div class="ticket-modal">
-    <button class="close-modal" onclick="closeMobileTicket()">×</button>
-    <div id="mobileTicketContent"></div>
-  </div>
-</div>
-
 <script>
 // ===================== CONFIGURATION =====================
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
@@ -1650,7 +1536,6 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Create stars and enhanced cloud patterns
   createStars();
-  createEnhancedClouds();
   
   // Animate sun/moon rise on load
   setTimeout(() => {
@@ -1659,9 +1544,8 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       document.body.classList.add('moon-risen');
       createShootingStars();
-      createConstellations();
     }
-  }, 500);
+  }, 300);
   
   // Theme toggle event
   document.getElementById('themeToggle').addEventListener('click', function() {
@@ -1680,9 +1564,8 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
           document.body.classList.add('moon-risen');
           createShootingStars();
-          createConstellations();
-        }, 300);
-      }, 300);
+        }, 200);
+      }, 200);
     } else {
       // Night to Day transition
       document.body.classList.remove('moon-risen');
@@ -1693,8 +1576,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         setTimeout(() => {
           document.body.classList.add('sun-risen');
-        }, 300);
-      }, 300);
+        }, 200);
+      }, 200);
     }
   });
   
@@ -1731,43 +1614,30 @@ function updateThemeUI(theme) {
   }
 }
 
-function createEnhancedClouds() {
-  // The clouds are already defined in the HTML with improved animations
-  // This function is kept for compatibility with existing code
-  console.log('Enhanced clouds with improved animations are active');
-}
-
 function createStars() {
   const container = document.getElementById('starsContainer');
   if (!container) return;
   
   container.innerHTML = '';
   
-  // Create many beautiful stars with improved twinkling
-  for (let i = 0; i < 200; i++) {
+  // Create stars
+  for (let i = 0; i < 100; i++) {
     const star = document.createElement('div');
     star.classList.add('star');
     
     // Random size
     const size = Math.random();
-    if (size < 0.5) star.classList.add('small');
-    else if (size < 0.8) star.classList.add('medium');
-    else if (size < 0.95) star.classList.add('large');
-    else star.classList.add('xlarge');
+    if (size < 0.6) star.classList.add('small');
+    else if (size < 0.9) star.classList.add('medium');
+    else star.classList.add('large');
     
     // Random position
     star.style.left = `${Math.random() * 100}%`;
     star.style.top = `${Math.random() * 100}%`;
     
     // Random animation properties
-    const delay = Math.random() * 6;
+    const delay = Math.random() * 4;
     star.style.setProperty('--twinkle-delay', `${delay}s`);
-    
-    // Random color tint for some stars
-    if (Math.random() < 0.2) {
-      const hue = Math.random() * 60 + 200; // Blue to violet range
-      star.style.background = `hsl(${hue}, 100%, 90%)`;
-    }
     
     container.appendChild(star);
   }
@@ -1782,30 +1652,33 @@ function createShootingStars() {
     if (document.documentElement.getAttribute('data-theme') !== 'dark') return;
     
     const shootingStar = document.createElement('div');
-    shootingStar.classList.add('shooting-star');
+    shootingStar.style.cssText = `
+      position: absolute;
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        rgba(255,255,255,0) 0%, 
+        rgba(255,255,255,1) 30%, 
+        rgba(255,255,255,0) 100%);
+      opacity: 0;
+      transform: rotate(-45deg);
+    `;
     
     // Random starting position
-    const startX = Math.random() * 80 + 10; // 10% to 90%
-    const startY = Math.random() * 40; // Top 40%
+    const startX = Math.random() * 80 + 10;
+    const startY = Math.random() * 30;
     shootingStar.style.left = `${startX}%`;
     shootingStar.style.top = `${startY}%`;
-    
-    // Random brightness
-    const brightness = Math.random() * 0.7 + 0.3;
-    shootingStar.style.background = `linear-gradient(90deg, 
-      rgba(255,255,255,0) 0%, 
-      rgba(255,255,255,${brightness}) 30%, 
-      rgba(255,255,255,0) 100%)`;
     
     container.appendChild(shootingStar);
     
     // Animate shooting star
-    const duration = Math.random() * 1000 + 500; // 500ms to 1500ms
+    const duration = Math.random() * 800 + 400;
     
     shootingStar.animate([
-      { transform: 'translateX(0) translateY(0)', opacity: 0 },
-      { transform: 'translateX(300px) translateY(150px)', opacity: 1 },
-      { transform: 'translateX(600px) translateY(300px)', opacity: 0 }
+      { transform: 'translateX(0) translateY(0) rotate(-45deg)', opacity: 0 },
+      { transform: 'translateX(200px) translateY(100px) rotate(-45deg)', opacity: 1 },
+      { transform: 'translateX(400px) translateY(200px) rotate(-45deg)', opacity: 0 }
     ], {
       duration: duration,
       easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
@@ -1821,89 +1694,10 @@ function createShootingStars() {
   
   // Create shooting stars at random intervals
   setInterval(() => {
-    if (document.documentElement.getAttribute('data-theme') === 'dark' && Math.random() < 0.3) {
+    if (document.documentElement.getAttribute('data-theme') === 'dark' && Math.random() < 0.2) {
       createShootingStar();
     }
   }, 3000);
-}
-
-function createConstellations() {
-  const container = document.getElementById('starsContainer');
-  if (!container) return;
-  
-  // Remove existing constellations
-  const existingConstellations = container.querySelectorAll('.constellation');
-  existingConstellations.forEach(el => el.remove());
-  
-  // Create beautiful constellations
-  const constellations = [
-    // Big Dipper
-    {
-      name: 'big-dipper',
-      points: [
-        [15, 20], [20, 25], [25, 22], 
-        [30, 27], [35, 25], [40, 30], [45, 28]
-      ],
-      brightness: 0.4
-    },
-    // Orion's Belt
-    {
-      name: 'orion',
-      points: [
-        [60, 40], [65, 40], [70, 40]
-      ],
-      brightness: 0.5
-    },
-    // Cassiopeia
-    {
-      name: 'cassiopeia',
-      points: [
-        [80, 25], [85, 20], [90, 25], [85, 30], [80, 35]
-      ],
-      brightness: 0.3
-    }
-  ];
-  
-  constellations.forEach(constellation => {
-    const constDiv = document.createElement('div');
-    constDiv.classList.add('constellation');
-    constDiv.style.opacity = constellation.brightness;
-    
-    // Create lines between points
-    for (let i = 0; i < constellation.points.length - 1; i++) {
-      const [x1, y1] = constellation.points[i];
-      const [x2, y2] = constellation.points[i + 1];
-      
-      const line = document.createElement('div');
-      line.classList.add('constellation-line');
-      
-      // Calculate line properties
-      const dx = x2 - x1;
-      const dy = y2 - y1;
-      const length = Math.sqrt(dx * dx + dy * dy);
-      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-      
-      line.style.width = `${length}%`;
-      line.style.left = `${x1}%`;
-      line.style.top = `${y1}%`;
-      line.style.transform = `rotate(${angle}deg)`;
-      
-      constDiv.appendChild(line);
-    }
-    
-    // Add brighter stars at constellation points
-    constellation.points.forEach(([x, y], pointIndex) => {
-      const star = document.createElement('div');
-      star.classList.add('star', 'xlarge');
-      star.style.left = `${x}%`;
-      star.style.top = `${y}%`;
-      star.style.opacity = constellation.brightness + 0.3;
-      star.style.animationDelay = `${pointIndex * 0.5}s`;
-      constDiv.appendChild(star);
-    });
-    
-    container.appendChild(constDiv);
-  });
 }
 
 // ===================== BOOKING SEARCH =====================
@@ -1951,6 +1745,12 @@ function searchBooking() {
 
       // Display results
       renderBooking(data.booking);
+      
+      // Scroll to results
+      document.querySelector('.results-card').scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
     })
     .catch(error => {
       btn.innerHTML = '<span>🔍</span> Check My Booking';
@@ -1969,8 +1769,6 @@ function searchBooking() {
 
 // ===================== RENDER BOOKING DATA =====================
 function renderBooking(b) {
-  console.log('Raw booking data:', b);
-  
   // Helper function to find field with multiple possible names
   function getField(obj, possibleNames) {
     if (!obj) return null;
@@ -2004,22 +1802,19 @@ function renderBooking(b) {
   document.getElementById('passengerName').textContent = name;
   document.getElementById('busName').textContent = bus;
   
-  // ===================== FIXED DATE/TIME FORMATTING =====================
+  // Format date/time
   let displayDateTime = '-';
   
-  // Function to clean and format ISO date string like "2025-12-10T18:30:00.000Z"
   function formatISODateTime(isoString) {
     try {
       const date = new Date(isoString);
       if (isNaN(date.getTime())) return null;
       
-      // Format date as "10 Dec 2025"
       const day = date.getDate().toString().padStart(2, '0');
       const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       const month = months[date.getMonth()];
       const year = date.getFullYear();
       
-      // Format time as "06:30 PM" (convert to 12-hour format)
       let hours = date.getHours();
       const minutes = date.getMinutes().toString().padStart(2, '0');
       const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -2034,17 +1829,13 @@ function renderBooking(b) {
     }
   }
   
-  // Function to clean and format regular date string
   function formatRegularDateTime(dateStr, timeStr) {
     let cleanDate = dateStr;
     let cleanTime = timeStr || '';
     
-    // Clean date string
     if (cleanDate) {
-      // Remove time part if present
       cleanDate = cleanDate.split(' ')[0];
       
-      // Format DD/MM/YYYY to DD Mon YYYY
       if (cleanDate.includes('/')) {
         const parts = cleanDate.split('/');
         if (parts.length === 3) {
@@ -2057,9 +1848,7 @@ function renderBooking(b) {
       }
     }
     
-    // Clean time string
     if (cleanTime && typeof cleanTime === 'string') {
-      // Convert 24h to 12h format
       const timeMatch = cleanTime.match(/(\d{1,2}):(\d{2})/);
       if (timeMatch) {
         let hours = parseInt(timeMatch[1]);
@@ -2076,7 +1865,7 @@ function renderBooking(b) {
     };
   }
   
-  // Check if we have an ISO date string like "2025-12-10T18:30:00.000Z"
+  // Check if we have an ISO date string
   if (date && typeof date === 'string' && date.includes('T') && date.includes('Z')) {
     const formatted = formatISODateTime(date);
     if (formatted) {
@@ -2085,12 +1874,10 @@ function renderBooking(b) {
   } 
   // Check if date field contains both date and time
   else if (date && typeof date === 'string' && (date.includes('T') || date.includes(' '))) {
-    // Try to parse as ISO
     const formatted = formatISODateTime(date);
     if (formatted) {
       displayDateTime = `${formatted.date} • ${formatted.time}`;
     } else {
-      // Fallback to regular formatting
       const formatted = formatRegularDateTime(date, time);
       displayDateTime = `${formatted.date} • ${formatted.time}`;
     }
@@ -2101,7 +1888,7 @@ function renderBooking(b) {
     displayDateTime = `${formatted.date} • ${formatted.time}`;
   }
   
-  // Clean up display - remove any "Invalid Date" or similar issues
+  // Clean up display
   if (displayDateTime.includes('Invalid') || displayDateTime.includes('NaN') || displayDateTime.includes('undefined')) {
     displayDateTime = '-';
   }
@@ -2121,9 +1908,9 @@ function renderBooking(b) {
     paymentText.includes('Rs') ||
     paymentText.includes('LKR')
   )) {
-    paymentElement.innerHTML = `${paymentText} <span style="margin-left:8px;padding:3px 10px;background:var(--success);color:white;border-radius:20px;font-size:0.8rem;font-weight:600;">Paid</span>`;
+    paymentElement.innerHTML = `${paymentText} <span style="margin-left:5px;padding:2px 8px;background:var(--success);color:white;border-radius:15px;font-size:0.75rem;font-weight:600;">Paid</span>`;
   } else if (paymentText.toLowerCase().includes('pending') || paymentText.toLowerCase().includes('due')) {
-    paymentElement.innerHTML = `${paymentText} <span style="margin-left:8px;padding:3px 10px;background:orange;color:white;border-radius:20px;font-size:0.8rem;font-weight:600;">Pending</span>`;
+    paymentElement.innerHTML = `${paymentText} <span style="margin-left:5px;padding:2px 8px;background:orange;color:white;border-radius:15px;font-size:0.75rem;font-weight:600;">Pending</span>`;
   }
 
   // Display seats
@@ -2131,7 +1918,6 @@ function renderBooking(b) {
   seatsBox.innerHTML = '';
   
   if (seat && seat.trim() !== '' && seat.trim().toLowerCase() !== 'not updated' && seat.trim() !== '-') {
-    // Split seats by comma, space, or slash
     const seats = seat.split(/[, \/]+/).filter(s => s.trim() !== '' && s.trim() !== '-');
     
     if (seats.length > 0) {
@@ -2171,88 +1957,6 @@ function renderBooking(b) {
     seats: seat,
     bookingId: bookingId
   };
-  
-  // For mobile, show ticket in modal
-  if (window.innerWidth <= 768) {
-    showMobileTicket();
-  }
-}
-
-// ===================== MOBILE TICKET VIEW =====================
-function showMobileTicket() {
-  const modal = document.getElementById('mobileTicketModal');
-  const content = document.getElementById('mobileTicketContent');
-  
-  // Create mobile-friendly ticket view
-  const ticketHtml = `
-    <div style="padding: 15px;">
-      <div style="text-align: center; margin-bottom: 20px;">
-        <h2 style="color: var(--dark-blue); font-size: 1.4rem; margin-bottom: 5px;">🎫 Your Ticket</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">Booking Details</p>
-      </div>
-      
-      <div style="background: var(--bg-light); padding: 15px; border-radius: var(--radius-md); margin-bottom: 15px; text-align: center;">
-        <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 5px;">Passenger Name</div>
-        <div style="color: var(--dark-blue); font-size: 1.3rem; font-weight: 800;">${escapeHtml(window.currentBookingData.passengerName)}</div>
-      </div>
-      
-      <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px;">
-        <div style="background: var(--bg-light); padding: 12px; border-radius: var(--radius-md);">
-          <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 5px;">🚌 Bus Name</div>
-          <div style="color: var(--text-primary); font-weight: 600;">${escapeHtml(window.currentBookingData.busName)}</div>
-        </div>
-        
-        <div style="background: var(--bg-light); padding: 12px; border-radius: var(--radius-md);">
-          <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 5px;">📅 Date & Time</div>
-          <div style="color: var(--text-primary); font-weight: 600;">${escapeHtml(window.currentBookingData.dateTime)}</div>
-        </div>
-        
-        <div style="background: var(--bg-light); padding: 12px; border-radius: var(--radius-md);">
-          <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 5px;">📍 Pickup Location</div>
-          <div style="color: var(--text-primary); font-weight: 600;">${escapeHtml(window.currentBookingData.pickupLocation)}</div>
-        </div>
-        
-        <div style="background: var(--bg-light); padding: 12px; border-radius: var(--radius-md);">
-          <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 5px;">💰 Payment Status</div>
-          <div style="color: var(--text-primary); font-weight: 600;">${escapeHtml(window.currentBookingData.paymentAmount)}</div>
-        </div>
-      </div>
-      
-      <div style="background: linear-gradient(135deg, rgba(58, 123, 213, 0.05), rgba(103, 184, 247, 0.02)); padding: 15px; border-radius: var(--radius-md); border: 1px dashed var(--border-light); margin-bottom: 20px;">
-        <div style="color: var(--dark-blue); font-weight: 700; text-align: center; margin-bottom: 15px; font-size: 1.1rem;">💺 Seat Numbers</div>
-        <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-          ${window.currentBookingData.seats && window.currentBookingData.seats.trim() !== '' && window.currentBookingData.seats.toLowerCase() !== 'not updated' ? 
-            window.currentBookingData.seats.split(/[, \/]+/).filter(s => s.trim() !== '').map(seat => `
-              <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue)); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800;">
-                <div style="font-size: 12px;">💺</div>
-                <div>${escapeHtml(seat.trim())}</div>
-              </div>
-            `).join('') : 
-            '<div style="text-align:center;color:var(--text-muted);font-style:italic;padding:10px;">No seat assigned yet</div>'
-          }
-        </div>
-      </div>
-      
-      <button onclick="downloadTicket()" style="width:100%;padding:15px;background:linear-gradient(135deg, var(--success), #059669);color:white;border:none;border-radius:var(--radius-md);font-weight:700;font-size:1rem;margin-bottom:15px;display:flex;align-items:center;justify-content:center;gap:10px;">
-        <span>⬇️</span> Download Ticket
-      </button>
-      
-      <div style="text-align:center;color:var(--text-muted);font-size:0.9rem;padding:15px;background:var(--bg-light);border-radius:var(--radius-md);">
-        <div style="font-weight:600;margin-bottom:5px;">📞 Need Help?</div>
-        <div>Contact: <strong>0777 402 886 (Mr. Fawas)</strong></div>
-      </div>
-    </div>
-  `;
-  
-  content.innerHTML = ticketHtml;
-  modal.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-}
-
-function closeMobileTicket() {
-  const modal = document.getElementById('mobileTicketModal');
-  modal.style.display = 'none';
-  document.body.style.overflow = 'auto';
 }
 
 // ===================== TICKET DOWNLOAD =====================
@@ -2285,20 +1989,20 @@ function downloadTicket() {
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: #f5f7fa; padding: 20px; }
         .ticket { max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .ticket-header { background: linear-gradient(135deg, #3a7bd5, #67b8f7); color: white; padding: 30px; text-align: center; }
-        .ticket-title { font-size: 28px; font-weight: 800; margin-bottom: 10px; }
-        .ticket-subtitle { font-size: 14px; opacity: 0.9; }
-        .ticket-body { padding: 30px; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
-        .info-card { background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; }
-        .info-label { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600; }
-        .info-value { font-size: 18px; font-weight: 700; color: #0f172a; }
-        .passenger-name { text-align: center; font-size: 24px; font-weight: 800; color: #1e40af; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 2px dashed #e2e8f0; }
-        .seats-section { background: linear-gradient(135deg, rgba(58,123,213,0.05), rgba(103,184,247,0.02)); padding: 25px; border-radius: 12px; border: 2px dashed #dbeafe; margin-bottom: 30px; }
-        .section-title { font-size: 18px; font-weight: 700; color: #1e40af; margin-bottom: 20px; text-align: center; }
-        .seats-container { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
-        .seat { width: 70px; height: 70px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #3a7bd5, #1a5cb0); color: white; font-weight: 800; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .ticket-footer { text-align: center; padding: 20px; color: #64748b; font-size: 14px; border-top: 1px solid #e2e8f0; }
+        .ticket-header { background: linear-gradient(135deg, #3a7bd5, #67b8f7); color: white; padding: 25px; text-align: center; }
+        .ticket-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+        .ticket-subtitle { font-size: 13px; opacity: 0.9; }
+        .ticket-body { padding: 25px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .info-card { background: #f8fafc; padding: 18px; border-radius: 10px; border: 1px solid #e2e8f0; }
+        .info-label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; font-weight: 600; }
+        .info-value { font-size: 16px; font-weight: 700; color: #0f172a; }
+        .passenger-name { text-align: center; font-size: 22px; font-weight: 800; color: #1e40af; margin-bottom: 25px; padding-bottom: 12px; border-bottom: 2px dashed #e2e8f0; }
+        .seats-section { background: linear-gradient(135deg, rgba(58,123,213,0.05), rgba(103,184,247,0.02)); padding: 22px; border-radius: 10px; border: 2px dashed #dbeafe; margin-bottom: 25px; }
+        .section-title { font-size: 17px; font-weight: 700; color: #1e40af; margin-bottom: 18px; text-align: center; }
+        .seats-container { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+        .seat { width: 60px; height: 60px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #3a7bd5, #1a5cb0); color: white; font-weight: 800; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .ticket-footer { text-align: center; padding: 18px; color: #64748b; font-size: 13px; border-top: 1px solid #e2e8f0; }
         @media print { body { background: white; padding: 0; } .ticket { box-shadow: none; } }
       </style>
     </head>
@@ -2340,7 +2044,7 @@ function downloadTicket() {
               ${data.seats && data.seats.trim() !== '' && data.seats.toLowerCase() !== 'not updated' ? 
                 data.seats.split(/[, \/]+/).filter(s => s.trim() !== '').map(seat => `
                   <div class="seat">
-                    <div style="font-size: 12px;">💺</div>
+                    <div style="font-size: 11px;">💺</div>
                     <div>${escapeHtml(seat.trim())}</div>
                   </div>
                 `).join('') : 
@@ -2349,8 +2053,8 @@ function downloadTicket() {
             </div>
           </div>
           
-          <div style="text-align: center; margin-top: 30px; padding: 20px; background: #f0f9ff; border-radius: 12px;">
-            <p style="font-weight: 600; color: #0369a1; margin-bottom: 10px;">📞 Contact Information</p>
+          <div style="text-align: center; margin-top: 25px; padding: 18px; background: #f0f9ff; border-radius: 10px;">
+            <p style="font-weight: 600; color: #0369a1; margin-bottom: 8px;">📞 Contact Information</p>
             <p style="color: #475569;">For any inquiries, contact: <strong>0777 402 886 (Mr. Fawas)</strong></p>
           </div>
         </div>
@@ -2368,7 +2072,6 @@ function downloadTicket() {
       </div>
       
       <script>
-        // Auto-print after a delay
         setTimeout(() => {
           window.print();
           window.close();
@@ -2393,14 +2096,14 @@ function downloadTicket() {
   setTimeout(() => {
     downloadBtn.innerHTML = originalText;
     downloadBtn.disabled = false;
-  }, 1000);
+  }, 800);
 
   Swal.fire({
     icon: 'success',
     title: 'Ticket Downloaded!',
     text: 'Your ticket has been downloaded successfully',
     confirmButtonColor: '#3a7bd5',
-    timer: 2000,
+    timer: 1500,
     showConfirmButton: false
   });
 }
@@ -2422,8 +2125,8 @@ function sendFeedback(answer) {
   const originalHTML = feedbackSection.innerHTML;
   
   feedbackSection.innerHTML = `
-    <div style="text-align:center; padding:20px;">
-      <div class="spinner" style="margin:0 auto 15px;"></div>
+    <div style="text-align:center; padding:15px;">
+      <div class="spinner" style="margin:0 auto 10px;"></div>
       <p>Sending feedback...</p>
     </div>
   `;
@@ -2446,7 +2149,7 @@ function sendFeedback(answer) {
           title: 'Thank You!',
           text: 'Your feedback has been recorded.',
           confirmButtonColor: '#3a7bd5',
-          timer: 1500,
+          timer: 1200,
           showConfirmButton: false
         });
       } else {
@@ -2476,13 +2179,6 @@ function escapeHtml(text) {
   div.textContent = text;
   return div.innerHTML;
 }
-
-// Close mobile modal when clicking outside
-document.getElementById('mobileTicketModal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    closeMobileTicket();
-  }
-});
 </script>
 </body>
 </html>
