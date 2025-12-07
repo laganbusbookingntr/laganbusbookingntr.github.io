@@ -70,19 +70,20 @@ body {
   line-height: 1.5;
 }
 
+/* Container - remove top padding so sky and header can touch */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 20px 20px; /* removed top padding to remove gap */
 }
 
 /* ===================== COMPACT SKY SECTION ===================== */
 .sky-container {
   position: relative;
   width: 100%;
-  height: 150px;
-  border-radius: var(--radius-lg);
-  margin-bottom: 20px;
+  height: 150px; /* compact height */
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0; /* keep top rounded, bottom flush */
+  margin-bottom: 0; /* NO GAP - important */
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -93,11 +94,11 @@ body {
 [data-theme="light"] .sky-container {
   background: linear-gradient(
     180deg,
-    #1e90ff 0%,     /* Deep Sky Blue */
-    #87ceeb 25%,    /* Sky Blue */
-    #b0e2ff 50%,    /* Light Sky Blue */
-    #e0f7ff 75%,    /* Baby Blue */
-    #f0f8ff 100%    /* Alice Blue */
+    #1e90ff 0%,
+    #87ceeb 25%,
+    #b0e2ff 50%,
+    #e0f7ff 75%,
+    #f0f8ff 100%
   );
 }
 
@@ -105,11 +106,11 @@ body {
 [data-theme="dark"] .sky-container {
   background: linear-gradient(
     180deg,
-    #0a1a3a 0%,     /* Midnight Blue */
-    #1a2b5a 25%,    /* Dark Blue */
-    #2a3c7a 50%,    /* Medium Blue */
-    #3a4d9a 75%,    /* Royal Blue */
-    #4a5eba 100%    /* Soft Blue */
+    #0a1a3a 0%,
+    #1a2b5a 25%,
+    #2a3c7a 50%,
+    #3a4d9a 75%,
+    #4a5eba 100%
   );
 }
 
@@ -133,12 +134,12 @@ body {
   border-radius: 50%;
   background: radial-gradient(
     circle at 30% 30%,
-    #FFD700 0%,      /* Gold */
-    #FF8C00 30%,     /* Dark Orange */
-    #FF4500 60%,     /* Orange Red */
-    #FF6347 100%     /* Tomato */
+    #FFD700 0%,
+    #FF8C00 30%,
+    #FF4500 60%,
+    #FF6347 100%
   );
-  box-shadow: 
+  box-shadow:
     0 0 50px rgba(255, 215, 0, 0.9),
     0 0 100px rgba(255, 140, 0, 0.7),
     0 0 150px rgba(255, 69, 0, 0.5),
@@ -164,21 +165,11 @@ body {
 }
 
 @keyframes sunPulse {
-  0%, 100% { 
+  0%, 100% {
     transform: scale(1);
-    box-shadow: 
-      0 0 50px rgba(255, 215, 0, 0.9),
-      0 0 100px rgba(255, 140, 0, 0.7),
-      0 0 150px rgba(255, 69, 0, 0.5),
-      0 0 200px rgba(255, 99, 71, 0.3);
   }
-  50% { 
+  50% {
     transform: scale(1.05);
-    box-shadow: 
-      0 0 60px rgba(255, 215, 0, 1),
-      0 0 120px rgba(255, 140, 0, 0.8),
-      0 0 180px rgba(255, 69, 0, 0.6),
-      0 0 240px rgba(255, 99, 71, 0.4);
   }
 }
 
@@ -214,12 +205,12 @@ body {
   border-radius: 50%;
   background: radial-gradient(
     circle at 70% 30%,
-    #F8F8FF 0%,      /* Ghost White */
-    #E6E6FA 30%,     /* Lavender */
-    #D8BFD8 60%,     /* Thistle */
-    #DDA0DD 100%     /* Plum */
+    #F8F8FF 0%,
+    #E6E6FA 30%,
+    #D8BFD8 60%,
+    #DDA0DD 100%
   );
-  box-shadow: 
+  box-shadow:
     0 0 40px rgba(248, 248, 255, 0.8),
     0 0 80px rgba(230, 230, 250, 0.6),
     0 0 120px rgba(216, 191, 216, 0.4),
@@ -231,40 +222,11 @@ body {
   overflow: hidden;
 }
 
-.moon-craters {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-}
-
-.moon-crater {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.2);
-  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-.moon-crater.large {
-  width: 15px;
-  height: 15px;
-  top: 15px;
-  left: 15px;
-}
-
-.moon-crater.medium {
-  width: 10px;
-  height: 10px;
-  top: 35px;
-  right: 15px;
-}
-
-.moon-crater.small {
-  width: 6px;
-  height: 6px;
-  bottom: 20px;
-  left: 25px;
-}
+.moon-craters { position:absolute; width:100%; height:100%; border-radius:50%; }
+.moon-crater { position:absolute; border-radius:50%; background: rgba(0,0,0,0.2); box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3); }
+.moon-crater.large{ width:15px; height:15px; top:15px; left:15px; }
+.moon-crater.medium{ width:10px; height:10px; top:35px; right:15px; }
+.moon-crater.small{ width:6px; height:6px; bottom:20px; left:25px; }
 
 .moon-glow {
   position: absolute;
@@ -273,36 +235,17 @@ body {
   top: -50%;
   left: -50%;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(248, 248, 255, 0.15) 0%,
-    rgba(230, 230, 250, 0.1) 40%,
-    transparent 70%
-  );
+  background: radial-gradient(circle, rgba(248,248,255,0.15) 0%, rgba(230,230,250,0.1) 40%, transparent 70%);
   animation: moonHalo 8s ease-in-out infinite;
 }
 
 @keyframes moonGlow {
-  0%, 100% { 
-    transform: scale(1);
-    box-shadow: 
-      0 0 40px rgba(248, 248, 255, 0.8),
-      0 0 80px rgba(230, 230, 250, 0.6),
-      0 0 120px rgba(216, 191, 216, 0.4),
-      0 0 160px rgba(221, 160, 221, 0.2);
-  }
-  50% { 
-    transform: scale(1.03);
-    box-shadow: 
-      0 0 60px rgba(248, 248, 255, 0.9),
-      0 0 120px rgba(230, 230, 250, 0.7),
-      0 0 180px rgba(216, 191, 216, 0.5),
-      0 0 240px rgba(221, 160, 221, 0.3);
-  }
+  0%,100%{ transform: scale(1); }
+  50%{ transform: scale(1.03); }
 }
 
 @keyframes moonHalo {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
+  0%,100% { opacity: 0.3; transform: scale(1); }
   50% { opacity: 0.5; transform: scale(1.05); }
 }
 
@@ -311,13 +254,112 @@ body {
   transform: translateY(100px) scale(0.5);
 }
 
+/* ===================== COMPACT CLOUDS ===================== */
+.day-clouds {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  transition: opacity 1s ease;
+  z-index: 5;
+}
+
+[data-theme="dark"] .day-clouds { opacity: 0; }
+
+.cloud-left { position:absolute; left:0; width:40%; height:100%; }
+.cloud-right { position:absolute; right:0; width:40%; height:100%; }
+
+.cloud { position:absolute; background: rgba(255,255,255,0.95); border-radius:50%; filter: blur(1px); opacity:0.9; }
+.cloud::before, .cloud::after { content:''; position:absolute; background: rgba(255,255,255,0.95); border-radius:50%; }
+
+/* left clouds */
+.left-cloud-1 { width: 80px; height: 25px; top: 30px; left: 30px; animation: cloudFloat1 60s linear infinite; }
+.left-cloud-1::before { width:45px; height:45px; top:-20px; left:15px; }
+.left-cloud-1::after { width:60px; height:60px; top:-30px; right:5px; }
+
+.left-cloud-2 { width:70px; height:22px; top:80px; left:50px; animation: cloudFloat2 70s linear infinite 15s; }
+.left-cloud-2::before { width:40px; height:40px; top:-20px; left:10px; }
+.left-cloud-2::after { width:55px; height:55px; top:-25px; right:10px; }
+
+.left-cloud-3 { width:60px; height:20px; top:120px; left:80px; animation: cloudFloat3 80s linear infinite 30s; }
+.left-cloud-3::before { width:35px; height:35px; top:-15px; left:5px; }
+.left-cloud-3::after { width:50px; height:50px; top:-20px; right:15px; }
+
+/* right clouds */
+.right-cloud-1 { width:75px; height:25px; top:40px; right:40px; animation: cloudFloat2 65s linear infinite 5s; }
+.right-cloud-1::before { width:45px; height:45px; top:-20px; left:10px; }
+.right-cloud-1::after { width:60px; height:60px; top:-30px; right:10px; }
+
+.right-cloud-2 { width:65px; height:22px; top:90px; right:70px; animation: cloudFloat1 75s linear infinite 20s; }
+.right-cloud-2::before { width:40px; height:40px; top:-20px; left:15px; }
+.right-cloud-2::after { width:55px; height:55px; top:-25px; right:5px; }
+
+.right-cloud-3 { width:55px; height:20px; top:130px; right:100px; animation: cloudFloat3 85s linear infinite 35s; }
+.right-cloud-3::before { width:35px; height:35px; top:-15px; left:10px; }
+.right-cloud-3::after { width:50px; height:50px; top:-20px; right:15px; }
+
+@keyframes cloudFloat1 {
+  0% { transform: translateX(-200px); }
+  100% { transform: translateX(calc(100vw + 200px)); }
+}
+@keyframes cloudFloat2 {
+  0% { transform: translateX(calc(100vw + 200px)); }
+  100% { transform: translateX(-200px); }
+}
+@keyframes cloudFloat3 {
+  0% { transform: translateX(-150px) translateY(0); }
+  50% { transform: translateX(calc(50vw - 75px)) translateY(-10px); }
+  100% { transform: translateX(calc(100vw + 150px)) translateY(0); }
+}
+
+/* ===================== COMPACT NIGHT CLOUDS ===================== */
+.night-clouds {
+  position: absolute;
+  width: 40%;
+  left: 0;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: 5;
+}
+[data-theme="dark"] .night-clouds { opacity: 0.8; }
+.night-cloud { position:absolute; background: rgba(200,200,220,0.7); border-radius:50%; filter: blur(2px); opacity:0.8; }
+.night-cloud::before, .night-cloud::after { content:''; position:absolute; background: rgba(200,200,220,0.7); border-radius:50%; }
+
+/* Compact night clouds sizing (kept simple) */
+.night-cloud-1 { width:70px; height:25px; top:40px; left:40px; animation:cloudFloat1 80s linear infinite; }
+.night-cloud-2 { width:60px; height:22px; top:90px; left:60px; animation:cloudFloat2 95s linear infinite 25s; }
+.night-cloud-3 { width:50px; height:20px; top:130px; left:90px; animation:cloudFloat3 110s linear infinite 50s; }
+
+/* ===================== COMPACT STARS ===================== */
+.stars-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  z-index: 2;
+}
+[data-theme="dark"] .stars-container { opacity: 1; }
+
+.star { position:absolute; background:white; border-radius:50%; animation: starTwinkle var(--twinkle-duration) infinite var(--twinkle-delay); }
+.star.small { width:1px; height:1px; --twinkle-duration:2s; box-shadow:0 0 2px white; }
+.star.medium{ width:2px; height:2px; --twinkle-duration:3s; box-shadow:0 0 3px white, 0 0 5px rgba(255,255,255,0.5); }
+.star.large{ width:3px; height:3px; --twinkle-duration:4s; box-shadow:0 0 4px white, 0 0 8px rgba(255,255,255,0.5); }
+@keyframes starTwinkle {
+  0%,100%{ opacity:0.2; transform:scale(0.8); }
+  50% { opacity:1; transform:scale(1.2); }
+}
+
 /* ===================== HEADER & NAVIGATION ===================== */
+/* Ensure header touches sky — remove top margin */
 .main-header {
   text-align: center;
-  margin-bottom: 25px;
+  margin-top: 0; /* NO GAP above header */
+  margin-bottom: 20px;
   padding: 15px 20px;
   background: var(--bg-card);
-  border-radius: var(--radius-lg);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg); /* keep bottom rounded so header and sky look like a single card */
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border-light);
   position: relative;
@@ -363,28 +405,32 @@ body {
   font-size: 0.9rem;
 }
 
-/* ===================== THEME TOGGLE - MOVED TO HEADER ===================== */
+/* ===================== THEME TOGGLE ===================== */
 .theme-toggle-container {
-  position: absolute;
-  top: 15px;
-  right: 15px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .theme-btn {
   background: var(--bg-card);
   border: 2px solid var(--border-light);
   color: var(--text-primary);
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 50px;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s;
   box-shadow: var(--shadow-md);
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   white-space: nowrap;
 }
 
@@ -403,9 +449,7 @@ body {
 }
 
 @media (max-width: 992px) {
-  .main-content {
-    grid-template-columns: 1fr;
-  }
+  .main-content { grid-template-columns: 1fr; }
 }
 
 /* ===================== SEARCH CARD ===================== */
@@ -416,6 +460,8 @@ body {
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border-light);
   height: fit-content;
+  position: sticky;
+  top: 20px;
 }
 
 .card-title {
@@ -535,25 +581,18 @@ body {
   background: url("data:image/svg+xml,%3Csvg width='120' height='20' viewBox='0 0 120 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='8' fill='white'/%3E%3Ccircle cx='30' cy='10' r='8' fill='white'/%3E%3Ccircle cx='50' cy='10' r='8' fill='white'/%3E%3Ccircle cx='70' cy='10' r='8' fill='white'/%3E%3Ccircle cx='90' cy='10' r='8' fill='white'/%3E%3Ccircle cx='110' cy='10' r='8' fill='white'/%3E%3C/svg%3E");
 }
 
-.results-title {
-  font-size: 1.6rem;
-  font-weight: 800;
-  margin-bottom: 5px;
-}
-
-.results-subtitle {
-  font-size: 0.9rem;
-  opacity: 0.9;
-}
+.results-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 5px; }
+.results-subtitle { font-size: 0.9rem; opacity: 0.9; }
 
 .results-body {
   padding: 25px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
+/* ===================== NO RESULTS STYLING ===================== */
 .no-results {
   text-align: center;
   color: var(--text-muted);
@@ -607,28 +646,6 @@ body {
   line-height: 1.4;
 }
 
-/* FIXED PAYMENT STATUS - NO DUPLICATE "Paid" */
-#paymentAmount {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.payment-badge {
-  padding: 2px 8px;
-  background: var(--success);
-  color: white;
-  border-radius: 15px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.payment-badge.pending {
-  background: orange;
-}
-
-/* Passenger name special styling */
 #passengerName {
   font-size: 1.3rem;
   color: var(--dark-blue);
@@ -636,7 +653,6 @@ body {
   padding-bottom: 8px;
   border-bottom: 2px dashed var(--border-light);
   margin-bottom: 5px;
-  text-align: center;
 }
 
 /* ===================== SEATS STYLING ===================== */
@@ -710,9 +726,9 @@ body {
 }
 
 /* ===================== DOWNLOAD BUTTON ===================== */
-.download-section {
-  margin-top: 20px;
-  text-align: center;
+.download-section { 
+  margin-top: 20px; 
+  text-align: center; 
 }
 
 .download-btn {
@@ -818,82 +834,64 @@ body {
   border-top-color: white;
   animation: spin 1s linear infinite;
 }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+/* ===================== ANIMATIONS & RESPONSIVE ===================== */
+.fade-in { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { 
+  from { opacity:0; transform: translateY(15px);} 
+  to { opacity:1; transform: translateY(0);}
 }
 
-/* ===================== ANIMATIONS ===================== */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.fade-in {
-  animation: fadeIn 0.4s ease;
-}
-
-/* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
-  .container {
-    padding: 15px;
+  .container { 
+    padding: 0 15px 15px; 
   }
   
-  .sky-container {
-    height: 120px;
-    margin-bottom: 15px;
+  .sky-container { 
+    height: 120px; 
   }
   
-  .sun-container {
-    left: 30px;
-    top: 80px;
+  .sun-container { 
+    left: 30px; 
+    top: 80px; 
   }
   
   .sun-risen .sun-container {
     top: 15px;
   }
   
-  .sun-main {
-    width: 50px;
-    height: 50px;
+  .sun-main { 
+    width: 50px; 
+    height: 50px; 
   }
   
-  .moon-container {
-    right: 30px;
-    top: 80px;
+  .moon-container { 
+    right: 30px; 
+    top: 80px; 
   }
   
   .moon-risen .moon-container {
     top: 20px;
   }
   
-  .moon-main {
-    width: 45px;
-    height: 45px;
+  .moon-main { 
+    width: 45px; 
+    height: 45px; 
   }
   
-  .main-header {
-    padding: 12px 15px;
-    margin-bottom: 20px;
+  .main-header { 
+    padding: 12px 15px; 
+    margin-bottom: 20px; 
   }
   
-  .brand {
-    font-size: 1.5rem;
+  .brand { 
+    font-size: 1.5rem; 
   }
   
-  .theme-toggle-container {
-    position: static;
-    margin-top: 10px;
-    text-align: center;
-  }
-  
-  .theme-btn {
-    margin: 0 auto;
-    padding: 8px 16px;
-  }
-  
-  .search-card {
-    padding: 20px;
+  .search-card { 
+    padding: 20px; 
+    position: static; 
   }
   
   .ticket-info {
@@ -911,14 +909,14 @@ body {
     margin-bottom: 12px;
   }
   
-  .seats-section {
-    padding: 15px;
-    margin: 12px 0;
+  .seats-section { 
+    padding: 15px; 
+    margin: 12px -15px; 
   }
   
-  .seat {
-    width: 60px;
-    height: 60px;
+  .seat { 
+    width: 60px; 
+    height: 60px; 
   }
   
   .seat-icon {
@@ -929,6 +927,11 @@ body {
     font-size: 0.9rem;
   }
   
+  .theme-btn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+  
   .feedback-buttons {
     flex-direction: column;
   }
@@ -936,87 +939,48 @@ body {
   .feedback-btn {
     width: 100%;
   }
-  
-  /* Fix mobile layout order */
-  #bookingDetails {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  /* Proper mobile view order */
-  #bookingDetails > * {
-    order: 1;
-  }
-  
-  #passengerName {
-    order: 1;
-  }
-  
-  .ticket-info {
-    order: 2;
-  }
-  
-  .seats-section {
-    order: 3;
-  }
-  
-  .download-section {
-    order: 4;
-  }
-  
-  .feedback-section {
-    order: 5;
-  }
 }
 
 @media (max-width: 480px) {
-  .brand {
-    font-size: 1.3rem;
+  .brand { 
+    font-size: 1.3rem; 
   }
   
-  .sky-container {
-    height: 100px;
+  .sky-container { 
+    height: 100px; 
   }
   
-  .sun-container {
-    left: 20px;
-    top: 70px;
+  .sun-container { 
+    left: 20px; 
+    top: 70px; 
   }
   
   .sun-risen .sun-container {
     top: 10px;
   }
   
-  .sun-main {
-    width: 40px;
-    height: 40px;
+  .sun-main { 
+    width: 40px; 
+    height: 40px; 
   }
   
-  .moon-container {
-    right: 20px;
-    top: 70px;
+  .moon-container { 
+    right: 20px; 
+    top: 70px; 
   }
   
   .moon-risen .moon-container {
     top: 15px;
   }
   
-  .moon-main {
-    width: 38px;
-    height: 38px;
+  .moon-main { 
+    width: 38px; 
+    height: 38px; 
   }
   
-  .theme-btn {
-    font-size: 0.85rem;
-    padding: 6px 12px;
-  }
-}
-
-/* Desktop theme button position */
-@media (min-width: 769px) {
-  .theme-toggle-container {
-    top: 15px;
-    right: 15px;
+  .theme-btn { 
+    padding: 5px 10px; 
+    font-size: 0.8rem; 
   }
 }
 </style>
@@ -1025,16 +989,16 @@ body {
 <div class="container">
   
   <!-- Compact Sky Container -->
-  <div class="sky-container" id="skyContainer">
+  <div class="sky-container" id="skyContainer" aria-hidden="true">
     <!-- Sun on Left Side -->
-    <div class="sun-container">
+    <div class="sun-container" aria-hidden="true">
       <div class="sun-main">
         <div class="sun-glow"></div>
       </div>
     </div>
     
     <!-- Moon on Right Side -->
-    <div class="moon-container">
+    <div class="moon-container" aria-hidden="true">
       <div class="moon-main">
         <div class="moon-craters">
           <div class="moon-crater large"></div>
@@ -1044,37 +1008,62 @@ body {
         <div class="moon-glow"></div>
       </div>
     </div>
-  </div>
-  
-  <!-- Main Header with Theme Toggle -->
-  <header class="main-header">
-    <div class="theme-toggle-container">
-      <button class="theme-btn" id="themeToggle">
-        <span id="themeIcon">🌙</span>
-        <span id="themeText">Dark Mode</span>
-      </button>
+    
+    <!-- Day Clouds (Both Sides) -->
+    <div class="day-clouds" aria-hidden="true">
+      <div class="cloud-left">
+        <div class="cloud left-cloud-1"></div>
+        <div class="cloud left-cloud-2"></div>
+        <div class="cloud left-cloud-3"></div>
+      </div>
+      <div class="cloud-right">
+        <div class="cloud right-cloud-1"></div>
+        <div class="cloud right-cloud-2"></div>
+        <div class="cloud right-cloud-3"></div>
+      </div>
     </div>
     
+    <!-- Night Clouds (Left Side Only) -->
+    <div class="night-clouds" aria-hidden="true">
+      <div class="night-cloud night-cloud-1"></div>
+      <div class="night-cloud night-cloud-2"></div>
+      <div class="night-cloud night-cloud-3"></div>
+    </div>
+    
+    <!-- Stars Container -->
+    <div class="stars-container" id="starsContainer" aria-hidden="true"></div>
+  </div>
+  
+  <!-- Main Header (touching the sky) -->
+  <header class="main-header" role="banner" aria-label="Site header">
     <h1 class="brand">Welcome To Lagan Bus Booking</h1>
     <p class="tagline">Safe Travels. May God Bless Your Journey.</p>
     <div class="contact-info">For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></div>
   </header>
   
+  <!-- Theme Toggle Button -->
+  <div class="theme-toggle-container" aria-hidden="true">
+    <button class="theme-btn" id="themeToggle" aria-pressed="false" title="Toggle theme">
+      <span id="themeIcon">🌙</span>
+      <span id="themeText">Dark Mode</span>
+    </button>
+  </div>
+  
   <!-- Main Content -->
-  <main class="main-content">
+  <main class="main-content" role="main">
     
     <!-- Search Card -->
-    <div class="search-card">
+    <div class="search-card" role="region" aria-label="Check Booking">
       <h2 class="card-title">🔍 Check Your Booking</h2>
       
       <div class="input-group">
         <label class="input-label" for="phone">Phone Number</label>
         <input type="tel" id="phone" class="input-field" 
                placeholder="Enter 10-digit number (077XXXXXXX)" 
-               maxlength="10" inputmode="tel">
+               maxlength="10" inputmode="tel" aria-label="Phone number">
       </div>
       
-      <button id="searchBtn" class="search-btn">
+      <button id="searchBtn" class="search-btn" aria-label="Check my booking">
         <span>🔍</span> Check My Booking
       </button>
       
@@ -1089,7 +1078,7 @@ body {
     </div>
     
     <!-- Results Card -->
-    <div class="results-card">
+    <div class="results-card" role="region" aria-label="Booking details">
       <div class="results-header">
         <h2 class="results-title">Your Booking Details</h2>
         <p class="results-subtitle">Find all your travel information here</p>
@@ -1097,7 +1086,7 @@ body {
       
       <div class="results-body" id="resultsBody">
         <!-- Initial state -->
-        <div class="no-results">
+        <div class="no-results" aria-live="polite">
           <div class="no-results-icon">🚌</div>
           <h3 class="no-results-title">No Booking Found</h3>
           <p>Enter your phone number to check your booking details</p>
@@ -1106,7 +1095,7 @@ body {
         <!-- Booking Details (will be shown when data loads) -->
         <div id="bookingDetails" style="display: none;">
           <!-- Passenger Info -->
-          <div style="text-align: center; margin-bottom: 20px;">
+          <div class="info-card" style="grid-column: 1 / -1; text-align: center;">
             <div class="info-label">
               <span>👤</span> Passenger Name
             </div>
@@ -1149,7 +1138,7 @@ body {
             <h3 class="section-title">
               <span>💺</span> Your Seat Numbers
             </h3>
-            <div class="seats-container" id="seatsBox"></div>
+            <div class="seats-container" id="seatsBox" aria-live="polite"></div>
           </div>
           
           <!-- Download Button -->
@@ -1177,64 +1166,63 @@ body {
   </main>
   
   <!-- Footer -->
-  <footer class="main-footer">
+  <footer class="main-footer" role="contentinfo">
     <p>Made with <span style="color:#e74c3c;">❤</span> by <span class="company-name">WEDOXA</span></p>
   </footer>
 </div>
 
 <script>
 // ===================== CONFIGURATION =====================
+// replace this URL with your Google Apps Script URL if needed
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
 
-// ===================== AMAZING SKY ANIMATIONS =====================
+// ===================== SKY / THEME / UI INIT =====================
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize theme
   const savedTheme = localStorage.getItem('lagan-theme') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeUI(savedTheme);
-  
+  createStars();
+
   // Animate sun/moon rise on load
   setTimeout(() => {
     if (savedTheme === 'light') {
       document.body.classList.add('sun-risen');
     } else {
       document.body.classList.add('moon-risen');
+      createShootingStars();
     }
   }, 300);
-  
+
   // Theme toggle event
   document.getElementById('themeToggle').addEventListener('click', function() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    
-    // Animate transition
+
     if (newTheme === 'dark') {
-      // Day to Night transition
       document.body.classList.remove('sun-risen');
       setTimeout(() => {
         document.documentElement.setAttribute('data-theme', newTheme);
         updateThemeUI(newTheme);
         localStorage.setItem('lagan-theme', newTheme);
-        
         setTimeout(() => {
           document.body.classList.add('moon-risen');
+          createShootingStars();
         }, 200);
       }, 200);
     } else {
-      // Night to Day transition
       document.body.classList.remove('moon-risen');
       setTimeout(() => {
         document.documentElement.setAttribute('data-theme', newTheme);
         updateThemeUI(newTheme);
         localStorage.setItem('lagan-theme', newTheme);
-        
         setTimeout(() => {
           document.body.classList.add('sun-risen');
         }, 200);
       }, 200);
     }
   });
-  
+
   // Phone input validation
   const phoneInput = document.getElementById('phone');
   phoneInput.addEventListener('input', function(e) {
@@ -1242,15 +1230,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (value.length > 10) value = value.substring(0, 10);
     e.target.value = value;
   });
-  
+
   // Enter key to search
   phoneInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') searchBooking();
   });
-  
+
   // Search button event
   document.getElementById('searchBtn').addEventListener('click', searchBooking);
-  
+
   // Download button event
   document.getElementById('downloadBtn').addEventListener('click', downloadTicket);
 });
@@ -1258,21 +1246,81 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateThemeUI(theme) {
   const themeIcon = document.getElementById('themeIcon');
   const themeText = document.getElementById('themeText');
-  
+  const toggleBtn = document.getElementById('themeToggle');
+
   if (theme === 'dark') {
     themeIcon.textContent = '☀️';
     themeText.textContent = 'Light Mode';
+    toggleBtn.setAttribute('aria-pressed', 'true');
   } else {
     themeIcon.textContent = '🌙';
     themeText.textContent = 'Dark Mode';
+    toggleBtn.setAttribute('aria-pressed', 'false');
   }
+}
+
+function createStars() {
+  const container = document.getElementById('starsContainer');
+  if (!container) return;
+  container.innerHTML = '';
+  for (let i = 0; i < 100; i++) {
+    const star = document.createElement('div');
+    star.classList.add('star');
+    const size = Math.random();
+    if (size < 0.6) star.classList.add('small');
+    else if (size < 0.9) star.classList.add('medium');
+    else star.classList.add('large');
+    star.style.left = `${Math.random() * 100}%`;
+    star.style.top = `${Math.random() * 100}%`;
+    const delay = Math.random() * 4;
+    star.style.setProperty('--twinkle-delay', `${delay}s`);
+    container.appendChild(star);
+  }
+}
+
+function createShootingStars() {
+  const container = document.getElementById('starsContainer');
+  if (!container) return;
+  function createShootingStar() {
+    if (document.documentElement.getAttribute('data-theme') !== 'dark') return;
+    const shootingStar = document.createElement('div');
+    shootingStar.style.cssText = `
+      position: absolute;
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 30%, rgba(255,255,255,0) 100%);
+      opacity: 0;
+      transform: rotate(-45deg);
+      z-index: 25;
+    `;
+    const startX = Math.random() * 80 + 10;
+    const startY = Math.random() * 30;
+    shootingStar.style.left = `${startX}%`;
+    shootingStar.style.top = `${startY}%`;
+    container.appendChild(shootingStar);
+    const duration = Math.random() * 800 + 400;
+    shootingStar.animate([
+      { transform: 'translateX(0) translateY(0) rotate(-45deg)', opacity: 0 },
+      { transform: 'translateX(200px) translateY(100px) rotate(-45deg)', opacity: 1 },
+      { transform: 'translateX(400px) translateY(200px) rotate(-45deg)', opacity: 0 }
+    ], {
+      duration: duration,
+      easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+    });
+    setTimeout(() => { if (shootingStar.parentNode) shootingStar.parentNode.removeChild(shootingStar); }, duration);
+  }
+  setInterval(() => {
+    if (document.documentElement.getAttribute('data-theme') === 'dark' && Math.random() < 0.2) {
+      createShootingStar();
+    }
+  }, 3000);
 }
 
 // ===================== BOOKING SEARCH =====================
 function searchBooking() {
   const phone = document.getElementById('phone').value.trim();
   const btn = document.getElementById('searchBtn');
-  
+
   if (!phone || phone.length < 9) {
     Swal.fire({
       icon: 'warning',
@@ -1313,22 +1361,18 @@ function searchBooking() {
 
       // Display results
       renderBooking(data.booking);
-      
-      // Scroll to results on mobile
-      if (window.innerWidth <= 768) {
-        setTimeout(() => {
-          document.querySelector('.results-card').scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
-          });
-        }, 300);
-      }
+
+      // Scroll to results
+      document.querySelector('.results-card').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
     })
     .catch(error => {
       btn.innerHTML = '<span>🔍</span> Check My Booking';
       btn.disabled = false;
       Swal.close();
-      
+
       Swal.fire({
         icon: 'error',
         title: 'Connection Error',
@@ -1341,7 +1385,6 @@ function searchBooking() {
 
 // ===================== RENDER BOOKING DATA =====================
 function renderBooking(b) {
-  // Helper function to find field with multiple possible names
   function getField(obj, possibleNames) {
     if (!obj) return null;
     for (const name of possibleNames) {
@@ -1352,7 +1395,6 @@ function renderBooking(b) {
         }
       }
     }
-    // Try direct match with any key
     const keys = Object.keys(obj);
     for (const name of possibleNames) {
       if (keys.includes(name)) return obj[name];
@@ -1360,58 +1402,47 @@ function renderBooking(b) {
     return null;
   }
 
-  // Extract data with flexible field names
   const name = getField(b, ['Name', 'Passenger', 'Passenger Name', 'Full Name', 'Customer Name']) || '-';
   const bus = getField(b, ['Bus', 'Bus Name', 'Vehicle', 'Bus Number', 'Service']) || '-';
   const date = getField(b, ['Date', 'Travel Date', 'Journey Date', 'Departure Date', 'Date/Time']) || '';
   const time = getField(b, ['Time', 'Departure Time', 'Travel Time', 'Time Slot']) || '';
   const seat = getField(b, ['Seat', 'Seats', 'Seat Number', 'Seat Numbers', 'Seat No']) || '';
   const pickup = getField(b, ['Pickup', 'Pickup Location', 'Boarding Point', 'Pickup Point']) || '-';
-  const payment = getField(b, ['Payment', 'Amount', 'Payment Status', 'Fare', 'Price']) || '';
+  const payment = getField(b, ['Payment', 'Amount', 'Payment Status', 'Fare', 'Price']) || '-';
   const bookingId = getField(b, ['Booking ID', 'Reference', 'Ref No', 'Ticket No']) || '';
 
   // Update display
   document.getElementById('passengerName').textContent = name;
   document.getElementById('busName').textContent = bus;
-  
+
   // Format date/time
   let displayDateTime = '-';
-  
+
   function formatISODateTime(isoString) {
     try {
-      const date = new Date(isoString);
-      if (isNaN(date.getTime())) return null;
-      
-      const day = date.getDate().toString().padStart(2, '0');
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      const month = months[date.getMonth()];
-      const year = date.getFullYear();
-      
-      let hours = date.getHours();
-      const minutes = date.getMinutes().toString().padStart(2, '0');
+      const dateObj = new Date(isoString);
+      if (isNaN(dateObj.getTime())) return null;
+      const day = dateObj.getDate().toString().padStart(2, '0');
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const month = months[dateObj.getMonth()];
+      const year = dateObj.getFullYear();
+      let hours = dateObj.getHours();
+      const minutes = dateObj.getMinutes().toString().padStart(2, '0');
       const ampm = hours >= 12 ? 'PM' : 'AM';
       hours = hours % 12 || 12;
-      
-      return {
-        date: `${day} ${month} ${year}`,
-        time: `${hours}:${minutes} ${ampm}`
-      };
-    } catch (e) {
-      return null;
-    }
+      return { date: `${day} ${month} ${year}`, time: `${hours}:${minutes} ${ampm}` };
+    } catch (e) { return null; }
   }
-  
+
   function formatRegularDateTime(dateStr, timeStr) {
     let cleanDate = dateStr;
     let cleanTime = timeStr || '';
-    
     if (cleanDate) {
       cleanDate = cleanDate.split(' ')[0];
-      
       if (cleanDate.includes('/')) {
         const parts = cleanDate.split('/');
         if (parts.length === 3) {
-          const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
           const monthIndex = parseInt(parts[1]) - 1;
           if (monthIndex >= 0 && monthIndex < 12) {
             cleanDate = `${parts[0]} ${months[monthIndex]} ${parts[2]}`;
@@ -1419,7 +1450,6 @@ function renderBooking(b) {
         }
       }
     }
-    
     if (cleanTime && typeof cleanTime === 'string') {
       const timeMatch = cleanTime.match(/(\d{1,2}):(\d{2})/);
       if (timeMatch) {
@@ -1430,87 +1460,43 @@ function renderBooking(b) {
         cleanTime = `${hours}:${minutes} ${ampm}`;
       }
     }
-    
-    return {
-      date: cleanDate,
-      time: cleanTime
-    };
+    return { date: cleanDate, time: cleanTime };
   }
-  
-  // Check if we have an ISO date string
+
+  // Determine displayDateTime
   if (date && typeof date === 'string' && date.includes('T') && date.includes('Z')) {
     const formatted = formatISODateTime(date);
-    if (formatted) {
-      displayDateTime = `${formatted.date} • ${formatted.time}`;
-    }
-  } 
-  // Check if date field contains both date and time
-  else if (date && typeof date === 'string' && (date.includes('T') || date.includes(' '))) {
+    if (formatted) displayDateTime = `${formatted.date} • ${formatted.time}`;
+  } else if (date && typeof date === 'string' && (date.includes('T') || date.includes(' '))) {
     const formatted = formatISODateTime(date);
-    if (formatted) {
-      displayDateTime = `${formatted.date} • ${formatted.time}`;
-    } else {
-      const formatted = formatRegularDateTime(date, time);
-      displayDateTime = `${formatted.date} • ${formatted.time}`;
+    if (formatted) displayDateTime = `${formatted.date} • ${formatted.time}`;
+    else {
+      const formatted2 = formatRegularDateTime(date, time);
+      displayDateTime = `${formatted2.date} • ${formatted2.time}`;
     }
-  }
-  // Regular date and time fields
-  else {
+  } else {
     const formatted = formatRegularDateTime(date, time);
     displayDateTime = `${formatted.date} • ${formatted.time}`;
   }
-  
-  // Clean up display
+
   if (displayDateTime.includes('Invalid') || displayDateTime.includes('NaN') || displayDateTime.includes('undefined')) {
     displayDateTime = '-';
   }
-  
   document.getElementById('dateTime').textContent = displayDateTime;
   document.getElementById('pickupLocation').textContent = pickup;
-  
-  // FIXED PAYMENT STATUS - NO DUPLICATE "Paid"
-  const paymentElement = document.getElementById('paymentAmount');
-  let paymentText = payment || 'Pending';
-  
-  // Clean payment text - remove duplicate words
-  paymentText = paymentText.replace(/\s+/g, ' ').trim();
-  
-  // Check if payment text already contains status words
-  const hasPaid = paymentText.toLowerCase().includes('paid');
-  const hasPending = paymentText.toLowerCase().includes('pending');
-  const hasDue = paymentText.toLowerCase().includes('due');
-  
-  if (hasPaid) {
-    // Extract just the payment amount if it exists
-    const amountMatch = paymentText.match(/([\d,]+(\.\d{2})?)\s*(LKR|Rs|₹|\/)?/);
-    if (amountMatch) {
-      paymentText = amountMatch[1];
-      if (amountMatch[3]) {
-        paymentText += ' ' + amountMatch[3];
-      }
-    }
-    paymentElement.innerHTML = `${paymentText} <span class="payment-badge">Paid</span>`;
-  } else if (hasPending || hasDue) {
-    paymentElement.innerHTML = `${paymentText} <span class="payment-badge pending">Pending</span>`;
-  } else if (paymentText && (
-    paymentText.includes('/-') ||
-    paymentText.includes('₹') ||
-    paymentText.includes('Rs') ||
-    paymentText.includes('LKR') ||
-    /^\d+(,\d+)*(\.\d{2})?$/.test(paymentText)
-  )) {
-    paymentElement.innerHTML = `${paymentText} <span class="payment-badge">Paid</span>`;
-  } else {
-    paymentElement.innerHTML = `${paymentText} <span class="payment-badge pending">Pending</span>`;
-  }
 
-  // Display seats
+  // ===================== PAYMENT — SHOW EXACT VALUE FROM SHEET (NO BADGES) =====================
+  const paymentElement = document.getElementById('paymentAmount');
+  const paymentText = (payment && typeof payment === 'string' && payment.trim() !== '') ? payment : 'Not Updated';
+  // Show the exact text typed in the sheet (no badges, no auto-detection)
+  paymentElement.textContent = paymentText;
+
+  // ===================== SEATS DISPLAY =====================
   const seatsBox = document.getElementById('seatsBox');
   seatsBox.innerHTML = '';
-  
-  if (seat && seat.trim() !== '' && seat.trim().toLowerCase() !== 'not updated' && seat.trim() !== '-') {
-    const seats = seat.split(/[, \/]+/).filter(s => s.trim() !== '' && s.trim() !== '-');
-    
+
+  if (seat && String(seat).trim() !== '' && String(seat).trim().toLowerCase() !== 'not updated' && String(seat).trim() !== '-') {
+    const seats = String(seat).split(/[, \/]+/).filter(s => s.trim() !== '' && s.trim() !== '-');
     if (seats.length > 0) {
       seats.forEach(seatNum => {
         const seatElement = document.createElement('div');
@@ -1528,16 +1514,16 @@ function renderBooking(b) {
     seatsBox.innerHTML = '<div class="no-seats">No seat assigned yet. Please contact Mr. Fawas.</div>';
   }
 
-  // Show results with animation
+  // Show results
   document.getElementById('bookingDetails').style.display = 'block';
   document.getElementById('feedbackSection').style.display = 'block';
-  document.getElementById('resultsBody').querySelector('.no-results').style.display = 'none';
-  
-  // Add fade-in animation
+  const nr = document.getElementById('resultsBody').querySelector('.no-results');
+  if (nr) nr.style.display = 'none';
+
   const bookingDetails = document.getElementById('bookingDetails');
   bookingDetails.classList.remove('fade-in');
   setTimeout(() => bookingDetails.classList.add('fade-in'), 10);
-  
+
   // Store data for download
   window.currentBookingData = {
     passengerName: name,
@@ -1551,6 +1537,16 @@ function renderBooking(b) {
 }
 
 // ===================== TICKET DOWNLOAD =====================
+function escapeHtml(unsafe) {
+  if (!unsafe && unsafe !== 0) return '';
+  return String(unsafe)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function downloadTicket() {
   const data = window.currentBookingData;
   if (!data) {
@@ -1563,19 +1559,17 @@ function downloadTicket() {
     return;
   }
 
-  // Show loading
   const downloadBtn = document.getElementById('downloadBtn');
   const originalText = downloadBtn.innerHTML;
   downloadBtn.innerHTML = '<div class="spinner"></div> Preparing...';
   downloadBtn.disabled = true;
 
-  // Create ticket HTML
   const ticketHtml = `
     <!DOCTYPE html>
     <html>
     <head>
       <meta charset="utf-8">
-      <title>Lagan Bus Ticket - ${data.passengerName}</title>
+      <title>Lagan Bus Ticket - ${escapeHtml(data.passengerName)}</title>
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: #f5f7fa; padding: 20px; }
@@ -1632,13 +1626,13 @@ function downloadTicket() {
           <div class="seats-section">
             <h3 class="section-title">💺 Seat Numbers</h3>
             <div class="seats-container">
-              ${data.seats && data.seats.trim() !== '' && data.seats.toLowerCase() !== 'not updated' ? 
+              ${data.seats && data.seats.trim() !== '' && data.seats.toLowerCase() !== 'not updated' ?
                 data.seats.split(/[, \/]+/).filter(s => s.trim() !== '').map(seat => `
                   <div class="seat">
                     <div style="font-size: 11px;">💺</div>
                     <div>${escapeHtml(seat.trim())}</div>
                   </div>
-                `).join('') : 
+                `).join('') :
                 '<div style="text-align:center;color:#64748b;font-style:italic;">No seat assigned</div>'
               }
             </div>
@@ -1651,12 +1645,9 @@ function downloadTicket() {
         </div>
         
         <div class="ticket-footer">
-          <p>Ticket generated on ${new Date().toLocaleDateString('en-GB', { 
-            day: 'numeric', 
-            month: 'short', 
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
+          <p>Ticket generated on ${new Date().toLocaleDateString('en-GB', {
+            day: 'numeric', month: 'short', year: 'numeric',
+            hour: '2-digit', minute: '2-digit'
           })}</p>
           <p style="margin-top: 5px;">Made with ❤ by WEDOXA</p>
         </div>
@@ -1672,18 +1663,16 @@ function downloadTicket() {
     </html>
   `;
 
-  // Create blob and download
   const blob = new Blob([ticketHtml], { type: 'text/html' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `Lagan-Ticket-${data.passengerName.replace(/[^a-z0-9]/gi, '-')}.html`;
+  a.download = `Lagan-Ticket-${String(data.passengerName).replace(/[^a-z0-9]/gi, '-')}.html`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 
-  // Reset button
   setTimeout(() => {
     downloadBtn.innerHTML = originalText;
     downloadBtn.disabled = false;
@@ -1705,70 +1694,21 @@ function sendFeedback(answer) {
   if (!phone) {
     Swal.fire({
       icon: 'warning',
-      title: 'Phone Number Required',
-      text: 'Please search for a booking first',
+      title: 'Enter Phone Number',
+      text: 'Please search first',
       confirmButtonColor: '#3a7bd5'
     });
     return;
   }
 
-  const feedbackSection = document.getElementById('feedbackSection');
-  const originalHTML = feedbackSection.innerHTML;
-  
-  feedbackSection.innerHTML = `
-    <div style="text-align:center; padding:15px;">
-      <div class="spinner" style="margin:0 auto 10px;"></div>
-      <p>Sending feedback...</p>
-    </div>
-  `;
-
-  // Send feedback to Google Sheets
-  fetch(`${SCRIPT_URL}?action=feedback&phone=${encodeURIComponent(phone)}&answer=${encodeURIComponent(answer)}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Hide feedback section with animation
-        feedbackSection.style.opacity = '0';
-        feedbackSection.style.transition = 'opacity 0.3s ease';
-        setTimeout(() => {
-          feedbackSection.style.display = 'none';
-          feedbackSection.innerHTML = originalHTML;
-        }, 300);
-        
-        Swal.fire({
-          icon: 'success',
-          title: 'Thank You!',
-          text: 'Your feedback has been recorded.',
-          confirmButtonColor: '#3a7bd5',
-          timer: 1200,
-          showConfirmButton: false
-        });
-      } else {
-        feedbackSection.innerHTML = originalHTML;
-        Swal.fire({
-          icon: 'error',
-          title: 'Failed',
-          text: 'Could not send feedback. Please try again.',
-          confirmButtonColor: '#3a7bd5'
-        });
-      }
-    })
-    .catch(error => {
-      feedbackSection.innerHTML = originalHTML;
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Please check your connection and try again.',
-        confirmButtonColor: '#3a7bd5'
-      });
-    });
-}
-
-// ===================== UTILITY FUNCTIONS =====================
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
+  // Placeholder: you can send feedback to your server/script if needed
+  console.log('Feedback:', { phone, answer });
+  Swal.fire({
+    icon: 'success',
+    title: 'Thanks for the feedback!',
+    timer: 1200,
+    showConfirmButton: false
+  });
 }
 </script>
 </body>
