@@ -80,9 +80,9 @@ body {
 .sky-container {
   position: relative;
   width: 100%;
-  height: 150px; /* Reduced from 280px */
+  height: 150px;
   border-radius: var(--radius-lg);
-  margin-bottom: 20px; /* Reduced from 90px */
+  margin-bottom: 20px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -128,8 +128,8 @@ body {
 }
 
 .sun-main {
-  width: 60px; /* Reduced from 100px */
-  height: 60px; /* Reduced from 100px */
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background: radial-gradient(
     circle at 30% 30%,
@@ -209,8 +209,8 @@ body {
 }
 
 .moon-main {
-  width: 55px; /* Reduced from 90px */
-  height: 55px; /* Reduced from 90px */
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   background: radial-gradient(
     circle at 70% 30%,
@@ -311,356 +311,11 @@ body {
   transform: translateY(100px) scale(0.5);
 }
 
-/* ===================== COMPACT CLOUDS ===================== */
-.day-clouds {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 1;
-  transition: opacity 1s ease;
-  z-index: 5;
-}
-
-[data-theme="dark"] .day-clouds {
-  opacity: 0;
-}
-
-.cloud-left {
-  position: absolute;
-  left: 0;
-  width: 40%;
-  height: 100%;
-}
-
-.cloud-right {
-  position: absolute;
-  right: 0;
-  width: 40%;
-  height: 100%;
-}
-
-.cloud {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 50%;
-  filter: blur(1px);
-  opacity: 0.9;
-}
-
-.cloud::before,
-.cloud::after {
-  content: '';
-  position: absolute;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 50%;
-}
-
-/* Compact left side clouds */
-.left-cloud-1 {
-  width: 80px;
-  height: 25px;
-  top: 30px;
-  left: 30px;
-  animation: cloudFloat1 60s linear infinite;
-}
-
-.left-cloud-1::before {
-  width: 45px;
-  height: 45px;
-  top: -20px;
-  left: 15px;
-}
-
-.left-cloud-1::after {
-  width: 60px;
-  height: 60px;
-  top: -30px;
-  right: 5px;
-}
-
-.left-cloud-2 {
-  width: 70px;
-  height: 22px;
-  top: 80px;
-  left: 50px;
-  animation: cloudFloat2 70s linear infinite 15s;
-}
-
-.left-cloud-2::before {
-  width: 40px;
-  height: 40px;
-  top: -20px;
-  left: 10px;
-}
-
-.left-cloud-2::after {
-  width: 55px;
-  height: 55px;
-  top: -25px;
-  right: 10px;
-}
-
-.left-cloud-3 {
-  width: 60px;
-  height: 20px;
-  top: 120px;
-  left: 80px;
-  animation: cloudFloat3 80s linear infinite 30s;
-}
-
-.left-cloud-3::before {
-  width: 35px;
-  height: 35px;
-  top: -15px;
-  left: 5px;
-}
-
-.left-cloud-3::after {
-  width: 50px;
-  height: 50px;
-  top: -20px;
-  right: 15px;
-}
-
-/* Compact right side clouds */
-.right-cloud-1 {
-  width: 75px;
-  height: 25px;
-  top: 40px;
-  right: 40px;
-  animation: cloudFloat2 65s linear infinite 5s;
-}
-
-.right-cloud-1::before {
-  width: 45px;
-  height: 45px;
-  top: -20px;
-  left: 10px;
-}
-
-.right-cloud-1::after {
-  width: 60px;
-  height: 60px;
-  top: -30px;
-  right: 10px;
-}
-
-.right-cloud-2 {
-  width: 65px;
-  height: 22px;
-  top: 90px;
-  right: 70px;
-  animation: cloudFloat1 75s linear infinite 20s;
-}
-
-.right-cloud-2::before {
-  width: 40px;
-  height: 40px;
-  top: -20px;
-  left: 15px;
-}
-
-.right-cloud-2::after {
-  width: 55px;
-  height: 55px;
-  top: -25px;
-  right: 5px;
-}
-
-.right-cloud-3 {
-  width: 55px;
-  height: 20px;
-  top: 130px;
-  right: 100px;
-  animation: cloudFloat3 85s linear infinite 35s;
-}
-
-.right-cloud-3::before {
-  width: 35px;
-  height: 35px;
-  top: -15px;
-  left: 10px;
-}
-
-.right-cloud-3::after {
-  width: 50px;
-  height: 50px;
-  top: -20px;
-  right: 15px;
-}
-
-@keyframes cloudFloat1 {
-  0% { transform: translateX(-200px); }
-  100% { transform: translateX(calc(100vw + 200px)); }
-}
-
-@keyframes cloudFloat2 {
-  0% { transform: translateX(calc(100vw + 200px)); }
-  100% { transform: translateX(-200px); }
-}
-
-@keyframes cloudFloat3 {
-  0% { transform: translateX(-150px) translateY(0); }
-  50% { transform: translateX(calc(50vw - 75px)) translateY(-10px); }
-  100% { transform: translateX(calc(100vw + 150px)) translateY(0); }
-}
-
-/* ===================== COMPACT NIGHT CLOUDS ===================== */
-.night-clouds {
-  position: absolute;
-  width: 40%;
-  left: 0;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1s ease;
-  z-index: 5;
-}
-
-[data-theme="dark"] .night-clouds {
-  opacity: 0.8;
-}
-
-.night-cloud {
-  position: absolute;
-  background: rgba(200, 200, 220, 0.7);
-  border-radius: 50%;
-  filter: blur(2px);
-  opacity: 0.8;
-}
-
-.night-cloud::before,
-.night-cloud::after {
-  content: '';
-  position: absolute;
-  background: rgba(200, 200, 220, 0.7);
-  border-radius: 50%;
-}
-
-/* Compact night clouds */
-.night-cloud-1 {
-  width: 70px;
-  height: 25px;
-  top: 40px;
-  left: 40px;
-  animation: cloudFloat1 80s linear infinite;
-}
-
-.night-cloud-1::before {
-  width: 45px;
-  height: 45px;
-  top: -20px;
-  left: 10px;
-}
-
-.night-cloud-1::after {
-  width: 60px;
-  height: 60px;
-  top: -30px;
-  right: 5px;
-}
-
-.night-cloud-2 {
-  width: 60px;
-  height: 22px;
-  top: 90px;
-  left: 60px;
-  animation: cloudFloat2 95s linear infinite 25s;
-}
-
-.night-cloud-2::before {
-  width: 40px;
-  height: 40px;
-  top: -20px;
-  left: 5px;
-}
-
-.night-cloud-2::after {
-  width: 55px;
-  height: 55px;
-  top: -25px;
-  right: 10px;
-}
-
-.night-cloud-3 {
-  width: 50px;
-  height: 20px;
-  top: 130px;
-  left: 90px;
-  animation: cloudFloat3 110s linear infinite 50s;
-}
-
-.night-cloud-3::before {
-  width: 35px;
-  height: 35px;
-  top: -15px;
-  left: 10px;
-}
-
-.night-cloud-3::after {
-  width: 50px;
-  height: 50px;
-  top: -20px;
-  right: 5px;
-}
-
-/* ===================== COMPACT STARS ===================== */
-.stars-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1.5s ease;
-  z-index: 2;
-}
-
-[data-theme="dark"] .stars-container {
-  opacity: 1;
-}
-
-.star {
-  position: absolute;
-  background: white;
-  border-radius: 50%;
-  animation: starTwinkle var(--twinkle-duration) infinite var(--twinkle-delay);
-}
-
-.star.small {
-  width: 1px;
-  height: 1px;
-  --twinkle-duration: 2s;
-  box-shadow: 0 0 2px white;
-}
-
-.star.medium {
-  width: 2px;
-  height: 2px;
-  --twinkle-duration: 3s;
-  box-shadow: 0 0 3px white, 0 0 5px rgba(255, 255, 255, 0.5);
-}
-
-.star.large {
-  width: 3px;
-  height: 3px;
-  --twinkle-duration: 4s;
-  box-shadow: 0 0 4px white, 0 0 8px rgba(255, 255, 255, 0.5);
-}
-
-@keyframes starTwinkle {
-  0%, 100% { 
-    opacity: 0.2; 
-    transform: scale(0.8);
-  }
-  50% { 
-    opacity: 1; 
-    transform: scale(1.2);
-  }
-}
-
 /* ===================== HEADER & NAVIGATION ===================== */
 .main-header {
   text-align: center;
-  margin-bottom: 25px; /* Reduced spacing */
-  padding: 15px 20px; /* Reduced padding */
+  margin-bottom: 25px;
+  padding: 15px 20px;
   background: var(--bg-card);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
@@ -680,10 +335,10 @@ body {
 }
 
 .brand {
-  font-size: 1.8rem; /* Slightly smaller */
+  font-size: 1.8rem;
   font-weight: 800;
   color: var(--dark-blue);
-  margin-bottom: 5px; /* Reduced */
+  margin-bottom: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -693,14 +348,14 @@ body {
 .tagline {
   font-size: 0.95rem;
   color: var(--text-secondary);
-  margin-bottom: 8px; /* Reduced */
+  margin-bottom: 8px;
   font-weight: 500;
 }
 
 .contact-info {
   display: inline-block;
   background: var(--light-blue);
-  padding: 6px 16px; /* Reduced */
+  padding: 6px 16px;
   border-radius: 50px;
   font-weight: 600;
   color: var(--dark-blue);
@@ -708,32 +363,28 @@ body {
   font-size: 0.9rem;
 }
 
-/* ===================== THEME TOGGLE ===================== */
+/* ===================== THEME TOGGLE - MOVED TO HEADER ===================== */
 .theme-toggle-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
   z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
 }
 
 .theme-btn {
   background: var(--bg-card);
   border: 2px solid var(--border-light);
   color: var(--text-primary);
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: 50px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.3s;
   box-shadow: var(--shadow-md);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   white-space: nowrap;
 }
 
@@ -747,7 +398,7 @@ body {
 .main-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 25px; /* Reduced gap */
+  gap: 25px;
   margin-bottom: 25px;
 }
 
@@ -761,31 +412,29 @@ body {
 .search-card {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
-  padding: 25px; /* Reduced */
+  padding: 25px;
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border-light);
   height: fit-content;
-  position: sticky;
-  top: 20px;
 }
 
 .card-title {
-  font-size: 1.4rem; /* Reduced */
+  font-size: 1.4rem;
   font-weight: 700;
   color: var(--dark-blue);
-  margin-bottom: 15px; /* Reduced */
+  margin-bottom: 15px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 .input-group {
-  margin-bottom: 15px; /* Reduced */
+  margin-bottom: 15px;
 }
 
 .input-label {
   display: block;
-  margin-bottom: 6px; /* Reduced */
+  margin-bottom: 6px;
   font-weight: 600;
   color: var(--text-secondary);
   font-size: 0.9rem;
@@ -793,7 +442,7 @@ body {
 
 .input-field {
   width: 100%;
-  padding: 12px 14px; /* Reduced */
+  padding: 12px 14px;
   border-radius: var(--radius-md);
   border: 2px solid var(--border-light);
   background: var(--bg-light);
@@ -811,7 +460,7 @@ body {
 
 .search-btn {
   width: 100%;
-  padding: 14px; /* Reduced */
+  padding: 14px;
   background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
   color: white;
   border: none;
@@ -857,7 +506,7 @@ body {
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border-light);
   overflow: hidden;
-  min-height: 300px; /* Reduced */
+  min-height: 300px;
   display: flex;
   flex-direction: column;
 }
@@ -865,7 +514,7 @@ body {
 .results-header {
   background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
   color: white;
-  padding: 20px 25px; /* Reduced */
+  padding: 20px 25px;
   text-align: center;
   position: relative;
 }
@@ -887,7 +536,7 @@ body {
 }
 
 .results-title {
-  font-size: 1.6rem; /* Reduced */
+  font-size: 1.6rem;
   font-weight: 800;
   margin-bottom: 5px;
 }
@@ -898,28 +547,28 @@ body {
 }
 
 .results-body {
-  padding: 25px; /* Reduced */
+  padding: 25px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .no-results {
   text-align: center;
   color: var(--text-muted);
   font-size: 1rem;
-  padding: 30px 20px; /* Reduced */
+  padding: 30px 20px;
 }
 
 .no-results-icon {
-  font-size: 40px; /* Reduced */
+  font-size: 40px;
   margin-bottom: 15px;
   opacity: 0.5;
 }
 
 .no-results-title {
-  font-size: 1.2rem; /* Reduced */
+  font-size: 1.2rem;
   margin-bottom: 8px;
   color: var(--text-secondary);
 }
@@ -928,23 +577,23 @@ body {
 .ticket-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 15px; /* Reduced */
-  margin-bottom: 20px; /* Reduced */
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
 .info-card {
   background: var(--bg-light);
-  padding: 15px; /* Reduced */
+  padding: 15px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-light);
 }
 
 .info-label {
-  font-size: 0.8rem; /* Reduced */
+  font-size: 0.8rem;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 6px; /* Reduced */
+  margin-bottom: 6px;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -952,36 +601,58 @@ body {
 }
 
 .info-value {
-  font-size: 1.1rem; /* Reduced */
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.4;
 }
 
+/* FIXED PAYMENT STATUS - NO DUPLICATE "Paid" */
+#paymentAmount {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.payment-badge {
+  padding: 2px 8px;
+  background: var(--success);
+  color: white;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.payment-badge.pending {
+  background: orange;
+}
+
 /* Passenger name special styling */
 #passengerName {
-  font-size: 1.3rem; /* Reduced */
+  font-size: 1.3rem;
   color: var(--dark-blue);
   font-weight: 800;
-  padding-bottom: 8px; /* Reduced */
+  padding-bottom: 8px;
   border-bottom: 2px dashed var(--border-light);
   margin-bottom: 5px;
+  text-align: center;
 }
 
 /* ===================== SEATS STYLING ===================== */
 .seats-section {
   background: linear-gradient(135deg, rgba(58, 123, 213, 0.05), rgba(103, 184, 247, 0.02));
-  padding: 20px; /* Reduced */
+  padding: 20px;
   border-radius: var(--radius-md);
   border: 1px dashed var(--border-light);
-  margin-bottom: 20px; /* Reduced */
+  margin-bottom: 20px;
 }
 
 .section-title {
-  font-size: 1.1rem; /* Reduced */
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--dark-blue);
-  margin-bottom: 15px; /* Reduced */
+  margin-bottom: 15px;
   text-align: center;
   display: flex;
   align-items: center;
@@ -992,13 +663,13 @@ body {
 .seats-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px; /* Reduced */
+  gap: 12px;
   justify-content: center;
 }
 
 .seat {
-  width: 70px; /* Reduced */
-  height: 70px; /* Reduced */
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -1020,19 +691,19 @@ body {
 }
 
 .seat-icon {
-  font-size: 20px; /* Reduced */
-  margin-bottom: 4px; /* Reduced */
+  font-size: 20px;
+  margin-bottom: 4px;
 }
 
 .seat-number {
-  font-size: 1rem; /* Reduced */
+  font-size: 1rem;
 }
 
 .no-seats {
   text-align: center;
   color: var(--text-muted);
   font-style: italic;
-  padding: 15px; /* Reduced */
+  padding: 15px;
   background: var(--bg-light);
   border-radius: var(--radius-md);
   border: 2px dashed var(--border-light);
@@ -1040,7 +711,7 @@ body {
 
 /* ===================== DOWNLOAD BUTTON ===================== */
 .download-section {
-  margin-top: 20px; /* Reduced */
+  margin-top: 20px;
   text-align: center;
 }
 
@@ -1048,7 +719,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 24px; /* Reduced */
+  padding: 12px 24px;
   background: linear-gradient(135deg, var(--success), #059669);
   color: white;
   border: none;
@@ -1068,8 +739,8 @@ body {
 
 /* ===================== FEEDBACK ===================== */
 .feedback-section {
-  margin-top: 20px; /* Reduced */
-  padding: 20px; /* Reduced */
+  margin-top: 20px;
+  padding: 20px;
   background: var(--bg-light);
   border-radius: var(--radius-md);
   border: 1px solid var(--border-light);
@@ -1077,20 +748,20 @@ body {
 }
 
 .feedback-title {
-  font-size: 1rem; /* Reduced */
+  font-size: 1rem;
   font-weight: 700;
   color: var(--dark-blue);
-  margin-bottom: 12px; /* Reduced */
+  margin-bottom: 12px;
 }
 
 .feedback-buttons {
   display: flex;
-  gap: 12px; /* Reduced */
+  gap: 12px;
   justify-content: center;
 }
 
 .feedback-btn {
-  padding: 10px 20px; /* Reduced */
+  padding: 10px 20px;
   border-radius: var(--radius-md);
   border: 2px solid var(--border-light);
   background: var(--bg-card);
@@ -1101,7 +772,7 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  min-width: 110px; /* Reduced */
+  min-width: 110px;
 }
 
 .feedback-btn:hover {
@@ -1124,11 +795,11 @@ body {
 /* ===================== FOOTER ===================== */
 .main-footer {
   text-align: center;
-  padding: 15px; /* Reduced */
+  padding: 15px;
   color: var(--text-muted);
   font-size: 0.9rem;
   border-top: 1px solid var(--border-light);
-  margin-top: 20px; /* Reduced */
+  margin-top: 20px;
 }
 
 .company-name {
@@ -1210,45 +881,19 @@ body {
     font-size: 1.5rem;
   }
   
-  .search-card {
-    padding: 20px;
-    position: static;
-  }
-  
-  .results-card {
-    padding: 0;
-  }
-  
   .theme-toggle-container {
-    top: 15px;
-    right: 15px;
+    position: static;
+    margin-top: 10px;
+    text-align: center;
   }
   
   .theme-btn {
-    padding: 6px 12px;
-    font-size: 0.85rem;
+    margin: 0 auto;
+    padding: 8px 16px;
   }
   
-  /* Adjust clouds for mobile */
-  .left-cloud-1 {
-    width: 60px;
-    height: 20px;
-    left: 15px;
-    top: 25px;
-  }
-  
-  .right-cloud-1 {
-    width: 55px;
-    height: 18px;
-    right: 20px;
-    top: 30px;
-  }
-  
-  .night-cloud-1 {
-    width: 50px;
-    height: 18px;
-    left: 20px;
-    top: 30px;
+  .search-card {
+    padding: 20px;
   }
   
   .ticket-info {
@@ -1268,7 +913,7 @@ body {
   
   .seats-section {
     padding: 15px;
-    margin: 12px -15px;
+    margin: 12px 0;
   }
   
   .seat {
@@ -1290,6 +935,37 @@ body {
   
   .feedback-btn {
     width: 100%;
+  }
+  
+  /* Fix mobile layout order */
+  #bookingDetails {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Proper mobile view order */
+  #bookingDetails > * {
+    order: 1;
+  }
+  
+  #passengerName {
+    order: 1;
+  }
+  
+  .ticket-info {
+    order: 2;
+  }
+  
+  .seats-section {
+    order: 3;
+  }
+  
+  .download-section {
+    order: 4;
+  }
+  
+  .feedback-section {
+    order: 5;
   }
 }
 
@@ -1331,8 +1007,16 @@ body {
   }
   
   .theme-btn {
-    padding: 5px 10px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+}
+
+/* Desktop theme button position */
+@media (min-width: 769px) {
+  .theme-toggle-container {
+    top: 15px;
+    right: 15px;
   }
 }
 </style>
@@ -1360,42 +1044,17 @@ body {
         <div class="moon-glow"></div>
       </div>
     </div>
-    
-    <!-- Day Clouds (Both Sides) -->
-    <div class="day-clouds">
-      <div class="cloud-left">
-        <div class="cloud left-cloud-1"></div>
-        <div class="cloud left-cloud-2"></div>
-        <div class="cloud left-cloud-3"></div>
-      </div>
-      <div class="cloud-right">
-        <div class="cloud right-cloud-1"></div>
-        <div class="cloud right-cloud-2"></div>
-        <div class="cloud right-cloud-3"></div>
-      </div>
-    </div>
-    
-    <!-- Night Clouds (Left Side Only) -->
-    <div class="night-clouds">
-      <div class="night-cloud night-cloud-1"></div>
-      <div class="night-cloud night-cloud-2"></div>
-      <div class="night-cloud night-cloud-3"></div>
-    </div>
-    
-    <!-- Stars Container -->
-    <div class="stars-container" id="starsContainer"></div>
   </div>
   
-  <!-- Theme Toggle Button -->
-  <div class="theme-toggle-container">
-    <button class="theme-btn" id="themeToggle">
-      <span id="themeIcon">🌙</span>
-      <span id="themeText">Dark Mode</span>
-    </button>
-  </div>
-  
-  <!-- Main Header -->
+  <!-- Main Header with Theme Toggle -->
   <header class="main-header">
+    <div class="theme-toggle-container">
+      <button class="theme-btn" id="themeToggle">
+        <span id="themeIcon">🌙</span>
+        <span id="themeText">Dark Mode</span>
+      </button>
+    </div>
+    
     <h1 class="brand">Welcome To Lagan Bus Booking</h1>
     <p class="tagline">Safe Travels. May God Bless Your Journey.</p>
     <div class="contact-info">For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></div>
@@ -1447,7 +1106,7 @@ body {
         <!-- Booking Details (will be shown when data loads) -->
         <div id="bookingDetails" style="display: none;">
           <!-- Passenger Info -->
-          <div class="info-card" style="grid-column: 1 / -1; text-align: center;">
+          <div style="text-align: center; margin-bottom: 20px;">
             <div class="info-label">
               <span>👤</span> Passenger Name
             </div>
@@ -1534,16 +1193,12 @@ document.addEventListener('DOMContentLoaded', function() {
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeUI(savedTheme);
   
-  // Create stars and enhanced cloud patterns
-  createStars();
-  
   // Animate sun/moon rise on load
   setTimeout(() => {
     if (savedTheme === 'light') {
       document.body.classList.add('sun-risen');
     } else {
       document.body.classList.add('moon-risen');
-      createShootingStars();
     }
   }, 300);
   
@@ -1563,7 +1218,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         setTimeout(() => {
           document.body.classList.add('moon-risen');
-          createShootingStars();
         }, 200);
       }, 200);
     } else {
@@ -1614,92 +1268,6 @@ function updateThemeUI(theme) {
   }
 }
 
-function createStars() {
-  const container = document.getElementById('starsContainer');
-  if (!container) return;
-  
-  container.innerHTML = '';
-  
-  // Create stars
-  for (let i = 0; i < 100; i++) {
-    const star = document.createElement('div');
-    star.classList.add('star');
-    
-    // Random size
-    const size = Math.random();
-    if (size < 0.6) star.classList.add('small');
-    else if (size < 0.9) star.classList.add('medium');
-    else star.classList.add('large');
-    
-    // Random position
-    star.style.left = `${Math.random() * 100}%`;
-    star.style.top = `${Math.random() * 100}%`;
-    
-    // Random animation properties
-    const delay = Math.random() * 4;
-    star.style.setProperty('--twinkle-delay', `${delay}s`);
-    
-    container.appendChild(star);
-  }
-}
-
-function createShootingStars() {
-  const container = document.getElementById('starsContainer');
-  if (!container) return;
-  
-  // Create shooting stars periodically
-  function createShootingStar() {
-    if (document.documentElement.getAttribute('data-theme') !== 'dark') return;
-    
-    const shootingStar = document.createElement('div');
-    shootingStar.style.cssText = `
-      position: absolute;
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(90deg, 
-        rgba(255,255,255,0) 0%, 
-        rgba(255,255,255,1) 30%, 
-        rgba(255,255,255,0) 100%);
-      opacity: 0;
-      transform: rotate(-45deg);
-    `;
-    
-    // Random starting position
-    const startX = Math.random() * 80 + 10;
-    const startY = Math.random() * 30;
-    shootingStar.style.left = `${startX}%`;
-    shootingStar.style.top = `${startY}%`;
-    
-    container.appendChild(shootingStar);
-    
-    // Animate shooting star
-    const duration = Math.random() * 800 + 400;
-    
-    shootingStar.animate([
-      { transform: 'translateX(0) translateY(0) rotate(-45deg)', opacity: 0 },
-      { transform: 'translateX(200px) translateY(100px) rotate(-45deg)', opacity: 1 },
-      { transform: 'translateX(400px) translateY(200px) rotate(-45deg)', opacity: 0 }
-    ], {
-      duration: duration,
-      easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-    });
-    
-    // Remove after animation
-    setTimeout(() => {
-      if (shootingStar.parentNode) {
-        shootingStar.parentNode.removeChild(shootingStar);
-      }
-    }, duration);
-  }
-  
-  // Create shooting stars at random intervals
-  setInterval(() => {
-    if (document.documentElement.getAttribute('data-theme') === 'dark' && Math.random() < 0.2) {
-      createShootingStar();
-    }
-  }, 3000);
-}
-
 // ===================== BOOKING SEARCH =====================
 function searchBooking() {
   const phone = document.getElementById('phone').value.trim();
@@ -1746,11 +1314,15 @@ function searchBooking() {
       // Display results
       renderBooking(data.booking);
       
-      // Scroll to results
-      document.querySelector('.results-card').scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start' 
-      });
+      // Scroll to results on mobile
+      if (window.innerWidth <= 768) {
+        setTimeout(() => {
+          document.querySelector('.results-card').scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }, 300);
+      }
     })
     .catch(error => {
       btn.innerHTML = '<span>🔍</span> Check My Booking';
@@ -1795,7 +1367,7 @@ function renderBooking(b) {
   const time = getField(b, ['Time', 'Departure Time', 'Travel Time', 'Time Slot']) || '';
   const seat = getField(b, ['Seat', 'Seats', 'Seat Number', 'Seat Numbers', 'Seat No']) || '';
   const pickup = getField(b, ['Pickup', 'Pickup Location', 'Boarding Point', 'Pickup Point']) || '-';
-  const payment = getField(b, ['Payment', 'Amount', 'Payment Status', 'Fare', 'Price']) || '-';
+  const payment = getField(b, ['Payment', 'Amount', 'Payment Status', 'Fare', 'Price']) || '';
   const bookingId = getField(b, ['Booking ID', 'Reference', 'Ref No', 'Ticket No']) || '';
 
   // Update display
@@ -1896,21 +1468,40 @@ function renderBooking(b) {
   document.getElementById('dateTime').textContent = displayDateTime;
   document.getElementById('pickupLocation').textContent = pickup;
   
-  // Payment with status badge
+  // FIXED PAYMENT STATUS - NO DUPLICATE "Paid"
   const paymentElement = document.getElementById('paymentAmount');
-  const paymentText = payment || 'Pending';
-  paymentElement.textContent = paymentText;
+  let paymentText = payment || 'Pending';
   
-  if (paymentText && (
-    paymentText.toLowerCase().includes('paid') ||
+  // Clean payment text - remove duplicate words
+  paymentText = paymentText.replace(/\s+/g, ' ').trim();
+  
+  // Check if payment text already contains status words
+  const hasPaid = paymentText.toLowerCase().includes('paid');
+  const hasPending = paymentText.toLowerCase().includes('pending');
+  const hasDue = paymentText.toLowerCase().includes('due');
+  
+  if (hasPaid) {
+    // Extract just the payment amount if it exists
+    const amountMatch = paymentText.match(/([\d,]+(\.\d{2})?)\s*(LKR|Rs|₹|\/)?/);
+    if (amountMatch) {
+      paymentText = amountMatch[1];
+      if (amountMatch[3]) {
+        paymentText += ' ' + amountMatch[3];
+      }
+    }
+    paymentElement.innerHTML = `${paymentText} <span class="payment-badge">Paid</span>`;
+  } else if (hasPending || hasDue) {
+    paymentElement.innerHTML = `${paymentText} <span class="payment-badge pending">Pending</span>`;
+  } else if (paymentText && (
     paymentText.includes('/-') ||
     paymentText.includes('₹') ||
     paymentText.includes('Rs') ||
-    paymentText.includes('LKR')
+    paymentText.includes('LKR') ||
+    /^\d+(,\d+)*(\.\d{2})?$/.test(paymentText)
   )) {
-    paymentElement.innerHTML = `${paymentText} <span style="margin-left:5px;padding:2px 8px;background:var(--success);color:white;border-radius:15px;font-size:0.75rem;font-weight:600;">Paid</span>`;
-  } else if (paymentText.toLowerCase().includes('pending') || paymentText.toLowerCase().includes('due')) {
-    paymentElement.innerHTML = `${paymentText} <span style="margin-left:5px;padding:2px 8px;background:orange;color:white;border-radius:15px;font-size:0.75rem;font-weight:600;">Pending</span>`;
+    paymentElement.innerHTML = `${paymentText} <span class="payment-badge">Paid</span>`;
+  } else {
+    paymentElement.innerHTML = `${paymentText} <span class="payment-badge pending">Pending</span>`;
   }
 
   // Display seats
