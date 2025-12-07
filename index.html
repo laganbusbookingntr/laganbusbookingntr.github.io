@@ -128,7 +128,7 @@ body {
   font-size: 0.95rem;
 }
 
-/* ===================== THEME TOGGLE IN RIGHT SIDE CORNER - UNDER SKY ===================== */
+/* ===================== THEME TOGGLE IN RIGHT SIDE CORNER ===================== */
 .theme-toggle-container {
   position: fixed;
   right: 20px;
@@ -162,170 +162,272 @@ body {
   border-color: var(--primary-blue);
 }
 
-/* ===================== REALISTIC SKY STYLING ===================== */
+/* ===================== AMAZING SKY DESIGN ===================== */
 .sky-container {
   position: relative;
   width: 100%;
-  height: 250px;
+  height: 280px;
   border-radius: var(--radius-lg);
-  margin-bottom: 80px; /* More space for theme button */
+  margin-bottom: 90px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Light Mode Sky - Realistic Day Sky */
+/* Day Sky - Beautiful Gradient */
 [data-theme="light"] .sky-container {
-  background: linear-gradient(180deg, #87CEEB 0%, #98D8F0 30%, #A9E2F5 60%, #E0F7FF 100%);
+  background: linear-gradient(
+    180deg,
+    #1e90ff 0%,     /* Deep Sky Blue */
+    #87ceeb 25%,    /* Sky Blue */
+    #b0e2ff 50%,    /* Light Sky Blue */
+    #e0f7ff 75%,    /* Baby Blue */
+    #f0f8ff 100%    /* Alice Blue */
+  );
 }
 
-/* Dark Mode Sky - Realistic Night Sky */
+/* Night Sky - Mysterious Deep Blue */
 [data-theme="dark"] .sky-container {
-  background: linear-gradient(180deg, #0a0e2a 0%, #1a1f4b 30%, #2a2f5b 60%, #3a3f6b 100%);
+  background: linear-gradient(
+    180deg,
+    #0a1a3a 0%,     /* Midnight Blue */
+    #1a2b5a 25%,    /* Dark Blue */
+    #2a3c7a 50%,    /* Medium Blue */
+    #3a4d9a 75%,    /* Royal Blue */
+    #4a5eba 100%    /* Soft Blue */
+  );
 }
 
-/* Sun Styling with Realistic Animation */
-.sun {
+/* ===================== SUN DESIGN - LEFT SIDE ===================== */
+.sun-container {
   position: absolute;
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #FFD93D 0%, #FFA726 50%, #FF8A00 100%);
-  box-shadow: 
-    0 0 60px rgba(255, 217, 61, 0.9),
-    0 0 120px rgba(255, 167, 38, 0.7),
-    0 0 200px rgba(255, 138, 0, 0.5);
-  top: 160px; /* Start from bottom */
-  left: 50%;
-  transform: translateX(-50%);
+  left: 100px;
+  top: 180px;
+  transform: translateY(0);
   transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  animation: sunGlow 4s ease-in-out infinite;
-  z-index: 3;
+  z-index: 10;
+}
+
+.sun-risen .sun-container {
+  top: 40px;
+}
+
+.sun-main {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    #FFD700 0%,      /* Gold */
+    #FF8C00 30%,     /* Dark Orange */
+    #FF4500 60%,     /* Orange Red */
+    #FF6347 100%     /* Tomato */
+  );
+  box-shadow: 
+    0 0 80px rgba(255, 215, 0, 0.9),
+    0 0 160px rgba(255, 140, 0, 0.7),
+    0 0 240px rgba(255, 69, 0, 0.5),
+    0 0 320px rgba(255, 99, 71, 0.3);
+  animation: sunPulse 4s ease-in-out infinite;
+  position: relative;
+}
+
+.sun-glow {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 215, 0, 0.2) 0%,
+    rgba(255, 140, 0, 0.1) 40%,
+    transparent 70%
+  );
+  animation: sunGlow 6s ease-in-out infinite;
+}
+
+@keyframes sunPulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 
+      0 0 80px rgba(255, 215, 0, 0.9),
+      0 0 160px rgba(255, 140, 0, 0.7),
+      0 0 240px rgba(255, 69, 0, 0.5),
+      0 0 320px rgba(255, 99, 71, 0.3);
+  }
+  50% { 
+    transform: scale(1.05);
+    box-shadow: 
+      0 0 100px rgba(255, 215, 0, 1),
+      0 0 200px rgba(255, 140, 0, 0.8),
+      0 0 300px rgba(255, 69, 0, 0.6),
+      0 0 400px rgba(255, 99, 71, 0.4);
+  }
 }
 
 @keyframes sunGlow {
-  0%, 100% { 
-    box-shadow: 
-      0 0 60px rgba(255, 217, 61, 0.9),
-      0 0 120px rgba(255, 167, 38, 0.7),
-      0 0 200px rgba(255, 138, 0, 0.5);
-  }
-  50% { 
-    box-shadow: 
-      0 0 80px rgba(255, 217, 61, 1),
-      0 0 160px rgba(255, 167, 38, 0.8),
-      0 0 250px rgba(255, 138, 0, 0.6);
-  }
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
 }
 
-.sun.risen {
-  top: 30px;
-  animation: sunGlow 4s ease-in-out infinite, floatSun 20s ease-in-out infinite;
-}
-
-@keyframes floatSun {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-10px); }
-}
-
-[data-theme="dark"] .sun {
+[data-theme="dark"] .sun-container {
   opacity: 0;
-  transform: translateX(-50%) scale(0.5);
+  transform: translateY(100px) scale(0.5);
 }
 
-/* Moon Styling with Realistic Animation */
-.moon {
+/* ===================== MOON DESIGN - RIGHT SIDE ===================== */
+.moon-container {
   position: absolute;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
-  box-shadow: 
-    0 0 50px rgba(248, 249, 250, 0.8),
-    0 0 100px rgba(233, 236, 239, 0.6),
-    0 0 150px rgba(222, 226, 230, 0.4),
-    inset -10px -10px 20px rgba(0, 0, 0, 0.2);
-  top: 160px; /* Start from bottom */
-  right: 50%;
-  transform: translateX(50%);
+  right: 100px;
+  top: 180px;
+  transform: translateY(0);
   transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  animation: moonGlow 6s ease-in-out infinite;
   opacity: 0;
-  z-index: 3;
+  z-index: 10;
 }
 
-.moon::before {
-  content: '';
+.moon-risen .moon-container {
+  top: 45px;
+  opacity: 1;
+}
+
+.moon-main {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 70% 30%,
+    #F8F8FF 0%,      /* Ghost White */
+    #E6E6FA 30%,     /* Lavender */
+    #D8BFD8 60%,     /* Thistle */
+    #DDA0DD 100%     /* Plum */
+  );
+  box-shadow: 
+    0 0 60px rgba(248, 248, 255, 0.8),
+    0 0 120px rgba(230, 230, 250, 0.6),
+    0 0 180px rgba(216, 191, 216, 0.4),
+    0 0 240px rgba(221, 160, 221, 0.2),
+    inset -15px -15px 30px rgba(0, 0, 0, 0.3),
+    inset 10px 10px 20px rgba(255, 255, 255, 0.2);
+  animation: moonGlow 6s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.moon-craters {
   position: absolute;
-  top: 15px;
-  left: 20px;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.moon-crater {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.moon-crater.large {
   width: 20px;
   height: 20px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.1);
-  box-shadow: 
-    5px 5px 10px rgba(0, 0, 0, 0.2),
-    -5px -5px 10px rgba(255, 255, 255, 0.1);
+  top: 25px;
+  left: 25px;
 }
 
-.moon::after {
-  content: '';
+.moon-crater.medium {
+  width: 12px;
+  height: 12px;
+  top: 50px;
+  right: 20px;
+}
+
+.moon-crater.small {
+  width: 8px;
+  height: 8px;
+  bottom: 30px;
+  left: 40px;
+}
+
+.moon-glow {
   position: absolute;
-  top: 40px;
-  right: 25px;
-  width: 15px;
-  height: 15px;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.08);
-  box-shadow: 
-    3px 3px 8px rgba(0, 0, 0, 0.15),
-    -3px -3px 8px rgba(255, 255, 255, 0.1);
+  background: radial-gradient(
+    circle,
+    rgba(248, 248, 255, 0.15) 0%,
+    rgba(230, 230, 250, 0.1) 40%,
+    transparent 70%
+  );
+  animation: moonHalo 8s ease-in-out infinite;
 }
 
 @keyframes moonGlow {
   0%, 100% { 
+    transform: scale(1);
     box-shadow: 
-      0 0 50px rgba(248, 249, 250, 0.8),
-      0 0 100px rgba(233, 236, 239, 0.6),
-      0 0 150px rgba(222, 226, 230, 0.4);
+      0 0 60px rgba(248, 248, 255, 0.8),
+      0 0 120px rgba(230, 230, 250, 0.6),
+      0 0 180px rgba(216, 191, 216, 0.4),
+      0 0 240px rgba(221, 160, 221, 0.2);
   }
   50% { 
+    transform: scale(1.03);
     box-shadow: 
-      0 0 70px rgba(248, 249, 250, 1),
-      0 0 140px rgba(233, 236, 239, 0.8),
-      0 0 200px rgba(222, 226, 230, 0.6);
+      0 0 80px rgba(248, 248, 255, 0.9),
+      0 0 160px rgba(230, 230, 250, 0.7),
+      0 0 240px rgba(216, 191, 216, 0.5),
+      0 0 320px rgba(221, 160, 221, 0.3);
   }
 }
 
-.moon.risen {
-  top: 35px;
-  animation: moonGlow 6s ease-in-out infinite, floatMoon 25s ease-in-out infinite;
+@keyframes moonHalo {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.05); }
 }
 
-@keyframes floatMoon {
-  0%, 100% { transform: translateX(50%) translateY(0) rotate(0deg); }
-  25% { transform: translateX(50%) translateY(-8px) rotate(5deg); }
-  50% { transform: translateX(50%) translateY(0) rotate(0deg); }
-  75% { transform: translateX(50%) translateY(-8px) rotate(-5deg); }
+[data-theme="light"] .moon-container {
+  opacity: 0;
+  transform: translateY(100px) scale(0.5);
 }
 
-[data-theme="dark"] .moon {
-  opacity: 1;
-}
-
-/* Realistic Clouds */
-.clouds-container {
+/* ===================== IMPROVED DAY CLOUDS - BOTH SIDES ===================== */
+.day-clouds {
   position: absolute;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  z-index: 2;
+  opacity: 1;
+  transition: opacity 1s ease;
+  z-index: 5;
+}
+
+[data-theme="dark"] .day-clouds {
+  opacity: 0;
+}
+
+.cloud-left {
+  position: absolute;
+  left: 0;
+  width: 40%;
+  height: 100%;
+}
+
+.cloud-right {
+  position: absolute;
+  right: 0;
+  width: 40%;
+  height: 100%;
 }
 
 .cloud {
   position: absolute;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 50%;
   filter: blur(1px);
   opacity: 0.9;
@@ -335,68 +437,145 @@ body {
 .cloud::after {
   content: '';
   position: absolute;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 50%;
 }
 
-.cloud.small {
-  width: 80px;
-  height: 30px;
-}
-
-.cloud.small::before {
-  width: 40px;
-  height: 40px;
-  top: -20px;
-  left: 10px;
-}
-
-.cloud.small::after {
-  width: 50px;
-  height: 50px;
-  top: -25px;
-  right: 15px;
-}
-
-.cloud.medium {
+/* Left side clouds (near sun) with improved movement */
+.left-cloud-1 {
   width: 120px;
   height: 40px;
+  top: 60px;
+  left: 50px;
+  animation: cloudFloat1 60s linear infinite;
 }
 
-.cloud.medium::before {
+.left-cloud-1::before {
+  width: 70px;
+  height: 70px;
+  top: -35px;
+  left: 20px;
+}
+
+.left-cloud-1::after {
+  width: 90px;
+  height: 90px;
+  top: -45px;
+  right: 10px;
+}
+
+.left-cloud-2 {
+  width: 100px;
+  height: 35px;
+  top: 150px;
+  left: 80px;
+  animation: cloudFloat2 70s linear infinite 15s;
+}
+
+.left-cloud-2::before {
   width: 60px;
   height: 60px;
   top: -30px;
   left: 15px;
 }
 
-.cloud.medium::after {
+.left-cloud-2::after {
+  width: 80px;
+  height: 80px;
+  top: -40px;
+  right: 15px;
+}
+
+.left-cloud-3 {
+  width: 80px;
+  height: 30px;
+  top: 220px;
+  left: 120px;
+  animation: cloudFloat3 80s linear infinite 30s;
+}
+
+.left-cloud-3::before {
+  width: 50px;
+  height: 50px;
+  top: -25px;
+  left: 10px;
+}
+
+.left-cloud-3::after {
   width: 70px;
   height: 70px;
   top: -35px;
   right: 20px;
 }
 
-.cloud.large {
-  width: 160px;
-  height: 50px;
+/* Right side clouds with improved movement */
+.right-cloud-1 {
+  width: 110px;
+  height: 38px;
+  top: 80px;
+  right: 60px;
+  animation: cloudFloat2 65s linear infinite 5s;
 }
 
-.cloud.large::before {
-  width: 80px;
-  height: 80px;
-  top: -40px;
+.right-cloud-1::before {
+  width: 65px;
+  height: 65px;
+  top: -32px;
+  left: 15px;
+}
+
+.right-cloud-1::after {
+  width: 85px;
+  height: 85px;
+  top: -42px;
+  right: 15px;
+}
+
+.right-cloud-2 {
+  width: 95px;
+  height: 32px;
+  top: 170px;
+  right: 100px;
+  animation: cloudFloat1 75s linear infinite 20s;
+}
+
+.right-cloud-2::before {
+  width: 55px;
+  height: 55px;
+  top: -27px;
   left: 20px;
 }
 
-.cloud.large::after {
-  width: 90px;
-  height: 90px;
-  top: -45px;
-  right: 25px;
+.right-cloud-2::after {
+  width: 75px;
+  height: 75px;
+  top: -37px;
+  right: 10px;
 }
 
-/* Cloud animations */
+.right-cloud-3 {
+  width: 85px;
+  height: 28px;
+  top: 240px;
+  right: 140px;
+  animation: cloudFloat3 85s linear infinite 35s;
+}
+
+.right-cloud-3::before {
+  width: 45px;
+  height: 45px;
+  top: -22px;
+  left: 15px;
+}
+
+.right-cloud-3::after {
+  width: 65px;
+  height: 65px;
+  top: -32px;
+  right: 20px;
+}
+
+/* IMPROVED CLOUD ANIMATIONS (from first code) */
 @keyframes cloudFloat1 {
   0% { transform: translateX(-200px); }
   100% { transform: translateX(calc(100vw + 200px)); }
@@ -413,14 +592,112 @@ body {
   100% { transform: translateX(calc(100vw + 150px)) translateY(0); }
 }
 
-/* Stars in Dark Mode */
+/* ===================== IMPROVED NIGHT CLOUDS - LEFT SIDE ONLY ===================== */
+.night-clouds {
+  position: absolute;
+  width: 40%;
+  left: 0;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: 5;
+}
+
+[data-theme="dark"] .night-clouds {
+  opacity: 0.8;
+}
+
+.night-cloud {
+  position: absolute;
+  background: rgba(200, 200, 220, 0.7);
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: 0.8;
+}
+
+.night-cloud::before,
+.night-cloud::after {
+  content: '';
+  position: absolute;
+  background: rgba(200, 200, 220, 0.7);
+  border-radius: 50%;
+}
+
+/* Night clouds on left side only with improved movement */
+.night-cloud-1 {
+  width: 100px;
+  height: 35px;
+  top: 70px;
+  left: 60px;
+  animation: cloudFloat1 80s linear infinite;
+}
+
+.night-cloud-1::before {
+  width: 60px;
+  height: 60px;
+  top: -30px;
+  left: 15px;
+}
+
+.night-cloud-1::after {
+  width: 80px;
+  height: 80px;
+  top: -40px;
+  right: 10px;
+}
+
+.night-cloud-2 {
+  width: 85px;
+  height: 30px;
+  top: 160px;
+  left: 90px;
+  animation: cloudFloat2 95s linear infinite 25s;
+}
+
+.night-cloud-2::before {
+  width: 50px;
+  height: 50px;
+  top: -25px;
+  left: 10px;
+}
+
+.night-cloud-2::after {
+  width: 70px;
+  height: 70px;
+  top: -35px;
+  right: 15px;
+}
+
+.night-cloud-3 {
+  width: 70px;
+  height: 25px;
+  top: 230px;
+  left: 130px;
+  animation: cloudFloat3 110s linear infinite 50s;
+}
+
+.night-cloud-3::before {
+  width: 40px;
+  height: 40px;
+  top: -20px;
+  left: 15px;
+}
+
+.night-cloud-3::after {
+  width: 60px;
+  height: 60px;
+  top: -30px;
+  right: 10px;
+}
+
+/* ===================== STARS FOR NIGHT ===================== */
 .stars-container {
   position: absolute;
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 1s ease;
-  z-index: 1;
+  transition: opacity 1.5s ease;
+  z-index: 2;
 }
 
 [data-theme="dark"] .stars-container {
@@ -431,39 +708,49 @@ body {
   position: absolute;
   background: white;
   border-radius: 50%;
-  animation: twinkle var(--twinkle-duration) infinite var(--twinkle-delay);
+  animation: starTwinkle var(--twinkle-duration) infinite var(--twinkle-delay);
 }
 
 .star.small {
   width: 1px;
   height: 1px;
   --twinkle-duration: 2s;
+  box-shadow: 0 0 2px white;
 }
 
 .star.medium {
   width: 2px;
   height: 2px;
   --twinkle-duration: 3s;
+  box-shadow: 0 0 3px white, 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
 .star.large {
   width: 3px;
   height: 3px;
   --twinkle-duration: 4s;
+  box-shadow: 0 0 4px white, 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 .star.xlarge {
   width: 4px;
   height: 4px;
   --twinkle-duration: 5s;
+  box-shadow: 0 0 6px white, 0 0 12px rgba(255, 255, 255, 0.5);
 }
 
-@keyframes twinkle {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 1; }
+@keyframes starTwinkle {
+  0%, 100% { 
+    opacity: 0.2; 
+    transform: scale(0.8);
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.2);
+  }
 }
 
-/* Shooting Stars in Dark Mode */
+/* Shooting stars */
 .shooting-star {
   position: absolute;
   width: 100px;
@@ -476,7 +763,7 @@ body {
   transform: rotate(-45deg);
 }
 
-/* Constellation Effects */
+/* Constellations */
 .constellation {
   position: absolute;
   opacity: 0.3;
@@ -1040,29 +1327,59 @@ body {
     font-size: 0.85rem;
   }
   
-  .sun {
-    width: 70px;
-    height: 70px;
-    top: 180px;
+  .sky-container {
+    height: 200px;
+    margin-bottom: 70px;
   }
   
-  .sun.risen {
-    top: 25px;
+  .sun-container {
+    left: 40px;
+    top: 150px;
   }
   
-  .moon {
-    width: 60px;
-    height: 60px;
-    top: 180px;
-  }
-  
-  .moon.risen {
+  .sun-risen .sun-container {
     top: 30px;
   }
   
-  .sky-container {
-    height: 180px;
-    margin-bottom: 60px;
+  .sun-main {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .moon-container {
+    right: 40px;
+    top: 150px;
+  }
+  
+  .moon-risen .moon-container {
+    top: 35px;
+  }
+  
+  .moon-main {
+    width: 65px;
+    height: 65px;
+  }
+  
+  /* Adjust cloud positions for mobile */
+  .left-cloud-1 {
+    width: 80px;
+    height: 30px;
+    left: 20px;
+    top: 50px;
+  }
+  
+  .right-cloud-1 {
+    width: 75px;
+    height: 28px;
+    right: 25px;
+    top: 60px;
+  }
+  
+  .night-cloud-1 {
+    width: 70px;
+    height: 25px;
+    left: 25px;
+    top: 50px;
   }
 }
 
@@ -1084,36 +1401,44 @@ body {
     font-size: 0.8rem;
   }
   
-  .sun {
-    width: 60px;
-    height: 60px;
-    top: 190px;
+  .sky-container {
+    height: 180px;
+    margin-bottom: 60px;
   }
   
-  .sun.risen {
-    top: 20px;
+  .sun-container {
+    left: 30px;
+    top: 140px;
   }
   
-  .moon {
-    width: 50px;
-    height: 50px;
-    top: 190px;
-  }
-  
-  .moon.risen {
+  .sun-risen .sun-container {
     top: 25px;
   }
   
-  .sky-container {
-    height: 150px;
-    margin-bottom: 50px;
+  .sun-main {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .moon-container {
+    right: 30px;
+    top: 140px;
+  }
+  
+  .moon-risen .moon-container {
+    top: 30px;
+  }
+  
+  .moon-main {
+    width: 55px;
+    height: 55px;
   }
 }
 
 /* Desktop specific */
 @media (min-width: 769px) {
   .theme-toggle-container {
-    top: 290px; /* Position under the sky */
+    top: 310px; /* Position under the sky */
   }
 }
 </style>
@@ -1121,19 +1446,53 @@ body {
 <body>
 <div class="container">
   
-  <!-- Sky Container with Sun/Moon/Stars/Clouds -->
-  <div class="sky-container">
-    <div class="sun" id="sun"></div>
-    <div class="moon" id="moon"></div>
+  <!-- Amazing Sky Container -->
+  <div class="sky-container" id="skyContainer">
+    <!-- Sun on Left Side -->
+    <div class="sun-container">
+      <div class="sun-main">
+        <div class="sun-glow"></div>
+      </div>
+    </div>
     
-    <!-- Clouds Container -->
-    <div class="clouds-container" id="cloudsContainer"></div>
+    <!-- Moon on Right Side -->
+    <div class="moon-container">
+      <div class="moon-main">
+        <div class="moon-craters">
+          <div class="moon-crater large"></div>
+          <div class="moon-crater medium"></div>
+          <div class="moon-crater small"></div>
+        </div>
+        <div class="moon-glow"></div>
+      </div>
+    </div>
+    
+    <!-- Day Clouds (Both Sides) -->
+    <div class="day-clouds">
+      <div class="cloud-left">
+        <div class="cloud left-cloud-1"></div>
+        <div class="cloud left-cloud-2"></div>
+        <div class="cloud left-cloud-3"></div>
+      </div>
+      <div class="cloud-right">
+        <div class="cloud right-cloud-1"></div>
+        <div class="cloud right-cloud-2"></div>
+        <div class="cloud right-cloud-3"></div>
+      </div>
+    </div>
+    
+    <!-- Night Clouds (Left Side Only) -->
+    <div class="night-clouds">
+      <div class="night-cloud night-cloud-1"></div>
+      <div class="night-cloud night-cloud-2"></div>
+      <div class="night-cloud night-cloud-3"></div>
+    </div>
     
     <!-- Stars Container -->
     <div class="stars-container" id="starsContainer"></div>
   </div>
   
-  <!-- Theme Toggle Button in Right Corner (under sky) -->
+  <!-- Theme Toggle Button -->
   <div class="theme-toggle-container">
     <button class="theme-btn" id="themeToggle">
       <span id="themeIcon">🌙</span>
@@ -1143,7 +1502,7 @@ body {
   
   <!-- Main Header -->
   <header class="main-header">
-    <h1 class="brand">🚌 Lagan Bus Booking</h1>
+    <h1 class="brand">Welcome To Lagan Bus Booking</h1>
     <p class="tagline">Safe Travels. May God Bless Your Journey.</p>
     <div class="contact-info">For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></div>
   </header>
@@ -1282,21 +1641,25 @@ body {
 // ===================== CONFIGURATION =====================
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
 
-// ===================== SKY ANIMATIONS =====================
+// ===================== AMAZING SKY ANIMATIONS =====================
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize theme
   const savedTheme = localStorage.getItem('lagan-theme') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeUI(savedTheme);
   
-  // Create initial sky elements
-  createClouds();
+  // Create stars and enhanced cloud patterns
   createStars();
+  createEnhancedClouds();
   
-  // Animate sun rise on load
+  // Animate sun/moon rise on load
   setTimeout(() => {
-    if (document.documentElement.getAttribute('data-theme') === 'light') {
-      document.getElementById('sun').classList.add('risen');
+    if (savedTheme === 'light') {
+      document.body.classList.add('sun-risen');
+    } else {
+      document.body.classList.add('moon-risen');
+      createShootingStars();
+      createConstellations();
     }
   }, 500);
   
@@ -1305,38 +1668,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     
-    // Animate sun/moon transition
-    const sun = document.getElementById('sun');
-    const moon = document.getElementById('moon');
-    
+    // Animate transition
     if (newTheme === 'dark') {
-      sun.classList.remove('risen');
+      // Day to Night transition
+      document.body.classList.remove('sun-risen');
       setTimeout(() => {
         document.documentElement.setAttribute('data-theme', newTheme);
         updateThemeUI(newTheme);
         localStorage.setItem('lagan-theme', newTheme);
         
         setTimeout(() => {
-          moon.classList.add('risen');
-        }, 100);
+          document.body.classList.add('moon-risen');
+          createShootingStars();
+          createConstellations();
+        }, 300);
       }, 300);
     } else {
-      moon.classList.remove('risen');
+      // Night to Day transition
+      document.body.classList.remove('moon-risen');
       setTimeout(() => {
         document.documentElement.setAttribute('data-theme', newTheme);
         updateThemeUI(newTheme);
         localStorage.setItem('lagan-theme', newTheme);
         
         setTimeout(() => {
-          sun.classList.add('risen');
-        }, 100);
+          document.body.classList.add('sun-risen');
+        }, 300);
       }, 300);
-    }
-    
-    // Create stars for dark mode
-    if (newTheme === 'dark') {
-      createShootingStars();
-      createConstellations();
     }
   });
   
@@ -1358,13 +1716,6 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Download button event
   document.getElementById('downloadBtn').addEventListener('click', downloadTicket);
-  
-  // Initialize stars if in dark mode
-  if (document.documentElement.getAttribute('data-theme') === 'dark') {
-    document.getElementById('moon').classList.add('risen');
-    createShootingStars();
-    createConstellations();
-  }
 });
 
 function updateThemeUI(theme) {
@@ -1380,39 +1731,10 @@ function updateThemeUI(theme) {
   }
 }
 
-function createClouds() {
-  const container = document.getElementById('cloudsContainer');
-  if (!container) return;
-  
-  container.innerHTML = '';
-  
-  // Create realistic clouds at different layers
-  const cloudTypes = ['small', 'medium', 'large'];
-  const cloudAnimations = ['cloudFloat1', 'cloudFloat2', 'cloudFloat3'];
-  
-  for (let i = 0; i < 8; i++) {
-    const cloud = document.createElement('div');
-    const type = cloudTypes[Math.floor(Math.random() * cloudTypes.length)];
-    const animation = cloudAnimations[Math.floor(Math.random() * cloudAnimations.length)];
-    
-    cloud.classList.add('cloud', type);
-    
-    // Random position
-    const top = Math.random() * 60 + 10; // 10% to 70% from top
-    cloud.style.top = `${top}%`;
-    cloud.style.left = `${Math.random() * 100}%`;
-    
-    // Random animation properties
-    const duration = Math.random() * 40 + 60; // 60s to 100s
-    const delay = Math.random() * -30; // Start at random position
-    
-    cloud.style.animation = `${animation} ${duration}s linear infinite ${delay}s`;
-    
-    // Random opacity
-    cloud.style.opacity = Math.random() * 0.5 + 0.5; // 0.5 to 1
-    
-    container.appendChild(cloud);
-  }
+function createEnhancedClouds() {
+  // The clouds are already defined in the HTML with improved animations
+  // This function is kept for compatibility with existing code
+  console.log('Enhanced clouds with improved animations are active');
 }
 
 function createStars() {
@@ -1421,25 +1743,31 @@ function createStars() {
   
   container.innerHTML = '';
   
-  // Create many stars with different sizes and brightness
-  for (let i = 0; i < 150; i++) {
+  // Create many beautiful stars with improved twinkling
+  for (let i = 0; i < 200; i++) {
     const star = document.createElement('div');
     star.classList.add('star');
     
     // Random size
     const size = Math.random();
-    if (size < 0.4) star.classList.add('small');
-    else if (size < 0.7) star.classList.add('medium');
-    else if (size < 0.9) star.classList.add('large');
+    if (size < 0.5) star.classList.add('small');
+    else if (size < 0.8) star.classList.add('medium');
+    else if (size < 0.95) star.classList.add('large');
     else star.classList.add('xlarge');
     
     // Random position
     star.style.left = `${Math.random() * 100}%`;
     star.style.top = `${Math.random() * 100}%`;
     
-    // Random animation delay and duration
-    const delay = Math.random() * 5;
+    // Random animation properties
+    const delay = Math.random() * 6;
     star.style.setProperty('--twinkle-delay', `${delay}s`);
+    
+    // Random color tint for some stars
+    if (Math.random() < 0.2) {
+      const hue = Math.random() * 60 + 200; // Blue to violet range
+      star.style.background = `hsl(${hue}, 100%, 90%)`;
+    }
     
     container.appendChild(star);
   }
@@ -1451,12 +1779,14 @@ function createShootingStars() {
   
   // Create shooting stars periodically
   function createShootingStar() {
+    if (document.documentElement.getAttribute('data-theme') !== 'dark') return;
+    
     const shootingStar = document.createElement('div');
     shootingStar.classList.add('shooting-star');
     
-    // Random position
-    const startX = Math.random() * 100;
-    const startY = Math.random() * 50;
+    // Random starting position
+    const startX = Math.random() * 80 + 10; // 10% to 90%
+    const startY = Math.random() * 40; // Top 40%
     shootingStar.style.left = `${startX}%`;
     shootingStar.style.top = `${startY}%`;
     
@@ -1494,27 +1824,47 @@ function createShootingStars() {
     if (document.documentElement.getAttribute('data-theme') === 'dark' && Math.random() < 0.3) {
       createShootingStar();
     }
-  }, 2000);
+  }, 3000);
 }
 
 function createConstellations() {
   const container = document.getElementById('starsContainer');
   if (!container) return;
   
-  // Create a few simple constellations
+  // Remove existing constellations
+  const existingConstellations = container.querySelectorAll('.constellation');
+  existingConstellations.forEach(el => el.remove());
+  
+  // Create beautiful constellations
   const constellations = [
     // Big Dipper
-    { points: [[15, 20], [20, 25], [25, 22], [30, 27], [35, 25], [40, 30], [45, 28]],
-      brightness: 0.4 },
+    {
+      name: 'big-dipper',
+      points: [
+        [15, 20], [20, 25], [25, 22], 
+        [30, 27], [35, 25], [40, 30], [45, 28]
+      ],
+      brightness: 0.4
+    },
     // Orion's Belt
-    { points: [[60, 40], [65, 40], [70, 40]],
-      brightness: 0.5 },
+    {
+      name: 'orion',
+      points: [
+        [60, 40], [65, 40], [70, 40]
+      ],
+      brightness: 0.5
+    },
     // Cassiopeia
-    { points: [[80, 25], [85, 20], [90, 25], [85, 30], [80, 35]],
-      brightness: 0.3 }
+    {
+      name: 'cassiopeia',
+      points: [
+        [80, 25], [85, 20], [90, 25], [85, 30], [80, 35]
+      ],
+      brightness: 0.3
+    }
   ];
   
-  constellations.forEach((constellation, constIndex) => {
+  constellations.forEach(constellation => {
     const constDiv = document.createElement('div');
     constDiv.classList.add('constellation');
     constDiv.style.opacity = constellation.brightness;
@@ -1955,7 +2305,7 @@ function downloadTicket() {
     <body>
       <div class="ticket">
         <div class="ticket-header">
-          <h1 class="ticket-title">🚌 Lagan Bus Ticket</h1>
+          <h1 class="ticket-title">Lagan Bus Ticket</h1>
           <p class="ticket-subtitle">Safe Travels. May God Bless Your Journey.</p>
         </div>
         
