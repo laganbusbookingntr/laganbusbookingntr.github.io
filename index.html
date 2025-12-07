@@ -128,7 +128,38 @@ body {
   font-size: 0.95rem;
 }
 
-/* ===================== THEME TOGGLE UNDER SUN/MOON ===================== */
+/* ===================== THEME TOGGLE IN RIGHT SIDE CORNER ===================== */
+.theme-toggle-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.theme-btn {
+  background: var(--bg-card);
+  border: 2px solid var(--border-light);
+  color: var(--text-primary);
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.theme-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-blue);
+}
+
+/* ===================== SKY STYLING WITH SUN/MOON/STARS ===================== */
 .sky-container {
   position: relative;
   width: 100%;
@@ -141,89 +172,118 @@ body {
   justify-content: center;
 }
 
+/* Light Mode Sky */
 [data-theme="light"] .sky-container {
   background: linear-gradient(180deg, #87CEEB 0%, #E0F7FF 100%);
 }
 
+/* Dark Mode Sky */
 [data-theme="dark"] .sky-container {
   background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
 }
 
-.sun-moon-container {
+/* Sun Styling */
+.sun {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  z-index: 10;
-}
-
-.celestial-body {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 20px currentColor;
+  background: linear-gradient(135deg, #FFD93D, #FFA726);
+  box-shadow: 0 0 40px rgba(255, 217, 61, 0.8), 0 0 80px rgba(255, 167, 38, 0.6);
+  top: 40px;
+  left: 50px;
   transition: all 0.5s ease;
+  animation: sunGlow 4s ease-in-out infinite;
 }
 
-.sun-icon {
-  background: #FFD93D;
-  color: #FFA726;
-  box-shadow: 0 0 30px rgba(255, 217, 61, 0.8);
+@keyframes sunGlow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
-.moon-icon {
+[data-theme="dark"] .sun {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+/* Moon Styling */
+.moon {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
   background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
-  color: #94a3b8;
-  box-shadow: 0 0 20px rgba(148, 163, 184, 0.6);
+  box-shadow: 0 0 30px rgba(148, 163, 184, 0.6), 0 0 60px rgba(148, 163, 184, 0.4);
+  top: 45px;
+  right: 50px;
+  transition: all 0.5s ease;
+  opacity: 0;
+  transform: scale(0.5);
+  animation: moonGlow 4s ease-in-out infinite;
 }
 
-[data-theme="light"] .moon-icon {
-  opacity: 0.3;
-  transform: scale(0.8);
+@keyframes moonGlow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
-[data-theme="dark"] .sun-icon {
-  opacity: 0.3;
-  transform: scale(0.8);
-}
-
-[data-theme="light"] .sun-icon {
+[data-theme="dark"] .moon {
   opacity: 1;
   transform: scale(1);
 }
 
-[data-theme="dark"] .moon-icon {
+/* Stars in Dark Mode */
+.stars {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+[data-theme="dark"] .stars {
   opacity: 1;
-  transform: scale(1);
 }
 
-.theme-btn {
-  background: var(--bg-card);
-  border: 2px solid var(--border-light);
-  color: var(--text-primary);
-  padding: 8px 16px;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s infinite;
 }
 
-.theme-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--primary-blue);
+.star.small {
+  width: 2px;
+  height: 2px;
+}
+
+.star.medium {
+  width: 3px;
+  height: 3px;
+}
+
+.star.large {
+  width: 4px;
+  height: 4px;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Shooting Stars in Dark Mode */
+.shooting-star {
+  position: absolute;
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255,255,255,0), white, rgba(255,255,255,0));
+  opacity: 0;
+  transform: rotate(-45deg);
+}
+
+[data-theme="dark"] .shooting-star {
+  opacity: 0;
 }
 
 /* ===================== MAIN LAYOUT ===================== */
@@ -408,9 +468,107 @@ body {
   margin-bottom: 30px;
 }
 
+/* Mobile-specific ticket styling */
 @media (max-width: 768px) {
   .ticket-info {
     grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .results-body {
+    padding: 20px;
+  }
+  
+  .info-card {
+    padding: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .info-label {
+    font-size: 0.75rem;
+  }
+  
+  .info-value {
+    font-size: 1rem;
+  }
+  
+  #passengerName {
+    font-size: 1.3rem;
+    padding: 10px 0;
+    margin-bottom: 15px;
+  }
+  
+  .seats-section {
+    padding: 20px;
+    margin: 15px -20px;
+  }
+  
+  .seat {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .seat-icon {
+    font-size: 20px;
+  }
+  
+  .seat-number {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile modal overlay for better ticket viewing */
+@media (max-width: 768px) {
+  .ticket-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1001;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  
+  .ticket-modal {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+    animation: slideUp 0.3s ease;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--danger);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1002;
   }
 }
 
@@ -652,43 +810,49 @@ body {
   
   .main-header {
     padding: 15px;
+    margin-bottom: 20px;
   }
   
   .brand {
     font-size: 1.6rem;
   }
   
-  .search-card,
-  .results-card {
+  .search-card {
     padding: 20px;
+    position: static;
   }
   
-  .ticket-info {
-    gap: 15px;
+  .results-card {
+    padding: 0;
   }
   
-  .info-card {
-    padding: 15px;
-  }
-  
-  .seat {
-    width: 70px;
-    height: 70px;
-  }
-  
-  .sun-moon-container {
+  .theme-toggle-container {
     top: 10px;
     right: 10px;
   }
   
-  .celestial-body {
-    width: 50px;
-    height: 50px;
+  .theme-btn {
+    padding: 8px 16px;
+    font-size: 0.85rem;
   }
   
-  .theme-btn {
-    padding: 6px 12px;
-    font-size: 0.8rem;
+  .sun {
+    width: 60px;
+    height: 60px;
+    top: 30px;
+    left: 30px;
+  }
+  
+  .moon {
+    width: 50px;
+    height: 50px;
+    top: 35px;
+    right: 30px;
+  }
+  
+  .sky-container {
+    height: 150px;
+    margin-bottom: 20px;
   }
 }
 
@@ -705,14 +869,27 @@ body {
     width: 100%;
   }
   
-  .sun-moon-container {
-    top: 8px;
-    right: 8px;
+  .theme-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
   }
   
-  .celestial-body {
+  .sun {
+    width: 50px;
+    height: 50px;
+    top: 25px;
+    left: 20px;
+  }
+  
+  .moon {
     width: 45px;
     height: 45px;
+    top: 30px;
+    right: 20px;
+  }
+  
+  .sky-container {
+    height: 130px;
   }
 }
 </style>
@@ -720,16 +897,19 @@ body {
 <body>
 <div class="container">
   
-  <!-- Sky Container with Sun/Moon and Theme Toggle -->
+  <!-- Theme Toggle Button in Right Corner -->
+  <div class="theme-toggle-container">
+    <button class="theme-btn" id="themeToggle">
+      <span id="themeIcon">🌙</span>
+      <span id="themeText">Dark Mode</span>
+    </button>
+  </div>
+  
+  <!-- Sky Container with Sun/Moon/Stars -->
   <div class="sky-container">
-    <div class="sun-moon-container">
-      <div class="celestial-body sun-icon" id="sunIcon">☀️</div>
-      <div class="celestial-body moon-icon" id="moonIcon">🌙</div>
-      <button class="theme-btn" id="themeToggle">
-        <span id="themeIcon">🌙</span>
-        <span id="themeText">Dark Mode</span>
-      </button>
-    </div>
+    <div class="sun"></div>
+    <div class="moon"></div>
+    <div class="stars" id="starsContainer"></div>
   </div>
   
   <!-- Main Header -->
@@ -861,6 +1041,14 @@ body {
   </footer>
 </div>
 
+<!-- Mobile Ticket Modal -->
+<div class="ticket-modal-overlay" id="mobileTicketModal">
+  <div class="ticket-modal">
+    <button class="close-modal" onclick="closeMobileTicket()">×</button>
+    <div id="mobileTicketContent"></div>
+  </div>
+</div>
+
 <script>
 // ===================== CONFIGURATION =====================
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
@@ -880,6 +1068,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.documentElement.setAttribute('data-theme', newTheme);
     updateThemeUI(newTheme);
     localStorage.setItem('lagan-theme', newTheme);
+    
+    // Create stars for dark mode
+    if (newTheme === 'dark') {
+      createStars();
+      createShootingStars();
+    }
   });
   
   // Phone input validation
@@ -900,29 +1094,90 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Download button event
   document.getElementById('downloadBtn').addEventListener('click', downloadTicket);
+  
+  // Initialize stars if in dark mode
+  if (document.documentElement.getAttribute('data-theme') === 'dark') {
+    createStars();
+    createShootingStars();
+  }
 });
 
 function updateThemeUI(theme) {
   const themeIcon = document.getElementById('themeIcon');
   const themeText = document.getElementById('themeText');
-  const sunIcon = document.getElementById('sunIcon');
-  const moonIcon = document.getElementById('moonIcon');
   
   if (theme === 'dark') {
     themeIcon.textContent = '☀️';
     themeText.textContent = 'Light Mode';
-    sunIcon.style.opacity = '0.3';
-    sunIcon.style.transform = 'scale(0.8)';
-    moonIcon.style.opacity = '1';
-    moonIcon.style.transform = 'scale(1)';
   } else {
     themeIcon.textContent = '🌙';
     themeText.textContent = 'Dark Mode';
-    sunIcon.style.opacity = '1';
-    sunIcon.style.transform = 'scale(1)';
-    moonIcon.style.opacity = '0.3';
-    moonIcon.style.transform = 'scale(0.8)';
   }
+}
+
+// ===================== SKY ANIMATIONS =====================
+function createStars() {
+  const container = document.getElementById('starsContainer');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  // Create many stars
+  for (let i = 0; i < 100; i++) {
+    const star = document.createElement('div');
+    star.classList.add('star');
+    
+    // Random size
+    const size = Math.random();
+    if (size < 0.3) star.classList.add('small');
+    else if (size < 0.6) star.classList.add('medium');
+    else star.classList.add('large');
+    
+    // Random position
+    star.style.left = `${Math.random() * 100}%`;
+    star.style.top = `${Math.random() * 100}%`;
+    
+    // Random animation delay
+    star.style.animationDelay = `${Math.random() * 3}s`;
+    
+    container.appendChild(star);
+  }
+}
+
+function createShootingStars() {
+  const container = document.getElementById('starsContainer');
+  if (!container) return;
+  
+  // Create shooting stars periodically
+  setInterval(() => {
+    if (Math.random() < 0.2) { // 20% chance every interval
+      const shootingStar = document.createElement('div');
+      shootingStar.classList.add('shooting-star');
+      
+      // Random position
+      shootingStar.style.left = `${Math.random() * 100}%`;
+      shootingStar.style.top = `${Math.random() * 50}%`;
+      
+      container.appendChild(shootingStar);
+      
+      // Animate shooting star
+      shootingStar.animate([
+        { transform: 'translateX(0) translateY(0)', opacity: 0 },
+        { transform: 'translateX(200px) translateY(100px)', opacity: 1 },
+        { transform: 'translateX(400px) translateY(200px)', opacity: 0 }
+      ], {
+        duration: 1500,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+      });
+      
+      // Remove after animation
+      setTimeout(() => {
+        if (shootingStar.parentNode) {
+          shootingStar.parentNode.removeChild(shootingStar);
+        }
+      }, 1500);
+    }
+  }, 3000);
 }
 
 // ===================== BOOKING SEARCH =====================
@@ -1190,6 +1445,88 @@ function renderBooking(b) {
     seats: seat,
     bookingId: bookingId
   };
+  
+  // For mobile, show ticket in modal
+  if (window.innerWidth <= 768) {
+    showMobileTicket();
+  }
+}
+
+// ===================== MOBILE TICKET VIEW =====================
+function showMobileTicket() {
+  const modal = document.getElementById('mobileTicketModal');
+  const content = document.getElementById('mobileTicketContent');
+  
+  // Create mobile-friendly ticket view
+  const ticketHtml = `
+    <div style="padding: 15px;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h2 style="color: var(--dark-blue); font-size: 1.4rem; margin-bottom: 5px;">🎫 Your Ticket</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Booking Details</p>
+      </div>
+      
+      <div style="background: var(--bg-light); padding: 15px; border-radius: var(--radius-md); margin-bottom: 15px; text-align: center;">
+        <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 5px;">Passenger Name</div>
+        <div style="color: var(--dark-blue); font-size: 1.3rem; font-weight: 800;">${escapeHtml(window.currentBookingData.passengerName)}</div>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px;">
+        <div style="background: var(--bg-light); padding: 12px; border-radius: var(--radius-md);">
+          <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 5px;">🚌 Bus Name</div>
+          <div style="color: var(--text-primary); font-weight: 600;">${escapeHtml(window.currentBookingData.busName)}</div>
+        </div>
+        
+        <div style="background: var(--bg-light); padding: 12px; border-radius: var(--radius-md);">
+          <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 5px;">📅 Date & Time</div>
+          <div style="color: var(--text-primary); font-weight: 600;">${escapeHtml(window.currentBookingData.dateTime)}</div>
+        </div>
+        
+        <div style="background: var(--bg-light); padding: 12px; border-radius: var(--radius-md);">
+          <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 5px;">📍 Pickup Location</div>
+          <div style="color: var(--text-primary); font-weight: 600;">${escapeHtml(window.currentBookingData.pickupLocation)}</div>
+        </div>
+        
+        <div style="background: var(--bg-light); padding: 12px; border-radius: var(--radius-md);">
+          <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 5px;">💰 Payment Status</div>
+          <div style="color: var(--text-primary); font-weight: 600;">${escapeHtml(window.currentBookingData.paymentAmount)}</div>
+        </div>
+      </div>
+      
+      <div style="background: linear-gradient(135deg, rgba(58, 123, 213, 0.05), rgba(103, 184, 247, 0.02)); padding: 15px; border-radius: var(--radius-md); border: 1px dashed var(--border-light); margin-bottom: 20px;">
+        <div style="color: var(--dark-blue); font-weight: 700; text-align: center; margin-bottom: 15px; font-size: 1.1rem;">💺 Seat Numbers</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+          ${window.currentBookingData.seats && window.currentBookingData.seats.trim() !== '' && window.currentBookingData.seats.toLowerCase() !== 'not updated' ? 
+            window.currentBookingData.seats.split(/[, \/]+/).filter(s => s.trim() !== '').map(seat => `
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue)); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800;">
+                <div style="font-size: 12px;">💺</div>
+                <div>${escapeHtml(seat.trim())}</div>
+              </div>
+            `).join('') : 
+            '<div style="text-align:center;color:var(--text-muted);font-style:italic;padding:10px;">No seat assigned yet</div>'
+          }
+        </div>
+      </div>
+      
+      <button onclick="downloadTicket()" style="width:100%;padding:15px;background:linear-gradient(135deg, var(--success), #059669);color:white;border:none;border-radius:var(--radius-md);font-weight:700;font-size:1rem;margin-bottom:15px;display:flex;align-items:center;justify-content:center;gap:10px;">
+        <span>⬇️</span> Download Ticket
+      </button>
+      
+      <div style="text-align:center;color:var(--text-muted);font-size:0.9rem;padding:15px;background:var(--bg-light);border-radius:var(--radius-md);">
+        <div style="font-weight:600;margin-bottom:5px;">📞 Need Help?</div>
+        <div>Contact: <strong>0777 402 886 (Mr. Fawas)</strong></div>
+      </div>
+    </div>
+  `;
+  
+  content.innerHTML = ticketHtml;
+  modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMobileTicket() {
+  const modal = document.getElementById('mobileTicketModal');
+  modal.style.display = 'none';
+  document.body.style.overflow = 'auto';
 }
 
 // ===================== TICKET DOWNLOAD =====================
@@ -1413,6 +1750,13 @@ function escapeHtml(text) {
   div.textContent = text;
   return div.innerHTML;
 }
+
+// Close mobile modal when clicking outside
+document.getElementById('mobileTicketModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeMobileTicket();
+  }
+});
 </script>
 </body>
 </html>
