@@ -68,6 +68,7 @@ body {
   min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
   line-height: 1.5;
+  padding-bottom: 70px; /* Space for bottom theme toggle */
 }
 
 /* Container - remove top padding so sky and header can touch */
@@ -405,10 +406,10 @@ body {
   font-size: 0.9rem;
 }
 
-/* ===================== THEME TOGGLE ===================== */
+/* ===================== THEME TOGGLE (BOTTOM RIGHT) ===================== */
 .theme-toggle-container {
   position: fixed;
-  top: 20px;
+  bottom: 20px;
   right: 20px;
   z-index: 1000;
   display: flex;
@@ -421,16 +422,16 @@ body {
   background: var(--bg-card);
   border: 2px solid var(--border-light);
   color: var(--text-primary);
-  padding: 8px 16px;
+  padding: 10px 18px;
   border-radius: 50px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.3s;
   box-shadow: var(--shadow-md);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   white-space: nowrap;
 }
 
@@ -752,6 +753,12 @@ body {
   background: linear-gradient(135deg, #34d399, #059669);
 }
 
+.download-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
 /* ===================== FEEDBACK ===================== */
 .feedback-section {
   margin-top: 20px;
@@ -927,8 +934,8 @@ body {
   }
   
   .theme-btn {
-    padding: 6px 12px;
-    font-size: 0.85rem;
+    padding: 8px 15px;
+    font-size: 0.9rem;
   }
   
   .feedback-buttons {
@@ -978,8 +985,8 @@ body {
   }
   
   .theme-btn { 
-    padding: 5px 10px; 
-    font-size: 0.8rem; 
+    padding: 6px 12px; 
+    font-size: 0.85rem; 
   }
 }
 </style>
@@ -1040,7 +1047,7 @@ body {
     <div class="contact-info">For Reservations: <strong>0777402886 (Mr.Fawas)</strong></div>
   </header>
   
-  <!-- Theme Toggle Button -->
+  <!-- Theme Toggle Button (now at bottom right) -->
   <div class="theme-toggle-container" aria-hidden="true">
     <button class="theme-btn" id="themeToggle" aria-pressed="false" title="Toggle theme">
       <span id="themeIcon">🌙</span>
@@ -1143,7 +1150,7 @@ body {
           <!-- Download Button -->
           <div class="download-section">
             <button id="downloadBtn" class="download-btn">
-              <!-- <span>⬇️</span> --> Download Ticket
+              <span>📥</span> Download Ticket
             </button>
           </div>
           
@@ -1562,7 +1569,7 @@ function renderBooking(b) {
   const formatted = formatDateTime(date, time);
   console.log('Formatted result:', formatted);
   
-  const displayDateTime = `${formatted.date} • ${formatted.time}`;
+  let displayDateTime = `${formatted.date} • ${formatted.time}`;
   
   if (displayDateTime.includes('Invalid') || displayDateTime.includes('NaN') || displayDateTime.includes('undefined')) {
     displayDateTime = '-';
@@ -1617,21 +1624,12 @@ function renderBooking(b) {
     pickupLocation: pickup,
     paymentAmount: paymentText,
     seats: seat,
-    bookingId: bookingId
+    bookingId: bookingId,
+    phone: document.getElementById('phone').value.trim()
   };
 }
 
-// ===================== TICKET DOWNLOAD =====================
-function escapeHtml(unsafe) {
-  if (!unsafe && unsafe !== 0) return '';
-  return String(unsafe)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
+// ===================== TICKET DOWNLOAD (SIMPLE FIX) =====================
 function downloadTicket() {
   const data = window.currentBookingData;
   if (!data) {
@@ -1649,128 +1647,128 @@ function downloadTicket() {
   downloadBtn.innerHTML = '<div class="spinner"></div> Preparing...';
   downloadBtn.disabled = true;
 
+  // Create simple ticket HTML
   const ticketHtml = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <title>Lagan Bus Ticket - ${escapeHtml(data.passengerName)}</title>
-      <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: #f5f7fa; padding: 20px; }
-        .ticket { max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .ticket-header { background: linear-gradient(135deg, #3a7bd5, #67b8f7); color: white; padding: 25px; text-align: center; }
-        .ticket-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
-        .ticket-subtitle { font-size: 13px; opacity: 0.9; }
-        .ticket-body { padding: 25px; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .info-card { background: #f8fafc; padding: 18px; border-radius: 10px; border: 1px solid #e2e8f0; }
-        .info-label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; font-weight: 600; }
-        .info-value { font-size: 16px; font-weight: 700; color: #0f172a; }
-        .passenger-name { text-align: center; font-size: 22px; font-weight: 800; color: #1e40af; margin-bottom: 25px; padding-bottom: 12px; border-bottom: 2px dashed #e2e8f0; }
-        .seats-section { background: linear-gradient(135deg, rgba(58,123,213,0.05), rgba(103,184,247,0.02)); padding: 22px; border-radius: 10px; border: 2px dashed #dbeafe; margin-bottom: 25px; }
-        .section-title { font-size: 17px; font-weight: 700; color: #1e40af; margin-bottom: 18px; text-align: center; }
-        .seats-container { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-        .seat { width: 60px; height: 60px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #3a7bd5, #1a5cb0); color: white; font-weight: 800; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .ticket-footer { text-align: center; padding: 18px; color: #64748b; font-size: 13px; border-top: 1px solid #e2e8f0; }
-        @media print { body { background: white; padding: 0; } .ticket { box-shadow: none; } }
-      </style>
-    </head>
-    <body>
-      <div class="ticket">
-        <div class="ticket-header">
-          <h1 class="ticket-title">Lagan Bus Ticket</h1>
-          <p class="ticket-subtitle">Safe Travels. May God Bless Your Journey.</p>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Lagan Bus Ticket - ${data.passengerName}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f5f7fa; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .ticket { width: 100%; max-width: 400px; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    .ticket-header { background: linear-gradient(135deg, #3a7bd5, #67b8f7); color: white; padding: 25px; text-align: center; }
+    .ticket-title { font-size: 24px; font-weight: 800; margin-bottom: 5px; }
+    .ticket-subtitle { font-size: 13px; opacity: 0.9; }
+    .ticket-body { padding: 25px; }
+    .passenger-name { text-align: center; font-size: 22px; font-weight: 800; color: #1e40af; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px dashed #e2e8f0; }
+    .info-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 25px; }
+    .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+    .info-label { font-size: 13px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .info-value { font-size: 15px; font-weight: 700; color: #0f172a; }
+    .seats-section { background: linear-gradient(135deg, rgba(58,123,213,0.05), rgba(103,184,247,0.02)); padding: 20px; border-radius: 10px; border: 1px dashed #dbeafe; margin-bottom: 25px; text-align: center; }
+    .seats-title { font-size: 16px; font-weight: 700; color: #1e40af; margin-bottom: 15px; }
+    .seats-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .seat { width: 45px; height: 45px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #3a7bd5, #1a5cb0); color: white; font-weight: 800; font-size: 14px; }
+    .contact-info { text-align: center; padding: 18px; background: #f0f9ff; border-radius: 10px; margin-bottom: 20px; }
+    .contact-title { font-weight: 700; color: #0369a1; margin-bottom: 8px; font-size: 15px; }
+    .contact-number { color: #475569; font-weight: 600; font-size: 16px; }
+    .ticket-footer { text-align: center; padding: 20px; color: #64748b; font-size: 12px; border-top: 1px solid #e2e8f0; }
+    @media print { body { background: white; padding: 0; } .ticket { box-shadow: none; } }
+  </style>
+</head>
+<body>
+  <div class="ticket">
+    <div class="ticket-header">
+      <h1 class="ticket-title">LAGAN BUS TICKET</h1>
+      <p class="ticket-subtitle">Safe Travels. May God Bless Your Journey.</p>
+    </div>
+    
+    <div class="ticket-body">
+      <div class="passenger-name">${data.passengerName}</div>
+      
+      <div class="info-grid">
+        <div class="info-row">
+          <div class="info-label">Bus Name</div>
+          <div class="info-value">${data.busName}</div>
         </div>
-        
-        <div class="ticket-body">
-          <div class="passenger-name">${escapeHtml(data.passengerName)}</div>
-          
-          <div class="info-grid">
-            <div class="info-card">
-              <div class="info-label">Bus Name</div>
-              <div class="info-value">${escapeHtml(data.busName)}</div>
-            </div>
-            
-            <div class="info-card">
-              <div class="info-label">Date & Time</div>
-              <div class="info-value">${escapeHtml(data.dateTime)}</div>
-            </div>
-            
-            <div class="info-card">
-              <div class="info-label">Pickup Location</div>
-              <div class="info-value">${escapeHtml(data.pickupLocation)}</div>
-            </div>
-            
-            <div class="info-card">
-              <div class="info-label">Payment Status</div>
-              <div class="info-value">${escapeHtml(data.paymentAmount)}</div>
-            </div>
-          </div>
-          
-          <div class="seats-section">
-            <h3 class="section-title">💺 Seat Numbers</h3>
-            <div class="seats-container">
-              ${data.seats && data.seats.trim() !== '' && data.seats.toLowerCase() !== 'not updated' ?
-                data.seats.split(/[, \/]+/).filter(s => s.trim() !== '').map(seat => `
-                  <div class="seat">
-                    <div style="font-size: 11px;">💺</div>
-                    <div>${escapeHtml(seat.trim())}</div>
-                  </div>
-                `).join('') :
-                '<div style="text-align:center;color:#64748b;font-style:italic;">No seat assigned</div>'
-              }
-            </div>
-          </div>
-          
-          <div style="text-align: center; margin-top: 25px; padding: 18px; background: #f0f9ff; border-radius: 10px;">
-            <p style="font-weight: 600; color: #0369a1; margin-bottom: 8px;">📞 Contact Information</p>
-            <p style="color: #475569;">For any inquiries, contact: <strong>0777 402 886 (Mr. Fawas)</strong></p>
-          </div>
+        <div class="info-row">
+          <div class="info-label">Date & Time</div>
+          <div class="info-value">${data.dateTime}</div>
         </div>
-        
-        <div class="ticket-footer">
-          <p>Ticket generated on ${new Date().toLocaleDateString('en-GB', {
-            day: 'numeric', month: 'short', year: 'numeric',
-            hour: '2-digit', minute: '2-digit'
-          })}</p>
-          <p style="margin-top: 5px;">Made with ❤ by WEDOXA</p>
+        <div class="info-row">
+          <div class="info-label">Pickup Location</div>
+          <div class="info-value">${data.pickupLocation}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Payment Status</div>
+          <div class="info-value">${data.paymentAmount}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Phone Number</div>
+          <div class="info-value">${data.phone}</div>
         </div>
       </div>
       
-      <script>
-        setTimeout(() => {
-          window.print();
-          window.close();
-        }, 500);
-      <\/script>
-    </body>
-    </html>
-  `;
+      <div class="seats-section">
+        <h3 class="seats-title">💺 Seat Numbers</h3>
+        <div class="seats-container">
+          ${data.seats && data.seats.trim() !== '' && data.seats.toLowerCase() !== 'not updated' ? 
+            data.seats.split(/[, \/]+/).filter(s => s.trim() !== '').map(seat => `
+              <div class="seat">${seat.trim()}</div>
+            `).join('') : 
+            '<div style="color:#64748b;font-style:italic;padding:10px;">No seat assigned</div>'
+          }
+        </div>
+      </div>
+      
+      <div class="contact-info">
+        <p class="contact-title">📞 Contact Information</p>
+        <p class="contact-number">0777 402 886 (Mr. Fawas)</p>
+        <p style="font-size: 12px; color: #64748b; margin-top: 5px;">For any inquiries or changes</p>
+      </div>
+      
+      <div class="ticket-footer">
+        <p>Ticket generated on ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+        <p style="margin-top: 8px; font-weight: 600;">Made with ❤ by WEDOXA</p>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    setTimeout(() => {
+      window.print();
+    }, 500);
+  <\/script>
+</body>
+</html>`;
 
+  // Create blob and download
   const blob = new Blob([ticketHtml], { type: 'text/html' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `Lagan-Ticket-${String(data.passengerName).replace(/[^a-z0-9]/gi, '-')}.html`;
+  a.download = `Lagan-Bus-Ticket-${data.passengerName.replace(/[^a-z0-9]/gi, '-')}.html`;
   document.body.appendChild(a);
   a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-
+  
+  // Clean up
   setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
     downloadBtn.innerHTML = originalText;
     downloadBtn.disabled = false;
-  }, 800);
-
-  Swal.fire({
-    icon: 'success',
-    title: 'Ticket Downloaded!',
-    text: 'Your ticket has been downloaded successfully',
-    confirmButtonColor: '#3a7bd5',
-    timer: 1500,
-    showConfirmButton: false
-  });
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Ticket Downloaded!',
+      text: 'Your ticket has been saved successfully',
+      confirmButtonColor: '#3a7bd5',
+      timer: 2000,
+      showConfirmButton: false
+    });
+  }, 1000);
 }
 
 // ===================== FEEDBACK SYSTEM =====================
