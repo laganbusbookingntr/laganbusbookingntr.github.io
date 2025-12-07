@@ -1,438 +1,1417 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Lagan Bus Booking — Check Your Seat</title>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-:root{
-  --blue:#3a7bd5;
-  --blue2:#67b8f7;
-  --blue-dark:#1a5cb0;
-  --muted:#66788A;
-  --border:#dce4ec;
-  --accent:#0f6fb1;
-  --success:#10b981;
-  --danger:#ef4444;
-  --light-body-bg: linear-gradient(135deg, #f5f7fa 0%, #eef3f8 100%);
-  --dark-body-bg: linear-gradient(180deg,#05060a 0%, #071428 100%);
+/* ===================== BASE STYLES ===================== */
+:root {
+  /* Light theme colors */
+  --primary-blue: #3a7bd5;
+  --secondary-blue: #67b8f7;
+  --dark-blue: #1a5cb0;
+  --light-blue: #e8f4ff;
+  --text-primary: #0b2638;
+  --text-secondary: #66788A;
+  --text-muted: #8b9aad;
+  --bg-light: #f8fafc;
+  --bg-card: #ffffff;
+  --border-light: #e2e8f0;
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.08);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+  --shadow-xl: 0 20px 40px rgba(0,0,0,0.12);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
 }
 
-/* Basic reset + layout */
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI', system-ui, -apple-system, sans-serif}
-html,body{height:100%}
-body{
-  background:var(--light-body-bg);
-  color:#0b2638;
-  transition:background .35s, color .35s;
-  padding:18px;
-  display:flex;
-  justify-content:center;
+[data-theme="dark"] {
+  /* Dark theme colors */
+  --primary-blue: #5a8bff;
+  --secondary-blue: #7ba6ff;
+  --dark-blue: #88b8ff;
+  --light-blue: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --bg-light: #0f172a;
+  --bg-card: #1e293b;
+  --border-light: #334155;
+  --success: #34d399;
+  --success-light: #065f46;
+  --danger: #f87171;
+  --danger-light: #7f1d1d;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.25);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.35);
+  --shadow-xl: 0 20px 40px rgba(0,0,0,0.4);
 }
 
-/* container width limit */
-.container{
-  width:100%;
-  max-width:960px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  align-items:stretch;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
-/* SKY */
-.sky-container{
-  width:100%;
-  height:150px;
-  border-radius:12px;
-  position:relative;
-  overflow:hidden;
-  background:linear-gradient(180deg,#bfe4ff,#eaf6ff);
-  transition:background .6s ease;
+body {
+  background: var(--bg-light);
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.5;
 }
 
-/* sun/moon/clouds/stars */
-.sun{ width:72px;height:72px;border-radius:50%; background:#FFD93D; position:absolute; left:28px; bottom:-20px; box-shadow:0 0 32px rgba(255,217,61,0.85); transform-origin:center; animation:sunFloat 6s ease-in-out infinite; transition:opacity .4s; }
-@keyframes sunFloat{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
-.moon{ width:56px;height:56px;border-radius:50%; background:linear-gradient(180deg,#fff,#f2f2f2); position:absolute; right:40px; top:24px; box-shadow:0 0 18px rgba(255,255,255,0.18); opacity:0; transition:opacity .45s; }
-.cloud{ position:absolute; width:84px;height:36px;background:#fff;border-radius:40px; box-shadow:28px 12px 0 #fff,50px 18px 0 #fff; opacity:0.95; transition:opacity .45s; }
-.c1{ top:25px; left:-160px; animation: cloudMove 28s linear infinite; }
-.c2{ top:45px; left:8%; transform:scale(1.05); animation: cloudMove 30s linear infinite; animation-delay:-7s; }
-.c3{ top:58px; left:60%; transform:scale(0.92); animation: cloudMove 34s linear infinite; animation-delay:-14s; }
-.c4{ top:35px; left:82%; transform:scale(1.05); animation: cloudMove 28s linear infinite; animation-delay:-20s; }
-@keyframes cloudMove{0%{left:-160px}100%{left:120%}}
-.stars{ position:absolute; inset:0; background:
-    radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,0.95), transparent),
-    radial-gradient(1.5px 1.5px at 60% 50%, rgba(255,255,255,0.85), transparent),
-    radial-gradient(1.2px 1.2px at 80% 40%, rgba(255,255,255,0.8), transparent);
-  opacity:0; transition:opacity .5s; pointer-events:none; }
-.shooting-star{ position:absolute;width:3px;height:3px;border-radius:50%; background:white; top:20px; left:-120px; opacity:0; }
-
-/* small toolbar inside sky (right) */
-.mode-toggle{ position:absolute; right:14px; top:12px; display:flex; gap:8px; background:rgba(255,255,255,0.9); padding:6px; border-radius:999px; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
-.mode-btn{ border:0; background:transparent; padding:6px; cursor:pointer; font-size:16px; border-radius:999px; }
-.mode-btn.active{ background:linear-gradient(90deg,#fff,#eef6ff); }
-
-/* CARD area */
-.card-wrap{ display:flex; gap:16px; align-items:flex-start; }
-
-/* left column - small card */
-.left-col{ width:260px; flex:0 0 260px; display:flex; gap:12px; flex-direction:column; }
-.header{
-  background:rgba(255,255,255,0.95); border-radius:12px; padding:14px; box-shadow:0 8px 22px rgba(0,0,0,0.04);
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
-.brand{ font-weight:800; color:var(--blue-dark); font-size:20px; margin-bottom:6px; line-height:1; }
-.welcome{ color:#444; font-weight:600; margin-bottom:8px; }
-.sub{ background:rgba(58,123,213,0.06); padding:8px 12px; border-radius:999px; display:inline-block; color:var(--muted); font-weight:700; }
 
-/* form card */
-.form-card{ background:#fff; padding:16px; border-radius:12px; box-shadow:0 12px 30px rgba(0,0,0,0.04); }
-.input{ width:100%; padding:12px; border-radius:10px; border:2px solid #e6edf5; font-size:15px; background:#fbfdff; }
-.btn{ width:100%; margin-top:12px; padding:12px; border-radius:10px; border:0; background:linear-gradient(135deg,var(--blue2),var(--blue)); color:white; font-weight:800; cursor:pointer; }
+/* ===================== HEADER & NAVIGATION ===================== */
+.main-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  position: relative;
+  overflow: hidden;
+}
 
-/* right column - main ticket output */
-.right-col{ flex:1; }
-.ticket{ display:none; background:linear-gradient(180deg,#fff,#f8fbff); border-radius:12px; padding:18px; border:1px solid rgba(26,92,176,0.06); box-shadow:0 12px 40px rgba(11,86,141,0.04); }
-.ticket-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px 18px; }
-.ticket-row{ background: rgba(255,255,255,0.6); padding:10px 12px; border-radius:8px; border:1px solid rgba(10,80,150,0.03); }
-.ticket-label{ font-size:11px; color:var(--muted); font-weight:800; text-transform:uppercase; }
-.ticket-value{ font-size:16px; font-weight:900; color:#0c1b2a; margin-top:6px; }
+.main-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+}
 
-/* seats */
-.seat-pill{ display:inline-block; padding:8px 12px; border-radius:999px; background:#eaf6ff; border:1px solid rgba(15,111,177,0.12); margin:6px 6px 6px 0; font-weight:900; }
+.brand {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--dark-blue);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
 
-/* footer */
-.footer{ text-align:center; color:#8b9aad; margin-top:12px; }
+.tagline {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
 
-/* Dark mode */
-body.dark{ background:var(--dark-body-bg); color:#dfefff; }
-body.dark .sky-container{ background:linear-gradient(180deg,#071428,#020412); box-shadow:inset 0 -20px 40px rgba(0,0,0,0.25); }
-body.dark .sun{ opacity:0; transform:translateY(6px) scale(.95); }
-body.dark .moon{ opacity:1; }
-body.dark .cloud{ opacity:0.18; filter:blur(1px); }
-body.dark .stars{ opacity:1; }
-body.dark .header, body.dark .form-card{ background:rgba(8,12,20,0.5); color:#eaf6ff; border:1px solid rgba(255,255,255,0.02); box-shadow:none; }
-body.dark .ticket{ background:linear-gradient(180deg,#071428,#041223); color:#e6f5ff; border:1px solid rgba(255,255,255,0.03); box-shadow:none; }
-body.dark .ticket-row{ background:rgba(255,255,255,0.02); }
+.contact-info {
+  display: inline-block;
+  background: var(--light-blue);
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  color: var(--dark-blue);
+  border: 1px solid rgba(58, 123, 213, 0.2);
+  font-size: 0.95rem;
+}
 
-/* small screens */
-@media (max-width:880px){
-  .card-wrap{ flex-direction:column; }
-  .left-col{ width:100%; flex:0 0 auto; order:2; }
-  .right-col{ order:1; }
-  .mode-toggle{ right:8px; top:8px; }
+/* ===================== THEME TOGGLE UNDER SUN/MOON ===================== */
+.sky-container {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 30px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-theme="light"] .sky-container {
+  background: linear-gradient(180deg, #87CEEB 0%, #E0F7FF 100%);
+}
+
+[data-theme="dark"] .sky-container {
+  background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
+}
+
+.sun-moon-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 10;
+}
+
+.celestial-body {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px currentColor;
+  transition: all 0.5s ease;
+}
+
+.sun-icon {
+  background: #FFD93D;
+  color: #FFA726;
+  box-shadow: 0 0 30px rgba(255, 217, 61, 0.8);
+}
+
+.moon-icon {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  color: #94a3b8;
+  box-shadow: 0 0 20px rgba(148, 163, 184, 0.6);
+}
+
+[data-theme="light"] .moon-icon {
+  opacity: 0.3;
+  transform: scale(0.8);
+}
+
+[data-theme="dark"] .sun-icon {
+  opacity: 0.3;
+  transform: scale(0.8);
+}
+
+[data-theme="light"] .sun-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+[data-theme="dark"] .moon-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.theme-btn {
+  background: var(--bg-card);
+  border: 2px solid var(--border-light);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.theme-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-blue);
+}
+
+/* ===================== MAIN LAYOUT ===================== */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 992px) {
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===================== SEARCH CARD ===================== */
+.search-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-light);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-light);
+  background: var(--bg-light);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
+  background: var(--bg-card);
+}
+
+.search-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.search-btn:active {
+  transform: translateY(0);
+}
+
+.search-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ===================== RESULTS CARD ===================== */
+.results-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.results-header {
+  background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+  color: white;
+  padding: 25px 30px;
+  text-align: center;
+  position: relative;
+}
+
+.results-header::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: url("data:image/svg+xml,%3Csvg width='120' height='20' viewBox='0 0 120 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='8' fill='%231e293b'/%3E%3Ccircle cx='30' cy='10' r='8' fill='%231e293b'/%3E%3Ccircle cx='50' cy='10' r='8' fill='%231e293b'/%3E%3Ccircle cx='70' cy='10' r='8' fill='%231e293b'/%3E%3Ccircle cx='90' cy='10' r='8' fill='%231e293b'/%3E%3Ccircle cx='110' cy='10' r='8' fill='%231e293b'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 20px 20px;
+}
+
+[data-theme="light"] .results-header::after {
+  background: url("data:image/svg+xml,%3Csvg width='120' height='20' viewBox='0 0 120 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='8' fill='white'/%3E%3Ccircle cx='30' cy='10' r='8' fill='white'/%3E%3Ccircle cx='50' cy='10' r='8' fill='white'/%3E%3Ccircle cx='70' cy='10' r='8' fill='white'/%3E%3Ccircle cx='90' cy='10' r='8' fill='white'/%3E%3Ccircle cx='110' cy='10' r='8' fill='white'/%3E%3C/svg%3E");
+}
+
+.results-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.results-subtitle {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.results-body {
+  padding: 30px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.no-results {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  padding: 40px 20px;
+}
+
+.no-results-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.no-results-title {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+}
+
+/* ===================== TICKET STYLING ===================== */
+.ticket-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .ticket-info {
+    grid-template-columns: 1fr;
+  }
+}
+
+.info-card {
+  background: var(--bg-light);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+}
+
+.info-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.info-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+/* Passenger name special styling */
+#passengerName {
+  font-size: 1.5rem;
+  color: var(--dark-blue);
+  font-weight: 800;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed var(--border-light);
+  margin-bottom: 5px;
+}
+
+/* ===================== SEATS STYLING ===================== */
+.seats-section {
+  background: linear-gradient(135deg, rgba(58, 123, 213, 0.05), rgba(103, 184, 247, 0.02));
+  padding: 25px;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--border-light);
+  margin-bottom: 25px;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+  margin-bottom: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.seats-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.seat {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+  color: white;
+  font-weight: 800;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid var(--bg-card);
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s;
+}
+
+.seat:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: var(--shadow-lg);
+}
+
+.seat-icon {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.seat-number {
+  font-size: 1.1rem;
+}
+
+.no-seats {
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 20px;
+  background: var(--bg-light);
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--border-light);
+}
+
+/* ===================== DOWNLOAD BUTTON ===================== */
+.download-section {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--success), #059669);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: var(--shadow-md);
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(135deg, #34d399, #059669);
+}
+
+/* ===================== FEEDBACK ===================== */
+.feedback-section {
+  margin-top: 25px;
+  padding: 25px;
+  background: var(--bg-light);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  text-align: center;
+}
+
+.feedback-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+  margin-bottom: 15px;
+}
+
+.feedback-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.feedback-btn {
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-light);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.feedback-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.feedback-btn.yes:hover {
+  background: var(--success-light);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.feedback-btn.no:hover {
+  background: var(--danger-light);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ===================== FOOTER ===================== */
+.main-footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  border-top: 1px solid var(--border-light);
+  margin-top: 30px;
+}
+
+.company-name {
+  font-weight: 800;
+  color: var(--primary-blue);
+  letter-spacing: 0.5px;
+}
+
+/* ===================== LOADING SPINNER ===================== */
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===================== ANIMATIONS ===================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  
+  .main-header {
+    padding: 15px;
+  }
+  
+  .brand {
+    font-size: 1.6rem;
+  }
+  
+  .search-card,
+  .results-card {
+    padding: 20px;
+  }
+  
+  .ticket-info {
+    gap: 15px;
+  }
+  
+  .info-card {
+    padding: 15px;
+  }
+  
+  .seat {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .sun-moon-container {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .celestial-body {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .theme-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand {
+    font-size: 1.4rem;
+  }
+  
+  .feedback-buttons {
+    flex-direction: column;
+  }
+  
+  .feedback-btn {
+    width: 100%;
+  }
+  
+  .sun-moon-container {
+    top: 8px;
+    right: 8px;
+  }
+  
+  .celestial-body {
+    width: 45px;
+    height: 45px;
+  }
 }
 </style>
 </head>
 <body>
 <div class="container">
-
-  <!-- SKY -->
-  <div class="sky-container sky-day" id="sky" aria-hidden="true">
-    <div class="sun" id="sun" aria-hidden="true"></div>
-    <div class="moon" id="moon" aria-hidden="true"></div>
-
-    <div class="cloud c1" aria-hidden="true"></div>
-    <div class="cloud c2" aria-hidden="true"></div>
-    <div class="cloud c3" aria-hidden="true"></div>
-    <div class="cloud c4" aria-hidden="true"></div>
-
-    <div class="stars" id="stars" aria-hidden="true"></div>
-    <div class="shooting-star" id="shooting" aria-hidden="true"></div>
-
-    <div class="mode-toggle" role="toolbar" aria-label="Theme toggle">
-      <button id="dayBtn" class="mode-btn" title="Day mode">☀️</button>
-      <button id="nightBtn" class="mode-btn" title="Night mode">🌙</button>
+  
+  <!-- Sky Container with Sun/Moon and Theme Toggle -->
+  <div class="sky-container">
+    <div class="sun-moon-container">
+      <div class="celestial-body sun-icon" id="sunIcon">☀️</div>
+      <div class="celestial-body moon-icon" id="moonIcon">🌙</div>
+      <button class="theme-btn" id="themeToggle">
+        <span id="themeIcon">🌙</span>
+        <span id="themeText">Dark Mode</span>
+      </button>
     </div>
   </div>
-
-  <!-- MAIN CARDS -->
-  <div class="card-wrap">
-    <div class="left-col">
-      <div class="header">
-        <div class="brand">Welcome To Lagan Bus Booking</div>
-        <div class="welcome">Safe Travels. May God Bless Your Journey.</div>
-        <div class="sub">For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></div>
+  
+  <!-- Main Header -->
+  <header class="main-header">
+    <h1 class="brand">🚌 Lagan Bus Booking</h1>
+    <p class="tagline">Safe Travels. May God Bless Your Journey.</p>
+    <div class="contact-info">For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></div>
+  </header>
+  
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <!-- Search Card -->
+    <div class="search-card">
+      <h2 class="card-title">🔍 Check Your Booking</h2>
+      
+      <div class="input-group">
+        <label class="input-label" for="phone">Phone Number</label>
+        <input type="tel" id="phone" class="input-field" 
+               placeholder="Enter 10-digit number (077XXXXXXX)" 
+               maxlength="10" inputmode="tel">
       </div>
-
-      <div class="form-card">
-        <input id="phone" class="input" placeholder="Enter phone number (077XXXXXXX)" inputmode="tel" maxlength="10" />
-        <button id="searchBtn" class="btn">🔍 Check My Booking</button>
+      
+      <button id="searchBtn" class="search-btn">
+        <span>🔍</span> Check My Booking
+      </button>
+      
+      <div style="margin-top: 20px; padding: 15px; background: var(--light-blue); border-radius: var(--radius-md);">
+        <p style="font-size: 0.9rem; color: var(--dark-blue); margin-bottom: 8px; font-weight: 600;">📝 Instructions:</p>
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">
+          1. Enter the phone number used for booking<br>
+          2. Click "Check My Booking"<br>
+          3. View your seat details & download ticket
+        </p>
       </div>
     </div>
-
-    <div class="right-col">
-      <div id="box" class="ticket" aria-live="polite" role="region">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-          <div>
-            <div style="font-weight:900;color:var(--blue-dark)">🎫 Lagan Bus</div>
-            <div style="font-size:12px;color:var(--muted);font-weight:700">Premium Boarding Pass</div>
-          </div>
-          <div style="text-align:right">
-            <div id="ticketRef" style="font-weight:800;color:var(--accent)">—</div>
-            <div id="issuedAt" style="font-size:11px;color:var(--muted);margin-top:6px">Issued</div>
-          </div>
+    
+    <!-- Results Card -->
+    <div class="results-card">
+      <div class="results-header">
+        <h2 class="results-title">Your Booking Details</h2>
+        <p class="results-subtitle">Find all your travel information here</p>
+      </div>
+      
+      <div class="results-body" id="resultsBody">
+        <!-- Initial state -->
+        <div class="no-results">
+          <div class="no-results-icon">🚌</div>
+          <h3 class="no-results-title">No Booking Found</h3>
+          <p>Enter your phone number to check your booking details</p>
         </div>
-
-        <div class="ticket-grid">
-          <div class="ticket-row">
-            <div class="ticket-label">Passenger</div>
-            <div id="passengerName" class="ticket-value">-</div>
+        
+        <!-- Booking Details (will be shown when data loads) -->
+        <div id="bookingDetails" style="display: none;">
+          <!-- Passenger Info -->
+          <div class="info-card" style="grid-column: 1 / -1; text-align: center;">
+            <div class="info-label">
+              <span>👤</span> Passenger Name
+            </div>
+            <div id="passengerName" class="info-value">-</div>
           </div>
-          <div class="ticket-row">
-            <div class="ticket-label">Bus</div>
-            <div id="busName" class="ticket-value">-</div>
+          
+          <!-- Ticket Info Grid -->
+          <div class="ticket-info">
+            <div class="info-card">
+              <div class="info-label">
+                <span>🚌</span> Bus Name
+              </div>
+              <div id="busName" class="info-value">-</div>
+            </div>
+            
+            <div class="info-card">
+              <div class="info-label">
+                <span>📅</span> Date & Time
+              </div>
+              <div id="dateTime" class="info-value">-</div>
+            </div>
+            
+            <div class="info-card">
+              <div class="info-label">
+                <span>📍</span> Pickup Location
+              </div>
+              <div id="pickupLocation" class="info-value">-</div>
+            </div>
+            
+            <div class="info-card">
+              <div class="info-label">
+                <span>💰</span> Payment Status
+              </div>
+              <div id="paymentAmount" class="info-value">-</div>
+            </div>
           </div>
-          <div class="ticket-row">
-            <div class="ticket-label">Date & Time</div>
-            <div id="dateTime" class="ticket-value">-</div>
+          
+          <!-- Seats Section -->
+          <div class="seats-section">
+            <h3 class="section-title">
+              <span>💺</span> Your Seat Numbers
+            </h3>
+            <div class="seats-container" id="seatsBox"></div>
           </div>
-          <div class="ticket-row">
-            <div class="ticket-label">Pickup</div>
-            <div id="pickupLocation" class="ticket-value">-</div>
+          
+          <!-- Download Button -->
+          <div class="download-section">
+            <button id="downloadBtn" class="download-btn">
+              <span>⬇️</span> Download Ticket
+            </button>
           </div>
-          <div class="ticket-row">
-            <div class="ticket-label">Payment</div>
-            <div id="paymentAmount" class="ticket-value">-</div>
-          </div>
-
-          <div class="ticket-row" style="grid-column:1 / -1">
-            <div class="ticket-label">Seat Numbers</div>
-            <div id="seatsBox" style="margin-top:8px"></div>
-          </div>
-        </div>
-
-        <button id="printBtn" class="btn" style="margin-top:12px">🖨️ Print My Ticket</button>
-
-        <div id="feedbackBox" style="margin-top:12px;display:none">
-          <div style="font-weight:700;color:var(--blue-dark);margin-bottom:10px">Did you get your seat number correctly?</div>
-          <div style="display:flex;gap:12px">
-            <button class="btn" onclick="sendFeedback('Yes')" style="flex:1;background:#e8f5e9;color:#256029;border:1px solid rgba(10,120,60,0.08)">👍 Yes</button>
-            <button class="btn" onclick="sendFeedback('No')" style="flex:1;background:#ffebee;color:#9b1f1f;border:1px solid rgba(120,10,10,0.06)">👎 No</button>
+          
+          <!-- Feedback Section -->
+          <div id="feedbackSection" class="feedback-section" style="display: none;">
+            <h3 class="feedback-title">Did you receive your correct seat information?</h3>
+            <div class="feedback-buttons">
+              <button class="feedback-btn yes" onclick="sendFeedback('Yes')">
+                <span>👍</span> Yes, All Good
+              </button>
+              <button class="feedback-btn no" onclick="sendFeedback('No')">
+                <span>👎</span> No, Issue Found
+              </button>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="footer" style="margin-top:12px">Made with <span style="color:#e74c3c">❤</span> by <strong style="color:var(--blue)">WEDOXA</strong></div>
     </div>
-  </div>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="main-footer">
+    <p>Made with <span style="color:#e74c3c;">❤</span> by <span class="company-name">WEDOXA</span></p>
+  </footer>
 </div>
 
-<!-- All JS must be inside this script tag. Do NOT paste JS outside it. -->
 <script>
-/* ===================== CONFIG ===================== */
+// ===================== CONFIGURATION =====================
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
 
-/* ===================== Helpers ===================== */
-function isIsoString(s){ return typeof s==='string' && /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(s); }
-function tryParseDate(val){
-  if (val === null || val === undefined || val === '') return null;
-  if (Object.prototype.toString.call(val) === '[object Date]') return val;
-  if (typeof val === 'number') { const d = new Date(val); if (!isNaN(d)) return d; }
-  if (typeof val === 'string' && isIsoString(val)) { const d = new Date(val); if (!isNaN(d)) return d; }
-  try { const d = new Date(val); if (!isNaN(d)) return d; } catch(e){}
-  if (typeof val === 'string' && /^\d{1,2}\/\d{1,2}\/\d{2,4}/.test(val)){
-    const p = val.split('/'); const d = new Date(+p[2], +p[1]-1, +p[0]); if (!isNaN(d)) return d;
-  }
-  return null;
-}
-function formatDateTimeForColombo(dateObj){
-  if (!dateObj) return { dateStr:'-', timeStr:'-' };
-  try {
-    const dateOptions = { day:'numeric', month:'short', year:'numeric', timeZone:'Asia/Colombo' };
-    const timeOptions = { hour:'numeric', minute:'2-digit', hour12:true, timeZone:'Asia/Colombo' };
-    return {
-      dateStr: new Intl.DateTimeFormat('en-GB', dateOptions).format(dateObj),
-      timeStr: new Intl.DateTimeFormat('en-GB', timeOptions).format(dateObj)
-    };
-  } catch(e){
-    const d = new Date(dateObj.getTime() + (dateObj.getTimezoneOffset()*60000));
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return { dateStr: `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`, timeStr: `${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}` };
-  }
-}
-function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]); }
-
-function getField(obj, candidates){
-  if (!obj) return null;
-  const keys = Object.keys(obj||{});
-  const norm = k => k.toString().toLowerCase().replace(/\s+/g,'').replace(/[^a-z0-9]/g,'');
-  const map = {}; keys.forEach(k => map[norm(k)] = k);
-  for (let c of candidates){
-    const found = map[norm(c)]; if (found) return obj[found];
-  }
-  if (keys.length) return obj[keys[0]];
-  return null;
-}
-
-/* ===================== UI init ===================== */
-document.addEventListener('DOMContentLoaded', ()=> {
-  const phone = document.getElementById('phone');
-  phone.addEventListener('input', e => { let v = e.target.value.replace(/\D/g,''); if (v.length>10) v=v.slice(0,10); e.target.value=v; });
-  phone.addEventListener('keypress', e => { if (e.key==='Enter') searchBooking(); });
-
+// ===================== THEME MANAGEMENT =====================
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize theme
+  const savedTheme = localStorage.getItem('lagan-theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeUI(savedTheme);
+  
+  // Theme toggle event
+  document.getElementById('themeToggle').addEventListener('click', function() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    updateThemeUI(newTheme);
+    localStorage.setItem('lagan-theme', newTheme);
+  });
+  
+  // Phone input validation
+  const phoneInput = document.getElementById('phone');
+  phoneInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 10) value = value.substring(0, 10);
+    e.target.value = value;
+  });
+  
+  // Enter key to search
+  phoneInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') searchBooking();
+  });
+  
+  // Search button event
   document.getElementById('searchBtn').addEventListener('click', searchBooking);
-  document.getElementById('printBtn').addEventListener('click', printTicket);
-  document.getElementById('dayBtn').addEventListener('click', ()=> setMode('light'));
-  document.getElementById('nightBtn').addEventListener('click', ()=> setMode('dark'));
-
-  // restore mode
-  const saved = localStorage.getItem('lagan-mode') || 'light';
-  setMode(saved, true);
-
-  // small random shooting star in dark mode
-  setInterval(()=> {
-    const s = document.getElementById('shooting');
-    if (!s) return;
-    if (Math.random() < 0.08 && document.body.classList.contains('dark')) {
-      s.style.opacity='1';
-      s.animate([{transform:'translateX(0)'},{transform:'translateX(720px)'}], {duration:1400, easing:'cubic-bezier(.2,.8,.2,1)'});
-      setTimeout(()=> s.style.opacity='0', 1400);
-    }
-  }, 2800);
+  
+  // Download button event
+  document.getElementById('downloadBtn').addEventListener('click', downloadTicket);
 });
 
-/* ===================== Mode toggle ===================== */
-function setMode(m, instant=false){
-  const mode = (m === 'dark') ? 'dark' : 'light';
-  if (mode === 'dark'){
-    document.body.classList.add('dark');
-    document.getElementById('sky').classList.remove('sky-day'); // CSS uses .sky-container base
-    document.querySelectorAll('.cloud').forEach(c => c.style.opacity='0.18');
-    document.getElementById('sun').style.opacity='0';
-    document.getElementById('moon').style.opacity='1';
-    document.getElementById('stars').style.opacity='1';
-    document.getElementById('nightBtn').classList.add('active');
-    document.getElementById('dayBtn').classList.remove('active');
+function updateThemeUI(theme) {
+  const themeIcon = document.getElementById('themeIcon');
+  const themeText = document.getElementById('themeText');
+  const sunIcon = document.getElementById('sunIcon');
+  const moonIcon = document.getElementById('moonIcon');
+  
+  if (theme === 'dark') {
+    themeIcon.textContent = '☀️';
+    themeText.textContent = 'Light Mode';
+    sunIcon.style.opacity = '0.3';
+    sunIcon.style.transform = 'scale(0.8)';
+    moonIcon.style.opacity = '1';
+    moonIcon.style.transform = 'scale(1)';
   } else {
-    document.body.classList.remove('dark');
-    document.getElementById('sky').classList.add('sky-day');
-    document.querySelectorAll('.cloud').forEach(c => c.style.opacity='0.95');
-    document.getElementById('sun').style.opacity='1';
-    document.getElementById('moon').style.opacity='0';
-    document.getElementById('stars').style.opacity='0';
-    document.getElementById('dayBtn').classList.add('active');
-    document.getElementById('nightBtn').classList.remove('active');
+    themeIcon.textContent = '🌙';
+    themeText.textContent = 'Dark Mode';
+    sunIcon.style.opacity = '1';
+    sunIcon.style.transform = 'scale(1)';
+    moonIcon.style.opacity = '0.3';
+    moonIcon.style.transform = 'scale(0.8)';
   }
-  localStorage.setItem('lagan-mode', mode);
 }
 
-/* ===================== Booking lookup ===================== */
-function searchBooking(){
+// ===================== BOOKING SEARCH =====================
+function searchBooking() {
   const phone = document.getElementById('phone').value.trim();
   const btn = document.getElementById('searchBtn');
+  
   if (!phone || phone.length < 9) {
-    Swal.fire({ icon:'warning', title:'Enter Phone Number', text:'Please enter a valid 10-digit phone number', confirmButtonColor:'#3a7bd5' });
+    Swal.fire({
+      icon: 'warning',
+      title: 'Enter Phone Number',
+      text: 'Please enter a valid 10-digit phone number',
+      confirmButtonColor: '#3a7bd5'
+    });
     return;
   }
-  btn.innerHTML = '<div style="display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 1s linear infinite;margin-right:8px;"></div> Searching...';
-  btn.disabled = true;
-  Swal.fire({ title:'Finding your booking...', allowOutsideClick:false, didOpen: ()=> Swal.showLoading() });
 
+  // Show loading state
+  btn.innerHTML = '<div class="spinner"></div> Searching...';
+  btn.disabled = true;
+
+  Swal.fire({
+    title: 'Finding your booking...',
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  // Fetch from Google Sheets
   fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}`)
-    .then(r => r.json())
+    .then(response => response.json())
     .then(data => {
-      btn.innerHTML = '🔍 Check My Booking'; btn.disabled = false; Swal.close();
-      if (!data.success) { Swal.fire({ icon:'error', title:'No Booking Found', text:'We could not find a booking with this phone number', confirmButtonColor:'#3a7bd5'}); return; }
+      btn.innerHTML = '<span>🔍</span> Check My Booking';
+      btn.disabled = false;
+      Swal.close();
+
+      if (!data.success) {
+        Swal.fire({
+          icon: 'error',
+          title: 'No Booking Found',
+          text: 'We could not find a booking with this phone number',
+          confirmButtonColor: '#3a7bd5'
+        });
+        return;
+      }
+
+      // Display results
       renderBooking(data.booking);
     })
-    .catch(err => {
-      btn.innerHTML = '🔍 Check My Booking'; btn.disabled = false; Swal.close();
-      Swal.fire({ icon:'error', title:'Connection Error', text:'Please check your internet connection and try again', confirmButtonColor:'#3a7bd5' });
-      console.error(err);
+    .catch(error => {
+      btn.innerHTML = '<span>🔍</span> Check My Booking';
+      btn.disabled = false;
+      Swal.close();
+      
+      Swal.fire({
+        icon: 'error',
+        title: 'Connection Error',
+        text: 'Please check your internet connection and try again',
+        confirmButtonColor: '#3a7bd5'
+      });
+      console.error('Error:', error);
     });
 }
 
-/* ===================== Render booking ===================== */
-function renderBooking(b){
-  console.log('booking', b);
-  const passenger = getField(b, ['Passenger Name','Passenger','Name','Full Name','Pax']);
-  const bus = getField(b, ['Bus','Bus Name','Route','Service']);
-  const dateField = getField(b, ['Date','Travel Date','Departure Date','Journey Date','DateTime','Date/Time']);
-  const timeField = getField(b, ['Time','Departure Time','Time','Departure']);
-  const seatField = getField(b, ['Seat','Seats','Seat Number','Seat Numbers','SeatNo']);
-  const pickup = getField(b, ['Pickup','Pickup Location','Boarding','Boarding Point']);
-  const payment = getField(b, ['Payment','Amount','Payment Status']);
-  const ref = getField(b, ['Reference','Ref','BookingID','BookingRef','Booking ID']);
-
-  document.getElementById('passengerName').textContent = passenger || '-';
-  document.getElementById('busName').textContent = bus || '-';
-
-  // date parsing
-  let finalDate = null;
-  if (dateField) finalDate = tryParseDate(dateField);
-  if (!finalDate && timeField) finalDate = tryParseDate(timeField);
-  if (!finalDate && isIsoString(seatField)) finalDate = tryParseDate(seatField);
-  const fmt = formatDateTimeForColombo(finalDate);
-  const dateTimeText = (fmt.dateStr && fmt.dateStr !== 'Invalid Date') ? `${fmt.dateStr} • ${fmt.timeStr}` : '-';
-  document.getElementById('dateTime').textContent = dateTimeText;
-
-  document.getElementById('pickupLocation').textContent = pickup || '-';
-  const paymentEl = document.getElementById('paymentAmount');
-  paymentEl.textContent = payment || '-';
-  if (payment && String(payment).toLowerCase().includes('paid')) {
-    paymentEl.innerHTML = `${escapeHtml(String(payment))} <span style="margin-left:8px;padding:4px 8px;border-radius:999px;background:#e8f5e9;color:#2e7d32;font-weight:800;font-size:11px;">Paid</span>`;
+// ===================== RENDER BOOKING DATA =====================
+function renderBooking(b) {
+  console.log('Raw booking data:', b);
+  
+  // Helper function to find field with multiple possible names
+  function getField(obj, possibleNames) {
+    if (!obj) return null;
+    for (const name of possibleNames) {
+      const keys = Object.keys(obj);
+      for (const key of keys) {
+        if (key.toLowerCase().replace(/\s+/g, '') === name.toLowerCase().replace(/\s+/g, '')) {
+          return obj[key];
+        }
+      }
+    }
+    // Try direct match with any key
+    const keys = Object.keys(obj);
+    for (const name of possibleNames) {
+      if (keys.includes(name)) return obj[name];
+    }
+    return null;
   }
 
-  document.getElementById('ticketRef').textContent = ref ? `Ref: ${ref}` : 'Ref: —';
-  document.getElementById('issuedAt').textContent = `Issued: ${new Date().toLocaleString()}`;
+  // Extract data with flexible field names
+  const name = getField(b, ['Name', 'Passenger', 'Passenger Name', 'Full Name', 'Customer Name']) || '-';
+  const bus = getField(b, ['Bus', 'Bus Name', 'Vehicle', 'Bus Number', 'Service']) || '-';
+  const date = getField(b, ['Date', 'Travel Date', 'Journey Date', 'Departure Date', 'Date/Time']) || '';
+  const time = getField(b, ['Time', 'Departure Time', 'Travel Time', 'Time Slot']) || '';
+  const seat = getField(b, ['Seat', 'Seats', 'Seat Number', 'Seat Numbers', 'Seat No']) || '';
+  const pickup = getField(b, ['Pickup', 'Pickup Location', 'Boarding Point', 'Pickup Point']) || '-';
+  const payment = getField(b, ['Payment', 'Amount', 'Payment Status', 'Fare', 'Price']) || '-';
+  const bookingId = getField(b, ['Booking ID', 'Reference', 'Ref No', 'Ticket No']) || '';
 
-  // seats
-  const seatsBox = document.getElementById('seatsBox'); seatsBox.innerHTML = '';
-  const seatVal = seatField || '';
-  if (seatVal && String(seatVal).trim().toLowerCase() !== 'not updated') {
-    const seats = String(seatVal).split(/[,;\/\s]+/).filter(s => s.trim() !== '');
-    if (seats.length) {
-      seats.forEach(s => { const sp = document.createElement('span'); sp.className='seat-pill'; sp.textContent = s.trim(); seatsBox.appendChild(sp); });
-    } else seatsBox.innerHTML = '<div style="color:#666;font-style:italic;">No seat assigned</div>';
-  } else seatsBox.innerHTML = '<div style="color:#666;font-style:italic;">No seat assigned</div>';
+  // Update display
+  document.getElementById('passengerName').textContent = name;
+  document.getElementById('busName').textContent = bus;
+  
+  // ===================== FIXED DATE/TIME FORMATTING =====================
+  let displayDateTime = '-';
+  
+  // Function to clean and format ISO date string like "2025-12-10T18:30:00.000Z"
+  function formatISODateTime(isoString) {
+    try {
+      const date = new Date(isoString);
+      if (isNaN(date.getTime())) return null;
+      
+      // Format date as "10 Dec 2025"
+      const day = date.getDate().toString().padStart(2, '0');
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
+      
+      // Format time as "06:30 PM" (convert to 12-hour format)
+      let hours = date.getHours();
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+      
+      return {
+        date: `${day} ${month} ${year}`,
+        time: `${hours}:${minutes} ${ampm}`
+      };
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  // Function to clean and format regular date string
+  function formatRegularDateTime(dateStr, timeStr) {
+    let cleanDate = dateStr;
+    let cleanTime = timeStr || '';
+    
+    // Clean date string
+    if (cleanDate) {
+      // Remove time part if present
+      cleanDate = cleanDate.split(' ')[0];
+      
+      // Format DD/MM/YYYY to DD Mon YYYY
+      if (cleanDate.includes('/')) {
+        const parts = cleanDate.split('/');
+        if (parts.length === 3) {
+          const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          const monthIndex = parseInt(parts[1]) - 1;
+          if (monthIndex >= 0 && monthIndex < 12) {
+            cleanDate = `${parts[0]} ${months[monthIndex]} ${parts[2]}`;
+          }
+        }
+      }
+    }
+    
+    // Clean time string
+    if (cleanTime && typeof cleanTime === 'string') {
+      // Convert 24h to 12h format
+      const timeMatch = cleanTime.match(/(\d{1,2}):(\d{2})/);
+      if (timeMatch) {
+        let hours = parseInt(timeMatch[1]);
+        const minutes = timeMatch[2];
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        cleanTime = `${hours}:${minutes} ${ampm}`;
+      }
+    }
+    
+    return {
+      date: cleanDate,
+      time: cleanTime
+    };
+  }
+  
+  // Check if we have an ISO date string like "2025-12-10T18:30:00.000Z"
+  if (date && typeof date === 'string' && date.includes('T') && date.includes('Z')) {
+    const formatted = formatISODateTime(date);
+    if (formatted) {
+      displayDateTime = `${formatted.date} • ${formatted.time}`;
+    }
+  } 
+  // Check if date field contains both date and time
+  else if (date && typeof date === 'string' && (date.includes('T') || date.includes(' '))) {
+    // Try to parse as ISO
+    const formatted = formatISODateTime(date);
+    if (formatted) {
+      displayDateTime = `${formatted.date} • ${formatted.time}`;
+    } else {
+      // Fallback to regular formatting
+      const formatted = formatRegularDateTime(date, time);
+      displayDateTime = `${formatted.date} • ${formatted.time}`;
+    }
+  }
+  // Regular date and time fields
+  else {
+    const formatted = formatRegularDateTime(date, time);
+    displayDateTime = `${formatted.date} • ${formatted.time}`;
+  }
+  
+  // Clean up display - remove any "Invalid Date" or similar issues
+  if (displayDateTime.includes('Invalid') || displayDateTime.includes('NaN') || displayDateTime.includes('undefined')) {
+    displayDateTime = '-';
+  }
+  
+  document.getElementById('dateTime').textContent = displayDateTime;
+  document.getElementById('pickupLocation').textContent = pickup;
+  
+  // Payment with status badge
+  const paymentElement = document.getElementById('paymentAmount');
+  const paymentText = payment || 'Pending';
+  paymentElement.textContent = paymentText;
+  
+  if (paymentText && (
+    paymentText.toLowerCase().includes('paid') ||
+    paymentText.includes('/-') ||
+    paymentText.includes('₹') ||
+    paymentText.includes('Rs') ||
+    paymentText.includes('LKR')
+  )) {
+    paymentElement.innerHTML = `${paymentText} <span style="margin-left:8px;padding:3px 10px;background:var(--success);color:white;border-radius:20px;font-size:0.8rem;font-weight:600;">Paid</span>`;
+  } else if (paymentText.toLowerCase().includes('pending') || paymentText.toLowerCase().includes('due')) {
+    paymentElement.innerHTML = `${paymentText} <span style="margin-left:8px;padding:3px 10px;background:orange;color:white;border-radius:20px;font-size:0.8rem;font-weight:600;">Pending</span>`;
+  }
 
-  document.getElementById('box').style.display = 'block';
-  document.getElementById('feedbackBox').style.display = 'block';
-  setTimeout(()=> document.getElementById('box').scrollIntoView({behavior:'smooth', block:'start'}), 240);
+  // Display seats
+  const seatsBox = document.getElementById('seatsBox');
+  seatsBox.innerHTML = '';
+  
+  if (seat && seat.trim() !== '' && seat.trim().toLowerCase() !== 'not updated' && seat.trim() !== '-') {
+    // Split seats by comma, space, or slash
+    const seats = seat.split(/[, \/]+/).filter(s => s.trim() !== '' && s.trim() !== '-');
+    
+    if (seats.length > 0) {
+      seats.forEach(seatNum => {
+        const seatElement = document.createElement('div');
+        seatElement.className = 'seat';
+        seatElement.innerHTML = `
+          <div class="seat-icon">💺</div>
+          <div class="seat-number">${seatNum.trim()}</div>
+        `;
+        seatsBox.appendChild(seatElement);
+      });
+    } else {
+      seatsBox.innerHTML = '<div class="no-seats">No seat assigned yet. Please contact Mr. Fawas.</div>';
+    }
+  } else {
+    seatsBox.innerHTML = '<div class="no-seats">No seat assigned yet. Please contact Mr. Fawas.</div>';
+  }
+
+  // Show results with animation
+  document.getElementById('bookingDetails').style.display = 'block';
+  document.getElementById('feedbackSection').style.display = 'block';
+  document.getElementById('resultsBody').querySelector('.no-results').style.display = 'none';
+  
+  // Add fade-in animation
+  const bookingDetails = document.getElementById('bookingDetails');
+  bookingDetails.classList.remove('fade-in');
+  setTimeout(() => bookingDetails.classList.add('fade-in'), 10);
+  
+  // Store data for download
+  window.currentBookingData = {
+    passengerName: name,
+    busName: bus,
+    dateTime: displayDateTime,
+    pickupLocation: pickup,
+    paymentAmount: paymentText,
+    seats: seat,
+    bookingId: bookingId
+  };
 }
 
-/* ===================== Print ===================== */
-function printTicket(){
-  const box = document.getElementById('box');
-  if (!box || box.style.display === 'none') return;
-  const html = `
-  <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Ticket</title>
-  <style>body{font-family:'Segoe UI',sans-serif;padding:18px;background:#fff;color:#071428} .ticket{max-width:700px;margin:0 auto;border-radius:12px;padding:18px;border:1px dashed #cfe8ff} .label{font-size:11px;color:#5f6f82;text-transform:uppercase;font-weight:800} .value{font-size:16px;font-weight:900;margin-top:6px;color:#0b2638} .seat{display:inline-block;padding:8px 12px;border-radius:999px;background:#eaf6ff;margin:6px 6px 6px 0;font-weight:800;border:1px solid rgba(15,111,177,0.12)}</style>
-  </head><body>
-    <div class="ticket">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <div><div style="font-weight:900;color:#0f6fb1">🎫 Lagan Bus</div><div style="font-weight:700;color:#6b7f92">Premium Boarding Pass</div></div>
-        <div style="text-align:right"><div style="font-weight:800;color:#0f6fb1">${escapeHtml(document.getElementById('ticketRef').textContent)}</div><div style="font-size:12px;color:#6b7f92;margin-top:6px">${escapeHtml(document.getElementById('issuedAt').textContent)}</div></div>
+// ===================== TICKET DOWNLOAD =====================
+function downloadTicket() {
+  const data = window.currentBookingData;
+  if (!data) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'No Booking Data',
+      text: 'Please search for a booking first',
+      confirmButtonColor: '#3a7bd5'
+    });
+    return;
+  }
+
+  // Show loading
+  const downloadBtn = document.getElementById('downloadBtn');
+  const originalText = downloadBtn.innerHTML;
+  downloadBtn.innerHTML = '<div class="spinner"></div> Preparing...';
+  downloadBtn.disabled = true;
+
+  // Create ticket HTML
+  const ticketHtml = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Lagan Bus Ticket - ${data.passengerName}</title>
+      <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #f5f7fa; padding: 20px; }
+        .ticket { max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .ticket-header { background: linear-gradient(135deg, #3a7bd5, #67b8f7); color: white; padding: 30px; text-align: center; }
+        .ticket-title { font-size: 28px; font-weight: 800; margin-bottom: 10px; }
+        .ticket-subtitle { font-size: 14px; opacity: 0.9; }
+        .ticket-body { padding: 30px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .info-card { background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .info-label { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600; }
+        .info-value { font-size: 18px; font-weight: 700; color: #0f172a; }
+        .passenger-name { text-align: center; font-size: 24px; font-weight: 800; color: #1e40af; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 2px dashed #e2e8f0; }
+        .seats-section { background: linear-gradient(135deg, rgba(58,123,213,0.05), rgba(103,184,247,0.02)); padding: 25px; border-radius: 12px; border: 2px dashed #dbeafe; margin-bottom: 30px; }
+        .section-title { font-size: 18px; font-weight: 700; color: #1e40af; margin-bottom: 20px; text-align: center; }
+        .seats-container { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        .seat { width: 70px; height: 70px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #3a7bd5, #1a5cb0); color: white; font-weight: 800; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .ticket-footer { text-align: center; padding: 20px; color: #64748b; font-size: 14px; border-top: 1px solid #e2e8f0; }
+        @media print { body { background: white; padding: 0; } .ticket { box-shadow: none; } }
+      </style>
+    </head>
+    <body>
+      <div class="ticket">
+        <div class="ticket-header">
+          <h1 class="ticket-title">🚌 Lagan Bus Ticket</h1>
+          <p class="ticket-subtitle">Safe Travels. May God Bless Your Journey.</p>
+        </div>
+        
+        <div class="ticket-body">
+          <div class="passenger-name">${escapeHtml(data.passengerName)}</div>
+          
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="info-label">Bus Name</div>
+              <div class="info-value">${escapeHtml(data.busName)}</div>
+            </div>
+            
+            <div class="info-card">
+              <div class="info-label">Date & Time</div>
+              <div class="info-value">${escapeHtml(data.dateTime)}</div>
+            </div>
+            
+            <div class="info-card">
+              <div class="info-label">Pickup Location</div>
+              <div class="info-value">${escapeHtml(data.pickupLocation)}</div>
+            </div>
+            
+            <div class="info-card">
+              <div class="info-label">Payment Status</div>
+              <div class="info-value">${escapeHtml(data.paymentAmount)}</div>
+            </div>
+          </div>
+          
+          <div class="seats-section">
+            <h3 class="section-title">💺 Seat Numbers</h3>
+            <div class="seats-container">
+              ${data.seats && data.seats.trim() !== '' && data.seats.toLowerCase() !== 'not updated' ? 
+                data.seats.split(/[, \/]+/).filter(s => s.trim() !== '').map(seat => `
+                  <div class="seat">
+                    <div style="font-size: 12px;">💺</div>
+                    <div>${escapeHtml(seat.trim())}</div>
+                  </div>
+                `).join('') : 
+                '<div style="text-align:center;color:#64748b;font-style:italic;">No seat assigned</div>'
+              }
+            </div>
+          </div>
+          
+          <div style="text-align: center; margin-top: 30px; padding: 20px; background: #f0f9ff; border-radius: 12px;">
+            <p style="font-weight: 600; color: #0369a1; margin-bottom: 10px;">📞 Contact Information</p>
+            <p style="color: #475569;">For any inquiries, contact: <strong>0777 402 886 (Mr. Fawas)</strong></p>
+          </div>
+        </div>
+        
+        <div class="ticket-footer">
+          <p>Ticket generated on ${new Date().toLocaleDateString('en-GB', { 
+            day: 'numeric', 
+            month: 'short', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })}</p>
+          <p style="margin-top: 5px;">Made with ❤ by WEDOXA</p>
+        </div>
       </div>
-      <hr style="border:none;border-top:1px dashed rgba(0,0,0,0.06);margin:12px 0;">
-      <div style="margin-bottom:10px;"><div class="label">Passenger</div><div class="value">${escapeHtml(document.getElementById('passengerName').textContent)}</div></div>
-      <div style="display:flex;gap:12px;margin-bottom:10px"><div style="flex:1"><div class="label">Bus</div><div class="value">${escapeHtml(document.getElementById('busName').textContent)}</div></div><div style="flex:1"><div class="label">Date & Time</div><div class="value">${escapeHtml(document.getElementById('dateTime').textContent)}</div></div></div>
-      <div style="margin-bottom:10px"><div class="label">Pickup</div><div class="value">${escapeHtml(document.getElementById('pickupLocation').textContent)}</div></div>
-      <div style="margin-bottom:10px"><div class="label">Payment</div><div class="value">${escapeHtml(document.getElementById('paymentAmount').textContent)}</div></div>
-      <div style="margin-bottom:10px"><div class="label">Seats</div><div style="margin-top:8px">${[...document.querySelectorAll('#seatsBox .seat-pill')].map(n=>`<span class="seat">${escapeHtml(n.textContent)}</span>`).join('') || '<span style="color:#666;font-style:italic;">No seat assigned</span>'}</div></div>
-    </div>
-    <script>window.onload=function(){ setTimeout(()=>{ window.print(); },200);}<\/script>
-  </body></html>`;
-  const w = window.open('','_blank','noopener');
-  if (!w) { Swal.fire({ icon:'error', title:'Popup Blocked', text:'Please allow popups to print the ticket.' }); return; }
-  w.document.open(); w.document.write(html); w.document.close();
+      
+      <script>
+        // Auto-print after a delay
+        setTimeout(() => {
+          window.print();
+          window.close();
+        }, 500);
+      <\/script>
+    </body>
+    </html>
+  `;
+
+  // Create blob and download
+  const blob = new Blob([ticketHtml], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Lagan-Ticket-${data.passengerName.replace(/[^a-z0-9]/gi, '-')}.html`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  // Reset button
+  setTimeout(() => {
+    downloadBtn.innerHTML = originalText;
+    downloadBtn.disabled = false;
+  }, 1000);
+
+  Swal.fire({
+    icon: 'success',
+    title: 'Ticket Downloaded!',
+    text: 'Your ticket has been downloaded successfully',
+    confirmButtonColor: '#3a7bd5',
+    timer: 2000,
+    showConfirmButton: false
+  });
 }
 
-/* ===================== Feedback ===================== */
-function sendFeedback(answer){
+// ===================== FEEDBACK SYSTEM =====================
+function sendFeedback(answer) {
   const phone = document.getElementById('phone').value.trim();
-  const box = document.getElementById('feedbackBox');
-  const original = box.innerHTML;
-  box.innerHTML = `<div style="text-align:center;padding:10px;"><div style="display:inline-block;width:18px;height:18px;border:2px solid rgba(0,0,0,0.08);border-top-color:#3a7bd5;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:8px"></div><div>Sending feedback...</div></div>`;
+  if (!phone) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Phone Number Required',
+      text: 'Please search for a booking first',
+      confirmButtonColor: '#3a7bd5'
+    });
+    return;
+  }
+
+  const feedbackSection = document.getElementById('feedbackSection');
+  const originalHTML = feedbackSection.innerHTML;
+  
+  feedbackSection.innerHTML = `
+    <div style="text-align:center; padding:20px;">
+      <div class="spinner" style="margin:0 auto 15px;"></div>
+      <p>Sending feedback...</p>
+    </div>
+  `;
+
+  // Send feedback to Google Sheets
   fetch(`${SCRIPT_URL}?action=feedback&phone=${encodeURIComponent(phone)}&answer=${encodeURIComponent(answer)}`)
-    .then(r=>r.json()).then(data=>{
+    .then(response => response.json())
+    .then(data => {
       if (data.success) {
-        box.style.opacity='0'; box.style.transition='opacity .3s'; setTimeout(()=>{ box.style.display='none'; box.innerHTML = original; },320);
-        Swal.fire({ icon:'success', title:'Thank You!', text:'Your feedback has been recorded.', timer:1400, showConfirmButton:false, confirmButtonColor:'#3a7bd5' });
-      } else { box.innerHTML = original; Swal.fire({ icon:'error', title:'Failed', text:'Could not send feedback. Please try again.' }); }
-    }).catch(err => { box.innerHTML = original; Swal.fire({ icon:'error', title:'Error', text:'Please check your connection and try again.' }); });
+        // Hide feedback section with animation
+        feedbackSection.style.opacity = '0';
+        feedbackSection.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          feedbackSection.style.display = 'none';
+          feedbackSection.innerHTML = originalHTML;
+        }, 300);
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Thank You!',
+          text: 'Your feedback has been recorded.',
+          confirmButtonColor: '#3a7bd5',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      } else {
+        feedbackSection.innerHTML = originalHTML;
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: 'Could not send feedback. Please try again.',
+          confirmButtonColor: '#3a7bd5'
+        });
+      }
+    })
+    .catch(error => {
+      feedbackSection.innerHTML = originalHTML;
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Please check your connection and try again.',
+        confirmButtonColor: '#3a7bd5'
+      });
+    });
+}
+
+// ===================== UTILITY FUNCTIONS =====================
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }
 </script>
 </body>
