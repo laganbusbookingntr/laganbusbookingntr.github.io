@@ -8,7 +8,6 @@
 <style>
 /* ===================== BASE STYLES ===================== */
 :root {
-  /* Light theme colors */
   --primary-blue: #3a7bd5;
   --secondary-blue: #67b8f7;
   --dark-blue: #1a5cb0;
@@ -26,7 +25,6 @@
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
   --shadow-md: 0 4px 6px rgba(0,0,0,0.08);
   --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
-  --shadow-xl: 0 20px 40px rgba(0,0,0,0.12);
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
@@ -34,7 +32,6 @@
 }
 
 [data-theme="dark"] {
-  /* Dark theme colors */
   --primary-blue: #5a8bff;
   --secondary-blue: #7ba6ff;
   --dark-blue: #88b8ff;
@@ -52,1163 +49,318 @@
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
   --shadow-md: 0 4px 6px rgba(0,0,0,0.25);
   --shadow-lg: 0 10px 25px rgba(0,0,0,0.35);
-  --shadow-xl: 0 20px 40px rgba(0,0,0,0.4);
+  --radius-lg: 16px;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+body { background: var(--bg-light); color: var(--text-primary); min-height: 100vh; transition: background-color 0.3s ease, color 0.3s ease; line-height: 1.5; }
 
-body {
-  background: var(--bg-light);
-  color: var(--text-primary);
-  min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  line-height: 1.5;
-}
+/* Container */
+.container { max-width: 1100px; margin: 0 auto; padding: 12px 18px 40px; }
 
-/* Container - remove top padding so sky and header can touch */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px 20px; /* removed top padding to remove gap */
-}
-
-/* ===================== COMPACT SKY SECTION ===================== */
+/* Sky */
 .sky-container {
-  position: relative;
-  width: 100%;
-  height: 150px; /* compact height */
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0; /* keep top rounded, bottom flush */
-  margin-bottom: 0; /* NO GAP - important */
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Day Sky - Beautiful Gradient */
-[data-theme="light"] .sky-container {
-  background: linear-gradient(
-    180deg,
-    #1e90ff 0%,
-    #87ceeb 25%,
-    #b0e2ff 50%,
-    #e0f7ff 75%,
-    #f0f8ff 100%
-  );
-}
-
-/* Night Sky - Mysterious Deep Blue */
-[data-theme="dark"] .sky-container {
-  background: linear-gradient(
-    180deg,
-    #0a1a3a 0%,
-    #1a2b5a 25%,
-    #2a3c7a 50%,
-    #3a4d9a 75%,
-    #4a5eba 100%
-  );
-}
-
-/* ===================== COMPACT SUN DESIGN ===================== */
-.sun-container {
-  position: absolute;
-  left: 50px;
-  top: 100px;
-  transform: translateY(0);
-  transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  z-index: 10;
-}
-
-.sun-risen .sun-container {
-  top: 20px;
-}
-
-.sun-main {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 30% 30%,
-    #FFD700 0%,
-    #FF8C00 30%,
-    #FF4500 60%,
-    #FF6347 100%
-  );
-  box-shadow:
-    0 0 50px rgba(255, 215, 0, 0.9),
-    0 0 100px rgba(255, 140, 0, 0.7),
-    0 0 150px rgba(255, 69, 0, 0.5),
-    0 0 200px rgba(255, 99, 71, 0.3);
-  animation: sunPulse 4s ease-in-out infinite;
-  position: relative;
-}
-
-.sun-glow {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  top: -50%;
-  left: -50%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 215, 0, 0.2) 0%,
-    rgba(255, 140, 0, 0.1) 40%,
-    transparent 70%
-  );
-  animation: sunGlow 6s ease-in-out infinite;
-}
-
-@keyframes sunPulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
-
-@keyframes sunGlow {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.1); }
-}
-
-[data-theme="dark"] .sun-container {
-  opacity: 0;
-  transform: translateY(100px) scale(0.5);
-}
-
-/* ===================== COMPACT MOON DESIGN ===================== */
-.moon-container {
-  position: absolute;
-  right: 50px;
-  top: 100px;
-  transform: translateY(0);
-  transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  opacity: 0;
-  z-index: 10;
-}
-
-.moon-risen .moon-container {
-  top: 25px;
-  opacity: 1;
-}
-
-.moon-main {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 70% 30%,
-    #F8F8FF 0%,
-    #E6E6FA 30%,
-    #D8BFD8 60%,
-    #DDA0DD 100%
-  );
-  box-shadow:
-    0 0 40px rgba(248, 248, 255, 0.8),
-    0 0 80px rgba(230, 230, 250, 0.6),
-    0 0 120px rgba(216, 191, 216, 0.4),
-    0 0 160px rgba(221, 160, 221, 0.2),
-    inset -10px -10px 20px rgba(0, 0, 0, 0.3),
-    inset 5px 5px 10px rgba(255, 255, 255, 0.2);
-  animation: moonGlow 6s ease-in-out infinite;
-  position: relative;
-  overflow: hidden;
-}
-
-.moon-craters { position:absolute; width:100%; height:100%; border-radius:50%; }
-.moon-crater { position:absolute; border-radius:50%; background: rgba(0,0,0,0.2); box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3); }
-.moon-crater.large{ width:15px; height:15px; top:15px; left:15px; }
-.moon-crater.medium{ width:10px; height:10px; top:35px; right:15px; }
-.moon-crater.small{ width:6px; height:6px; bottom:20px; left:25px; }
-
-.moon-glow {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  top: -50%;
-  left: -50%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(248,248,255,0.15) 0%, rgba(230,230,250,0.1) 40%, transparent 70%);
-  animation: moonHalo 8s ease-in-out infinite;
-}
-
-@keyframes moonGlow {
-  0%,100%{ transform: scale(1); }
-  50%{ transform: scale(1.03); }
-}
-
-@keyframes moonHalo {
-  0%,100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.05); }
-}
-
-[data-theme="light"] .moon-container {
-  opacity: 0;
-  transform: translateY(100px) scale(0.5);
-}
-
-/* ===================== COMPACT CLOUDS ===================== */
-.day-clouds {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 1;
-  transition: opacity 1s ease;
-  z-index: 5;
-}
-
-[data-theme="dark"] .day-clouds { opacity: 0; }
-
-.cloud-left { position:absolute; left:0; width:40%; height:100%; }
-.cloud-right { position:absolute; right:0; width:40%; height:100%; }
-
-.cloud { position:absolute; background: rgba(255,255,255,0.95); border-radius:50%; filter: blur(1px); opacity:0.9; }
-.cloud::before, .cloud::after { content:''; position:absolute; background: rgba(255,255,255,0.95); border-radius:50%; }
-
-/* left clouds */
-.left-cloud-1 { width: 80px; height: 25px; top: 30px; left: 30px; animation: cloudFloat1 60s linear infinite; }
-.left-cloud-1::before { width:45px; height:45px; top:-20px; left:15px; }
-.left-cloud-1::after { width:60px; height:60px; top:-30px; right:5px; }
-
-.left-cloud-2 { width:70px; height:22px; top:80px; left:50px; animation: cloudFloat2 70s linear infinite 15s; }
-.left-cloud-2::before { width:40px; height:40px; top:-20px; left:10px; }
-.left-cloud-2::after { width:55px; height:55px; top:-25px; right:10px; }
-
-.left-cloud-3 { width:60px; height:20px; top:120px; left:80px; animation: cloudFloat3 80s linear infinite 30s; }
-.left-cloud-3::before { width:35px; height:35px; top:-15px; left:5px; }
-.left-cloud-3::after { width:50px; height:50px; top:-20px; right:15px; }
-
-/* right clouds */
-.right-cloud-1 { width:75px; height:25px; top:40px; right:40px; animation: cloudFloat2 65s linear infinite 5s; }
-.right-cloud-1::before { width:45px; height:45px; top:-20px; left:10px; }
-.right-cloud-1::after { width:60px; height:60px; top:-30px; right:10px; }
-
-.right-cloud-2 { width:65px; height:22px; top:90px; right:70px; animation: cloudFloat1 75s linear infinite 20s; }
-.right-cloud-2::before { width:40px; height:40px; top:-20px; left:15px; }
-.right-cloud-2::after { width:55px; height:55px; top:-25px; right:5px; }
-
-.right-cloud-3 { width:55px; height:20px; top:130px; right:100px; animation: cloudFloat3 85s linear infinite 35s; }
-.right-cloud-3::before { width:35px; height:35px; top:-15px; left:10px; }
-.right-cloud-3::after { width:50px; height:50px; top:-20px; right:15px; }
-
-@keyframes cloudFloat1 {
-  0% { transform: translateX(-200px); }
-  100% { transform: translateX(calc(100vw + 200px)); }
-}
-@keyframes cloudFloat2 {
-  0% { transform: translateX(calc(100vw + 200px)); }
-  100% { transform: translateX(-200px); }
-}
-@keyframes cloudFloat3 {
-  0% { transform: translateX(-150px) translateY(0); }
-  50% { transform: translateX(calc(50vw - 75px)) translateY(-10px); }
-  100% { transform: translateX(calc(100vw + 150px)) translateY(0); }
-}
-
-/* ===================== COMPACT NIGHT CLOUDS ===================== */
-.night-clouds {
-  position: absolute;
-  width: 40%;
-  left: 0;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1s ease;
-  z-index: 5;
-}
-[data-theme="dark"] .night-clouds { opacity: 0.8; }
-.night-cloud { position:absolute; background: rgba(200,200,220,0.7); border-radius:50%; filter: blur(2px); opacity:0.8; }
-.night-cloud::before, .night-cloud::after { content:''; position:absolute; background: rgba(200,200,220,0.7); border-radius:50%; }
-
-/* Compact night clouds sizing (kept simple) */
-.night-cloud-1 { width:70px; height:25px; top:40px; left:40px; animation:cloudFloat1 80s linear infinite; }
-.night-cloud-2 { width:60px; height:22px; top:90px; left:60px; animation:cloudFloat2 95s linear infinite 25s; }
-.night-cloud-3 { width:50px; height:20px; top:130px; left:90px; animation:cloudFloat3 110s linear infinite 50s; }
-
-/* ===================== COMPACT STARS ===================== */
-.stars-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1.5s ease;
-  z-index: 2;
-}
-[data-theme="dark"] .stars-container { opacity: 1; }
-
-.star { position:absolute; background:white; border-radius:50%; animation: starTwinkle var(--twinkle-duration) infinite var(--twinkle-delay); }
-.star.small { width:1px; height:1px; --twinkle-duration:2s; box-shadow:0 0 2px white; }
-.star.medium{ width:2px; height:2px; --twinkle-duration:3s; box-shadow:0 0 3px white, 0 0 5px rgba(255,255,255,0.5); }
-.star.large{ width:3px; height:3px; --twinkle-duration:4s; box-shadow:0 0 4px white, 0 0 8px rgba(255,255,255,0.5); }
-@keyframes starTwinkle {
-  0%,100%{ opacity:0.2; transform:scale(0.8); }
-  50% { opacity:1; transform:scale(1.2); }
-}
-
-/* ===================== HEADER & NAVIGATION ===================== */
-/* Ensure header touches sky — remove top margin */
-.main-header {
-  text-align: center;
-  margin-top: 0; /* NO GAP above header */
-  margin-bottom: 20px;
-  padding: 15px 20px;
-  background: var(--bg-card);
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg); /* keep bottom rounded so header and sky look like a single card */
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border-light);
-  position: relative;
-  overflow: hidden;
-}
-
-.main-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
-}
-
-.brand {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: var(--dark-blue);
-  margin-bottom: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.tagline {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-  font-weight: 500;
-}
-
-.contact-info {
-  display: inline-block;
-  background: var(--light-blue);
-  padding: 6px 16px;
-  border-radius: 50px;
-  font-weight: 600;
-  color: var(--dark-blue);
-  border: 1px solid rgba(58, 123, 213, 0.2);
-  font-size: 0.9rem;
-}
-
-/* ===================== THEME TOGGLE ===================== */
-.theme-toggle-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.theme-btn {
-  background: var(--bg-card);
-  border: 2px solid var(--border-light);
-  color: var(--text-primary);
-  padding: 8px 16px;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: var(--shadow-md);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-}
-
-.theme-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--primary-blue);
-}
-
-/* ===================== MAIN LAYOUT ===================== */
-.main-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 25px;
-  margin-bottom: 25px;
-}
-
-@media (max-width: 992px) {
-  .main-content { grid-template-columns: 1fr; }
-}
-
-/* ===================== SEARCH CARD ===================== */
-.search-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  padding: 25px;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border-light);
-  height: fit-content;
-  position: sticky;
-  top: 20px;
-}
-
-.card-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--dark-blue);
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.input-group {
-  margin-bottom: 15px;
-}
-
-.input-label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
-.input-field {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: var(--radius-md);
-  border: 2px solid var(--border-light);
-  background: var(--bg-light);
-  color: var(--text-primary);
-  font-size: 1rem;
-  transition: all 0.3s;
-}
-
-.input-field:focus {
-  outline: none;
-  border-color: var(--primary-blue);
-  box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
-  background: var(--bg-card);
-}
-
-.search-btn {
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-  color: white;
-  border: none;
-  border-radius: var(--radius-md);
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.search-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-}
-
-.search-btn:active {
-  transform: translateY(0);
-}
-
-.search-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
-.search-card > div:last-child {
-  margin-top: 15px;
-  padding: 12px;
-  background: var(--light-blue);
-  border-radius: var(--radius-md);
-  font-size: 0.85rem;
-}
-
-/* ===================== RESULTS CARD ===================== */
-.results-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border-light);
-  overflow: hidden;
-  min-height: 300px;
-  display: flex;
-  flex-direction: column;
-}
-
-.results-header {
-  background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-  color: white;
-  padding: 20px 25px;
-  text-align: center;
-  position: relative;
-}
-
-.results-header::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  right: 0;
-  height: 20px;
-  background: url("data:image/svg+xml,%3Csvg width='120' height='20' viewBox='0 0 120 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='8' fill='%231e293b'/%3E%3Ccircle cx='30' cy='10' r='8' fill='%231e293b'/%3E%3Ccircle cx='50' cy='10' r='8' fill='%231e293b'/%3E%3Ccircle cx='70' cy='10' r='8' fill='%231e293b'/%3E%3Ccircle cx='90' cy='10' r='8' fill='%231e293b'/%3E%3Ccircle cx='110' cy='10' r='8' fill='%231e293b'/%3E%3C/svg%3E");
-  background-repeat: repeat-x;
-  background-size: 20px 20px;
-}
-
-[data-theme="light"] .results-header::after {
-  background: url("data:image/svg+xml,%3Csvg width='120' height='20' viewBox='0 0 120 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='8' fill='white'/%3E%3Ccircle cx='30' cy='10' r='8' fill='white'/%3E%3Ccircle cx='50' cy='10' r='8' fill='white'/%3E%3Ccircle cx='70' cy='10' r='8' fill='white'/%3E%3Ccircle cx='90' cy='10' r='8' fill='white'/%3E%3Ccircle cx='110' cy='10' r='8' fill='white'/%3E%3C/svg%3E");
-}
-
-.results-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 5px; }
-.results-subtitle { font-size: 0.9rem; opacity: 0.9; }
-
-.results-body {
-  padding: 25px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* ===================== NO RESULTS STYLING ===================== */
-.no-results {
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 1rem;
-  padding: 30px 20px;
-}
-
-.no-results-icon {
-  font-size: 40px;
-  margin-bottom: 15px;
-  opacity: 0.5;
-}
-
-.no-results-title {
-  font-size: 1.2rem;
-  margin-bottom: 8px;
-  color: var(--text-secondary);
-}
-
-/* ===================== TICKET STYLING ===================== */
-.ticket-info {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.info-card {
-  background: var(--bg-light);
-  padding: 15px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-light);
-}
-
-.info-label {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.info-value {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.4;
-}
-
-#passengerName {
-  font-size: 1.3rem;
-  color: var(--dark-blue);
-  font-weight: 800;
-  padding-bottom: 8px;
-  border-bottom: 2px dashed var(--border-light);
-  margin-bottom: 5px;
-}
-
-/* ===================== SEATS STYLING ===================== */
-.seats-section {
-  background: linear-gradient(135deg, rgba(58, 123, 213, 0.05), rgba(103, 184, 247, 0.02));
-  padding: 20px;
-  border-radius: var(--radius-md);
-  border: 1px dashed var(--border-light);
-  margin-bottom: 20px;
-}
-
-.section-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--dark-blue);
-  margin-bottom: 15px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.seats-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-}
-
-.seat {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
-  color: white;
-  font-weight: 800;
-  position: relative;
-  overflow: hidden;
-  border: 3px solid var(--bg-card);
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s;
-}
-
-.seat:hover {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: var(--shadow-lg);
-}
-
-.seat-icon {
-  font-size: 20px;
-  margin-bottom: 4px;
-}
-
-.seat-number {
-  font-size: 1rem;
-}
-
-.no-seats {
-  text-align: center;
-  color: var(--text-muted);
-  font-style: italic;
-  padding: 15px;
-  background: var(--bg-light);
-  border-radius: var(--radius-md);
-  border: 2px dashed var(--border-light);
-}
-
-/* ===================== DOWNLOAD BUTTON ===================== */
-.download-section { 
-  margin-top: 20px; 
-  text-align: center; 
-}
-
-.download-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  background: linear-gradient(135deg, var(--success), #059669);
-  color: white;
-  border: none;
-  border-radius: var(--radius-md);
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: var(--shadow-md);
-}
-
-.download-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  background: linear-gradient(135deg, #34d399, #059669);
-}
-
-/* ===================== FEEDBACK ===================== */
-.feedback-section {
-  margin-top: 20px;
-  padding: 20px;
-  background: var(--bg-light);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-light);
-  text-align: center;
-}
-
-.feedback-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--dark-blue);
-  margin-bottom: 12px;
-}
-
-.feedback-buttons {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-}
-
-.feedback-btn {
-  padding: 10px 20px;
-  border-radius: var(--radius-md);
-  border: 2px solid var(--border-light);
-  background: var(--bg-card);
-  color: var(--text-primary);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 110px;
-}
-
-.feedback-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.feedback-btn.yes:hover {
-  background: var(--success-light);
-  border-color: var(--success);
-  color: var(--success);
-}
-
-.feedback-btn.no:hover {
-  background: var(--danger-light);
-  border-color: var(--danger);
-  color: var(--danger);
-}
-
-/* ===================== FOOTER ===================== */
-.main-footer {
-  text-align: center;
-  padding: 15px;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  border-top: 1px solid var(--border-light);
-  margin-top: 20px;
-}
-
-.company-name {
-  font-weight: 800;
-  color: var(--primary-blue);
-  letter-spacing: 0.5px;
-}
-
-/* ===================== LOADING SPINNER ===================== */
-.spinner {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-radius: 50%;
-  border-top-color: white;
-  animation: spin 1s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ===================== ANIMATIONS & RESPONSIVE ===================== */
-.fade-in { animation: fadeIn 0.4s ease; }
-@keyframes fadeIn { 
-  from { opacity:0; transform: translateY(15px);} 
-  to { opacity:1; transform: translateY(0);}
-}
+  position: relative; width: 100%; height: 150px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; margin-bottom: 6px; overflow: hidden; display:flex; align-items:center; justify-content:center;
+}
+[data-theme="light"] .sky-container { background: linear-gradient(180deg,#1e90ff 0%,#87ceeb 25%,#b0e2ff 50%,#e0f7ff 75%,#f0f8ff 100%); }
+[data-theme="dark"] .sky-container { background: linear-gradient(180deg,#0a1a3a 0%,#1a2b5a 25%,#2a3c7a 50%,#3a4d9a 75%,#4a5eba 100%); }
+
+/* Sun / Moon */
+.sun-container { position:absolute; left:40px; top:100px; transition: all 1s cubic-bezier(0.34,1.56,0.64,1); z-index:10; }
+.sun-risen .sun-container { top:22px; }
+.sun-main { width:56px; height:56px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #FFD700 0%, #FF8C00 30%, #FF4500 60%, #FF6347 100%); box-shadow: 0 0 40px rgba(255,215,0,0.8); animation: sunPulse 4s ease-in-out infinite; position:relative; }
+.sun-glow { position:absolute; width:200%; height:200%; top:-50%; left:-50%; border-radius:50%; background: radial-gradient(circle, rgba(255,215,0,0.18) 0%, rgba(255,140,0,0.08) 40%, transparent 70%); animation: sunGlow 6s ease-in-out infinite; }
+@keyframes sunPulse { 0%,100%{transform:scale(1)}50%{transform:scale(1.05)} }
+@keyframes sunGlow { 0%,100%{opacity:0.5;transform:scale(1)}50%{opacity:0.8;transform:scale(1.08)} }
+[data-theme="dark"] .sun-container { opacity:0; transform: translateY(80px) scale(0.6); }
+
+.moon-container { position:absolute; right:40px; top:100px; transition: all 1s cubic-bezier(0.34,1.56,0.64,1); opacity:0; z-index:10; }
+.moon-risen .moon-container { top:24px; opacity:1; }
+.moon-main { width:50px; height:50px; border-radius:50%; background: radial-gradient(circle at 70% 30%, #F8F8FF 0%, #E6E6FA 30%, #D8BFD8 60%, #DDA0DD 100%); box-shadow:0 0 30px rgba(248,248,255,0.8); animation: moonGlow 6s ease-in-out infinite; position:relative; overflow:hidden; }
+.moon-craters{position:absolute;width:100%;height:100%;border-radius:50%}
+.moon-crater{position:absolute;border-radius:50%;background:rgba(0,0,0,0.15);box-shadow:inset 1px 1px 4px rgba(0,0,0,0.18)}
+.moon-crater.large{width:12px;height:12px;top:12px;left:12px}
+.moon-crater.medium{width:9px;height:9px;top:32px;right:12px}
+.moon-crater.small{width:5px;height:5px;bottom:18px;left:20px}
+.moon-glow{position:absolute;width:200%;height:200%;top:-50%;left:-50%;border-radius:50%;background:radial-gradient(circle,rgba(248,248,255,0.12)0%,rgba(230,230,250,0.06)40%,transparent70%);animation:moonHalo 8s ease-in-out infinite}
+@keyframes moonGlow{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+@keyframes moonHalo{0%,100%{opacity:0.28;transform:scale(1)}50%{opacity:0.48;transform:scale(1.04)}}
+[data-theme="light"] .moon-container { opacity:0; transform: translateY(80px) scale(0.6); }
+
+/* Clouds & stars (kept compact) */
+.day-clouds{position:absolute;width:100%;height:100%;opacity:1;transition:opacity 1s;z-index:5}
+[data-theme="dark"] .day-clouds{opacity:0}
+.cloud-left,.cloud-right{position:absolute;width:40%;height:100%}
+.cloud{position:absolute;background:rgba(255,255,255,0.95);border-radius:50%;filter:blur(1px);opacity:0.95}
+.left-cloud-1{width:78px;height:24px;top:30px;left:30px;animation:cloudFloat1 70s linear infinite}
+.left-cloud-2{width:68px;height:22px;top:75px;left:55px;animation:cloudFloat2 78s linear infinite 12s}
+.left-cloud-3{width:58px;height:20px;top:118px;left:85px;animation:cloudFloat3 85s linear infinite 28s}
+.right-cloud-1{width:75px;height:25px;top:40px;right:40px;animation:cloudFloat2 65s linear infinite 5s}
+.right-cloud-2{width:65px;height:22px;top:90px;right:70px;animation:cloudFloat1 75s linear infinite 20s}
+.right-cloud-3{width:55px;height:20px;top:130px;right:100px;animation:cloudFloat3 95s linear infinite 35s}
+@keyframes cloudFloat1{0%{transform:translateX(-200px)}100%{transform:translateX(calc(100vw + 200px))}}
+@keyframes cloudFloat2{0%{transform:translateX(calc(100vw + 200px))}100%{transform:translateX(-200px)}}
+@keyframes cloudFloat3{0%{transform:translateX(-150px) translateY(0)}50%{transform:translateX(calc(50vw - 75px)) translateY(-10px)}100%{transform:translateX(calc(100vw + 150px)) translateY(0)}}
+.stars-container{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 1.2s ease;z-index:2}
+[data-theme="dark"] .stars-container{opacity:1}
+.star{position:absolute;background:white;border-radius:50%;animation:starTwinkle var(--twinkle-duration) infinite var(--twinkle-delay)}
+.star.small{width:1px;height:1px;--twinkle-duration:2s;box-shadow:0 0 2px white}
+.star.medium{width:2px;height:2px;--twinkle-duration:3s;box-shadow:0 0 3px white,0 0 5px rgba(255,255,255,0.5)}
+.star.large{width:3px;height:3px;--twinkle-duration:4s;box-shadow:0 0 4px white,0 0 8px rgba(255,255,255,0.5)}
+@keyframes starTwinkle{0%,100%{opacity:0.2;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
+
+/* Header */
+.main-header{ text-align:center; margin-top:0; margin-bottom:14px; padding:12px 16px; background:var(--bg-card); border-radius:0 0 var(--radius-lg) var(--radius-lg); box-shadow:var(--shadow-md); border:1px solid var(--border-light); position:relative; overflow:hidden; }
+.main-header::before{ content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--primary-blue),var(--secondary-blue)); }
+.brand{ font-size:1.7rem; font-weight:800; color:var(--dark-blue); margin-bottom:5px; display:flex; align-items:center; justify-content:center; gap:8px; }
+.tagline{ font-size:0.95rem; color:var(--text-secondary); margin-bottom:6px; font-weight:500; }
+.contact-info{ display:inline-block; background:var(--light-blue); padding:6px 16px; border-radius:50px; font-weight:600; color:var(--dark-blue); border:1px solid rgba(58,123,213,0.12); font-size:0.9rem; }
+
+/* Theme toggle - floating bottom-right */
+.theme-toggle-container { position: fixed; bottom: 18px; right: 18px; z-index: 1000; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.theme-btn{ background:var(--bg-card); border:2px solid var(--border-light); color:var(--text-primary); padding:8px 14px; border-radius:50px; font-weight:600; font-size:0.9rem; cursor:pointer; transition:all 0.25s; box-shadow:var(--shadow-md); display:flex; align-items:center; gap:8px; white-space:nowrap; }
+.theme-btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow-lg); border-color:var(--primary-blue); }
+
+/* Layout */
+.main-content{ display:grid; grid-template-columns:420px 1fr; gap:24px; margin-top:12px; margin-bottom:12px; align-items:start; }
+@media (max-width: 992px) { .main-content{ grid-template-columns:1fr; } }
+
+/* Cards */
+.search-card{ background:var(--bg-card); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-lg); border:1px solid var(--border-light); position:sticky; top:16px; }
+.card-title{ font-size:1.2rem; font-weight:700; color:var(--dark-blue); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.input-group{ margin-bottom:12px; }
+.input-label{ display:block; margin-bottom:6px; font-weight:600; color:var(--text-secondary); font-size:0.9rem; }
+.input-field{ width:100%; padding:12px 14px; border-radius:var(--radius-md); border:2px solid var(--border-light); background:var(--bg-light); color:var(--text-primary); font-size:1rem; transition:all 0.25s; }
+.input-field:focus{ outline:none; border-color:var(--primary-blue); box-shadow:0 0 0 3px rgba(58,123,213,0.08); background:var(--bg-card); }
+.search-btn{ width:100%; padding:12px; background:linear-gradient(135deg,var(--primary-blue),var(--secondary-blue)); color:white; border:none; border-radius:var(--radius-md); font-size:1rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; margin-top:6px; transition:all 0.25s; }
+.search-btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow-lg); }
+.search-btn:disabled{ opacity:0.75; cursor:not-allowed; transform:none !important; }
+
+/* Results */
+.results-card{ background:var(--bg-card); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); border:1px solid var(--border-light); overflow:hidden; min-height:320px; display:flex; flex-direction:column; }
+.results-header{ background:linear-gradient(135deg,var(--primary-blue),var(--secondary-blue)); color:white; padding:18px 20px; text-align:center; position:relative; }
+.results-header::after{ content:''; position:absolute; bottom:-10px; left:0; right:0; height:20px; background: url("data:image/svg+xml,%3Csvg width='120' height='20' viewBox='0 0 120 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='8' fill='white'/%3E%3Ccircle cx='30' cy='10' r='8' fill='white'/%3E%3Ccircle cx='50' cy='10' r='8' fill='white'/%3E%3Ccircle cx='70' cy='10' r='8' fill='white'/%3E%3Ccircle cx='90' cy='10' r='8' fill='white'/%3E%3Ccircle cx='110' cy='10' r='8' fill='white'/%3E%3C/svg%3E"); background-repeat:repeat-x; background-size:20px 20px; }
+.results-title{ font-size:1.4rem; font-weight:800; margin-bottom:4px; }
+.results-subtitle{ font-size:0.88rem; opacity:0.95; }
+.results-body{ padding:18px; flex:1; display:flex; flex-direction:column; justify-content:flex-start; }
+
+/* No results */
+.no-results{ text-align:center; color:var(--text-muted); font-size:1rem; padding:30px 20px; }
+.no-results-icon{ font-size:36px; margin-bottom:10px; opacity:0.6; }
+.no-results-title{ font-size:1.1rem; margin-bottom:8px; color:var(--text-secondary); }
+
+/* Ticket */
+.ticket-info{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+.info-card{ background:var(--bg-light); padding:12px; border-radius:var(--radius-md); border:1px solid var(--border-light); }
+.info-label{ font-size:0.78rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; font-weight:600; display:flex; align-items:center; gap:6px; }
+.info-value{ font-size:1rem; font-weight:700; color:var(--text-primary); line-height:1.4; }
+#passengerName{ font-size:1.15rem; color:var(--dark-blue); font-weight:800; padding-bottom:6px; border-bottom:2px dashed var(--border-light); margin-bottom:6px; }
+
+/* Seats */
+.seats-section{ background:linear-gradient(135deg, rgba(58,123,213,0.04), rgba(103,184,247,0.02)); padding:14px; border-radius:var(--radius-md); border:1px dashed var(--border-light); margin-bottom:12px; }
+.section-title{ font-size:1rem; font-weight:700; color:var(--dark-blue); margin-bottom:12px; text-align:center; display:flex; align-items:center; justify-content:center; gap:8px; }
+.seats-container{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+.seat{ width:62px; height:62px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--primary-blue),var(--dark-blue)); color:white; font-weight:800; border:3px solid var(--bg-card); box-shadow:var(--shadow-md); transition:all 0.25s; }
+.seat:hover{ transform:scale(1.08) rotate(3deg); box-shadow:var(--shadow-lg); }
+.seat-icon{ font-size:18px; margin-bottom:4px; }
+.seat-number{ font-size:0.98rem; }
+.no-seats{ text-align:center; color:var(--text-muted); font-style:italic; padding:12px; background:var(--bg-light); border-radius:var(--radius-md); border:2px dashed var(--border-light); }
+
+/* Download */
+.download-section{ margin-top:12px; text-align:center; }
+.download-btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:linear-gradient(135deg,var(--success),#059669); color:white; border:none; border-radius:var(--radius-md); font-size:0.95rem; font-weight:700; cursor:pointer; transition:all 0.25s; box-shadow:var(--shadow-md); }
+.download-btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow-lg); background:linear-gradient(135deg,#34d399,#059669); }
+
+/* Feedback */
+.feedback-section{ margin-top:12px; padding:14px; background:var(--bg-light); border-radius:var(--radius-md); border:1px solid var(--border-light); text-align:center; }
+.feedback-title{ font-size:0.95rem; font-weight:700; color:var(--dark-blue); margin-bottom:10px; }
+.feedback-buttons{ display:flex; gap:10px; justify-content:center; }
+.feedback-btn{ padding:9px 16px; border-radius:var(--radius-md); border:2px solid var(--border-light); background:var(--bg-card); color:var(--text-primary); font-weight:600; cursor:pointer; transition:all 0.25s; display:flex; align-items:center; gap:8px; min-width:110px; }
+.feedback-btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.feedback-btn.yes:hover{ background:var(--success-light); border-color:var(--success); color:var(--success); }
+.feedback-btn.no:hover{ background:var(--danger-light); border-color:var(--danger); color:var(--danger); }
+
+/* Footer */
+.main-footer{ text-align:center; padding:12px; color:var(--text-muted); font-size:0.9rem; border-top:1px solid var(--border-light); margin-top:14px; }
+.company-name{ font-weight:800; color:var(--primary-blue); letter-spacing:0.5px; }
+
+/* Spinner */
+.spinner{ display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.3); border-radius:50%; border-top-color:white; animation:spin 1s linear infinite; }
+@keyframes spin{ to{ transform:rotate(360deg) } }
+
+/* Animations & responsive */
+.fade-in{ animation:fadeIn 0.36s ease; }
+@keyframes fadeIn{ from{ opacity:0; transform:translateY(10px) } to{ opacity:1; transform:translateY(0) } }
 
 @media (max-width: 768px) {
-  .container { 
-    padding: 0 15px 15px; 
-  }
-  
-  .sky-container { 
-    height: 120px; 
-  }
-  
-  .sun-container { 
-    left: 30px; 
-    top: 80px; 
-  }
-  
-  .sun-risen .sun-container {
-    top: 15px;
-  }
-  
-  .sun-main { 
-    width: 50px; 
-    height: 50px; 
-  }
-  
-  .moon-container { 
-    right: 30px; 
-    top: 80px; 
-  }
-  
-  .moon-risen .moon-container {
-    top: 20px;
-  }
-  
-  .moon-main { 
-    width: 45px; 
-    height: 45px; 
-  }
-  
-  .main-header { 
-    padding: 12px 15px; 
-    margin-bottom: 20px; 
-  }
-  
-  .brand { 
-    font-size: 1.5rem; 
-  }
-  
-  .search-card { 
-    padding: 20px; 
-    position: static; 
-  }
-  
-  .ticket-info {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  
-  .info-card {
-    padding: 12px;
-  }
-  
-  #passengerName {
-    font-size: 1.2rem;
-    padding: 8px 0;
-    margin-bottom: 12px;
-  }
-  
-  .seats-section { 
-    padding: 15px; 
-    margin: 12px -15px; 
-  }
-  
-  .seat { 
-    width: 60px; 
-    height: 60px; 
-  }
-  
-  .seat-icon {
-    font-size: 16px;
-  }
-  
-  .seat-number {
-    font-size: 0.9rem;
-  }
-  
-  .theme-btn {
-    padding: 6px 12px;
-    font-size: 0.85rem;
-  }
-  
-  .feedback-buttons {
-    flex-direction: column;
-  }
-  
-  .feedback-btn {
-    width: 100%;
-  }
+  .container{ padding:8px 14px 30px; }
+  .sky-container{ height:120px; }
+  .sun-container{ left:26px; top:80px; }
+  .sun-main{ width:48px; height:48px; }
+  .moon-container{ right:26px; top:80px; }
+  .moon-main{ width:44px; height:44px; }
+  .main-header{ padding:10px 12px; margin-bottom:14px; }
+  .brand{ font-size:1.4rem; }
+  .search-card{ padding:16px; position:static; }
+  .ticket-info{ grid-template-columns:1fr; gap:10px; }
+  #passengerName{ font-size:1.05rem; padding:8px 0; margin-bottom:10px; }
+  .seats-section{ padding:12px; margin:10px -12px; }
+  .seat{ width:52px; height:52px; }
+  .theme-btn{ padding:6px 12px; font-size:0.85rem; }
+  .feedback-buttons{ flex-direction:column; }
+  .feedback-btn{ width:100%; }
 }
 
 @media (max-width: 480px) {
-  .brand { 
-    font-size: 1.3rem; 
-  }
-  
-  .sky-container { 
-    height: 100px; 
-  }
-  
-  .sun-container { 
-    left: 20px; 
-    top: 70px; 
-  }
-  
-  .sun-risen .sun-container {
-    top: 10px;
-  }
-  
-  .sun-main { 
-    width: 40px; 
-    height: 40px; 
-  }
-  
-  .moon-container { 
-    right: 20px; 
-    top: 70px; 
-  }
-  
-  .moon-risen .moon-container {
-    top: 15px;
-  }
-  
-  .moon-main { 
-    width: 38px; 
-    height: 38px; 
-  }
-  
-  .theme-btn { 
-    padding: 5px 10px; 
-    font-size: 0.8rem; 
-  }
+  .brand{ font-size:1.2rem; }
+  .sky-container{ height:100px; }
+  .sun-container{ left:18px; top:70px; }
+  .sun-main{ width:40px; height:40px; }
+  .moon-container{ right:18px; top:70px; }
+  .moon-main{ width:38px; height:38px; }
+  .theme-toggle-container{ bottom:12px; right:12px; }
 }
 </style>
 </head>
 <body>
 <div class="container">
-  
-  <!-- Compact Sky Container -->
+
+  <!-- Sky -->
   <div class="sky-container" id="skyContainer" aria-hidden="true">
-    <!-- Sun on Left Side -->
-    <div class="sun-container" aria-hidden="true">
-      <div class="sun-main">
-        <div class="sun-glow"></div>
-      </div>
-    </div>
-    
-    <!-- Moon on Right Side -->
-    <div class="moon-container" aria-hidden="true">
-      <div class="moon-main">
-        <div class="moon-craters">
-          <div class="moon-crater large"></div>
-          <div class="moon-crater medium"></div>
-          <div class="moon-crater small"></div>
-        </div>
-        <div class="moon-glow"></div>
-      </div>
-    </div>
-    
-    <!-- Day Clouds (Both Sides) -->
+    <div class="sun-container" aria-hidden="true"><div class="sun-main"><div class="sun-glow"></div></div></div>
+    <div class="moon-container" aria-hidden="true"><div class="moon-main"><div class="moon-craters"><div class="moon-crater large"></div><div class="moon-crater medium"></div><div class="moon-crater small"></div></div><div class="moon-glow"></div></div></div>
     <div class="day-clouds" aria-hidden="true">
-      <div class="cloud-left">
-        <div class="cloud left-cloud-1"></div>
-        <div class="cloud left-cloud-2"></div>
-        <div class="cloud left-cloud-3"></div>
-      </div>
-      <div class="cloud-right">
-        <div class="cloud right-cloud-1"></div>
-        <div class="cloud right-cloud-2"></div>
-        <div class="cloud right-cloud-3"></div>
-      </div>
+      <div class="cloud-left"><div class="cloud left-cloud-1"></div><div class="cloud left-cloud-2"></div><div class="cloud left-cloud-3"></div></div>
+      <div class="cloud-right"><div class="cloud right-cloud-1"></div><div class="cloud right-cloud-2"></div><div class="cloud right-cloud-3"></div></div>
     </div>
-    
-    <!-- Night Clouds (Left Side Only) -->
-    <div class="night-clouds" aria-hidden="true">
-      <div class="night-cloud night-cloud-1"></div>
-      <div class="night-cloud night-cloud-2"></div>
-      <div class="night-cloud night-cloud-3"></div>
-    </div>
-    
-    <!-- Stars Container -->
     <div class="stars-container" id="starsContainer" aria-hidden="true"></div>
   </div>
-  
-  <!-- Main Header (touching the sky) -->
+
+  <!-- Header -->
   <header class="main-header" role="banner" aria-label="Site header">
     <h1 class="brand">Welcome To Lagan Bus Booking</h1>
     <p class="tagline">Safe Travels. May God Bless Your Journey.</p>
     <div class="contact-info">For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></div>
   </header>
-  
-  <!-- Theme Toggle Button -->
+
+  <!-- Theme Toggle -->
   <div class="theme-toggle-container" aria-hidden="true">
     <button class="theme-btn" id="themeToggle" aria-pressed="false" title="Toggle theme">
       <span id="themeIcon">🌙</span>
       <span id="themeText">Dark Mode</span>
     </button>
   </div>
-  
-  <!-- Main Content -->
+
+  <!-- Main -->
   <main class="main-content" role="main">
-    
+
     <!-- Search Card -->
     <div class="search-card" role="region" aria-label="Check Booking">
       <h2 class="card-title">🔍 Check Your Booking</h2>
-      
+
       <div class="input-group">
         <label class="input-label" for="phone">Phone Number</label>
-        <input type="tel" id="phone" class="input-field" 
-               placeholder="Enter 10-digit number (077XXXXXXX)" 
-               maxlength="10" inputmode="tel" aria-label="Phone number">
+        <input type="tel" id="phone" class="input-field" placeholder="Enter 10-digit number (077XXXXXXX)" maxlength="10" inputmode="tel" aria-label="Phone number">
       </div>
-      
+
       <button id="searchBtn" class="search-btn" aria-label="Check my booking">
         <span>🔍</span> Check My Booking
       </button>
-      
-      <div>
-        <p style="font-weight: 600; color: var(--dark-blue); margin-bottom: 5px;">📝 Instructions:</p>
-        <p style="font-size: 0.85rem; color: var(--text-secondary);">
-          1. Enter the phone number used for booking<br>
+
+      <div style="margin-top:12px">
+        <p style="font-weight:600;color:var(--dark-blue);margin-bottom:6px;">📝 Instructions:</p>
+        <p style="font-size:0.86rem;color:var(--text-secondary);">
+          1. Enter the phone number used for booking (with or without leading 0)<br>
           2. Click "Check My Booking"<br>
           3. View your seat details & download ticket
         </p>
       </div>
     </div>
-    
+
     <!-- Results Card -->
     <div class="results-card" role="region" aria-label="Booking details">
       <div class="results-header">
         <h2 class="results-title">Your Booking Details</h2>
         <p class="results-subtitle">Find all your travel information here</p>
       </div>
-      
+
       <div class="results-body" id="resultsBody">
-        <!-- Initial state -->
         <div class="no-results" aria-live="polite">
           <div class="no-results-icon">🚌</div>
           <h3 class="no-results-title">No Booking Found</h3>
           <p>Enter your phone number to check your booking details</p>
         </div>
-        
-        <!-- Booking Details (will be shown when data loads) -->
-        <div id="bookingDetails" style="display: none;">
-          <!-- Passenger Info -->
-          <div class="info-card" style="grid-column: 1 / -1; text-align: center;">
-            <div class="info-label">
-              <span>👤</span> Passenger Name
-            </div>
+
+        <div id="bookingDetails" style="display:none;">
+          <div class="info-card" style="grid-column:1 / -1; text-align:center;">
+            <div class="info-label"><span>👤</span> Passenger Name</div>
             <div id="passengerName" class="info-value">-</div>
           </div>
-          
-          <!-- Ticket Info Grid -->
+
           <div class="ticket-info">
-            <div class="info-card">
-              <div class="info-label">
-                <span>🚌</span> Bus Name
-              </div>
-              <div id="busName" class="info-value">-</div>
-            </div>
-            
-            <div class="info-card">
-              <div class="info-label">
-                <span>📅</span> Date & Time
-              </div>
-              <div id="dateTime" class="info-value">-</div>
-            </div>
-            
-            <div class="info-card">
-              <div class="info-label">
-                <span>📍</span> Pickup Location
-              </div>
-              <div id="pickupLocation" class="info-value">-</div>
-            </div>
-            
-            <div class="info-card">
-              <div class="info-label">
-                <span>💰</span> Payment Status
-              </div>
-              <div id="paymentAmount" class="info-value">-</div>
-            </div>
+            <div class="info-card"><div class="info-label"><span>🚌</span> Bus Name</div><div id="busName" class="info-value">-</div></div>
+            <div class="info-card"><div class="info-label"><span>📅</span> Date & Time</div><div id="dateTime" class="info-value">-</div></div>
+            <div class="info-card"><div class="info-label"><span>📍</span> Pickup Location</div><div id="pickupLocation" class="info-value">-</div></div>
+            <div class="info-card"><div class="info-label"><span>💰</span> Payment Status</div><div id="paymentAmount" class="info-value">-</div></div>
           </div>
-          
-          <!-- Seats Section -->
+
           <div class="seats-section">
-            <h3 class="section-title">
-              <span>💺</span> Your Seat Numbers
-            </h3>
+            <h3 class="section-title"><span>💺</span> Your Seat Numbers</h3>
             <div class="seats-container" id="seatsBox" aria-live="polite"></div>
           </div>
-          
-          <!-- Download Button -->
+
           <div class="download-section">
-            <button id="downloadBtn" class="download-btn">
-              <span>⬇️</span> Download Ticket
-            </button>
+            <button id="downloadBtn" class="download-btn"><span>🎫</span> Download Ticket</button>
           </div>
-          
-          <!-- Feedback Section -->
-          <div id="feedbackSection" class="feedback-section" style="display: none;">
+
+          <div id="feedbackSection" class="feedback-section" style="display:none;">
             <h3 class="feedback-title">Did you receive your correct seat information?</h3>
             <div class="feedback-buttons">
-              <button class="feedback-btn yes" onclick="sendFeedback('Yes')">
-                <span>👍</span> Yes, All Good
-              </button>
-              <button class="feedback-btn no" onclick="sendFeedback('No')">
-                <span>👎</span> No, Issue Found
-              </button>
+              <button class="feedback-btn yes" id="fbYes"><span>👍</span> Yes, All Good</button>
+              <button class="feedback-btn no" id="fbNo"><span>👎</span> No, Issue Found</button>
             </div>
           </div>
+
         </div>
       </div>
     </div>
+
   </main>
-  
+
   <!-- Footer -->
   <footer class="main-footer" role="contentinfo">
     <p>Made with <span style="color:#e74c3c;">❤</span> by <span class="company-name">WEDOXA</span></p>
   </footer>
+
 </div>
 
 <script>
-// ===================== CONFIGURATION =====================
-// replace this URL with your Google Apps Script URL if needed
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
+// ===================== CONFIG =====================
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwtADuWek0zWGZROj4HRsS_h-WRjhMRMCShOmaAxnReTULgHHiFPA-hEDQa2v6iQYPPnA/exec";
 
-// ===================== SKY / THEME / UI INIT =====================
+// ===================== UI INIT =====================
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize theme
   const savedTheme = localStorage.getItem('lagan-theme') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeUI(savedTheme);
   createStars();
 
-  // Animate sun/moon rise on load
+  // animate sun/moon
   setTimeout(() => {
-    if (savedTheme === 'light') {
-      document.body.classList.add('sun-risen');
-    } else {
-      document.body.classList.add('moon-risen');
-      createShootingStars();
-    }
+    if (savedTheme === 'light') document.body.classList.add('sun-risen');
+    else { document.body.classList.add('moon-risen'); createShootingStars(); }
   }, 300);
 
-  // Theme toggle event
   document.getElementById('themeToggle').addEventListener('click', function() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-
     if (newTheme === 'dark') {
       document.body.classList.remove('sun-risen');
       setTimeout(() => {
         document.documentElement.setAttribute('data-theme', newTheme);
         updateThemeUI(newTheme);
         localStorage.setItem('lagan-theme', newTheme);
-        setTimeout(() => {
-          document.body.classList.add('moon-risen');
-          createShootingStars();
-        }, 200);
+        setTimeout(() => { document.body.classList.add('moon-risen'); createShootingStars(); }, 200);
       }, 200);
     } else {
       document.body.classList.remove('moon-risen');
@@ -1216,63 +368,47 @@ document.addEventListener('DOMContentLoaded', function() {
         document.documentElement.setAttribute('data-theme', newTheme);
         updateThemeUI(newTheme);
         localStorage.setItem('lagan-theme', newTheme);
-        setTimeout(() => {
-          document.body.classList.add('sun-risen');
-        }, 200);
+        setTimeout(() => { document.body.classList.add('sun-risen'); }, 200);
       }, 200);
     }
   });
 
-  // Phone input validation
   const phoneInput = document.getElementById('phone');
   phoneInput.addEventListener('input', function(e) {
     let value = e.target.value.replace(/\D/g, '');
     if (value.length > 10) value = value.substring(0, 10);
     e.target.value = value;
   });
+  phoneInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') searchBooking(); });
 
-  // Enter key to search
-  phoneInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') searchBooking();
-  });
-
-  // Search button event
   document.getElementById('searchBtn').addEventListener('click', searchBooking);
-
-  // Download button event
   document.getElementById('downloadBtn').addEventListener('click', downloadTicket);
+  document.getElementById('fbYes').addEventListener('click', ()=> sendFeedback('Yes'));
+  document.getElementById('fbNo').addEventListener('click', ()=> sendFeedback('No'));
 });
 
 function updateThemeUI(theme) {
   const themeIcon = document.getElementById('themeIcon');
   const themeText = document.getElementById('themeText');
   const toggleBtn = document.getElementById('themeToggle');
-
-  if (theme === 'dark') {
-    themeIcon.textContent = '☀️';
-    themeText.textContent = 'Light Mode';
-    toggleBtn.setAttribute('aria-pressed', 'true');
-  } else {
-    themeIcon.textContent = '🌙';
-    themeText.textContent = 'Dark Mode';
-    toggleBtn.setAttribute('aria-pressed', 'false');
-  }
+  if (theme === 'dark') { themeIcon.textContent = '☀️'; themeText.textContent = 'Light Mode'; toggleBtn.setAttribute('aria-pressed','true'); }
+  else { themeIcon.textContent = '🌙'; themeText.textContent = 'Dark Mode'; toggleBtn.setAttribute('aria-pressed','false'); }
 }
 
 function createStars() {
   const container = document.getElementById('starsContainer');
   if (!container) return;
   container.innerHTML = '';
-  for (let i = 0; i < 100; i++) {
+  for (let i=0;i<100;i++){
     const star = document.createElement('div');
     star.classList.add('star');
-    const size = Math.random();
-    if (size < 0.6) star.classList.add('small');
-    else if (size < 0.9) star.classList.add('medium');
+    const s = Math.random();
+    if (s<0.6) star.classList.add('small');
+    else if (s<0.9) star.classList.add('medium');
     else star.classList.add('large');
-    star.style.left = `${Math.random() * 100}%`;
-    star.style.top = `${Math.random() * 100}%`;
-    const delay = Math.random() * 4;
+    star.style.left = `${Math.random()*100}%`;
+    star.style.top = `${Math.random()*100}%`;
+    const delay = Math.random()*4;
     star.style.setProperty('--twinkle-delay', `${delay}s`);
     container.appendChild(star);
   }
@@ -1284,278 +420,270 @@ function createShootingStars() {
   function createShootingStar() {
     if (document.documentElement.getAttribute('data-theme') !== 'dark') return;
     const shootingStar = document.createElement('div');
-    shootingStar.style.cssText = `
-      position: absolute;
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 30%, rgba(255,255,255,0) 100%);
-      opacity: 0;
-      transform: rotate(-45deg);
-      z-index: 25;
-    `;
-    const startX = Math.random() * 80 + 10;
-    const startY = Math.random() * 30;
+    shootingStar.style.cssText = `position:absolute;width:60px;height:1px;background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 30%, rgba(255,255,255,0) 100%);opacity:0;transform:rotate(-45deg);z-index:25;`;
+    const startX = Math.random()*80 + 10;
+    const startY = Math.random()*30;
     shootingStar.style.left = `${startX}%`;
     shootingStar.style.top = `${startY}%`;
     container.appendChild(shootingStar);
-    const duration = Math.random() * 800 + 400;
+    const duration = Math.random()*800 + 400;
     shootingStar.animate([
-      { transform: 'translateX(0) translateY(0) rotate(-45deg)', opacity: 0 },
-      { transform: 'translateX(200px) translateY(100px) rotate(-45deg)', opacity: 1 },
-      { transform: 'translateX(400px) translateY(200px) rotate(-45deg)', opacity: 0 }
-    ], {
-      duration: duration,
-      easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-    });
-    setTimeout(() => { if (shootingStar.parentNode) shootingStar.parentNode.removeChild(shootingStar); }, duration);
+      { transform:'translateX(0) translateY(0) rotate(-45deg)', opacity:0 },
+      { transform:'translateX(200px) translateY(100px) rotate(-45deg)', opacity:1 },
+      { transform:'translateX(400px) translateY(200px) rotate(-45deg)', opacity:0 }
+    ], { duration: duration, easing: 'cubic-bezier(0.4,0,0.2,1)'});
+    setTimeout(()=>{ if(shootingStar.parentNode) shootingStar.parentNode.removeChild(shootingStar); }, duration);
   }
-  setInterval(() => {
-    if (document.documentElement.getAttribute('data-theme') === 'dark' && Math.random() < 0.2) {
-      createShootingStar();
-    }
-  }, 3000);
+  setInterval(()=>{ if (document.documentElement.getAttribute('data-theme') === 'dark' && Math.random()<0.18) createShootingStar(); }, 3000);
 }
 
-// ===================== BOOKING SEARCH =====================
+// ===================== HELPERS =====================
+
+function normalizePhoneForQuery(raw) {
+  // returns digits-only string, prefer no leading zero for sheet matches
+  if (!raw) return '';
+  let digits = String(raw).replace(/\D/g, '');
+  // if user entered 10-digit starting with 0, drop the 0
+  if (digits.length === 10 && digits.startsWith('0')) digits = digits.substring(1);
+  return digits;
+}
+
+// ===================== SEARCH =====================
+
 function searchBooking() {
-  const phone = document.getElementById('phone').value.trim();
+  let phoneRaw = document.getElementById('phone').value.trim();
   const btn = document.getElementById('searchBtn');
 
+  const phone = normalizePhoneForQuery(phoneRaw);
+
   if (!phone || phone.length < 9) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Enter Phone Number',
-      text: 'Please enter a valid 10-digit phone number',
-      confirmButtonColor: '#3a7bd5'
-    });
+    Swal.fire({ icon:'warning', title:'Enter Phone Number', text:'Please enter a valid phone number (9-10 digits)', confirmButtonColor:'#3a7bd5' });
     return;
   }
 
-  // Show loading state
   btn.innerHTML = '<div class="spinner"></div> Searching...';
   btn.disabled = true;
 
-  Swal.fire({
-    title: 'Finding your booking...',
-    allowOutsideClick: false,
-    didOpen: () => Swal.showLoading()
-  });
+  Swal.fire({ title:'Finding your booking...', allowOutsideClick:false, didOpen: () => Swal.showLoading() });
 
-  // Fetch from Google Sheets
   fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}`)
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
       btn.innerHTML = '<span>🔍</span> Check My Booking';
       btn.disabled = false;
       Swal.close();
 
-      if (!data.success) {
-        Swal.fire({
-          icon: 'error',
-          title: 'No Booking Found',
-          text: 'We could not find a booking with this phone number',
-          confirmButtonColor: '#3a7bd5'
-        });
+      if (!data || !data.success || !data.booking) {
+        const msg = (data && data.message) ? data.message : 'We could not find a booking with this phone number';
+        Swal.fire({ icon:'error', title:'No Booking Found', text: msg, confirmButtonColor:'#3a7bd5' });
+        document.getElementById('bookingDetails').style.display = 'none';
+        document.getElementById('feedbackSection').style.display = 'none';
+        const nr = document.getElementById('resultsBody').querySelector('.no-results');
+        if (nr) nr.style.display = 'block';
         return;
       }
 
-      // Display results
       renderBooking(data.booking);
 
-      // Scroll to results
-      document.querySelector('.results-card').scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
+      // bring results into view but not too far down
+      const resultsCard = document.querySelector('.results-card');
+      if (resultsCard) resultsCard.scrollIntoView({ behavior:'smooth', block:'center' });
     })
-    .catch(error => {
+    .catch(err => {
       btn.innerHTML = '<span>🔍</span> Check My Booking';
       btn.disabled = false;
       Swal.close();
-
-      Swal.fire({
-        icon: 'error',
-        title: 'Connection Error',
-        text: 'Please check your internet connection and try again',
-        confirmButtonColor: '#3a7bd5'
-      });
-      console.error('Error:', error);
+      Swal.fire({ icon:'error', title:'Connection Error', text:'Please check your internet connection and try again', confirmButtonColor:'#3a7bd5' });
+      console.error('Fetch error:', err);
     });
 }
 
-// ===================== RENDER BOOKING DATA =====================
+// ===================== RENDER BOOKING (robust) =====================
 function renderBooking(b) {
-  function getField(obj, possibleNames) {
-    if (!obj) return null;
-    for (const name of possibleNames) {
-      const keys = Object.keys(obj);
-      for (const key of keys) {
-        if (key.toLowerCase().replace(/\s+/g, '') === name.toLowerCase().replace(/\s+/g, '')) {
-          return obj[key];
-        }
+  try {
+    if (!b || typeof b !== 'object') throw new Error('Invalid booking object');
+
+    function getField(obj, possibleNames) {
+      if (!obj) return null;
+      for (const n of possibleNames) {
+        if (Object.prototype.hasOwnProperty.call(obj, n)) return obj[n];
+        if (Object.prototype.hasOwnProperty.call(obj, n.toLowerCase())) return obj[n.toLowerCase()];
+        if (Object.prototype.hasOwnProperty.call(obj, n.toUpperCase())) return obj[n.toUpperCase()];
       }
+      const keys = Object.keys(obj);
+      const normalized = {};
+      keys.forEach(k => normalized[k.toLowerCase().replace(/\s+/g,'')] = obj[k]);
+      for (const name of possibleNames) {
+        const key = name.toLowerCase().replace(/\s+/g,'');
+        if (Object.prototype.hasOwnProperty.call(normalized, key)) return normalized[key];
+      }
+      return null;
     }
-    const keys = Object.keys(obj);
-    for (const name of possibleNames) {
-      if (keys.includes(name)) return obj[name];
+
+    const name = getField(b, ['Name','Passenger','Passenger Name','Full Name','Customer Name']) || '-';
+    const bus = getField(b, ['Bus','Bus Name','Vehicle','Bus Number','Service']) || '-';
+    const date = (b['Date'] !== undefined) ? b['Date'] : ((b['date'] !== undefined) ? b['date'] : getField(b, ['Date','Travel Date','Journey Date','Departure Date','Date/Time']) || '');
+    const time = (b['Time'] !== undefined) ? b['Time'] : ((b['time'] !== undefined) ? b['time'] : '');
+    const seat = getField(b, ['Seat','Seats','Seat Number','Seat Numbers','Seat No']) || '';
+    const pickup = getField(b, ['Pickup','Pickup Location','Boarding Point','Pickup Point']) || '-';
+    const payment = getField(b, ['Payment','Amount','Payment Status','Fare','Price']) || '-';
+    const bookingId = getField(b, ['Booking ID','Reference','Ref No','Ticket No']) || '';
+
+    document.getElementById('passengerName').textContent = (name === '') ? '-' : String(name);
+    document.getElementById('busName').textContent = (bus === '') ? '-' : String(bus);
+
+    // Format date/time (robust)
+    let displayDateTime = '-';
+
+    function formatISODateTime(isoString) {
+      try {
+        const dateObj = new Date(isoString);
+        if (isNaN(dateObj.getTime())) return null;
+        const day = String(dateObj.getDate()).padStart(2,'0');
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const month = months[dateObj.getMonth()];
+        const year = dateObj.getFullYear();
+        let hours = dateObj.getHours();
+        const minutes = String(dateObj.getMinutes()).padStart(2,'0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        return { date: `${day} ${month} ${year}`, time: `${hours}:${minutes} ${ampm}` };
+      } catch (e) { return null; }
     }
-    return null;
-  }
 
-  const name = getField(b, ['Name', 'Passenger', 'Passenger Name', 'Full Name', 'Customer Name']) || '-';
-  const bus = getField(b, ['Bus', 'Bus Name', 'Vehicle', 'Bus Number', 'Service']) || '-';
-  const date = getField(b, ['Date', 'Travel Date', 'Journey Date', 'Departure Date', 'Date/Time']) || '';
-  const time = getField(b, ['Time', 'Departure Time', 'Travel Time', 'Time Slot']) || '';
-  const seat = getField(b, ['Seat', 'Seats', 'Seat Number', 'Seat Numbers', 'Seat No']) || '';
-  const pickup = getField(b, ['Pickup', 'Pickup Location', 'Boarding Point', 'Pickup Point']) || '-';
-  const payment = getField(b, ['Payment', 'Amount', 'Payment Status', 'Fare', 'Price']) || '-';
-  const bookingId = getField(b, ['Booking ID', 'Reference', 'Ref No', 'Ticket No']) || '';
+    function formatRegularDateTime(dateStr, timeStr) {
+      let cleanDate = dateStr || '';
+      let cleanTime = (timeStr !== undefined && timeStr !== null) ? String(timeStr) : '';
 
-  // Update display
-  document.getElementById('passengerName').textContent = name;
-  document.getElementById('busName').textContent = bus;
-
-  // Format date/time
-  let displayDateTime = '-';
-
-  function formatISODateTime(isoString) {
-    try {
-      const dateObj = new Date(isoString);
-      if (isNaN(dateObj.getTime())) return null;
-      const day = dateObj.getDate().toString().padStart(2, '0');
-      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      const month = months[dateObj.getMonth()];
-      const year = dateObj.getFullYear();
-      let hours = dateObj.getHours();
-      const minutes = dateObj.getMinutes().toString().padStart(2, '0');
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12 || 12;
-      return { date: `${day} ${month} ${year}`, time: `${hours}:${minutes} ${ampm}` };
-    } catch (e) { return null; }
-  }
-
-  function formatRegularDateTime(dateStr, timeStr) {
-    let cleanDate = dateStr;
-    let cleanTime = timeStr || '';
-    if (cleanDate) {
-      cleanDate = cleanDate.split(' ')[0];
-      if (cleanDate.includes('/')) {
-        const parts = cleanDate.split('/');
-        if (parts.length === 3) {
-          const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-          const monthIndex = parseInt(parts[1]) - 1;
-          if (monthIndex >= 0 && monthIndex < 12) {
-            cleanDate = `${parts[0]} ${months[monthIndex]} ${parts[2]}`;
+      if (cleanDate) {
+        cleanDate = cleanDate.split('T')[0].split(' ')[0];
+        if (cleanDate.includes('/')) {
+          const parts = cleanDate.split('/');
+          if (parts.length === 3) {
+            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            const d = parts[0];
+            const mIndex = parseInt(parts[1],10)-1;
+            const y = parts[2];
+            if (!isNaN(mIndex) && mIndex >=0 && mIndex < 12) cleanDate = `${d} ${months[mIndex]} ${y}`;
+          }
+        } else if (cleanDate.includes('-')) {
+          const parts = cleanDate.split('-');
+          if (parts.length === 3) {
+            if (parts[0].length === 4) {
+              const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+              cleanDate = `${String(parseInt(parts[2],10)).padStart(2,'0')} ${months[parseInt(parts[1],10)-1]} ${parts[0]}`;
+            } else {
+              const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+              cleanDate = `${parts[0]} ${months[parseInt(parts[1],10)-1]} ${parts[2]}`;
+            }
           }
         }
       }
-    }
-    if (cleanTime && typeof cleanTime === 'string') {
-      const timeMatch = cleanTime.match(/(\d{1,2}):(\d{2})/);
-      if (timeMatch) {
-        let hours = parseInt(timeMatch[1]);
-        const minutes = timeMatch[2];
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12 || 12;
-        cleanTime = `${hours}:${minutes} ${ampm}`;
+
+      if (cleanTime && typeof cleanTime === 'string') {
+        const timeMatch = cleanTime.match(/(\d{1,2})[:.](\d{2})/);
+        if (timeMatch) {
+          let hours = parseInt(timeMatch[1],10);
+          const minutes = timeMatch[2];
+          let ampm = /pm/i.test(cleanTime) ? 'PM' : (/am/i.test(cleanTime) ? 'AM' : (hours >= 12 ? 'PM' : 'AM'));
+          hours = hours % 12 || 12;
+          cleanTime = `${hours}:${minutes} ${ampm}`;
+        } else {
+          const compact = cleanTime.match(/(\d{1,2})\s*([AaPp][Mm])/);
+          if (compact) {
+            let hours = parseInt(compact[1],10);
+            const ampm = compact[2].toUpperCase();
+            hours = hours % 12 || 12;
+            cleanTime = `${hours}:00 ${ampm}`;
+          } else if (cleanTime.trim().length > 0) {
+            cleanTime = cleanTime.trim();
+          }
+        }
       }
+
+      return { date: cleanDate, time: cleanTime };
     }
-    return { date: cleanDate, time: cleanTime };
-  }
 
-  // Determine displayDateTime
-  if (date && typeof date === 'string' && date.includes('T') && date.includes('Z')) {
-    const formatted = formatISODateTime(date);
-    if (formatted) displayDateTime = `${formatted.date} • ${formatted.time}`;
-  } else if (date && typeof date === 'string' && (date.includes('T') || date.includes(' '))) {
-    const formatted = formatISODateTime(date);
-    if (formatted) displayDateTime = `${formatted.date} • ${formatted.time}`;
-    else {
-      const formatted2 = formatRegularDateTime(date, time);
-      displayDateTime = `${formatted2.date} • ${formatted2.time}`;
+    if (date && typeof date === 'string' && date.includes('T') && date.includes('Z')) {
+      const formatted = formatISODateTime(date);
+      if (formatted) displayDateTime = `${formatted.date} • ${formatted.time}`;
+    } else if (date && typeof date === 'string' && (date.includes('T') || date.includes(' '))) {
+      const formatted = formatISODateTime(date);
+      if (formatted) displayDateTime = `${formatted.date} • ${formatted.time}`;
+      else {
+        const formatted2 = formatRegularDateTime(date, time);
+        displayDateTime = `${formatted2.date || '-'} • ${formatted2.time || '-'}`;
+      }
+    } else {
+      const formatted = formatRegularDateTime(date, time);
+      displayDateTime = `${formatted.date || '-'} • ${formatted.time || '-'}`;
     }
-  } else {
-    const formatted = formatRegularDateTime(date, time);
-    displayDateTime = `${formatted.date} • ${formatted.time}`;
-  }
 
-  if (displayDateTime.includes('Invalid') || displayDateTime.includes('NaN') || displayDateTime.includes('undefined')) {
-    displayDateTime = '-';
-  }
-  document.getElementById('dateTime').textContent = displayDateTime;
-  document.getElementById('pickupLocation').textContent = pickup;
+    if (/Invalid|NaN|undefined/.test(displayDateTime)) displayDateTime = '-';
+    document.getElementById('dateTime').textContent = displayDateTime;
+    document.getElementById('pickupLocation').textContent = pickup;
 
-  // ===================== PAYMENT — SHOW EXACT VALUE FROM SHEET (NO BADGES) =====================
-  const paymentElement = document.getElementById('paymentAmount');
-  const paymentText = (payment && typeof payment === 'string' && payment.trim() !== '') ? payment : 'Not Updated';
-  // Show the exact text typed in the sheet (no badges, no auto-detection)
-  paymentElement.textContent = paymentText;
+    const paymentElement = document.getElementById('paymentAmount');
+    const paymentText = (payment && typeof payment === 'string' && payment.trim() !== '') ? payment : (payment || 'Not Updated');
+    paymentElement.textContent = paymentText;
 
-  // ===================== SEATS DISPLAY =====================
-  const seatsBox = document.getElementById('seatsBox');
-  seatsBox.innerHTML = '';
-
-  if (seat && String(seat).trim() !== '' && String(seat).trim().toLowerCase() !== 'not updated' && String(seat).trim() !== '-') {
-    const seats = String(seat).split(/[, \/]+/).filter(s => s.trim() !== '' && s.trim() !== '-');
-    if (seats.length > 0) {
-      seats.forEach(seatNum => {
-        const seatElement = document.createElement('div');
-        seatElement.className = 'seat';
-        seatElement.innerHTML = `
-          <div class="seat-icon">💺</div>
-          <div class="seat-number">${seatNum.trim()}</div>
-        `;
-        seatsBox.appendChild(seatElement);
-      });
+    const seatsBox = document.getElementById('seatsBox');
+    seatsBox.innerHTML = '';
+    if (seat && String(seat).trim() !== '' && String(seat).trim().toLowerCase() !== 'not updated' && String(seat).trim() !== '-') {
+      const seats = String(seat).split(/[, \/]+/).filter(s=>s.trim()!=='' && s.trim()!=='-');
+      if (seats.length>0) {
+        seats.forEach(seatNum=>{
+          const seatElement = document.createElement('div');
+          seatElement.className = 'seat';
+          seatElement.innerHTML = `<div class="seat-icon">💺</div><div class="seat-number">${String(seatNum).trim()}</div>`;
+          seatsBox.appendChild(seatElement);
+        });
+      } else {
+        seatsBox.innerHTML = '<div class="no-seats">No seat assigned yet. Please contact Mr. Fawas.</div>';
+      }
     } else {
       seatsBox.innerHTML = '<div class="no-seats">No seat assigned yet. Please contact Mr. Fawas.</div>';
     }
-  } else {
-    seatsBox.innerHTML = '<div class="no-seats">No seat assigned yet. Please contact Mr. Fawas.</div>';
+
+    document.getElementById('bookingDetails').style.display = 'block';
+    document.getElementById('feedbackSection').style.display = 'block';
+    const nr = document.getElementById('resultsBody').querySelector('.no-results');
+    if (nr) nr.style.display = 'none';
+
+    const bookingDetails = document.getElementById('bookingDetails');
+    bookingDetails.classList.remove('fade-in');
+    setTimeout(()=> bookingDetails.classList.add('fade-in'), 10);
+
+    window.currentBookingData = {
+      passengerName: name,
+      busName: bus,
+      dateTime: displayDateTime,
+      pickupLocation: pickup,
+      paymentAmount: paymentText,
+      seats: seat,
+      bookingId: bookingId
+    };
+
+  } catch (err) {
+    console.error('renderBooking error:', err);
+    Swal.fire({ icon:'error', title:'Display Error', text:'Unable to show booking details. Please contact admin.', confirmButtonColor:'#3a7bd5' });
+    document.getElementById('bookingDetails').style.display = 'none';
+    document.getElementById('feedbackSection').style.display = 'none';
+    const nr = document.getElementById('resultsBody').querySelector('.no-results');
+    if (nr) nr.style.display = 'block';
   }
-
-  // Show results
-  document.getElementById('bookingDetails').style.display = 'block';
-  document.getElementById('feedbackSection').style.display = 'block';
-  const nr = document.getElementById('resultsBody').querySelector('.no-results');
-  if (nr) nr.style.display = 'none';
-
-  const bookingDetails = document.getElementById('bookingDetails');
-  bookingDetails.classList.remove('fade-in');
-  setTimeout(() => bookingDetails.classList.add('fade-in'), 10);
-
-  // Store data for download
-  window.currentBookingData = {
-    passengerName: name,
-    busName: bus,
-    dateTime: displayDateTime,
-    pickupLocation: pickup,
-    paymentAmount: paymentText,
-    seats: seat,
-    bookingId: bookingId
-  };
 }
 
-// ===================== TICKET DOWNLOAD =====================
+// ===================== DOWNLOAD TICKET =====================
 function escapeHtml(unsafe) {
   if (!unsafe && unsafe !== 0) return '';
-  return String(unsafe)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+  return String(unsafe).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 }
 
 function downloadTicket() {
   const data = window.currentBookingData;
   if (!data) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'No Booking Data',
-      text: 'Please search for a booking first',
-      confirmButtonColor: '#3a7bd5'
-    });
+    Swal.fire({ icon:'warning', title:'No Booking Data', text:'Please search for a booking first', confirmButtonColor:'#3a7bd5' });
     return;
   }
 
@@ -1564,151 +692,82 @@ function downloadTicket() {
   downloadBtn.innerHTML = '<div class="spinner"></div> Preparing...';
   downloadBtn.disabled = true;
 
+  const safeFileName = `Lagan-Ticket-${String(data.passengerName).replace(/[^a-z0-9]/gi,'-') || 'ticket'}.html`;
+
+  // Build ticket HTML (no auto print)
   const ticketHtml = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <title>Lagan Bus Ticket - ${escapeHtml(data.passengerName)}</title>
-      <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: #f5f7fa; padding: 20px; }
-        .ticket { max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .ticket-header { background: linear-gradient(135deg, #3a7bd5, #67b8f7); color: white; padding: 25px; text-align: center; }
-        .ticket-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
-        .ticket-subtitle { font-size: 13px; opacity: 0.9; }
-        .ticket-body { padding: 25px; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .info-card { background: #f8fafc; padding: 18px; border-radius: 10px; border: 1px solid #e2e8f0; }
-        .info-label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; font-weight: 600; }
-        .info-value { font-size: 16px; font-weight: 700; color: #0f172a; }
-        .passenger-name { text-align: center; font-size: 22px; font-weight: 800; color: #1e40af; margin-bottom: 25px; padding-bottom: 12px; border-bottom: 2px dashed #e2e8f0; }
-        .seats-section { background: linear-gradient(135deg, rgba(58,123,213,0.05), rgba(103,184,247,0.02)); padding: 22px; border-radius: 10px; border: 2px dashed #dbeafe; margin-bottom: 25px; }
-        .section-title { font-size: 17px; font-weight: 700; color: #1e40af; margin-bottom: 18px; text-align: center; }
-        .seats-container { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-        .seat { width: 60px; height: 60px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #3a7bd5, #1a5cb0); color: white; font-weight: 800; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .ticket-footer { text-align: center; padding: 18px; color: #64748b; font-size: 13px; border-top: 1px solid #e2e8f0; }
-        @media print { body { background: white; padding: 0; } .ticket { box-shadow: none; } }
-      </style>
-    </head>
-    <body>
-      <div class="ticket">
-        <div class="ticket-header">
-          <h1 class="ticket-title">Lagan Bus Ticket</h1>
-          <p class="ticket-subtitle">Safe Travels. May God Bless Your Journey.</p>
-        </div>
-        
-        <div class="ticket-body">
-          <div class="passenger-name">${escapeHtml(data.passengerName)}</div>
-          
-          <div class="info-grid">
-            <div class="info-card">
-              <div class="info-label">Bus Name</div>
-              <div class="info-value">${escapeHtml(data.busName)}</div>
-            </div>
-            
-            <div class="info-card">
-              <div class="info-label">Date & Time</div>
-              <div class="info-value">${escapeHtml(data.dateTime)}</div>
-            </div>
-            
-            <div class="info-card">
-              <div class="info-label">Pickup Location</div>
-              <div class="info-value">${escapeHtml(data.pickupLocation)}</div>
-            </div>
-            
-            <div class="info-card">
-              <div class="info-label">Payment Status</div>
-              <div class="info-value">${escapeHtml(data.paymentAmount)}</div>
-            </div>
-          </div>
-          
-          <div class="seats-section">
-            <h3 class="section-title">💺 Seat Numbers</h3>
-            <div class="seats-container">
-              ${data.seats && data.seats.trim() !== '' && data.seats.toLowerCase() !== 'not updated' ?
-                data.seats.split(/[, \/]+/).filter(s => s.trim() !== '').map(seat => `
-                  <div class="seat">
-                    <div style="font-size: 11px;">💺</div>
-                    <div>${escapeHtml(seat.trim())}</div>
-                  </div>
-                `).join('') :
-                '<div style="text-align:center;color:#64748b;font-style:italic;">No seat assigned</div>'
-              }
-            </div>
-          </div>
-          
-          <div style="text-align: center; margin-top: 25px; padding: 18px; background: #f0f9ff; border-radius: 10px;">
-            <p style="font-weight: 600; color: #0369a1; margin-bottom: 8px;">📞 Contact Information</p>
-            <p style="color: #475569;">For any inquiries, contact: <strong>0777 402 886 (Mr. Fawas)</strong></p>
-          </div>
-        </div>
-        
-        <div class="ticket-footer">
-          <p>Ticket generated on ${new Date().toLocaleDateString('en-GB', {
-            day: 'numeric', month: 'short', year: 'numeric',
-            hour: '2-digit', minute: '2-digit'
-          })}</p>
-          <p style="margin-top: 5px;">Made with ❤ by WEDOXA</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Lagan Bus Ticket - ${escapeHtml(data.passengerName)}</title>
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}body{background:#f5f7fa;padding:20px}.ticket{max-width:800px;margin:0 auto;background:white;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.08)}.ticket-header{background:linear-gradient(135deg,#3a7bd5,#67b8f7);color:white;padding:22px;text-align:center}.ticket-title{font-size:20px;font-weight:800;margin-bottom:6px}.ticket-subtitle{font-size:13px;opacity:0.9}.ticket-body{padding:20px}.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}.info-card{background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0}.info-label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;font-weight:600}.info-value{font-size:15px;font-weight:700;color:#0f172a}.passenger-name{text-align:center;font-size:18px;font-weight:800;color:#1e40af;margin-bottom:18px;padding-bottom:10px;border-bottom:2px dashed #e2e8f0}.seats-section{background:linear-gradient(135deg, rgba(58,123,213,0.04), rgba(103,184,247,0.02));padding:16px;border-radius:10px;border:2px dashed #dbeafe;margin-bottom:18px}.section-title{font-size:15px;font-weight:700;color:#1e40af;margin-bottom:12px;text-align:center}.seats-container{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}.seat{width:52px;height:52px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#3a7bd5,#1a5cb0);color:white;font-weight:800;border:3px solid white;box-shadow:0 4px 6px rgba(0,0,0,0.08)}.ticket-footer{text-align:center;padding:12px;color:#64748b;font-size:13px;border-top:1px solid #e2e8f0}@media print{body{background:white;padding:0}.ticket{box-shadow:none}}</style>
+</head><body>
+  <div class="ticket">
+    <div class="ticket-header"><h1 class="ticket-title">Lagan Bus Ticket</h1><p class="ticket-subtitle">Safe Travels. May God Bless Your Journey.</p></div>
+    <div class="ticket-body">
+      <div class="passenger-name">${escapeHtml(data.passengerName)}</div>
+      <div class="info-grid">
+        <div class="info-card"><div class="info-label">Bus Name</div><div class="info-value">${escapeHtml(data.busName)}</div></div>
+        <div class="info-card"><div class="info-label">Date & Time</div><div class="info-value">${escapeHtml(data.dateTime)}</div></div>
+        <div class="info-card"><div class="info-label">Pickup Location</div><div class="info-value">${escapeHtml(data.pickupLocation)}</div></div>
+        <div class="info-card"><div class="info-label">Payment Status</div><div class="info-value">${escapeHtml(data.paymentAmount)}</div></div>
+      </div>
+      <div class="seats-section">
+        <h3 class="section-title">Seat Number</h3>
+        <div class="seats-container">
+          ${data.seats && String(data.seats).trim() !== '' && String(data.seats).toLowerCase() !== 'not updated' ?
+            String(data.seats).split(/[, \/]+/).filter(s=>s.trim()!=='').map(s=>`<div class="seat"><div style="font-size:11px">💺</div><div>${escapeHtml(s.trim())}</div></div>`).join('') :
+            '<div style="text-align:center;color:#64748b;font-style:italic;">No seat assigned</div>'
+          }
         </div>
       </div>
-      
-      <script>
-        setTimeout(() => {
-          window.print();
-          window.close();
-        }, 500);
-      <\/script>
-    </body>
-    </html>
+      <div style="text-align:center;margin-top:12px;padding:12px;background:#f0f9ff;border-radius:8px;">
+        <p style="font-weight:600;color:#0369a1;margin-bottom:6px;">📞 Contact Information</p>
+        <p style="color:#475569;">For inquiries, contact: <strong>0777 402 886 (Mr. Fawas)</strong></p>
+      </div>
+    </div>
+    <div class="ticket-footer">
+      <p>Ticket generated on ${new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' })}</p>
+      <p style="margin-top:6px;">Made with ❤ by WEDOXA</p>
+    </div>
+  </div>
+</body></html>
   `;
 
   const blob = new Blob([ticketHtml], { type: 'text/html' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `Lagan-Ticket-${String(data.passengerName).replace(/[^a-z0-9]/gi, '-')}.html`;
+  a.download = safeFileName;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 
-  setTimeout(() => {
-    downloadBtn.innerHTML = originalText;
-    downloadBtn.disabled = false;
-  }, 800);
+  setTimeout(()=>{ downloadBtn.innerHTML = originalText; downloadBtn.disabled = false; }, 700);
 
-  Swal.fire({
-    icon: 'success',
-    title: 'Ticket Downloaded!',
-    text: 'Your ticket has been downloaded successfully',
-    confirmButtonColor: '#3a7bd5',
-    timer: 1500,
-    showConfirmButton: false
-  });
+  Swal.fire({ icon:'success', title:'Ticket Prepared', text:'Your ticket file has been downloaded', confirmButtonColor:'#3a7bd5', timer:1400, showConfirmButton:false });
 }
 
-// ===================== FEEDBACK SYSTEM =====================
+// ===================== FEEDBACK (calls your script) =====================
 function sendFeedback(answer) {
-  const phone = document.getElementById('phone').value.trim();
-  if (!phone) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Enter Phone Number',
-      text: 'Please search first',
-      confirmButtonColor: '#3a7bd5'
-    });
+  const phoneRaw = document.getElementById('phone').value.trim();
+  if (!phoneRaw) {
+    Swal.fire({ icon:'warning', title:'Enter Phone Number', text:'Please search first', confirmButtonColor:'#3a7bd5' });
     return;
   }
 
-  // Placeholder: you can send feedback to your server/script if needed
-  console.log('Feedback:', { phone, answer });
-  Swal.fire({
-    icon: 'success',
-    title: 'Thanks for the feedback!',
-    timer: 1200,
-    showConfirmButton: false
-  });
+  const phone = normalizePhoneForQuery(phoneRaw);
+
+  fetch(`${SCRIPT_URL}?action=feedback&phone=${encodeURIComponent(phone)}&answer=${encodeURIComponent(answer)}`)
+    .then(r => r.json())
+    .then(resp => {
+      if (resp && resp.success) {
+        Swal.fire({ icon:'success', title:'Thanks for the feedback!', timer:1200, showConfirmButton:false });
+      } else {
+        Swal.fire({ icon:'error', title:'Unable to send feedback', text: (resp && resp.message) ? resp.message : 'Try again later', confirmButtonColor:'#3a7bd5' });
+      }
+    }).catch(err => {
+      console.error('feedback error', err);
+      Swal.fire({ icon:'error', title:'Connection Error', text:'Could not send feedback right now', confirmButtonColor:'#3a7bd5' });
+    });
 }
 </script>
 </body>
