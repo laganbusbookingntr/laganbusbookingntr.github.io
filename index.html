@@ -128,12 +128,15 @@ body {
   font-size: 0.95rem;
 }
 
-/* ===================== THEME TOGGLE IN RIGHT SIDE CORNER ===================== */
+/* ===================== THEME TOGGLE IN RIGHT SIDE CORNER - UNDER SKY ===================== */
 .theme-toggle-container {
   position: fixed;
-  top: 20px;
   right: 20px;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .theme-btn {
@@ -159,89 +162,268 @@ body {
   border-color: var(--primary-blue);
 }
 
-/* ===================== SKY STYLING WITH SUN/MOON/STARS ===================== */
+/* ===================== REALISTIC SKY STYLING ===================== */
 .sky-container {
   position: relative;
   width: 100%;
-  height: 180px;
+  height: 250px;
   border-radius: var(--radius-lg);
-  margin-bottom: 30px;
+  margin-bottom: 80px; /* More space for theme button */
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Light Mode Sky */
+/* Light Mode Sky - Realistic Day Sky */
 [data-theme="light"] .sky-container {
-  background: linear-gradient(180deg, #87CEEB 0%, #E0F7FF 100%);
+  background: linear-gradient(180deg, #87CEEB 0%, #98D8F0 30%, #A9E2F5 60%, #E0F7FF 100%);
 }
 
-/* Dark Mode Sky */
+/* Dark Mode Sky - Realistic Night Sky */
 [data-theme="dark"] .sky-container {
-  background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
+  background: linear-gradient(180deg, #0a0e2a 0%, #1a1f4b 30%, #2a2f5b 60%, #3a3f6b 100%);
 }
 
-/* Sun Styling */
+/* Sun Styling with Realistic Animation */
 .sun {
   position: absolute;
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #FFD93D, #FFA726);
-  box-shadow: 0 0 40px rgba(255, 217, 61, 0.8), 0 0 80px rgba(255, 167, 38, 0.6);
-  top: 40px;
-  left: 50px;
-  transition: all 0.5s ease;
+  background: linear-gradient(135deg, #FFD93D 0%, #FFA726 50%, #FF8A00 100%);
+  box-shadow: 
+    0 0 60px rgba(255, 217, 61, 0.9),
+    0 0 120px rgba(255, 167, 38, 0.7),
+    0 0 200px rgba(255, 138, 0, 0.5);
+  top: 160px; /* Start from bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   animation: sunGlow 4s ease-in-out infinite;
+  z-index: 3;
 }
 
 @keyframes sunGlow {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  0%, 100% { 
+    box-shadow: 
+      0 0 60px rgba(255, 217, 61, 0.9),
+      0 0 120px rgba(255, 167, 38, 0.7),
+      0 0 200px rgba(255, 138, 0, 0.5);
+  }
+  50% { 
+    box-shadow: 
+      0 0 80px rgba(255, 217, 61, 1),
+      0 0 160px rgba(255, 167, 38, 0.8),
+      0 0 250px rgba(255, 138, 0, 0.6);
+  }
+}
+
+.sun.risen {
+  top: 30px;
+  animation: sunGlow 4s ease-in-out infinite, floatSun 20s ease-in-out infinite;
+}
+
+@keyframes floatSun {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
 }
 
 [data-theme="dark"] .sun {
   opacity: 0;
-  transform: scale(0.5);
+  transform: translateX(-50%) scale(0.5);
 }
 
-/* Moon Styling */
+/* Moon Styling with Realistic Animation */
 .moon {
   position: absolute;
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
-  box-shadow: 0 0 30px rgba(148, 163, 184, 0.6), 0 0 60px rgba(148, 163, 184, 0.4);
-  top: 45px;
-  right: 50px;
-  transition: all 0.5s ease;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+  box-shadow: 
+    0 0 50px rgba(248, 249, 250, 0.8),
+    0 0 100px rgba(233, 236, 239, 0.6),
+    0 0 150px rgba(222, 226, 230, 0.4),
+    inset -10px -10px 20px rgba(0, 0, 0, 0.2);
+  top: 160px; /* Start from bottom */
+  right: 50%;
+  transform: translateX(50%);
+  transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: moonGlow 6s ease-in-out infinite;
   opacity: 0;
-  transform: scale(0.5);
-  animation: moonGlow 4s ease-in-out infinite;
+  z-index: 3;
+}
+
+.moon::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    5px 5px 10px rgba(0, 0, 0, 0.2),
+    -5px -5px 10px rgba(255, 255, 255, 0.1);
+}
+
+.moon::after {
+  content: '';
+  position: absolute;
+  top: 40px;
+  right: 25px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.08);
+  box-shadow: 
+    3px 3px 8px rgba(0, 0, 0, 0.15),
+    -3px -3px 8px rgba(255, 255, 255, 0.1);
 }
 
 @keyframes moonGlow {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  0%, 100% { 
+    box-shadow: 
+      0 0 50px rgba(248, 249, 250, 0.8),
+      0 0 100px rgba(233, 236, 239, 0.6),
+      0 0 150px rgba(222, 226, 230, 0.4);
+  }
+  50% { 
+    box-shadow: 
+      0 0 70px rgba(248, 249, 250, 1),
+      0 0 140px rgba(233, 236, 239, 0.8),
+      0 0 200px rgba(222, 226, 230, 0.6);
+  }
+}
+
+.moon.risen {
+  top: 35px;
+  animation: moonGlow 6s ease-in-out infinite, floatMoon 25s ease-in-out infinite;
+}
+
+@keyframes floatMoon {
+  0%, 100% { transform: translateX(50%) translateY(0) rotate(0deg); }
+  25% { transform: translateX(50%) translateY(-8px) rotate(5deg); }
+  50% { transform: translateX(50%) translateY(0) rotate(0deg); }
+  75% { transform: translateX(50%) translateY(-8px) rotate(-5deg); }
 }
 
 [data-theme="dark"] .moon {
   opacity: 1;
-  transform: scale(1);
+}
+
+/* Realistic Clouds */
+.clouds-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  filter: blur(1px);
+  opacity: 0.9;
+}
+
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+}
+
+.cloud.small {
+  width: 80px;
+  height: 30px;
+}
+
+.cloud.small::before {
+  width: 40px;
+  height: 40px;
+  top: -20px;
+  left: 10px;
+}
+
+.cloud.small::after {
+  width: 50px;
+  height: 50px;
+  top: -25px;
+  right: 15px;
+}
+
+.cloud.medium {
+  width: 120px;
+  height: 40px;
+}
+
+.cloud.medium::before {
+  width: 60px;
+  height: 60px;
+  top: -30px;
+  left: 15px;
+}
+
+.cloud.medium::after {
+  width: 70px;
+  height: 70px;
+  top: -35px;
+  right: 20px;
+}
+
+.cloud.large {
+  width: 160px;
+  height: 50px;
+}
+
+.cloud.large::before {
+  width: 80px;
+  height: 80px;
+  top: -40px;
+  left: 20px;
+}
+
+.cloud.large::after {
+  width: 90px;
+  height: 90px;
+  top: -45px;
+  right: 25px;
+}
+
+/* Cloud animations */
+@keyframes cloudFloat1 {
+  0% { transform: translateX(-200px); }
+  100% { transform: translateX(calc(100vw + 200px)); }
+}
+
+@keyframes cloudFloat2 {
+  0% { transform: translateX(calc(100vw + 200px)); }
+  100% { transform: translateX(-200px); }
+}
+
+@keyframes cloudFloat3 {
+  0% { transform: translateX(-150px) translateY(0); }
+  50% { transform: translateX(calc(50vw - 75px)) translateY(-10px); }
+  100% { transform: translateX(calc(100vw + 150px)) translateY(0); }
 }
 
 /* Stars in Dark Mode */
-.stars {
+.stars-container {
   position: absolute;
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition: opacity 1s ease;
+  z-index: 1;
 }
 
-[data-theme="dark"] .stars {
+[data-theme="dark"] .stars-container {
   opacity: 1;
 }
 
@@ -249,41 +431,62 @@ body {
   position: absolute;
   background: white;
   border-radius: 50%;
-  animation: twinkle 3s infinite;
+  animation: twinkle var(--twinkle-duration) infinite var(--twinkle-delay);
 }
 
 .star.small {
-  width: 2px;
-  height: 2px;
+  width: 1px;
+  height: 1px;
+  --twinkle-duration: 2s;
 }
 
 .star.medium {
-  width: 3px;
-  height: 3px;
+  width: 2px;
+  height: 2px;
+  --twinkle-duration: 3s;
 }
 
 .star.large {
+  width: 3px;
+  height: 3px;
+  --twinkle-duration: 4s;
+}
+
+.star.xlarge {
   width: 4px;
   height: 4px;
+  --twinkle-duration: 5s;
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 0.3; }
+  0%, 100% { opacity: 0.2; }
   50% { opacity: 1; }
 }
 
 /* Shooting Stars in Dark Mode */
 .shooting-star {
   position: absolute;
-  width: 80px;
+  width: 100px;
   height: 2px;
-  background: linear-gradient(90deg, rgba(255,255,255,0), white, rgba(255,255,255,0));
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0) 0%, 
+    rgba(255,255,255,1) 30%, 
+    rgba(255,255,255,0) 100%);
   opacity: 0;
   transform: rotate(-45deg);
 }
 
-[data-theme="dark"] .shooting-star {
-  opacity: 0;
+/* Constellation Effects */
+.constellation {
+  position: absolute;
+  opacity: 0.3;
+}
+
+.constellation-line {
+  position: absolute;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+  transform-origin: 0 0;
 }
 
 /* ===================== MAIN LAYOUT ===================== */
@@ -827,7 +1030,8 @@ body {
   }
   
   .theme-toggle-container {
-    top: 10px;
+    top: auto;
+    bottom: 80px;
     right: 10px;
   }
   
@@ -837,22 +1041,28 @@ body {
   }
   
   .sun {
-    width: 60px;
-    height: 60px;
-    top: 30px;
-    left: 30px;
+    width: 70px;
+    height: 70px;
+    top: 180px;
+  }
+  
+  .sun.risen {
+    top: 25px;
   }
   
   .moon {
-    width: 50px;
-    height: 50px;
-    top: 35px;
-    right: 30px;
+    width: 60px;
+    height: 60px;
+    top: 180px;
+  }
+  
+  .moon.risen {
+    top: 30px;
   }
   
   .sky-container {
-    height: 150px;
-    margin-bottom: 20px;
+    height: 180px;
+    margin-bottom: 60px;
   }
 }
 
@@ -875,21 +1085,35 @@ body {
   }
   
   .sun {
-    width: 50px;
-    height: 50px;
-    top: 25px;
-    left: 20px;
+    width: 60px;
+    height: 60px;
+    top: 190px;
+  }
+  
+  .sun.risen {
+    top: 20px;
   }
   
   .moon {
-    width: 45px;
-    height: 45px;
-    top: 30px;
-    right: 20px;
+    width: 50px;
+    height: 50px;
+    top: 190px;
+  }
+  
+  .moon.risen {
+    top: 25px;
   }
   
   .sky-container {
-    height: 130px;
+    height: 150px;
+    margin-bottom: 50px;
+  }
+}
+
+/* Desktop specific */
+@media (min-width: 769px) {
+  .theme-toggle-container {
+    top: 290px; /* Position under the sky */
   }
 }
 </style>
@@ -897,19 +1121,24 @@ body {
 <body>
 <div class="container">
   
-  <!-- Theme Toggle Button in Right Corner -->
+  <!-- Sky Container with Sun/Moon/Stars/Clouds -->
+  <div class="sky-container">
+    <div class="sun" id="sun"></div>
+    <div class="moon" id="moon"></div>
+    
+    <!-- Clouds Container -->
+    <div class="clouds-container" id="cloudsContainer"></div>
+    
+    <!-- Stars Container -->
+    <div class="stars-container" id="starsContainer"></div>
+  </div>
+  
+  <!-- Theme Toggle Button in Right Corner (under sky) -->
   <div class="theme-toggle-container">
     <button class="theme-btn" id="themeToggle">
       <span id="themeIcon">🌙</span>
       <span id="themeText">Dark Mode</span>
     </button>
-  </div>
-  
-  <!-- Sky Container with Sun/Moon/Stars -->
-  <div class="sky-container">
-    <div class="sun"></div>
-    <div class="moon"></div>
-    <div class="stars" id="starsContainer"></div>
   </div>
   
   <!-- Main Header -->
@@ -1053,26 +1282,61 @@ body {
 // ===================== CONFIGURATION =====================
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
 
-// ===================== THEME MANAGEMENT =====================
+// ===================== SKY ANIMATIONS =====================
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize theme
   const savedTheme = localStorage.getItem('lagan-theme') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeUI(savedTheme);
   
+  // Create initial sky elements
+  createClouds();
+  createStars();
+  
+  // Animate sun rise on load
+  setTimeout(() => {
+    if (document.documentElement.getAttribute('data-theme') === 'light') {
+      document.getElementById('sun').classList.add('risen');
+    }
+  }, 500);
+  
   // Theme toggle event
   document.getElementById('themeToggle').addEventListener('click', function() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     
-    document.documentElement.setAttribute('data-theme', newTheme);
-    updateThemeUI(newTheme);
-    localStorage.setItem('lagan-theme', newTheme);
+    // Animate sun/moon transition
+    const sun = document.getElementById('sun');
+    const moon = document.getElementById('moon');
+    
+    if (newTheme === 'dark') {
+      sun.classList.remove('risen');
+      setTimeout(() => {
+        document.documentElement.setAttribute('data-theme', newTheme);
+        updateThemeUI(newTheme);
+        localStorage.setItem('lagan-theme', newTheme);
+        
+        setTimeout(() => {
+          moon.classList.add('risen');
+        }, 100);
+      }, 300);
+    } else {
+      moon.classList.remove('risen');
+      setTimeout(() => {
+        document.documentElement.setAttribute('data-theme', newTheme);
+        updateThemeUI(newTheme);
+        localStorage.setItem('lagan-theme', newTheme);
+        
+        setTimeout(() => {
+          sun.classList.add('risen');
+        }, 100);
+      }, 300);
+    }
     
     // Create stars for dark mode
     if (newTheme === 'dark') {
-      createStars();
       createShootingStars();
+      createConstellations();
     }
   });
   
@@ -1097,8 +1361,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialize stars if in dark mode
   if (document.documentElement.getAttribute('data-theme') === 'dark') {
-    createStars();
+    document.getElementById('moon').classList.add('risen');
     createShootingStars();
+    createConstellations();
   }
 });
 
@@ -1115,30 +1380,66 @@ function updateThemeUI(theme) {
   }
 }
 
-// ===================== SKY ANIMATIONS =====================
+function createClouds() {
+  const container = document.getElementById('cloudsContainer');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  // Create realistic clouds at different layers
+  const cloudTypes = ['small', 'medium', 'large'];
+  const cloudAnimations = ['cloudFloat1', 'cloudFloat2', 'cloudFloat3'];
+  
+  for (let i = 0; i < 8; i++) {
+    const cloud = document.createElement('div');
+    const type = cloudTypes[Math.floor(Math.random() * cloudTypes.length)];
+    const animation = cloudAnimations[Math.floor(Math.random() * cloudAnimations.length)];
+    
+    cloud.classList.add('cloud', type);
+    
+    // Random position
+    const top = Math.random() * 60 + 10; // 10% to 70% from top
+    cloud.style.top = `${top}%`;
+    cloud.style.left = `${Math.random() * 100}%`;
+    
+    // Random animation properties
+    const duration = Math.random() * 40 + 60; // 60s to 100s
+    const delay = Math.random() * -30; // Start at random position
+    
+    cloud.style.animation = `${animation} ${duration}s linear infinite ${delay}s`;
+    
+    // Random opacity
+    cloud.style.opacity = Math.random() * 0.5 + 0.5; // 0.5 to 1
+    
+    container.appendChild(cloud);
+  }
+}
+
 function createStars() {
   const container = document.getElementById('starsContainer');
   if (!container) return;
   
   container.innerHTML = '';
   
-  // Create many stars
-  for (let i = 0; i < 100; i++) {
+  // Create many stars with different sizes and brightness
+  for (let i = 0; i < 150; i++) {
     const star = document.createElement('div');
     star.classList.add('star');
     
     // Random size
     const size = Math.random();
-    if (size < 0.3) star.classList.add('small');
-    else if (size < 0.6) star.classList.add('medium');
-    else star.classList.add('large');
+    if (size < 0.4) star.classList.add('small');
+    else if (size < 0.7) star.classList.add('medium');
+    else if (size < 0.9) star.classList.add('large');
+    else star.classList.add('xlarge');
     
     // Random position
     star.style.left = `${Math.random() * 100}%`;
     star.style.top = `${Math.random() * 100}%`;
     
-    // Random animation delay
-    star.style.animationDelay = `${Math.random() * 3}s`;
+    // Random animation delay and duration
+    const delay = Math.random() * 5;
+    star.style.setProperty('--twinkle-delay', `${delay}s`);
     
     container.appendChild(star);
   }
@@ -1149,35 +1450,110 @@ function createShootingStars() {
   if (!container) return;
   
   // Create shooting stars periodically
+  function createShootingStar() {
+    const shootingStar = document.createElement('div');
+    shootingStar.classList.add('shooting-star');
+    
+    // Random position
+    const startX = Math.random() * 100;
+    const startY = Math.random() * 50;
+    shootingStar.style.left = `${startX}%`;
+    shootingStar.style.top = `${startY}%`;
+    
+    // Random brightness
+    const brightness = Math.random() * 0.7 + 0.3;
+    shootingStar.style.background = `linear-gradient(90deg, 
+      rgba(255,255,255,0) 0%, 
+      rgba(255,255,255,${brightness}) 30%, 
+      rgba(255,255,255,0) 100%)`;
+    
+    container.appendChild(shootingStar);
+    
+    // Animate shooting star
+    const duration = Math.random() * 1000 + 500; // 500ms to 1500ms
+    
+    shootingStar.animate([
+      { transform: 'translateX(0) translateY(0)', opacity: 0 },
+      { transform: 'translateX(300px) translateY(150px)', opacity: 1 },
+      { transform: 'translateX(600px) translateY(300px)', opacity: 0 }
+    ], {
+      duration: duration,
+      easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+    });
+    
+    // Remove after animation
+    setTimeout(() => {
+      if (shootingStar.parentNode) {
+        shootingStar.parentNode.removeChild(shootingStar);
+      }
+    }, duration);
+  }
+  
+  // Create shooting stars at random intervals
   setInterval(() => {
-    if (Math.random() < 0.2) { // 20% chance every interval
-      const shootingStar = document.createElement('div');
-      shootingStar.classList.add('shooting-star');
-      
-      // Random position
-      shootingStar.style.left = `${Math.random() * 100}%`;
-      shootingStar.style.top = `${Math.random() * 50}%`;
-      
-      container.appendChild(shootingStar);
-      
-      // Animate shooting star
-      shootingStar.animate([
-        { transform: 'translateX(0) translateY(0)', opacity: 0 },
-        { transform: 'translateX(200px) translateY(100px)', opacity: 1 },
-        { transform: 'translateX(400px) translateY(200px)', opacity: 0 }
-      ], {
-        duration: 1500,
-        easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-      });
-      
-      // Remove after animation
-      setTimeout(() => {
-        if (shootingStar.parentNode) {
-          shootingStar.parentNode.removeChild(shootingStar);
-        }
-      }, 1500);
+    if (document.documentElement.getAttribute('data-theme') === 'dark' && Math.random() < 0.3) {
+      createShootingStar();
     }
-  }, 3000);
+  }, 2000);
+}
+
+function createConstellations() {
+  const container = document.getElementById('starsContainer');
+  if (!container) return;
+  
+  // Create a few simple constellations
+  const constellations = [
+    // Big Dipper
+    { points: [[15, 20], [20, 25], [25, 22], [30, 27], [35, 25], [40, 30], [45, 28]],
+      brightness: 0.4 },
+    // Orion's Belt
+    { points: [[60, 40], [65, 40], [70, 40]],
+      brightness: 0.5 },
+    // Cassiopeia
+    { points: [[80, 25], [85, 20], [90, 25], [85, 30], [80, 35]],
+      brightness: 0.3 }
+  ];
+  
+  constellations.forEach((constellation, constIndex) => {
+    const constDiv = document.createElement('div');
+    constDiv.classList.add('constellation');
+    constDiv.style.opacity = constellation.brightness;
+    
+    // Create lines between points
+    for (let i = 0; i < constellation.points.length - 1; i++) {
+      const [x1, y1] = constellation.points[i];
+      const [x2, y2] = constellation.points[i + 1];
+      
+      const line = document.createElement('div');
+      line.classList.add('constellation-line');
+      
+      // Calculate line properties
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const length = Math.sqrt(dx * dx + dy * dy);
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+      
+      line.style.width = `${length}%`;
+      line.style.left = `${x1}%`;
+      line.style.top = `${y1}%`;
+      line.style.transform = `rotate(${angle}deg)`;
+      
+      constDiv.appendChild(line);
+    }
+    
+    // Add brighter stars at constellation points
+    constellation.points.forEach(([x, y], pointIndex) => {
+      const star = document.createElement('div');
+      star.classList.add('star', 'xlarge');
+      star.style.left = `${x}%`;
+      star.style.top = `${y}%`;
+      star.style.opacity = constellation.brightness + 0.3;
+      star.style.animationDelay = `${pointIndex * 0.5}s`;
+      constDiv.appendChild(star);
+    });
+    
+    container.appendChild(constDiv);
+  });
 }
 
 // ===================== BOOKING SEARCH =====================
