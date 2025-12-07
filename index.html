@@ -1133,7 +1133,7 @@ body {
             
             <div class="info-card">
               <div class="info-label">
-                <span>💰</span> Payment 
+                <span>💰</span> Total Amount
               </div>
               <div id="paymentAmount" class="info-value">-</div>
             </div>
@@ -1145,6 +1145,7 @@ body {
               Your Seat Numbers
             </h3>
             <div class="seats-container" id="seatsBox" aria-live="polite"></div>
+            <div id="seatCalculation" style="margin-top: 15px; font-size: 0.9rem; color: var(--text-secondary);"></div>
           </div>
           
           <!-- Download Button -->
@@ -1181,6 +1182,39 @@ body {
 // ===================== CONFIGURATION =====================
 // replace this URL with your Google Apps Script URL if needed
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
+
+// ===================== BUS PRICE CONFIGURATION =====================
+// This should match what's in your Google Sheet
+const BUS_PRICES = {
+  'bus1': 2500,
+  'bus2': 2500,
+  'bus3': 2500,
+  'default': 2500 // Default price if bus name doesn't match
+};
+
+// Function to extract price from a string
+function extractPriceFromString(priceStr) {
+  if (!priceStr) return BUS_PRICES.default;
+  
+  // Try to find any number in the string
+  const priceMatch = priceStr.match(/\d+/);
+  if (priceMatch) {
+    return parseInt(priceMatch[0]);
+  }
+  
+  // Check for common price indicators
+  if (priceStr.toLowerCase().includes('2500') || priceStr.toLowerCase().includes('2,500')) {
+    return 2500;
+  }
+  if (priceStr.toLowerCase().includes('3000') || priceStr.toLowerCase().includes('3,000')) {
+    return 3000;
+  }
+  if (priceStr.toLowerCase().includes('3500') || priceStr.toLowerCase().includes('3,500')) {
+    return 3500;
+  }
+  
+  return BUS_PRICES.default;
+}
 
 // ===================== SKY / THEME / UI INIT =====================
 document.addEventListener('DOMContentLoaded', function() {
@@ -1529,7 +1563,7 @@ function searchBooking() {
     });
 }
 
-// ===================== RENDER BOOKING DATA =====================
+// ===================== RENDER BOOKING DATA WITH PAYMENT CALCULATION =====================
 function renderBooking(b) {
   function getField(obj, possibleNames) {
     if (!obj) return null;
@@ -1554,7 +1588,7 @@ function renderBooking(b) {
   const time = getField(b, ['Time', 'Departure Time', 'Travel Time', 'Time Slot']) || '';
   const seat = getField(b, ['Seat', 'Seats', 'Seat Number', 'Seat Numbers', 'Seat No']) || '';
   const pickup = getField(b, ['Pickup', 'Pickup Location', 'Boarding Point', 'Pickup Point']) || '-';
-  const payment = getField(b, ['Payment', 'Amount', 'Payment Status', 'Fare', 'Price']) || '-';
+  const payment = getField(b, ['Payment', 'Amount', 'Payment Status', 'Fare', 'Price', 'Seat Price', 'Per Seat']) || '';
   const bookingId = getField(b, ['Booking ID', 'Reference', 'Ref No', 'Ticket No']) || '';
 
   // Update display
@@ -1562,13 +1596,7 @@ function renderBooking(b) {
   document.getElementById('busName').textContent = bus;
 
   // Format date/time using improved function
-  console.log('Raw date from sheet:', date);
-  console.log('Raw time from sheet:', time);
-  console.log('Type of date:', typeof date);
-  
   const formatted = formatDateTime(date, time);
-  console.log('Formatted result:', formatted);
-  
   let displayDateTime = `${formatted.date} • ${formatted.time}`;
   
   if (displayDateTime.includes('Invalid') || displayDateTime.includes('NaN') || displayDateTime.includes('undefined')) {
@@ -1577,19 +1605,21 @@ function renderBooking(b) {
   document.getElementById('dateTime').textContent = displayDateTime;
   document.getElementById('pickupLocation').textContent = pickup;
 
-  // ===================== PAYMENT — SHOW EXACT VALUE FROM SHEET (NO BADGES) =====================
-  const paymentElement = document.getElementById('paymentAmount');
-  const paymentText = (payment && typeof payment === 'string' && payment.trim() !== '') ? payment : 'Not Updated';
-  // Show the exact text typed in the sheet (no badges, no auto-detection)
-  paymentElement.textContent = paymentText;
-
-  // ===================== SEATS DISPLAY =====================
+  // ===================== SEATS DISPLAY & PAYMENT CALCULATION =====================
   const seatsBox = document.getElementById('seatsBox');
+  const seatCalculation = document.getElementById('seatCalculation');
   seatsBox.innerHTML = '';
+  seatCalculation.innerHTML = '';
+
+  let totalSeats = 0;
+  let seatPrice = extractPriceFromString(payment);
+  let totalAmount = 0;
 
   if (seat && String(seat).trim() !== '' && String(seat).trim().toLowerCase() !== 'not updated' && String(seat).trim() !== '-') {
     const seats = String(seat).split(/[, \/]+/).filter(s => s.trim() !== '' && s.trim() !== '-');
-    if (seats.length > 0) {
+    totalSeats = seats.length;
+    
+    if (totalSeats > 0) {
       seats.forEach(seatNum => {
         const seatElement = document.createElement('div');
         seatElement.className = 'seat';
@@ -1599,11 +1629,53 @@ function renderBooking(b) {
         `;
         seatsBox.appendChild(seatElement);
       });
+      
+      // Calculate total amount
+      totalAmount = seatPrice * totalSeats;
+      
+      // Show calculation breakdown
+      seatCalculation.innerHTML = `
+        <div style="background: var(--light-blue); padding: 12px; border-radius: var(--radius-sm); margin-top: 10px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+            <span>Seats Booked:</span>
+            <span style="font-weight: 700;">${totalSeats} seat${totalSeats > 1 ? 's' : ''}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+            <span>Price per Seat:</span>
+            <span style="font-weight: 700;">Rs. ${seatPrice.toLocaleString()}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; border-top: 1px solid var(--border-light); padding-top: 5px; margin-top: 5px;">
+            <span style="font-weight: 700;">Total Amount:</span>
+            <span style="font-weight: 700; color: var(--success);">Rs. ${totalAmount.toLocaleString()}</span>
+          </div>
+        </div>
+      `;
     } else {
       seatsBox.innerHTML = '<div class="no-seats">No seat assigned yet. Please contact Mr. Fawas.</div>';
+      totalAmount = 0;
     }
   } else {
     seatsBox.innerHTML = '<div class="no-seats">No seat assigned yet. Please contact Mr. Fawas.</div>';
+    totalAmount = 0;
+  }
+
+  // ===================== PAYMENT DISPLAY =====================
+  const paymentElement = document.getElementById('paymentAmount');
+  
+  if (totalSeats > 0 && totalAmount > 0) {
+    paymentElement.innerHTML = `
+      <div style="font-weight: 700; color: var(--success);">
+        Rs. ${totalAmount.toLocaleString()}
+      </div>
+      <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 3px;">
+        ${totalSeats} seat${totalSeats > 1 ? 's' : ''} × Rs. ${seatPrice.toLocaleString()}
+      </div>
+    `;
+  } else if (payment && payment.trim() !== '') {
+    // Show the original payment text if no seats but payment exists
+    paymentElement.textContent = payment;
+  } else {
+    paymentElement.textContent = 'Not Updated';
   }
 
   // Show results
@@ -1622,14 +1694,18 @@ function renderBooking(b) {
     busName: bus,
     dateTime: displayDateTime,
     pickupLocation: pickup,
-    paymentAmount: paymentText,
+    paymentAmount: totalAmount > 0 ? `Rs. ${totalAmount.toLocaleString()}` : (payment || 'Not Updated'),
+    seatPrice: seatPrice,
+    totalSeats: totalSeats,
+    totalAmount: totalAmount,
     seats: seat,
     bookingId: bookingId,
-    phone: document.getElementById('phone').value.trim()
+    phone: document.getElementById('phone').value.trim(),
+    calculation: totalSeats > 0 ? `${totalSeats} seat${totalSeats > 1 ? 's' : ''} × Rs. ${seatPrice.toLocaleString()} = Rs. ${totalAmount.toLocaleString()}` : ''
   };
 }
 
-// ===================== TICKET DOWNLOAD (SIMPLE FIX) =====================
+// ===================== TICKET DOWNLOAD =====================
 function downloadTicket() {
   const data = window.currentBookingData;
   if (!data) {
@@ -1647,7 +1723,7 @@ function downloadTicket() {
   downloadBtn.innerHTML = '<div class="spinner"></div> Preparing...';
   downloadBtn.disabled = true;
 
-  // Create simple ticket HTML
+  // Create ticket HTML
   const ticketHtml = `
 <!DOCTYPE html>
 <html>
@@ -1667,6 +1743,9 @@ function downloadTicket() {
     .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
     .info-label { font-size: 13px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
     .info-value { font-size: 15px; font-weight: 700; color: #0f172a; }
+    .calculation-box { background: #f0f9ff; padding: 15px; border-radius: 10px; margin: 15px 0; }
+    .calc-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .calc-total { border-top: 1px solid #cbd5e1; padding-top: 8px; margin-top: 8px; font-weight: 700; color: #0369a1; }
     .seats-section { background: linear-gradient(135deg, rgba(58,123,213,0.05), rgba(103,184,247,0.02)); padding: 20px; border-radius: 10px; border: 1px dashed #dbeafe; margin-bottom: 25px; text-align: center; }
     .seats-title { font-size: 16px; font-weight: 700; color: #1e40af; margin-bottom: 15px; }
     .seats-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
@@ -1702,12 +1781,23 @@ function downloadTicket() {
           <div class="info-value">${data.pickupLocation}</div>
         </div>
         <div class="info-row">
-          <div class="info-label">Payment Status</div>
-          <div class="info-value">${data.paymentAmount}</div>
-        </div>
-        <div class="info-row">
           <div class="info-label">Phone Number</div>
           <div class="info-value">${data.phone}</div>
+        </div>
+      </div>
+      
+      <div class="calculation-box">
+        <div class="calc-row">
+          <span>Seats Booked:</span>
+          <span>${data.totalSeats} seat${data.totalSeats > 1 ? 's' : ''}</span>
+        </div>
+        <div class="calc-row">
+          <span>Price per Seat:</span>
+          <span>Rs. ${data.seatPrice ? data.seatPrice.toLocaleString() : '0'}</span>
+        </div>
+        <div class="calc-row calc-total">
+          <span>Total Amount:</span>
+          <span style="color: #059669; font-weight: 800;">Rs. ${data.totalAmount ? data.totalAmount.toLocaleString() : '0'}</span>
         </div>
       </div>
       
@@ -1730,7 +1820,7 @@ function downloadTicket() {
       </div>
       
       <div class="ticket-footer">
-        <p>Ticket generated on ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+        <p>Ticket ID: ${data.bookingId || 'N/A'} | Generated: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
         <p style="margin-top: 8px; font-weight: 600;">Made with ❤ by WEDOXA</p>
       </div>
     </div>
