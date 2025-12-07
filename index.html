@@ -12,6 +12,8 @@
   --secondary-blue: #67b8f7;
   --dark-blue: #1a5cb0;
   --light-blue: #e8f4ff;
+  --accent-gold: #ffd700;
+  --accent-orange: #ff8c00;
   --text-primary: #0b2638;
   --text-secondary: #66788A;
   --text-muted: #8b9aad;
@@ -29,6 +31,8 @@
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
+  --gradient-primary: linear-gradient(135deg, #3a7bd5, #67b8f7);
+  --gradient-success: linear-gradient(135deg, #10b981, #34d399);
 }
 
 [data-theme="dark"] {
@@ -36,6 +40,8 @@
   --secondary-blue: #7ba6ff;
   --dark-blue: #88b8ff;
   --light-blue: #1e293b;
+  --accent-gold: #ffed4e;
+  --accent-orange: #ffa726;
   --text-primary: #f1f5f9;
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
@@ -49,7 +55,6 @@
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
   --shadow-md: 0 4px 6px rgba(0,0,0,0.25);
   --shadow-lg: 0 10px 25px rgba(0,0,0,0.35);
-  --radius-lg: 16px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
@@ -105,120 +110,134 @@ body { background: var(--bg-light); color: var(--text-primary); min-height: 100v
 [data-theme="dark"] .stars-container{opacity:1}
 .star{position:absolute;background:white;border-radius:50%;animation:starTwinkle var(--twinkle-duration) infinite var(--twinkle-delay)}
 .star.small{width:1px;height:1px;--twinkle-duration:2s;box-shadow:0 0 2px white}
-.star.medium{width:2px;height:2px;--twinkle-duration:3s;box-shadow:0 0 3px white,0 0 5px rgba(255,255,255,0.5)}
-.star.large{width:3px;height:3px;--twinkle-duration:4s;box-shadow:0 0 4px white,0 0 8px rgba(255,255,255,0.5)}
+.star.medium{width:2px;height=2px;--twinkle-duration:3s;box-shadow:0 0 3px white,0 0 5px rgba(255,255,255,0.5)}
+.star.large{width:3px;height=3px;--twinkle-duration:4s;box-shadow:0 0 4px white,0 0 8px rgba(255,255,255,0.5)}
 @keyframes starTwinkle{0%,100%{opacity:0.2;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
 
 /* Header */
-.main-header{ text-align:center; margin-top:0; margin-bottom:14px; padding:12px 16px; background:var(--bg-card); border-radius:0 0 var(--radius-lg) var(--radius-lg); box-shadow:var(--shadow-md); border:1px solid var(--border-light); position:relative; overflow:hidden; }
-.main-header::before{ content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--primary-blue),var(--secondary-blue)); }
-.brand{ font-size:1.7rem; font-weight:800; color:var(--dark-blue); margin-bottom:5px; display:flex; align-items:center; justify-content:center; gap:8px; }
-.tagline{ font-size:0.95rem; color:var(--text-secondary); margin-bottom:6px; font-weight:500; }
-.contact-info{ display:inline-block; background:var(--light-blue); padding:6px 16px; border-radius:50px; font-weight:600; color:var(--dark-blue); border:1px solid rgba(58,123,213,0.12); font-size:0.9rem; }
+.main-header{ text-align:center; margin-top:0; margin-bottom:14px; padding:16px 20px; background: var(--bg-card); border-radius:0 0 var(--radius-lg) var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--border-light); position: relative; overflow: hidden; }
+.main-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue), var(--accent-orange)); }
+.brand { font-size: 1.9rem; font-weight: 900; background: linear-gradient(135deg, var(--dark-blue), var(--accent-orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; letter-spacing: 0.5px; }
+.tagline { font-size: 1rem; color: var(--text-secondary); margin-bottom: 10px; font-weight: 500; }
+.contact-info { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(58, 123, 213, 0.1), rgba(255, 140, 0, 0.1)); padding: 10px 20px; border-radius: 50px; font-weight: 700; color: var(--dark-blue); border: 2px solid rgba(58, 123, 213, 0.2); font-size: 0.95rem; backdrop-filter: blur(10px); }
+[data-theme="dark"] .contact-info { background: linear-gradient(135deg, rgba(88, 139, 255, 0.15), rgba(255, 167, 38, 0.1)); }
 
 /* Theme toggle - floating bottom-right */
-.theme-toggle-container { position: fixed; bottom: 18px; right: 18px; z-index: 1000; display:flex; flex-direction:column; align-items:center; gap:10px; }
-.theme-btn{ background:var(--bg-card); border:2px solid var(--border-light); color:var(--text-primary); padding:8px 14px; border-radius:50px; font-weight:600; font-size:0.9rem; cursor:pointer; transition:all 0.25s; box-shadow:var(--shadow-md); display:flex; align-items:center; gap:8px; white-space:nowrap; }
-.theme-btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow-lg); border-color:var(--primary-blue); }
+.theme-toggle-container { position: fixed; bottom: 18px; right: 18px; z-index: 1000; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.theme-btn { background: var(--bg-card); border: 2px solid var(--border-light); color: var(--text-primary); padding: 10px 16px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.25s; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 8px; white-space: nowrap; backdrop-filter: blur(10px); }
+.theme-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: var(--shadow-lg); border-color: var(--primary-blue); background: var(--gradient-primary); color: white; }
 
 /* Layout */
-.main-content{ display:grid; grid-template-columns:420px 1fr; gap:24px; margin-top:12px; margin-bottom:12px; align-items:start; }
-@media (max-width: 992px) { .main-content{ grid-template-columns:1fr; } }
+.main-content { display: grid; grid-template-columns: 420px 1fr; gap: 24px; margin-top: 12px; margin-bottom: 12px; align-items: start; }
+@media (max-width: 992px) { .main-content { grid-template-columns: 1fr; } }
 
 /* Cards */
-.search-card{ background:var(--bg-card); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-lg); border:1px solid var(--border-light); position:sticky; top:16px; }
-.card-title{ font-size:1.2rem; font-weight:700; color:var(--dark-blue); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
-.input-group{ margin-bottom:12px; }
-.input-label{ display:block; margin-bottom:6px; font-weight:600; color:var(--text-secondary); font-size:0.9rem; }
-.input-field{ width:100%; padding:12px 14px; border-radius:var(--radius-md); border:2px solid var(--border-light); background:var(--bg-light); color:var(--text-primary); font-size:1rem; transition:all 0.25s; }
-.input-field:focus{ outline:none; border-color:var(--primary-blue); box-shadow:0 0 0 3px rgba(58,123,213,0.08); background:var(--bg-card); }
-.search-btn{ width:100%; padding:12px; background:linear-gradient(135deg,var(--primary-blue),var(--secondary-blue)); color:white; border:none; border-radius:var(--radius-md); font-size:1rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; margin-top:6px; transition:all 0.25s; }
-.search-btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow-lg); }
-.search-btn:disabled{ opacity:0.75; cursor:not-allowed; transform:none !important; }
+.search-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-light); position: sticky; top: 16px; backdrop-filter: blur(10px); }
+.card-title { font-size: 1.3rem; font-weight: 800; color: var(--dark-blue); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 2px solid var(--border-light); }
+.input-group { margin-bottom: 16px; }
+.input-label { display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-secondary); font-size: 0.95rem; }
+.input-field { width: 100%; padding: 14px 16px; border-radius: var(--radius-md); border: 2px solid var(--border-light); background: var(--bg-light); color: var(--text-primary); font-size: 1rem; transition: all 0.3s; }
+.input-field:focus { outline: none; border-color: var(--primary-blue); box-shadow: 0 0 0 4px rgba(58, 123, 213, 0.15); background: var(--bg-card); transform: translateY(-1px); }
+.search-btn { width: 100%; padding: 14px; background: var(--gradient-primary); color: white; border: none; border-radius: var(--radius-md); font-size: 1.05rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 8px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(58, 123, 213, 0.25); }
+.search-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(58, 123, 213, 0.35); }
+.search-btn:active { transform: translateY(0); }
+.search-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none !important; box-shadow: none; }
 
 /* Results */
-.results-card{ background:var(--bg-card); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); border:1px solid var(--border-light); overflow:hidden; min-height:320px; display:flex; flex-direction:column; }
-.results-header{ background:linear-gradient(135deg,var(--primary-blue),var(--secondary-blue)); color:white; padding:18px 20px; text-align:center; position:relative; }
-.results-header::after{ content:''; position:absolute; bottom:-10px; left:0; right:0; height:20px; background: url("data:image/svg+xml,%3Csvg width='120' height='20' viewBox='0 0 120 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='8' fill='white'/%3E%3Ccircle cx='30' cy='10' r='8' fill='white'/%3E%3Ccircle cx='50' cy='10' r='8' fill='white'/%3E%3Ccircle cx='70' cy='10' r='8' fill='white'/%3E%3Ccircle cx='90' cy='10' r='8' fill='white'/%3E%3Ccircle cx='110' cy='10' r='8' fill='white'/%3E%3C/svg%3E"); background-repeat:repeat-x; background-size:20px 20px; }
-.results-title{ font-size:1.4rem; font-weight:800; margin-bottom:4px; }
-.results-subtitle{ font-size:0.88rem; opacity:0.95; }
-.results-body{ padding:18px; flex:1; display:flex; flex-direction:column; justify-content:flex-start; }
+.results-card { background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid var(--border-light); overflow: hidden; min-height: 320px; display: flex; flex-direction: column; }
+.results-header { background: var(--gradient-primary); color: white; padding: 20px; text-align: center; position: relative; }
+.results-header::after { content: ''; position: absolute; bottom: -8px; left: 0; right: 0; height: 16px; background: radial-gradient(circle at 10px 0, white 6px, transparent 7px) 0 0 / 20px 16px; }
+.results-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 6px; }
+.results-subtitle { font-size: 0.95rem; opacity: 0.9; }
+.results-body { padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; }
 
 /* No results */
-.no-results{ text-align:center; color:var(--text-muted); font-size:1rem; padding:30px 20px; }
-.no-results-icon{ font-size:36px; margin-bottom:10px; opacity:0.6; }
-.no-results-title{ font-size:1.1rem; margin-bottom:8px; color:var(--text-secondary); }
+.no-results { text-align: center; color: var(--text-muted); font-size: 1rem; padding: 40px 20px; }
+.no-results-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.6; }
+.no-results-title { font-size: 1.2rem; margin-bottom: 10px; color: var(--text-secondary); }
 
 /* Ticket */
-.ticket-info{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
-.info-card{ background:var(--bg-light); padding:12px; border-radius:var(--radius-md); border:1px solid var(--border-light); }
-.info-label{ font-size:0.78rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; font-weight:600; display:flex; align-items:center; gap:6px; }
-.info-value{ font-size:1rem; font-weight:700; color:var(--text-primary); line-height:1.4; }
-#passengerName{ font-size:1.15rem; color:var(--dark-blue); font-weight:800; padding-bottom:6px; border-bottom:2px dashed var(--border-light); margin-bottom:6px; }
+.ticket-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
+@media (max-width: 768px) { .ticket-info { grid-template-columns: 1fr; } }
+.info-card { background: var(--bg-light); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-light); transition: all 0.3s; }
+.info-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--primary-blue); }
+.info-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.info-value { font-size: 1.1rem; font-weight: 800; color: var(--text-primary); line-height: 1.4; }
+#passengerName { font-size: 1.3rem; color: var(--dark-blue); font-weight: 900; padding-bottom: 10px; margin-bottom: 10px; text-align: center; background: linear-gradient(135deg, var(--dark-blue), var(--accent-orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+/* Time slot special styling */
+.time-slot-card { grid-column: span 2; background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 140, 0, 0.05)); border: 2px dashed rgba(255, 140, 0, 0.3); }
+@media (max-width: 768px) { .time-slot-card { grid-column: span 1; } }
+.time-slot-card .info-value { color: var(--accent-orange); font-size: 1.2rem; }
+.time-slot-card .info-label { color: var(--accent-orange); }
 
 /* Seats */
-.seats-section{ background:linear-gradient(135deg, rgba(58,123,213,0.04), rgba(103,184,247,0.02)); padding:14px; border-radius:var(--radius-md); border:1px dashed var(--border-light); margin-bottom:12px; }
-.section-title{ font-size:1rem; font-weight:700; color:var(--dark-blue); margin-bottom:12px; text-align:center; display:flex; align-items:center; justify-content:center; gap:8px; }
-.seats-container{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
-.seat{ width:62px; height:62px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--primary-blue),var(--dark-blue)); color:white; font-weight:800; border:3px solid var(--bg-card); box-shadow:var(--shadow-md); transition:all 0.25s; }
-.seat:hover{ transform:scale(1.08) rotate(3deg); box-shadow:var(--shadow-lg); }
-.seat-icon{ font-size:18px; margin-bottom:4px; }
-.seat-number{ font-size:0.98rem; }
-.no-seats{ text-align:center; color:var(--text-muted); font-style:italic; padding:12px; background:var(--bg-light); border-radius:var(--radius-md); border:2px dashed var(--border-light); }
+.seats-section { background: linear-gradient(135deg, rgba(58, 123, 213, 0.06), rgba(103, 184, 247, 0.03)); padding: 20px; border-radius: var(--radius-md); border: 2px dashed var(--border-light); margin-bottom: 16px; }
+.section-title { font-size: 1.1rem; font-weight: 800; color: var(--dark-blue); margin-bottom: 16px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.seats-container { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.seat { width: 70px; height: 70px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue)); color: white; font-weight: 900; border: 3px solid var(--bg-card); box-shadow: var(--shadow-md); transition: all 0.3s; position: relative; overflow: hidden; }
+.seat::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: rgba(255, 255, 255, 0.4); }
+.seat:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 8px 25px rgba(58, 123, 213, 0.4); }
+.seat-icon { font-size: 20px; margin-bottom: 6px; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); }
+.seat-number { font-size: 1.1rem; }
+.no-seats { text-align: center; color: var(--text-muted); font-style: italic; padding: 16px; background: var(--bg-light); border-radius: var(--radius-md); border: 2px dashed var(--border-light); }
 
 /* Download */
-.download-section{ margin-top:12px; text-align:center; }
-.download-btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:linear-gradient(135deg,var(--success),#059669); color:white; border:none; border-radius:var(--radius-md); font-size:0.95rem; font-weight:700; cursor:pointer; transition:all 0.25s; box-shadow:var(--shadow-md); }
-.download-btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow-lg); background:linear-gradient(135deg,#34d399,#059669); }
+.download-section { margin-top: 16px; text-align: center; }
+.download-btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 24px; background: var(--gradient-success); color: white; border: none; border-radius: var(--radius-md); font-size: 1rem; font-weight: 800; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); }
+.download-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35); background: linear-gradient(135deg, #34d399, #059669); }
 
 /* Feedback */
-.feedback-section{ margin-top:12px; padding:14px; background:var(--bg-light); border-radius:var(--radius-md); border:1px solid var(--border-light); text-align:center; }
-.feedback-title{ font-size:0.95rem; font-weight:700; color:var(--dark-blue); margin-bottom:10px; }
-.feedback-buttons{ display:flex; gap:10px; justify-content:center; }
-.feedback-btn{ padding:9px 16px; border-radius:var(--radius-md); border:2px solid var(--border-light); background:var(--bg-card); color:var(--text-primary); font-weight:600; cursor:pointer; transition:all 0.25s; display:flex; align-items:center; gap:8px; min-width:110px; }
-.feedback-btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow-md); }
-.feedback-btn.yes:hover{ background:var(--success-light); border-color:var(--success); color:var(--success); }
-.feedback-btn.no:hover{ background:var(--danger-light); border-color:var(--danger); color:var(--danger); }
+.feedback-section { margin-top: 16px; padding: 16px; background: var(--bg-light); border-radius: var(--radius-md); border: 1px solid var(--border-light); text-align: center; }
+.feedback-title { font-size: 1rem; font-weight: 800; color: var(--dark-blue); margin-bottom: 12px; }
+.feedback-buttons { display: flex; gap: 12px; justify-content: center; }
+.feedback-btn { padding: 10px 20px; border-radius: var(--radius-md); border: 2px solid var(--border-light); background: var(--bg-card); color: var(--text-primary); font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 140px; }
+.feedback-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.feedback-btn.yes:hover { background: var(--success-light); border-color: var(--success); color: var(--success); }
+.feedback-btn.no:hover { background: var(--danger-light); border-color: var(--danger); color: var(--danger); }
 
 /* Footer */
-.main-footer{ text-align:center; padding:12px; color:var(--text-muted); font-size:0.9rem; border-top:1px solid var(--border-light); margin-top:14px; }
-.company-name{ font-weight:800; color:var(--primary-blue); letter-spacing:0.5px; }
+.main-footer { text-align: center; padding: 16px; color: var(--text-muted); font-size: 0.95rem; border-top: 1px solid var(--border-light); margin-top: 20px; }
+.company-name { font-weight: 900; color: var(--primary-blue); letter-spacing: 0.5px; background: linear-gradient(135deg, var(--primary-blue), var(--accent-orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 
 /* Spinner */
-.spinner{ display:inline-block; width:18px; height:18px; border:2px solid rgba(255,255,255,0.3); border-radius:50%; border-top-color:white; animation:spin 1s linear infinite; }
-@keyframes spin{ to{ transform:rotate(360deg) } }
+.spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: white; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* Animations & responsive */
-.fade-in{ animation:fadeIn 0.36s ease; }
-@keyframes fadeIn{ from{ opacity:0; transform:translateY(10px) } to{ opacity:1; transform:translateY(0) } }
+/* Animations */
+.fade-in { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.pulse { animation: pulse 2s infinite; }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
 @media (max-width: 768px) {
-  .container{ padding:8px 14px 30px; }
-  .sky-container{ height:120px; }
-  .sun-container{ left:26px; top:80px; }
-  .sun-main{ width:48px; height:48px; }
-  .moon-container{ right:26px; top:80px; }
-  .moon-main{ width:44px; height:44px; }
-  .main-header{ padding:10px 12px; margin-bottom:14px; }
-  .brand{ font-size:1.4rem; }
-  .search-card{ padding:16px; position:static; }
-  .ticket-info{ grid-template-columns:1fr; gap:10px; }
-  #passengerName{ font-size:1.05rem; padding:8px 0; margin-bottom:10px; }
-  .seats-section{ padding:12px; margin:10px -12px; }
-  .seat{ width:52px; height:52px; }
-  .theme-btn{ padding:6px 12px; font-size:0.85rem; }
-  .feedback-buttons{ flex-direction:column; }
-  .feedback-btn{ width:100%; }
+  .container { padding: 8px 14px 30px; }
+  .sky-container { height: 120px; }
+  .sun-container { left: 26px; top: 80px; }
+  .sun-main { width: 48px; height: 48px; }
+  .moon-container { right: 26px; top: 80px; }
+  .moon-main { width: 44px; height: 44px; }
+  .main-header { padding: 14px 16px; margin-bottom: 14px; }
+  .brand { font-size: 1.5rem; }
+  .search-card { padding: 20px; position: static; }
+  .ticket-info { grid-template-columns: 1fr; gap: 12px; }
+  #passengerName { font-size: 1.2rem; }
+  .seats-section { padding: 16px; }
+  .seat { width: 60px; height: 60px; }
+  .theme-btn { padding: 8px 14px; font-size: 0.85rem; }
+  .feedback-buttons { flex-direction: column; }
+  .feedback-btn { width: 100%; }
 }
 
 @media (max-width: 480px) {
-  .brand{ font-size:1.2rem; }
-  .sky-container{ height:100px; }
-  .sun-container{ left:18px; top:70px; }
-  .sun-main{ width:40px; height:40px; }
-  .moon-container{ right:18px; top:70px; }
-  .moon-main{ width:38px; height:38px; }
-  .theme-toggle-container{ bottom:12px; right:12px; }
+  .brand { font-size: 1.3rem; }
+  .sky-container { height: 100px; }
+  .sun-container { left: 18px; top: 70px; }
+  .sun-main { width: 40px; height: 40px; }
+  .moon-container { right: 18px; top: 70px; }
+  .moon-main { width: 38px; height: 38px; }
+  .theme-toggle-container { bottom: 12px; right: 12px; }
 }
 </style>
 </head>
@@ -240,7 +259,7 @@ body { background: var(--bg-light); color: var(--text-primary); min-height: 100v
   <header class="main-header" role="banner" aria-label="Site header">
     <h1 class="brand">Welcome To Lagan Bus Booking</h1>
     <p class="tagline">Safe Travels. May God Bless Your Journey.</p>
-    <div class="contact-info">For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></div>
+    <div class="contact-info">📞 For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></div>
   </header>
 
   <!-- Theme Toggle -->
@@ -267,9 +286,9 @@ body { background: var(--bg-light); color: var(--text-primary); min-height: 100v
         <span>🔍</span> Check My Booking
       </button>
 
-      <div style="margin-top:12px">
-        <p style="font-weight:600;color:var(--dark-blue);margin-bottom:6px;">📝 Instructions:</p>
-        <p style="font-size:0.86rem;color:var(--text-secondary);">
+      <div style="margin-top:16px">
+        <p style="font-weight:700;color:var(--dark-blue);margin-bottom:8px;">📝 Instructions:</p>
+        <p style="font-size:0.88rem;color:var(--text-secondary);">
           1. Enter the phone number used for booking (with or without leading 0)<br>
           2. Click "Check My Booking"<br>
           3. View your seat details & download ticket
@@ -299,9 +318,11 @@ body { background: var(--bg-light); color: var(--text-primary); min-height: 100v
 
           <div class="ticket-info">
             <div class="info-card"><div class="info-label"><span>🚌</span> Bus Name</div><div id="busName" class="info-value">-</div></div>
-            <div class="info-card"><div class="info-label"><span>📅</span> Date & Time</div><div id="dateTime" class="info-value">-</div></div>
+            <div class="info-card"><div class="info-label"><span>📅</span> Date</div><div id="travelDate" class="info-value">-</div></div>
+            <div class="info-card time-slot-card"><div class="info-label"><span>⏰</span> Time Slot</div><div id="timeSlot" class="info-value">-</div></div>
             <div class="info-card"><div class="info-label"><span>📍</span> Pickup Location</div><div id="pickupLocation" class="info-value">-</div></div>
             <div class="info-card"><div class="info-label"><span>💰</span> Payment Status</div><div id="paymentAmount" class="info-value">-</div></div>
+            <div class="info-card"><div class="info-label"><span>🆔</span> Booking ID</div><div id="bookingId" class="info-value">-</div></div>
           </div>
 
           <div class="seats-section">
@@ -440,12 +461,139 @@ function createShootingStars() {
 // ===================== HELPERS =====================
 
 function normalizePhoneForQuery(raw) {
-  // returns digits-only string, prefer no leading zero for sheet matches
   if (!raw) return '';
   let digits = String(raw).replace(/\D/g, '');
-  // if user entered 10-digit starting with 0, drop the 0
   if (digits.length === 10 && digits.startsWith('0')) digits = digits.substring(1);
   return digits;
+}
+
+// ===================== TIME PARSING FUNCTIONS =====================
+function parseTimeSlot(timeValue) {
+  if (!timeValue) return '';
+  
+  const timeStr = String(timeValue).trim().toLowerCase();
+  
+  // Check for common time patterns
+  if (timeStr.includes('am') || timeStr.includes('pm')) {
+    // Try to parse AM/PM format
+    const timeMatch = timeStr.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i);
+    if (timeMatch) {
+      let hours = parseInt(timeMatch[1], 10);
+      const minutes = timeMatch[2] ? timeMatch[2] : '00';
+      const ampm = timeMatch[3].toUpperCase();
+      
+      // Convert to 24-hour for validation
+      if (ampm === 'PM' && hours < 12) hours += 12;
+      if (ampm === 'AM' && hours === 12) hours = 0;
+      
+      return `${timeMatch[1]}:${minutes} ${ampm}`;
+    }
+  }
+  
+  // Check for 24-hour format
+  const time24Match = timeStr.match(/(\d{1,2}):(\d{2})/);
+  if (time24Match) {
+    let hours = parseInt(time24Match[1], 10);
+    const minutes = time24Match[2];
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    return `${hours}:${minutes} ${ampm}`;
+  }
+  
+  // Check for numbers only (like 730 for 7:30)
+  const numOnly = timeStr.match(/^(\d{3,4})$/);
+  if (numOnly) {
+    const num = numOnly[1];
+    let hours, minutes;
+    if (num.length === 3) {
+      hours = num.substring(0, 1);
+      minutes = num.substring(1, 3);
+    } else {
+      hours = num.substring(0, 2);
+      minutes = num.substring(2, 4);
+    }
+    const hourNum = parseInt(hours, 10);
+    const minNum = parseInt(minutes, 10);
+    if (hourNum >= 0 && hourNum <= 24 && minNum >= 0 && minNum <= 59) {
+      const ampm = hourNum >= 12 ? 'PM' : 'AM';
+      const displayHour = hourNum % 12 || 12;
+      return `${displayHour}:${minutes.padStart(2, '0')} ${ampm}`;
+    }
+  }
+  
+  // Return original if no pattern matches
+  return timeValue;
+}
+
+function parseDate(dateValue) {
+  if (!dateValue) return '';
+  
+  const dateStr = String(dateValue).trim();
+  
+  // Try parsing as Date object first
+  const dateObj = new Date(dateValue);
+  if (!isNaN(dateObj.getTime())) {
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+    return dateObj.toLocaleDateString('en-GB', options);
+  }
+  
+  // Try parsing common formats
+  const formats = [
+    // DD/MM/YYYY
+    /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/,
+    // MM/DD/YYYY
+    /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/,
+    // YYYY-MM-DD
+    /^(\d{4})-(\d{1,2})-(\d{1,2})$/,
+    // DD-MM-YYYY
+    /^(\d{1,2})-(\d{1,2})-(\d{4})$/
+  ];
+  
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  
+  for (const format of formats) {
+    const match = dateStr.match(format);
+    if (match) {
+      let day, month, year;
+      
+      if (format.toString().includes('YYYY-MM-DD')) {
+        year = match[1];
+        month = match[2];
+        day = match[3];
+      } else if (format.toString().includes('YYYY')) {
+        // Assume last part is year
+        year = match[3];
+        month = match[2];
+        day = match[1];
+      } else {
+        // Try to determine format by value
+        const part1 = parseInt(match[1], 10);
+        const part2 = parseInt(match[2], 10);
+        if (part1 > 12) {
+          // First part is day
+          day = part1;
+          month = part2;
+        } else if (part2 > 12) {
+          // Second part is day
+          day = part2;
+          month = part1;
+        } else {
+          // Ambiguous, assume DD/MM
+          day = part1;
+          month = part2;
+        }
+        year = match[3];
+      }
+      
+      const monthIndex = parseInt(month, 10) - 1;
+      if (monthIndex >= 0 && monthIndex < 12) {
+        return `${day} ${months[monthIndex]} ${year}`;
+      }
+    }
+  }
+  
+  // Return original if no format matches
+  return dateValue;
 }
 
 // ===================== SEARCH =====================
@@ -485,7 +633,6 @@ function searchBooking() {
 
       renderBooking(data.booking);
 
-      // bring results into view but not too far down
       const resultsCard = document.querySelector('.results-card');
       if (resultsCard) resultsCard.scrollIntoView({ behavior:'smooth', block:'center' });
     })
@@ -498,144 +645,72 @@ function searchBooking() {
     });
 }
 
-// ===================== RENDER BOOKING (robust) =====================
+// ===================== RENDER BOOKING =====================
 function renderBooking(b) {
   try {
     if (!b || typeof b !== 'object') throw new Error('Invalid booking object');
 
+    // Function to get field with multiple possible names
     function getField(obj, possibleNames) {
       if (!obj) return null;
-      for (const n of possibleNames) {
-        if (Object.prototype.hasOwnProperty.call(obj, n)) return obj[n];
-        if (Object.prototype.hasOwnProperty.call(obj, n.toLowerCase())) return obj[n.toLowerCase()];
-        if (Object.prototype.hasOwnProperty.call(obj, n.toUpperCase())) return obj[n.toUpperCase()];
-      }
-      const keys = Object.keys(obj);
-      const normalized = {};
-      keys.forEach(k => normalized[k.toLowerCase().replace(/\s+/g,'')] = obj[k]);
+      
+      // First try exact matches
       for (const name of possibleNames) {
-        const key = name.toLowerCase().replace(/\s+/g,'');
-        if (Object.prototype.hasOwnProperty.call(normalized, key)) return normalized[key];
+        if (obj[name] !== undefined) return obj[name];
       }
+      
+      // Try case-insensitive matches
+      const lowerNames = possibleNames.map(n => n.toLowerCase());
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          const lowerKey = key.toLowerCase().replace(/[^a-z0-9]/g, '');
+          if (lowerNames.some(n => lowerKey.includes(n.replace(/[^a-z0-9]/g, '')))) {
+            return obj[key];
+          }
+        }
+      }
+      
       return null;
     }
 
-    const name = getField(b, ['Name','Passenger','Passenger Name','Full Name','Customer Name']) || '-';
-    const bus = getField(b, ['Bus','Bus Name','Vehicle','Bus Number','Service']) || '-';
-    const date = (b['Date'] !== undefined) ? b['Date'] : ((b['date'] !== undefined) ? b['date'] : getField(b, ['Date','Travel Date','Journey Date','Departure Date','Date/Time']) || '');
-    const time = (b['Time'] !== undefined) ? b['Time'] : ((b['time'] !== undefined) ? b['time'] : '');
-    const seat = getField(b, ['Seat','Seats','Seat Number','Seat Numbers','Seat No']) || '';
-    const pickup = getField(b, ['Pickup','Pickup Location','Boarding Point','Pickup Point']) || '-';
-    const payment = getField(b, ['Payment','Amount','Payment Status','Fare','Price']) || '-';
-    const bookingId = getField(b, ['Booking ID','Reference','Ref No','Ticket No']) || '';
+    // Extract fields with comprehensive name options
+    const name = getField(b, ['Name', 'Passenger', 'PassengerName', 'Passenger Name', 'Full Name', 'Customer Name', 'CustomerName']) || '-';
+    const bus = getField(b, ['Bus', 'BusName', 'Bus Name', 'Vehicle', 'BusNumber', 'Service', 'Bus Type']) || '-';
+    const dateRaw = getField(b, ['Date', 'TravelDate', 'Travel Date', 'JourneyDate', 'DepartureDate', 'Date of Travel', 'TravelDate']) || '';
+    const timeRaw = getField(b, ['Time', 'TimeSlot', 'Time Slot', 'DepartureTime', 'Departure Time', 'Time of Departure']) || '';
+    const seat = getField(b, ['Seat', 'Seats', 'SeatNumber', 'Seat Number', 'SeatNumbers', 'Seat No', 'SeatNo']) || '';
+    const pickup = getField(b, ['Pickup', 'PickupLocation', 'Pickup Location', 'Boarding Point', 'PickupPoint', 'BoardingPoint']) || '-';
+    const payment = getField(b, ['Payment', 'Amount', 'PaymentStatus', 'Fare', 'Price', 'Total', 'Payment Amount']) || '-';
+    const bookingId = getField(b, ['BookingID', 'Booking ID', 'Reference', 'RefNo', 'Ticket No', 'TicketNo', 'BookingRef']) || '';
 
-    document.getElementById('passengerName').textContent = (name === '') ? '-' : String(name);
-    document.getElementById('busName').textContent = (bus === '') ? '-' : String(bus);
+    // Apply formatting
+    document.getElementById('passengerName').textContent = String(name);
+    document.getElementById('busName').textContent = String(bus);
+    document.getElementById('travelDate').textContent = parseDate(dateRaw);
+    document.getElementById('timeSlot').textContent = parseTimeSlot(timeRaw);
+    document.getElementById('pickupLocation').textContent = String(pickup);
+    document.getElementById('paymentAmount').textContent = String(payment);
+    document.getElementById('bookingId').textContent = bookingId ? String(bookingId) : 'Not Assigned';
 
-    // Format date/time (robust)
-    let displayDateTime = '-';
-
-    function formatISODateTime(isoString) {
-      try {
-        const dateObj = new Date(isoString);
-        if (isNaN(dateObj.getTime())) return null;
-        const day = String(dateObj.getDate()).padStart(2,'0');
-        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        const month = months[dateObj.getMonth()];
-        const year = dateObj.getFullYear();
-        let hours = dateObj.getHours();
-        const minutes = String(dateObj.getMinutes()).padStart(2,'0');
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12 || 12;
-        return { date: `${day} ${month} ${year}`, time: `${hours}:${minutes} ${ampm}` };
-      } catch (e) { return null; }
-    }
-
-    function formatRegularDateTime(dateStr, timeStr) {
-      let cleanDate = dateStr || '';
-      let cleanTime = (timeStr !== undefined && timeStr !== null) ? String(timeStr) : '';
-
-      if (cleanDate) {
-        cleanDate = cleanDate.split('T')[0].split(' ')[0];
-        if (cleanDate.includes('/')) {
-          const parts = cleanDate.split('/');
-          if (parts.length === 3) {
-            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-            const d = parts[0];
-            const mIndex = parseInt(parts[1],10)-1;
-            const y = parts[2];
-            if (!isNaN(mIndex) && mIndex >=0 && mIndex < 12) cleanDate = `${d} ${months[mIndex]} ${y}`;
-          }
-        } else if (cleanDate.includes('-')) {
-          const parts = cleanDate.split('-');
-          if (parts.length === 3) {
-            if (parts[0].length === 4) {
-              const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-              cleanDate = `${String(parseInt(parts[2],10)).padStart(2,'0')} ${months[parseInt(parts[1],10)-1]} ${parts[0]}`;
-            } else {
-              const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-              cleanDate = `${parts[0]} ${months[parseInt(parts[1],10)-1]} ${parts[2]}`;
-            }
-          }
-        }
-      }
-
-      if (cleanTime && typeof cleanTime === 'string') {
-        const timeMatch = cleanTime.match(/(\d{1,2})[:.](\d{2})/);
-        if (timeMatch) {
-          let hours = parseInt(timeMatch[1],10);
-          const minutes = timeMatch[2];
-          let ampm = /pm/i.test(cleanTime) ? 'PM' : (/am/i.test(cleanTime) ? 'AM' : (hours >= 12 ? 'PM' : 'AM'));
-          hours = hours % 12 || 12;
-          cleanTime = `${hours}:${minutes} ${ampm}`;
-        } else {
-          const compact = cleanTime.match(/(\d{1,2})\s*([AaPp][Mm])/);
-          if (compact) {
-            let hours = parseInt(compact[1],10);
-            const ampm = compact[2].toUpperCase();
-            hours = hours % 12 || 12;
-            cleanTime = `${hours}:00 ${ampm}`;
-          } else if (cleanTime.trim().length > 0) {
-            cleanTime = cleanTime.trim();
-          }
-        }
-      }
-
-      return { date: cleanDate, time: cleanTime };
-    }
-
-    if (date && typeof date === 'string' && date.includes('T') && date.includes('Z')) {
-      const formatted = formatISODateTime(date);
-      if (formatted) displayDateTime = `${formatted.date} • ${formatted.time}`;
-    } else if (date && typeof date === 'string' && (date.includes('T') || date.includes(' '))) {
-      const formatted = formatISODateTime(date);
-      if (formatted) displayDateTime = `${formatted.date} • ${formatted.time}`;
-      else {
-        const formatted2 = formatRegularDateTime(date, time);
-        displayDateTime = `${formatted2.date || '-'} • ${formatted2.time || '-'}`;
-      }
-    } else {
-      const formatted = formatRegularDateTime(date, time);
-      displayDateTime = `${formatted.date || '-'} • ${formatted.time || '-'}`;
-    }
-
-    if (/Invalid|NaN|undefined/.test(displayDateTime)) displayDateTime = '-';
-    document.getElementById('dateTime').textContent = displayDateTime;
-    document.getElementById('pickupLocation').textContent = pickup;
-
-    const paymentElement = document.getElementById('paymentAmount');
-    const paymentText = (payment && typeof payment === 'string' && payment.trim() !== '') ? payment : (payment || 'Not Updated');
-    paymentElement.textContent = paymentText;
-
+    // Handle seats display
     const seatsBox = document.getElementById('seatsBox');
     seatsBox.innerHTML = '';
-    if (seat && String(seat).trim() !== '' && String(seat).trim().toLowerCase() !== 'not updated' && String(seat).trim() !== '-') {
-      const seats = String(seat).split(/[, \/]+/).filter(s=>s.trim()!=='' && s.trim()!=='-');
-      if (seats.length>0) {
-        seats.forEach(seatNum=>{
+    
+    if (seat && String(seat).trim() !== '' && 
+        String(seat).trim().toLowerCase() !== 'not updated' && 
+        String(seat).trim().toLowerCase() !== 'n/a' &&
+        String(seat).trim() !== '-' &&
+        String(seat).trim() !== 'null') {
+      
+      const seatStr = String(seat);
+      // Split by common separators
+      const seats = seatStr.split(/[,;\-\/|]+/).map(s => s.trim()).filter(s => s !== '' && s !== '-');
+      
+      if (seats.length > 0) {
+        seats.forEach(seatNum => {
           const seatElement = document.createElement('div');
           seatElement.className = 'seat';
-          seatElement.innerHTML = `<div class="seat-icon">💺</div><div class="seat-number">${String(seatNum).trim()}</div>`;
+          seatElement.innerHTML = `<div class="seat-icon">💺</div><div class="seat-number">${seatNum}</div>`;
           seatsBox.appendChild(seatElement);
         });
       } else {
@@ -645,21 +720,25 @@ function renderBooking(b) {
       seatsBox.innerHTML = '<div class="no-seats">No seat assigned yet. Please contact Mr. Fawas.</div>';
     }
 
+    // Show booking details
     document.getElementById('bookingDetails').style.display = 'block';
     document.getElementById('feedbackSection').style.display = 'block';
     const nr = document.getElementById('resultsBody').querySelector('.no-results');
     if (nr) nr.style.display = 'none';
 
+    // Add animation
     const bookingDetails = document.getElementById('bookingDetails');
     bookingDetails.classList.remove('fade-in');
-    setTimeout(()=> bookingDetails.classList.add('fade-in'), 10);
+    setTimeout(() => bookingDetails.classList.add('fade-in'), 10);
 
+    // Store data for download
     window.currentBookingData = {
       passengerName: name,
       busName: bus,
-      dateTime: displayDateTime,
+      travelDate: parseDate(dateRaw),
+      timeSlot: parseTimeSlot(timeRaw),
       pickupLocation: pickup,
-      paymentAmount: paymentText,
+      paymentAmount: payment,
       seats: seat,
       bookingId: bookingId
     };
@@ -676,8 +755,13 @@ function renderBooking(b) {
 
 // ===================== DOWNLOAD TICKET =====================
 function escapeHtml(unsafe) {
-  if (!unsafe && unsafe !== 0) return '';
-  return String(unsafe).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  if (unsafe === null || unsafe === undefined) return '';
+  return String(unsafe)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function downloadTicket() {
@@ -694,38 +778,70 @@ function downloadTicket() {
 
   const safeFileName = `Lagan-Ticket-${String(data.passengerName).replace(/[^a-z0-9]/gi,'-') || 'ticket'}.html`;
 
-  // Build ticket HTML (no auto print)
+  // Build ticket HTML
   const ticketHtml = `
 <!DOCTYPE html><html><head><meta charset="utf-8"><title>Lagan Bus Ticket - ${escapeHtml(data.passengerName)}</title>
-<style>*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}body{background:#f5f7fa;padding:20px}.ticket{max-width:800px;margin:0 auto;background:white;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.08)}.ticket-header{background:linear-gradient(135deg,#3a7bd5,#67b8f7);color:white;padding:22px;text-align:center}.ticket-title{font-size:20px;font-weight:800;margin-bottom:6px}.ticket-subtitle{font-size:13px;opacity:0.9}.ticket-body{padding:20px}.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}.info-card{background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0}.info-label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;font-weight:600}.info-value{font-size:15px;font-weight:700;color:#0f172a}.passenger-name{text-align:center;font-size:18px;font-weight:800;color:#1e40af;margin-bottom:18px;padding-bottom:10px;border-bottom:2px dashed #e2e8f0}.seats-section{background:linear-gradient(135deg, rgba(58,123,213,0.04), rgba(103,184,247,0.02));padding:16px;border-radius:10px;border:2px dashed #dbeafe;margin-bottom:18px}.section-title{font-size:15px;font-weight:700;color:#1e40af;margin-bottom:12px;text-align:center}.seats-container{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}.seat{width:52px;height:52px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#3a7bd5,#1a5cb0);color:white;font-weight:800;border:3px solid white;box-shadow:0 4px 6px rgba(0,0,0,0.08)}.ticket-footer{text-align:center;padding:12px;color:#64748b;font-size:13px;border-top:1px solid #e2e8f0}@media print{body{background:white;padding:0}.ticket{box-shadow:none}}</style>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { background: #f5f7fa; padding: 20px; }
+.ticket { max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 2px solid #3a7bd5; }
+.ticket-header { background: linear-gradient(135deg, #3a7bd5, #67b8f7, #ff8c00); color: white; padding: 25px; text-align: center; }
+.ticket-title { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
+.ticket-subtitle { font-size: 14px; opacity: 0.9; }
+.ticket-body { padding: 25px; }
+.passenger-name { text-align: center; font-size: 22px; font-weight: 900; color: #1a5cb0; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 3px dashed #e2e8f0; }
+.info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 25px; }
+.info-card { background: #f8fafc; padding: 18px; border-radius: 10px; border: 1px solid #e2e8f0; }
+.info-label { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 700; }
+.info-value { font-size: 16px; font-weight: 800; color: #0f172a; }
+.time-slot-card { background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,140,0,0.05)); border: 2px dashed rgba(255,140,0,0.4); }
+.time-slot-card .info-value { color: #ff8c00; font-size: 18px; }
+.seats-section { background: linear-gradient(135deg, rgba(58,123,213,0.08), rgba(103,184,247,0.04)); padding: 20px; border-radius: 12px; border: 2px dashed #dbeafe; margin-bottom: 25px; }
+.section-title { font-size: 18px; font-weight: 800; color: #1a5cb0; margin-bottom: 16px; text-align: center; }
+.seats-container { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.seat { width: 65px; height: 65px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg,#3a7bd5,#1a5cb0); color: white; font-weight: 900; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.contact-info { text-align: center; margin-top: 20px; padding: 16px; background: #f0f9ff; border-radius: 10px; border: 1px solid #bae6fd; }
+.ticket-footer { text-align: center; padding: 16px; color: #64748b; font-size: 14px; border-top: 1px solid #e2e8f0; background: #f8fafc; }
+@media print { body { background: white; padding: 0; } .ticket { box-shadow: none; border: 2px solid #3a7bd5; } }
+</style>
 </head><body>
   <div class="ticket">
-    <div class="ticket-header"><h1 class="ticket-title">Lagan Bus Ticket</h1><p class="ticket-subtitle">Safe Travels. May God Bless Your Journey.</p></div>
+    <div class="ticket-header">
+      <h1 class="ticket-title">LAGAN BUS TICKET</h1>
+      <p class="ticket-subtitle">Safe Travels. May God Bless Your Journey.</p>
+    </div>
     <div class="ticket-body">
       <div class="passenger-name">${escapeHtml(data.passengerName)}</div>
       <div class="info-grid">
         <div class="info-card"><div class="info-label">Bus Name</div><div class="info-value">${escapeHtml(data.busName)}</div></div>
-        <div class="info-card"><div class="info-label">Date & Time</div><div class="info-value">${escapeHtml(data.dateTime)}</div></div>
+        <div class="info-card"><div class="info-label">Travel Date</div><div class="info-value">${escapeHtml(data.travelDate)}</div></div>
+        <div class="info-card time-slot-card"><div class="info-label">Time Slot</div><div class="info-value">${escapeHtml(data.timeSlot)}</div></div>
         <div class="info-card"><div class="info-label">Pickup Location</div><div class="info-value">${escapeHtml(data.pickupLocation)}</div></div>
         <div class="info-card"><div class="info-label">Payment Status</div><div class="info-value">${escapeHtml(data.paymentAmount)}</div></div>
+        <div class="info-card"><div class="info-label">Booking ID</div><div class="info-value">${escapeHtml(data.bookingId)}</div></div>
       </div>
       <div class="seats-section">
-        <h3 class="section-title">Seat Number</h3>
+        <h3 class="section-title">SEAT NUMBERS</h3>
         <div class="seats-container">
-          ${data.seats && String(data.seats).trim() !== '' && String(data.seats).toLowerCase() !== 'not updated' ?
-            String(data.seats).split(/[, \/]+/).filter(s=>s.trim()!=='').map(s=>`<div class="seat"><div style="font-size:11px">💺</div><div>${escapeHtml(s.trim())}</div></div>`).join('') :
-            '<div style="text-align:center;color:#64748b;font-style:italic;">No seat assigned</div>'
+          ${data.seats && String(data.seats).trim() !== '' && 
+            String(data.seats).trim().toLowerCase() !== 'not updated' &&
+            String(data.seats).trim().toLowerCase() !== 'n/a' ?
+            String(data.seats).split(/[,;\-\/|]+/).filter(s => s.trim() !== '').map(s => 
+              `<div class="seat"><div style="font-size:12px">💺</div><div>${escapeHtml(s.trim())}</div></div>`
+            ).join('') :
+            '<div style="text-align:center;color:#64748b;font-style:italic;padding:20px;">No seat assigned yet</div>'
           }
         </div>
       </div>
-      <div style="text-align:center;margin-top:12px;padding:12px;background:#f0f9ff;border-radius:8px;">
-        <p style="font-weight:600;color:#0369a1;margin-bottom:6px;">📞 Contact Information</p>
-        <p style="color:#475569;">For inquiries, contact: <strong>0777 402 886 (Mr. Fawas)</strong></p>
+      <div class="contact-info">
+        <p style="font-weight:800;color:#0369a1;margin-bottom:8px;font-size:16px;">📞 CONTACT INFORMATION</p>
+        <p style="color:#475569;font-size:15px;">For inquiries & assistance, contact:</p>
+        <p style="font-weight:900;color:#1a5cb0;font-size:18px;margin-top:8px;">Mr. Fawas - 0777 402 886</p>
       </div>
     </div>
     <div class="ticket-footer">
       <p>Ticket generated on ${new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' })}</p>
-      <p style="margin-top:6px;">Made with ❤ by WEDOXA</p>
+      <p style="margin-top:8px;font-weight:700;">Made with ❤ by WEDOXA</p>
     </div>
   </div>
 </body></html>
@@ -741,12 +857,24 @@ function downloadTicket() {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 
-  setTimeout(()=>{ downloadBtn.innerHTML = originalText; downloadBtn.disabled = false; }, 700);
+  setTimeout(() => { 
+    downloadBtn.innerHTML = originalText; 
+    downloadBtn.disabled = false; 
+    downloadBtn.classList.add('pulse');
+    setTimeout(() => downloadBtn.classList.remove('pulse'), 2000);
+  }, 700);
 
-  Swal.fire({ icon:'success', title:'Ticket Prepared', text:'Your ticket file has been downloaded', confirmButtonColor:'#3a7bd5', timer:1400, showConfirmButton:false });
+  Swal.fire({ 
+    icon: 'success', 
+    title: 'Ticket Downloaded!', 
+    text: 'Your ticket has been saved to your device', 
+    confirmButtonColor: '#3a7bd5', 
+    timer: 1500, 
+    showConfirmButton: false 
+  });
 }
 
-// ===================== FEEDBACK (calls your script) =====================
+// ===================== FEEDBACK =====================
 function sendFeedback(answer) {
   const phoneRaw = document.getElementById('phone').value.trim();
   if (!phoneRaw) {
@@ -760,7 +888,7 @@ function sendFeedback(answer) {
     .then(r => r.json())
     .then(resp => {
       if (resp && resp.success) {
-        Swal.fire({ icon:'success', title:'Thanks for the feedback!', timer:1200, showConfirmButton:false });
+        Swal.fire({ icon:'success', title:'Thanks for your feedback!', timer:1200, showConfirmButton:false });
       } else {
         Swal.fire({ icon:'error', title:'Unable to send feedback', text: (resp && resp.message) ? resp.message : 'Try again later', confirmButtonColor:'#3a7bd5' });
       }
