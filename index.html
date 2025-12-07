@@ -10,785 +10,429 @@
   --blue:#3a7bd5;
   --blue2:#67b8f7;
   --blue-dark:#1a5cb0;
-  --bg:#eef3f8;
   --muted:#66788A;
   --border:#dce4ec;
-  --road-dark:#333;
-  --lane-white:#fff;
+  --accent:#0f6fb1;
   --success:#10b981;
   --danger:#ef4444;
+  --light-body-bg: linear-gradient(135deg, #f5f7fa 0%, #eef3f8 100%);
+  --dark-body-bg: linear-gradient(180deg,#05060a 0%, #071428 100%);
 }
 
+/* Basic reset + layout */
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI', system-ui, -apple-system, sans-serif}
-
-body{ 
-  background: linear-gradient(135deg, #f5f7fa 0%, #eef3f8 100%);
-  display:flex; 
-  justify-content:center; 
-  align-items:center;
-  min-height:100vh;
-  padding:14px;
+html,body{height:100%}
+body{
+  background:var(--light-body-bg);
+  color:#0b2638;
+  transition:background .35s, color .35s;
+  padding:18px;
+  display:flex;
+  justify-content:center;
 }
 
-/* Sky Animation - Keep original */
+/* container width limit */
+.container{
+  width:100%;
+  max-width:960px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  align-items:stretch;
+}
+
+/* SKY */
 .sky-container{
-  width:100%;max-width:860px;height:150px;margin:0 auto 14px;border-radius:14px;position:relative;overflow:hidden;
-  animation: skyCycle 20s linear infinite;
-}
-@keyframes skyCycle{
-  0%   { background:linear-gradient(#bfe4ff,#eaf6ff); }
-  20%  { background:linear-gradient(#ffcf9b,#ffa96e); }
-  40%  { background:linear-gradient(#2e3160,#1b1d38); }
-  60%  { background:linear-gradient(#000010,#000); }
-  80%  { background:linear-gradient(#8f6cff,#ffcaf9); }
-  100% { background:linear-gradient(#bfe4ff,#eaf6ff); }
+  width:100%;
+  height:150px;
+  border-radius:12px;
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(180deg,#bfe4ff,#eaf6ff);
+  transition:background .6s ease;
 }
 
-.sun{ width:70px;height:70px;border-radius:50%; background:#FFD93D; position:absolute; left:28px; bottom:-20px; box-shadow:0 0 22px rgba(255,217,61,0.7); animation:sunCycle 20s linear infinite; }
-@keyframes sunCycle{ 0%{transform:translateY(40px);opacity:1} 25%{transform:translateY(-10px);opacity:1} 40%{opacity:0} 70%{opacity:0} 90%{opacity:1;transform:translateY(-10px)} 100%{opacity:1;transform:translateY(40px)} }
+/* sun/moon/clouds/stars */
+.sun{ width:72px;height:72px;border-radius:50%; background:#FFD93D; position:absolute; left:28px; bottom:-20px; box-shadow:0 0 32px rgba(255,217,61,0.85); transform-origin:center; animation:sunFloat 6s ease-in-out infinite; transition:opacity .4s; }
+@keyframes sunFloat{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+.moon{ width:56px;height:56px;border-radius:50%; background:linear-gradient(180deg,#fff,#f2f2f2); position:absolute; right:40px; top:24px; box-shadow:0 0 18px rgba(255,255,255,0.18); opacity:0; transition:opacity .45s; }
+.cloud{ position:absolute; width:84px;height:36px;background:#fff;border-radius:40px; box-shadow:28px 12px 0 #fff,50px 18px 0 #fff; opacity:0.95; transition:opacity .45s; }
+.c1{ top:25px; left:-160px; animation: cloudMove 28s linear infinite; }
+.c2{ top:45px; left:8%; transform:scale(1.05); animation: cloudMove 30s linear infinite; animation-delay:-7s; }
+.c3{ top:58px; left:60%; transform:scale(0.92); animation: cloudMove 34s linear infinite; animation-delay:-14s; }
+.c4{ top:35px; left:82%; transform:scale(1.05); animation: cloudMove 28s linear infinite; animation-delay:-20s; }
+@keyframes cloudMove{0%{left:-160px}100%{left:120%}}
+.stars{ position:absolute; inset:0; background:
+    radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,0.95), transparent),
+    radial-gradient(1.5px 1.5px at 60% 50%, rgba(255,255,255,0.85), transparent),
+    radial-gradient(1.2px 1.2px at 80% 40%, rgba(255,255,255,0.8), transparent);
+  opacity:0; transition:opacity .5s; pointer-events:none; }
+.shooting-star{ position:absolute;width:3px;height:3px;border-radius:50%; background:white; top:20px; left:-120px; opacity:0; }
 
-.moon{ width:55px;height:55px;border-radius:50%; background:#fff; position:absolute; right:40px; top:24px; box-shadow:0 0 12px rgba(255,255,255,0.7); opacity:0; animation:moonCycle 20s linear infinite;}
-@keyframes moonCycle{ 0%,30%{opacity:0} 45%,70%{opacity:1} 85%,100%{opacity:0} }
+/* small toolbar inside sky (right) */
+.mode-toggle{ position:absolute; right:14px; top:12px; display:flex; gap:8px; background:rgba(255,255,255,0.9); padding:6px; border-radius:999px; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+.mode-btn{ border:0; background:transparent; padding:6px; cursor:pointer; font-size:16px; border-radius:999px; }
+.mode-btn.active{ background:linear-gradient(90deg,#fff,#eef6ff); }
 
-.cloud{ position:absolute; width:70px;height:30px;background:#fff;border-radius:40px; box-shadow:25px 10px 0 #fff,45px 15px 0 #fff; opacity:.88; animation: cloudMove 30s linear infinite; }
-.c1{ top:25px; left:-120px; animation-delay:-5s } 
-.c2{ top:45px; left:8%; transform:scale(1.15); animation-delay:-12s }
-.c3{ top:60px; left:60%; transform:scale(0.92); animation-delay:-18s } 
-.c4{ top:35px; left:82%; transform:scale(1.05); animation-delay:-22s }
-@keyframes cloudMove{ 0%{ left:-120px } 100%{ left:120% } }
+/* CARD area */
+.card-wrap{ display:flex; gap:16px; align-items:flex-start; }
 
-.stars{ position:absolute; top:0; left:0; width:100%; height:100%;
-  background:
-    radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.95) 90%, transparent),
-    radial-gradient(2px 2px at 60% 50%, rgba(255,255,255,0.9) 90%, transparent),
-    radial-gradient(2px 2px at 80% 40%, rgba(255,255,255,0.85) 90%, transparent),
-    radial-gradient(2px 2px at 30% 80%, rgba(255,255,255,0.85) 90%, transparent);
-  opacity:0; animation: starCycle 20s linear infinite; }
-@keyframes starCycle{ 0%,30%{opacity:0} 40%,70%{opacity:1} 90%,100%{opacity:0} }
-
-.shooting-star{ position:absolute;width:3px;height:3px;border-radius:50%; background:white; top:20px; left:-100px; opacity:0; animation: shoot 5s ease-in-out infinite; }
-@keyframes shoot{ 0%{opacity:0;transform:translate(0,0)} 10%{opacity:1} 40%{opacity:1;transform:translate(300px,80px)} 60%{opacity:.4} 100%{opacity:0;transform:translate(520px,140px)} }
-
-/* Road Animation - Keep original */
-.road-container{ width:100%; max-width:860px; height:110px; margin:0 auto 20px; position:relative; overflow:hidden; }
-.road{ width:260%; height:18px; background:repeating-linear-gradient(to right, var(--road-dark) 0, var(--road-dark) 40px, var(--lane-white) 40px, var(--lane-white) 80px); position:absolute; bottom:8px; left:0; animation: roadMove 5s linear infinite; box-shadow: inset 0 -6px 12px rgba(0,0,0,0.15);}
-@keyframes roadMove{ from{transform:translateX(0)} to{transform:translateX(-20%)} }
-
-.lane-glow{ position:absolute; bottom:14px; left:0; width:100%; height:6px; background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0)); mix-blend-mode:screen; opacity:0.8; }
-
-/* Bus Animation - Keep original */
-.bus-wrap{
-  position:absolute;
-  left:100vw; bottom:30px; width:220px; height:140px; pointer-events:none;
-  display:flex; align-items:flex-end; justify-content:center; transform-origin:center;
-  animation: wrapMove 12s linear infinite;
-  animation-delay:2s;
-}
-
-@keyframes wrapMove{
-  0%{ transform: translateX(0) }
-  100%{ transform: translateX(-140vw) }
-}
-
-.bus{ position:relative; display:flex; align-items:center; justify-content:center; transform-origin:center; font-size:48px; transform:scale(1); z-index:4; }
-.bus .emoji{ display:inline-block; animation: busBounce 0.7s ease-in-out infinite; transform-origin:center; }
-@keyframes busBounce{ 0%,100%{ transform:translateY(0)} 50%{ transform:translateY(-2px)} }
-
-.beam{ position:absolute; right:-26px; width:170px; height:46px; border-radius:10px; background: linear-gradient(90deg, rgba(255,255,200,0.0), rgba(255,255,200,0.12), rgba(255,255,200,0.06)); filter:blur(6px); opacity:0; mix-blend-mode:screen; transform:skewX(-12deg); box-shadow:0 0 40px rgba(255,230,160,0.12); animation: beamCycle 20s linear infinite; z-index:3; }
-
-.ref{ position:absolute; bottom:-12px; left:50%; transform:translateX(-50%); width:150px; height:22px; border-radius:50%; background: radial-gradient(closest-side, rgba(255,230,160,0.14), rgba(255,230,160,0.06), rgba(0,0,0,0)); filter:blur(6px); opacity:0; animation: beamCycle 20s linear infinite; z-index:2; }
-
-@keyframes beamCycle{ 0%{opacity:0} 35%{opacity:0} 40%{opacity:1} 60%{opacity:1} 70%{opacity:0} 100%{opacity:0} }
-
-.shadow{
-  position:absolute;
-  bottom:6px;
-  left:50%;
-  transform:translateX(-50%) scale(1);
-  width:170px;
-  height:20px;
-  border-radius:50%;
-  background:rgba(0,0,0,0.32);
-  filter:blur(8px);
-  opacity:0.85;
-  pointer-events:none;
-  z-index:1;
-  animation: shadowDynamics 12s linear infinite;
-}
-
-@keyframes shadowDynamics{
-  0% { transform:translateX(-50%) scale(1.7); opacity:0.30; filter:blur(12px); }
-  25%{ transform:translateX(-50%) scale(1.25); opacity:0.65; filter:blur(8px); }
-  50%{ transform:translateX(-50%) scale(1.0); opacity:0.95; filter:blur(4px); }
-  75%{ transform:translateX(-50%) scale(1.25); opacity:0.6; filter:blur(8px); }
-  100%{ transform:translateX(-50%) scale(1.7); opacity:0.30; filter:blur(12px); }
-}
-
-/* ================= IMPROVED UI ================= */
-.wrap{ 
-  width:100%; 
-  max-width:760px; 
-  animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Header */
+/* left column - small card */
+.left-col{ width:260px; flex:0 0 260px; display:flex; gap:12px; flex-direction:column; }
 .header{
-  text-align:center;
-  margin-bottom:20px;
-  padding:15px;
-  background: rgba(255,255,255,0.9);
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-  backdrop-filter: blur(10px);
+  background:rgba(255,255,255,0.95); border-radius:12px; padding:14px; box-shadow:0 8px 22px rgba(0,0,0,0.04);
 }
+.brand{ font-weight:800; color:var(--blue-dark); font-size:20px; margin-bottom:6px; line-height:1; }
+.welcome{ color:#444; font-weight:600; margin-bottom:8px; }
+.sub{ background:rgba(58,123,213,0.06); padding:8px 12px; border-radius:999px; display:inline-block; color:var(--muted); font-weight:700; }
 
-.brand{ 
-  font-weight:800; 
-  font-size:1.8rem; 
-  color:var(--blue-dark);
-  margin-bottom:5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
+/* form card */
+.form-card{ background:#fff; padding:16px; border-radius:12px; box-shadow:0 12px 30px rgba(0,0,0,0.04); }
+.input{ width:100%; padding:12px; border-radius:10px; border:2px solid #e6edf5; font-size:15px; background:#fbfdff; }
+.btn{ width:100%; margin-top:12px; padding:12px; border-radius:10px; border:0; background:linear-gradient(135deg,var(--blue2),var(--blue)); color:white; font-weight:800; cursor:pointer; }
 
-.welcome{ 
-  margin-top:6px; 
-  font-weight:600;
-  color: #444;
-  font-size: 1.1rem;
-}
+/* right column - main ticket output */
+.right-col{ flex:1; }
+.ticket{ display:none; background:linear-gradient(180deg,#fff,#f8fbff); border-radius:12px; padding:18px; border:1px solid rgba(26,92,176,0.06); box-shadow:0 12px 40px rgba(11,86,141,0.04); }
+.ticket-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px 18px; }
+.ticket-row{ background: rgba(255,255,255,0.6); padding:10px 12px; border-radius:8px; border:1px solid rgba(10,80,150,0.03); }
+.ticket-label{ font-size:11px; color:var(--muted); font-weight:800; text-transform:uppercase; }
+.ticket-value{ font-size:16px; font-weight:900; color:#0c1b2a; margin-top:6px; }
 
-.sub{ 
-  color:var(--muted); 
-  margin-top:8px; 
-  font-size:0.95rem;
-  background: rgba(58, 123, 213, 0.1);
-  padding: 8px 15px;
-  border-radius: 50px;
-  display: inline-block;
-}
+/* seats */
+.seat-pill{ display:inline-block; padding:8px 12px; border-radius:999px; background:#eaf6ff; border:1px solid rgba(15,111,177,0.12); margin:6px 6px 6px 0; font-weight:900; }
 
-/* Card */
-.card{ 
-  background:#fff; 
-  padding:25px; 
-  border-radius:15px; 
-  border:1px solid var(--border); 
-  box-shadow:0 10px 30px rgba(9,20,40,0.08);
-  transition: transform 0.3s ease;
-}
+/* footer */
+.footer{ text-align:center; color:#8b9aad; margin-top:12px; }
 
-.card:hover {
-  transform: translateY(-5px);
-}
+/* Dark mode */
+body.dark{ background:var(--dark-body-bg); color:#dfefff; }
+body.dark .sky-container{ background:linear-gradient(180deg,#071428,#020412); box-shadow:inset 0 -20px 40px rgba(0,0,0,0.25); }
+body.dark .sun{ opacity:0; transform:translateY(6px) scale(.95); }
+body.dark .moon{ opacity:1; }
+body.dark .cloud{ opacity:0.18; filter:blur(1px); }
+body.dark .stars{ opacity:1; }
+body.dark .header, body.dark .form-card{ background:rgba(8,12,20,0.5); color:#eaf6ff; border:1px solid rgba(255,255,255,0.02); box-shadow:none; }
+body.dark .ticket{ background:linear-gradient(180deg,#071428,#041223); color:#e6f5ff; border:1px solid rgba(255,255,255,0.03); box-shadow:none; }
+body.dark .ticket-row{ background:rgba(255,255,255,0.02); }
 
-.input{ 
-  width:100%; 
-  padding:15px; 
-  border-radius:10px; 
-  border:2px solid #e0e0e0;
-  font-size:16px;
-  transition: all 0.3s;
-  background: #f8f9fa;
-}
-
-.input:focus {
-  outline: none;
-  border-color: var(--blue);
-  background: white;
-  box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
-}
-
-.btn{ 
-  width:100%; 
-  margin-top:15px; 
-  padding:15px; 
-  border-radius:10px; 
-  border:none; 
-  background:linear-gradient(135deg, var(--blue2), var(--blue)); 
-  color:#fff; 
-  font-weight:700; 
-  font-size:1rem;
-  cursor:pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(58, 123, 213, 0.3);
-}
-
-.btn:active {
-  transform: translateY(0);
-}
-
-/* Results Box */
-#box{ 
-  margin-top:20px; 
-  padding:20px; 
-  border-radius:12px; 
-  border:1px solid var(--border); 
-  background: #f8fafc;
-  display:none;
-  animation: slideIn 0.5s ease;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.booking-detail {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-}
-
-.detail-label {
-  font-size: 12px;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 5px;
-  font-weight: 600;
-}
-
-.detail-value {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--blue-dark);
-}
-
-/* Seats */
-.right{ 
-  display:flex; 
-  gap:15px; 
-  flex-wrap:wrap; 
-  justify-content:center; 
-  margin-top:15px 
-}
-
-.seat{ 
-  width:90px; 
-  height:90px; 
-  border-radius:50%; 
-  display:flex; 
-  align-items:center; 
-  justify-content:center; 
-  flex-direction:column; 
-  background:linear-gradient(135deg, #e7f3ff, #b6d8ff);
-  border:2px solid #c7dff4; 
-  font-weight:900; 
-  font-size:1.15rem;
-  transition: all 0.3s;
-  box-shadow: 0 5px 15px rgba(103, 184, 247, 0.2);
-}
-
-.seat:hover {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 8px 20px rgba(103, 184, 247, 0.3);
-}
-
-.seat span{ 
-  font-size:28px;
-  margin-bottom: 5px;
-}
-
-.seat-number {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--blue-dark);
-}
-
-/* Feedback */
-#feedbackBox{ 
-  margin-top:20px; 
-  display:none; 
-  text-align:center; 
-  padding:20px; 
-  border-radius:12px; 
-  background:#f7fbff; 
-  border:1px solid #dbeeff;
-  animation: fadeIn 0.5s ease;
-}
-
-.feedback-title {
-  font-weight:700;
-  margin-bottom:15px;
-  color: var(--blue-dark);
-  font-size: 1.1rem;
-}
-
-.fb-row{ 
-  display:flex; 
-  gap:15px; 
-  justify-content:center; 
-  margin-top:10px 
-}
-
-.fb-btn{ 
-  padding:12px 25px; 
-  border-radius:10px; 
-  border:2px solid #cfe3ff; 
-  background:#fff; 
-  font-weight:700; 
-  cursor:pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 100px;
-}
-
-.fb-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.fb-btn:first-child:hover {
-  background: #e8f5e9;
-  border-color: var(--success);
-}
-
-.fb-btn:last-child:hover {
-  background: #ffebee;
-  border-color: var(--danger);
-}
-
-/* Footer */
-.footer{ 
-  text-align:center; 
-  margin-top:20px; 
-  color:#8b9aad;
-  padding-top: 15px;
-  border-top: 1px solid #eee;
-}
-
-.company {
-  font-weight: 800;
-  color: var(--blue);
-  letter-spacing: 0.5px;
-}
-
-/* Status Badge */
-.status-badge {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-  margin-left: 8px;
-}
-
-.status-paid {
-  background: #e8f5e9;
-  color: #2e7d32;
-}
-
-/* Loading Spinner */
-.spinner {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-radius: 50%;
-  border-top-color: white;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Responsive */
-@media (max-width:520px){
-  .bus{ font-size:40px } 
-  .sun{ left:10px } 
-  .moon{ right:10px; top:18px }
-  .card { padding: 20px; }
-  .seat { width: 80px; height: 80px; }
-  .fb-row { flex-direction: column; }
-  .fb-btn { width: 100%; }
+/* small screens */
+@media (max-width:880px){
+  .card-wrap{ flex-direction:column; }
+  .left-col{ width:100%; flex:0 0 auto; order:2; }
+  .right-col{ order:1; }
+  .mode-toggle{ right:8px; top:8px; }
 }
 </style>
 </head>
 <body>
-
-<div class="wrap">
+<div class="container">
 
   <!-- SKY -->
-  <div class="sky-container" id="sky">
-    <div class="sun"></div>
-    <div class="moon"></div>
+  <div class="sky-container sky-day" id="sky" aria-hidden="true">
+    <div class="sun" id="sun" aria-hidden="true"></div>
+    <div class="moon" id="moon" aria-hidden="true"></div>
 
-    <!-- 4 clean clouds -->
-    <div class="cloud c1"></div>
-    <div class="cloud c2"></div>
-    <div class="cloud c3"></div>
-    <div class="cloud c4"></div>
+    <div class="cloud c1" aria-hidden="true"></div>
+    <div class="cloud c2" aria-hidden="true"></div>
+    <div class="cloud c3" aria-hidden="true"></div>
+    <div class="cloud c4" aria-hidden="true"></div>
 
-    <div class="stars"></div>
-    <div class="shooting-star"></div>
-  </div>
+    <div class="stars" id="stars" aria-hidden="true"></div>
+    <div class="shooting-star" id="shooting" aria-hidden="true"></div>
 
-  <!-- ROAD + BUS -->
-  <div class="road-container" id="roadWrap">
-    <div class="road"></div>
-    <div class="lane-glow"></div>
-
-    <!-- single medium bus wrapper -->
-    <div class="bus-wrap" aria-hidden="true">
-      <div class="shadow"></div>
-
-      <div class="bus">
-        <span class="emoji">🚌</span>
-        <div class="beam"></div>
-        <div class="ref"></div>
-      </div>
+    <div class="mode-toggle" role="toolbar" aria-label="Theme toggle">
+      <button id="dayBtn" class="mode-btn" title="Day mode">☀️</button>
+      <button id="nightBtn" class="mode-btn" title="Night mode">🌙</button>
     </div>
   </div>
 
-  <!-- Header -->
-  <div class="header">
-    <div class="brand">
-      Welcome To Lagan Bus Booking
+  <!-- MAIN CARDS -->
+  <div class="card-wrap">
+    <div class="left-col">
+      <div class="header">
+        <div class="brand">Welcome To Lagan Bus Booking</div>
+        <div class="welcome">Safe Travels. May God Bless Your Journey.</div>
+        <div class="sub">For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></div>
+      </div>
+
+      <div class="form-card">
+        <input id="phone" class="input" placeholder="Enter phone number (077XXXXXXX)" inputmode="tel" maxlength="10" />
+        <button id="searchBtn" class="btn">🔍 Check My Booking</button>
+      </div>
     </div>
-    <div class="welcome">Safe Travels. May God Bless Your Journey.</div>
-    <div class="sub">For Reservations: <strong>0777 402 886 (Mr. Fawas)</strong></div>
-  </div>
 
-  <!-- Booking Card -->
-  <div class="card">
-    <input id="phone" class="input" placeholder="Enter phone number (077⨯⨯⨯)" inputmode="tel" maxlength="10" />
-    <button id="searchBtn" class="btn">
-      <span>🔍</span>
-      Check My Booking
-    </button>
-
-    <div id="box">
-      <!-- Passenger Name -->
-      <div class="booking-detail">
-        <div class="detail-label">Passenger</div>
-        <div id="passengerName" class="detail-value">-</div>
-      </div>
-      
-      <!-- Bus Name -->
-      <div class="booking-detail">
-        <div class="detail-label">Bus</div>
-        <div id="busName" class="detail-value">-</div>
-      </div>
-      
-      <!-- Date & Time -->
-      <div class="booking-detail">
-        <div class="detail-label">Date & Time</div>
-        <div id="dateTime" class="detail-value">-</div>
-      </div>
-      
-      <!-- Pickup -->
-      <div class="booking-detail">
-        <div class="detail-label">Pickup Location</div>
-        <div id="pickupLocation" class="detail-value">-</div>
-      </div>
-      
-      <!-- Payment -->
-      <div class="booking-detail">
-        <div class="detail-label">Payment</div>
-        <div id="paymentAmount" class="detail-value">-</div>
-      </div>
-
-      <!-- Seats -->
-      <div style="text-align:center; margin:20px 0 10px;">
-        <div style="font-weight:700;color:#444;margin-bottom:15px;font-size:1.1rem;">
-          <span>💺</span> Your Seat Numbers
+    <div class="right-col">
+      <div id="box" class="ticket" aria-live="polite" role="region">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div>
+            <div style="font-weight:900;color:var(--blue-dark)">🎫 Lagan Bus</div>
+            <div style="font-size:12px;color:var(--muted);font-weight:700">Premium Boarding Pass</div>
+          </div>
+          <div style="text-align:right">
+            <div id="ticketRef" style="font-weight:800;color:var(--accent)">—</div>
+            <div id="issuedAt" style="font-size:11px;color:var(--muted);margin-top:6px">Issued</div>
+          </div>
         </div>
-        <div class="right" id="seatsBox"></div>
-      </div>
 
-      <!-- Feedback -->
-      <div id="feedbackBox">
-        <div class="feedback-title">Did you get your seat number correctly?</div>
-        <div class="fb-row">
-          <button class="fb-btn" onclick="sendFeedback('Yes')">
-            <span>👍</span> Yes
-          </button>
-          <button class="fb-btn" onclick="sendFeedback('No')">
-            <span>👎</span> No
-          </button>
+        <div class="ticket-grid">
+          <div class="ticket-row">
+            <div class="ticket-label">Passenger</div>
+            <div id="passengerName" class="ticket-value">-</div>
+          </div>
+          <div class="ticket-row">
+            <div class="ticket-label">Bus</div>
+            <div id="busName" class="ticket-value">-</div>
+          </div>
+          <div class="ticket-row">
+            <div class="ticket-label">Date & Time</div>
+            <div id="dateTime" class="ticket-value">-</div>
+          </div>
+          <div class="ticket-row">
+            <div class="ticket-label">Pickup</div>
+            <div id="pickupLocation" class="ticket-value">-</div>
+          </div>
+          <div class="ticket-row">
+            <div class="ticket-label">Payment</div>
+            <div id="paymentAmount" class="ticket-value">-</div>
+          </div>
+
+          <div class="ticket-row" style="grid-column:1 / -1">
+            <div class="ticket-label">Seat Numbers</div>
+            <div id="seatsBox" style="margin-top:8px"></div>
+          </div>
+        </div>
+
+        <button id="printBtn" class="btn" style="margin-top:12px">🖨️ Print My Ticket</button>
+
+        <div id="feedbackBox" style="margin-top:12px;display:none">
+          <div style="font-weight:700;color:var(--blue-dark);margin-bottom:10px">Did you get your seat number correctly?</div>
+          <div style="display:flex;gap:12px">
+            <button class="btn" onclick="sendFeedback('Yes')" style="flex:1;background:#e8f5e9;color:#256029;border:1px solid rgba(10,120,60,0.08)">👍 Yes</button>
+            <button class="btn" onclick="sendFeedback('No')" style="flex:1;background:#ffebee;color:#9b1f1f;border:1px solid rgba(120,10,10,0.06)">👎 No</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="footer">
-      Made with <span style="color:#e74c3c;">❤</span> by 
-      <span class="company">WEDOXA</span>
+      <div class="footer" style="margin-top:12px">Made with <span style="color:#e74c3c">❤</span> by <strong style="color:var(--blue)">WEDOXA</strong></div>
     </div>
   </div>
 </div>
 
+<!-- All JS must be inside this script tag. Do NOT paste JS outside it. -->
 <script>
-// Your Google Apps Script URL
+/* ===================== CONFIG ===================== */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
 
-// Initialize
-document.addEventListener('DOMContentLoaded', function() {
-  // Phone input validation
-  const phoneInput = document.getElementById('phone');
-  phoneInput.addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.length > 10) {
-      value = value.substring(0, 10);
-    }
-    e.target.value = value;
-  });
+/* ===================== Helpers ===================== */
+function isIsoString(s){ return typeof s==='string' && /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(s); }
+function tryParseDate(val){
+  if (val === null || val === undefined || val === '') return null;
+  if (Object.prototype.toString.call(val) === '[object Date]') return val;
+  if (typeof val === 'number') { const d = new Date(val); if (!isNaN(d)) return d; }
+  if (typeof val === 'string' && isIsoString(val)) { const d = new Date(val); if (!isNaN(d)) return d; }
+  try { const d = new Date(val); if (!isNaN(d)) return d; } catch(e){}
+  if (typeof val === 'string' && /^\d{1,2}\/\d{1,2}\/\d{2,4}/.test(val)){
+    const p = val.split('/'); const d = new Date(+p[2], +p[1]-1, +p[0]); if (!isNaN(d)) return d;
+  }
+  return null;
+}
+function formatDateTimeForColombo(dateObj){
+  if (!dateObj) return { dateStr:'-', timeStr:'-' };
+  try {
+    const dateOptions = { day:'numeric', month:'short', year:'numeric', timeZone:'Asia/Colombo' };
+    const timeOptions = { hour:'numeric', minute:'2-digit', hour12:true, timeZone:'Asia/Colombo' };
+    return {
+      dateStr: new Intl.DateTimeFormat('en-GB', dateOptions).format(dateObj),
+      timeStr: new Intl.DateTimeFormat('en-GB', timeOptions).format(dateObj)
+    };
+  } catch(e){
+    const d = new Date(dateObj.getTime() + (dateObj.getTimezoneOffset()*60000));
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return { dateStr: `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`, timeStr: `${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}` };
+  }
+}
+function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]); }
 
-  // Enter key to search
-  phoneInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      searchBooking();
+function getField(obj, candidates){
+  if (!obj) return null;
+  const keys = Object.keys(obj||{});
+  const norm = k => k.toString().toLowerCase().replace(/\s+/g,'').replace(/[^a-z0-9]/g,'');
+  const map = {}; keys.forEach(k => map[norm(k)] = k);
+  for (let c of candidates){
+    const found = map[norm(c)]; if (found) return obj[found];
+  }
+  if (keys.length) return obj[keys[0]];
+  return null;
+}
+
+/* ===================== UI init ===================== */
+document.addEventListener('DOMContentLoaded', ()=> {
+  const phone = document.getElementById('phone');
+  phone.addEventListener('input', e => { let v = e.target.value.replace(/\D/g,''); if (v.length>10) v=v.slice(0,10); e.target.value=v; });
+  phone.addEventListener('keypress', e => { if (e.key==='Enter') searchBooking(); });
+
+  document.getElementById('searchBtn').addEventListener('click', searchBooking);
+  document.getElementById('printBtn').addEventListener('click', printTicket);
+  document.getElementById('dayBtn').addEventListener('click', ()=> setMode('light'));
+  document.getElementById('nightBtn').addEventListener('click', ()=> setMode('dark'));
+
+  // restore mode
+  const saved = localStorage.getItem('lagan-mode') || 'light';
+  setMode(saved, true);
+
+  // small random shooting star in dark mode
+  setInterval(()=> {
+    const s = document.getElementById('shooting');
+    if (!s) return;
+    if (Math.random() < 0.08 && document.body.classList.contains('dark')) {
+      s.style.opacity='1';
+      s.animate([{transform:'translateX(0)'},{transform:'translateX(720px)'}], {duration:1400, easing:'cubic-bezier(.2,.8,.2,1)'});
+      setTimeout(()=> s.style.opacity='0', 1400);
     }
-  });
+  }, 2800);
 });
 
-// Search booking
-function searchBooking() {
+/* ===================== Mode toggle ===================== */
+function setMode(m, instant=false){
+  const mode = (m === 'dark') ? 'dark' : 'light';
+  if (mode === 'dark'){
+    document.body.classList.add('dark');
+    document.getElementById('sky').classList.remove('sky-day'); // CSS uses .sky-container base
+    document.querySelectorAll('.cloud').forEach(c => c.style.opacity='0.18');
+    document.getElementById('sun').style.opacity='0';
+    document.getElementById('moon').style.opacity='1';
+    document.getElementById('stars').style.opacity='1';
+    document.getElementById('nightBtn').classList.add('active');
+    document.getElementById('dayBtn').classList.remove('active');
+  } else {
+    document.body.classList.remove('dark');
+    document.getElementById('sky').classList.add('sky-day');
+    document.querySelectorAll('.cloud').forEach(c => c.style.opacity='0.95');
+    document.getElementById('sun').style.opacity='1';
+    document.getElementById('moon').style.opacity='0';
+    document.getElementById('stars').style.opacity='0';
+    document.getElementById('dayBtn').classList.add('active');
+    document.getElementById('nightBtn').classList.remove('active');
+  }
+  localStorage.setItem('lagan-mode', mode);
+}
+
+/* ===================== Booking lookup ===================== */
+function searchBooking(){
   const phone = document.getElementById('phone').value.trim();
   const btn = document.getElementById('searchBtn');
-  
   if (!phone || phone.length < 9) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Enter Phone Number',
-      text: 'Please enter a valid 10-digit phone number',
-      confirmButtonColor: '#3a7bd5'
-    });
+    Swal.fire({ icon:'warning', title:'Enter Phone Number', text:'Please enter a valid 10-digit phone number', confirmButtonColor:'#3a7bd5' });
     return;
   }
-
-  // Show loading
-  btn.innerHTML = '<div class="spinner"></div> Searching...';
+  btn.innerHTML = '<div style="display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 1s linear infinite;margin-right:8px;"></div> Searching...';
   btn.disabled = true;
+  Swal.fire({ title:'Finding your booking...', allowOutsideClick:false, didOpen: ()=> Swal.showLoading() });
 
-  Swal.fire({
-    title: 'Finding your booking...',
-    allowOutsideClick: false,
-    didOpen: () => Swal.showLoading()
-  });
-
-  // Fetch from Google Sheets
   fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}`)
-    .then(response => response.json())
+    .then(r => r.json())
     .then(data => {
-      btn.innerHTML = '<span>🔍</span> Check My Booking';
-      btn.disabled = false;
-      Swal.close();
-
-      if (!data.success) {
-        Swal.fire({
-          icon: 'error',
-          title: 'No Booking Found',
-          text: 'We could not find a booking with this phone number',
-          confirmButtonColor: '#3a7bd5'
-        });
-        return;
-      }
-
-      // Display results
-      showBooking(data.booking);
+      btn.innerHTML = '🔍 Check My Booking'; btn.disabled = false; Swal.close();
+      if (!data.success) { Swal.fire({ icon:'error', title:'No Booking Found', text:'We could not find a booking with this phone number', confirmButtonColor:'#3a7bd5'}); return; }
+      renderBooking(data.booking);
     })
-    .catch(error => {
-      btn.innerHTML = '<span>🔍</span> Check My Booking';
-      btn.disabled = false;
-      Swal.close();
-      
-      Swal.fire({
-        icon: 'error',
-        title: 'Connection Error',
-        text: 'Please check your internet connection and try again',
-        confirmButtonColor: '#3a7bd5'
-      });
-      console.error('Error:', error);
+    .catch(err => {
+      btn.innerHTML = '🔍 Check My Booking'; btn.disabled = false; Swal.close();
+      Swal.fire({ icon:'error', title:'Connection Error', text:'Please check your internet connection and try again', confirmButtonColor:'#3a7bd5' });
+      console.error(err);
     });
 }
 
-// Display booking
-function showBooking(b) {
-  console.log('Booking data:', b);
-  
-  // Extract data (handles your exact column names)
-  const name = b.Name || '-';
-  const bus = b.Bus || '-';
-  const time = b.Time || '-';
-  const date = b.Date || '-';
-  const seat = b.Seat || '';
-  const pickup = b.Pickup || '-';
-  const payment = b.Payment || '-';
+/* ===================== Render booking ===================== */
+function renderBooking(b){
+  console.log('booking', b);
+  const passenger = getField(b, ['Passenger Name','Passenger','Name','Full Name','Pax']);
+  const bus = getField(b, ['Bus','Bus Name','Route','Service']);
+  const dateField = getField(b, ['Date','Travel Date','Departure Date','Journey Date','DateTime','Date/Time']);
+  const timeField = getField(b, ['Time','Departure Time','Time','Departure']);
+  const seatField = getField(b, ['Seat','Seats','Seat Number','Seat Numbers','SeatNo']);
+  const pickup = getField(b, ['Pickup','Pickup Location','Boarding','Boarding Point']);
+  const payment = getField(b, ['Payment','Amount','Payment Status']);
+  const ref = getField(b, ['Reference','Ref','BookingID','BookingRef','Booking ID']);
 
-  // Update display with proper formatting
-  document.getElementById('passengerName').textContent = name;
-  document.getElementById('busName').textContent = bus;
-  
-  // Format date
-  let displayDate = date;
-  if (date && date.includes('/')) {
-    // Format as DD/MM/YYYY to DD Mon YYYY
-    const parts = date.split('/');
-    if (parts.length === 3) {
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      const monthName = months[parseInt(parts[1]) - 1] || parts[1];
-      displayDate = `${parts[0]} ${monthName} ${parts[2]}`;
-    }
-  }
-  
-  document.getElementById('dateTime').textContent = `${displayDate} • ${time}`;
-  document.getElementById('pickupLocation').textContent = pickup;
-  
-  // Payment with badge
-  const paymentElement = document.getElementById('paymentAmount');
-  paymentElement.textContent = payment;
-  
-  if (payment && (payment.includes('/-') || payment.includes('Paid'))) {
-    paymentElement.innerHTML = payment + ' <span class="status-badge status-paid">Paid</span>';
+  document.getElementById('passengerName').textContent = passenger || '-';
+  document.getElementById('busName').textContent = bus || '-';
+
+  // date parsing
+  let finalDate = null;
+  if (dateField) finalDate = tryParseDate(dateField);
+  if (!finalDate && timeField) finalDate = tryParseDate(timeField);
+  if (!finalDate && isIsoString(seatField)) finalDate = tryParseDate(seatField);
+  const fmt = formatDateTimeForColombo(finalDate);
+  const dateTimeText = (fmt.dateStr && fmt.dateStr !== 'Invalid Date') ? `${fmt.dateStr} • ${fmt.timeStr}` : '-';
+  document.getElementById('dateTime').textContent = dateTimeText;
+
+  document.getElementById('pickupLocation').textContent = pickup || '-';
+  const paymentEl = document.getElementById('paymentAmount');
+  paymentEl.textContent = payment || '-';
+  if (payment && String(payment).toLowerCase().includes('paid')) {
+    paymentEl.innerHTML = `${escapeHtml(String(payment))} <span style="margin-left:8px;padding:4px 8px;border-radius:999px;background:#e8f5e9;color:#2e7d32;font-weight:800;font-size:11px;">Paid</span>`;
   }
 
-  // Display seats
-  const seatsBox = document.getElementById('seatsBox');
-  seatsBox.innerHTML = '';
-  
-  if (seat && seat.trim() !== '' && seat !== 'Not Updated') {
-    // Split seats by comma or space
-    const seats = seat.split(/[, ]+/).filter(s => s.trim() !== '');
-    
-    if (seats.length > 0) {
-      seats.forEach(seatNum => {
-        const seatElement = document.createElement('div');
-        seatElement.className = 'seat';
-        seatElement.innerHTML = `
-          <span>💺</span>
-          <div class="seat-number">${seatNum.trim()}</div>
-        `;
-        seatsBox.appendChild(seatElement);
-      });
-    } else {
-      seatsBox.innerHTML = '<div style="color:#666;font-style:italic;">No seat assigned</div>';
-    }
-  } else {
-    seatsBox.innerHTML = '<div style="color:#666;font-style:italic;">No seat assigned</div>';
-  }
+  document.getElementById('ticketRef').textContent = ref ? `Ref: ${ref}` : 'Ref: —';
+  document.getElementById('issuedAt').textContent = `Issued: ${new Date().toLocaleString()}`;
 
-  // Show results
+  // seats
+  const seatsBox = document.getElementById('seatsBox'); seatsBox.innerHTML = '';
+  const seatVal = seatField || '';
+  if (seatVal && String(seatVal).trim().toLowerCase() !== 'not updated') {
+    const seats = String(seatVal).split(/[,;\/\s]+/).filter(s => s.trim() !== '');
+    if (seats.length) {
+      seats.forEach(s => { const sp = document.createElement('span'); sp.className='seat-pill'; sp.textContent = s.trim(); seatsBox.appendChild(sp); });
+    } else seatsBox.innerHTML = '<div style="color:#666;font-style:italic;">No seat assigned</div>';
+  } else seatsBox.innerHTML = '<div style="color:#666;font-style:italic;">No seat assigned</div>';
+
   document.getElementById('box').style.display = 'block';
   document.getElementById('feedbackBox').style.display = 'block';
-  
-  // Smooth scroll to results
-  setTimeout(() => {
-    document.getElementById('box').scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-  }, 300);
+  setTimeout(()=> document.getElementById('box').scrollIntoView({behavior:'smooth', block:'start'}), 240);
 }
 
-// Send feedback
-function sendFeedback(answer) {
-  const phone = document.getElementById('phone').value.trim();
-  const feedbackBox = document.getElementById('feedbackBox');
-  
-  // Show sending state
-  const originalHTML = feedbackBox.innerHTML;
-  feedbackBox.innerHTML = `
-    <div style="text-align:center; padding:10px;">
-      <div class="spinner" style="margin:0 auto 10px;"></div>
-      <p>Sending feedback...</p>
+/* ===================== Print ===================== */
+function printTicket(){
+  const box = document.getElementById('box');
+  if (!box || box.style.display === 'none') return;
+  const html = `
+  <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Ticket</title>
+  <style>body{font-family:'Segoe UI',sans-serif;padding:18px;background:#fff;color:#071428} .ticket{max-width:700px;margin:0 auto;border-radius:12px;padding:18px;border:1px dashed #cfe8ff} .label{font-size:11px;color:#5f6f82;text-transform:uppercase;font-weight:800} .value{font-size:16px;font-weight:900;margin-top:6px;color:#0b2638} .seat{display:inline-block;padding:8px 12px;border-radius:999px;background:#eaf6ff;margin:6px 6px 6px 0;font-weight:800;border:1px solid rgba(15,111,177,0.12)}</style>
+  </head><body>
+    <div class="ticket">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-weight:900;color:#0f6fb1">🎫 Lagan Bus</div><div style="font-weight:700;color:#6b7f92">Premium Boarding Pass</div></div>
+        <div style="text-align:right"><div style="font-weight:800;color:#0f6fb1">${escapeHtml(document.getElementById('ticketRef').textContent)}</div><div style="font-size:12px;color:#6b7f92;margin-top:6px">${escapeHtml(document.getElementById('issuedAt').textContent)}</div></div>
+      </div>
+      <hr style="border:none;border-top:1px dashed rgba(0,0,0,0.06);margin:12px 0;">
+      <div style="margin-bottom:10px;"><div class="label">Passenger</div><div class="value">${escapeHtml(document.getElementById('passengerName').textContent)}</div></div>
+      <div style="display:flex;gap:12px;margin-bottom:10px"><div style="flex:1"><div class="label">Bus</div><div class="value">${escapeHtml(document.getElementById('busName').textContent)}</div></div><div style="flex:1"><div class="label">Date & Time</div><div class="value">${escapeHtml(document.getElementById('dateTime').textContent)}</div></div></div>
+      <div style="margin-bottom:10px"><div class="label">Pickup</div><div class="value">${escapeHtml(document.getElementById('pickupLocation').textContent)}</div></div>
+      <div style="margin-bottom:10px"><div class="label">Payment</div><div class="value">${escapeHtml(document.getElementById('paymentAmount').textContent)}</div></div>
+      <div style="margin-bottom:10px"><div class="label">Seats</div><div style="margin-top:8px">${[...document.querySelectorAll('#seatsBox .seat-pill')].map(n=>`<span class="seat">${escapeHtml(n.textContent)}</span>`).join('') || '<span style="color:#666;font-style:italic;">No seat assigned</span>'}</div></div>
     </div>
-  `;
-
-  // Send to Google Sheets
-  fetch(`${SCRIPT_URL}?action=feedback&phone=${encodeURIComponent(phone)}&answer=${encodeURIComponent(answer)}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Hide feedback with animation
-        feedbackBox.style.opacity = '0';
-        feedbackBox.style.transition = 'opacity 0.3s ease';
-        setTimeout(() => {
-          feedbackBox.style.display = 'none';
-          feedbackBox.innerHTML = originalHTML;
-        }, 300);
-        
-        // Thank you message
-        Swal.fire({
-          icon: 'success',
-          title: 'Thank You!',
-          text: 'Your feedback has been recorded.',
-          confirmButtonColor: '#3a7bd5',
-          timer: 1500,
-          showConfirmButton: false
-        });
-      } else {
-        feedbackBox.innerHTML = originalHTML;
-        Swal.fire({
-          icon: 'error',
-          title: 'Failed',
-          text: 'Could not send feedback. Please try again.',
-          confirmButtonColor: '#3a7bd5'
-        });
-      }
-    })
-    .catch(error => {
-      feedbackBox.innerHTML = originalHTML;
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Please check your connection and try again.',
-        confirmButtonColor: '#3a7bd5'
-      });
-    });
+    <script>window.onload=function(){ setTimeout(()=>{ window.print(); },200);}<\/script>
+  </body></html>`;
+  const w = window.open('','_blank','noopener');
+  if (!w) { Swal.fire({ icon:'error', title:'Popup Blocked', text:'Please allow popups to print the ticket.' }); return; }
+  w.document.open(); w.document.write(html); w.document.close();
 }
 
-// Add event listener
-document.getElementById('searchBtn').addEventListener('click', searchBooking);
-
-/* Soft lightning overlay */
-(function softLightning(){
-  const el = document.createElement('div');
-  el.style.position='fixed';
-  el.style.top='0'; el.style.left='0'; el.style.width='100%'; el.style.height='100%';
-  el.style.pointerEvents='none'; el.style.zIndex='6'; el.style.mixBlendMode='overlay';
-  document.body.appendChild(el);
-  function flash(){ 
-    el.animate([
-      {opacity:0},
-      {opacity:0.7},
-      {opacity:0}
-    ], {
-      duration: 300,
-      easing: 'ease-out'
-    }); 
-  }
-  setInterval(() => { 
-    if(Math.random() < 0.15) flash(); 
-  }, 5000);
-})();
-
-/* Respect reduced-motion */
-if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-  document.querySelectorAll('*').forEach(n => { 
-    n.style.animation = 'none'; 
-    n.style.transition = 'none'; 
-  });
+/* ===================== Feedback ===================== */
+function sendFeedback(answer){
+  const phone = document.getElementById('phone').value.trim();
+  const box = document.getElementById('feedbackBox');
+  const original = box.innerHTML;
+  box.innerHTML = `<div style="text-align:center;padding:10px;"><div style="display:inline-block;width:18px;height:18px;border:2px solid rgba(0,0,0,0.08);border-top-color:#3a7bd5;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:8px"></div><div>Sending feedback...</div></div>`;
+  fetch(`${SCRIPT_URL}?action=feedback&phone=${encodeURIComponent(phone)}&answer=${encodeURIComponent(answer)}`)
+    .then(r=>r.json()).then(data=>{
+      if (data.success) {
+        box.style.opacity='0'; box.style.transition='opacity .3s'; setTimeout(()=>{ box.style.display='none'; box.innerHTML = original; },320);
+        Swal.fire({ icon:'success', title:'Thank You!', text:'Your feedback has been recorded.', timer:1400, showConfirmButton:false, confirmButtonColor:'#3a7bd5' });
+      } else { box.innerHTML = original; Swal.fire({ icon:'error', title:'Failed', text:'Could not send feedback. Please try again.' }); }
+    }).catch(err => { box.innerHTML = original; Swal.fire({ icon:'error', title:'Error', text:'Please check your connection and try again.' }); });
 }
 </script>
 </body>
