@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Lagan Bus Booking — Check Your Seat</title>
+<title>Lagan Bus Booking</title>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -741,7 +741,7 @@ body {
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background: linear-gradient(135deg, var(--success), #059669);
+  background: linear-gradient(135deg, #fbbf24, #d97706);
   color: white;
   border: none;
   border-radius: var(--radius-md);
@@ -755,7 +755,7 @@ body {
 .download-btn:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
-  background: linear-gradient(135deg, #34d399, #059669);
+  background: linear-gradient(135deg, #d97706);
 }
 
 .download-btn:disabled {
@@ -1223,7 +1223,7 @@ body {
           <!-- Seats Section -->
           <div class="seats-section">
             <h3 class="section-title">
-              <span>💺</span> Your Seat Numbers
+             <!--  <span>💺</span> --> Your Seat Numbers
             </h3>
             <div class="seats-container" id="seatsBox" aria-live="polite"></div>
             <div id="seatCalculation" style="margin-top: 15px; font-size: 0.9rem; color: var(--text-secondary);"></div>
@@ -1232,11 +1232,11 @@ body {
           <!-- Download & Print Buttons -->
           <div class="download-section">
             <button id="downloadBtn" class="download-btn">
-              <span>📥</span> Download PDF Ticket
+              Download PDF Ticket
             </button>
-            <button id="printBtn" class="print-btn">
-              <span>🖨️</span> Print Ticket
-            </button>
+            <!--  <button id="printBtn" class="print-btn"> -->
+              <!--  <span>🖨️</span> Print Ticket -->
+            <!-- </button>  -->
           </div>
           
           <!-- Feedback Section -->
@@ -1258,7 +1258,7 @@ body {
   
   <!-- Footer -->
   <footer class="main-footer" role="contentinfo">
-    <p>Made with <span style="color:#e74c3c;">❤</span> by <span class="company-name">WEDOXA</span></p>
+    <p>Made with <span style="color:#e74c3c;">❤</span> by <span class="company-name">WE.DO.XA</span></p>
   </footer>
 </div>
 
@@ -1273,12 +1273,12 @@ body {
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
 
 // ===================== BUS PRICE CONFIGURATION =====================
-const BUS_PRICES = {
-  'bus1': 2500,
-  'bus2': 2500,
-  'bus3': 2500,
-  'default': 2500
-};
+// const BUS_PRICES = {
+ // 'bus1': 2500,
+ // 'bus2': 2500,
+  // 'bus3': 2500,
+  // 'default': 2500
+// };
 
 // ===================== INITIALIZATION =====================
 document.addEventListener('DOMContentLoaded', function() {
