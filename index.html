@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Lagan Bus Booking — Check Your Seat</title>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 /* ===================== BASE STYLES ===================== */
 :root {
@@ -21,6 +23,8 @@
   --border-light: #e2e8f0;
   --success: #10b981;
   --success-light: #d1fae5;
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
   --danger: #ef4444;
   --danger-light: #fee2e2;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
@@ -47,6 +51,8 @@
   --border-light: #334155;
   --success: #34d399;
   --success-light: #065f46;
+  --warning: #fbbf24;
+  --warning-light: #92400e;
   --danger: #f87171;
   --danger-light: #7f1d1d;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
@@ -68,23 +74,23 @@ body {
   min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
   line-height: 1.5;
-  padding-bottom: 70px; /* Space for bottom theme toggle */
+  padding-bottom: 70px;
 }
 
 /* Container - remove top padding so sky and header can touch */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px 20px; /* removed top padding to remove gap */
+  padding: 0 20px 20px;
 }
 
 /* ===================== COMPACT SKY SECTION ===================== */
 .sky-container {
   position: relative;
   width: 100%;
-  height: 150px; /* compact height */
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0; /* keep top rounded, bottom flush */
-  margin-bottom: 0; /* NO GAP - important */
+  height: 150px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  margin-bottom: 0;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -353,14 +359,13 @@ body {
 }
 
 /* ===================== HEADER & NAVIGATION ===================== */
-/* Ensure header touches sky — remove top margin */
 .main-header {
   text-align: center;
-  margin-top: 0; /* NO GAP above header */
+  margin-top: 0;
   margin-bottom: 20px;
   padding: 15px 20px;
   background: var(--bg-card);
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg); /* keep bottom rounded so header and sky look like a single card */
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border-light);
   position: relative;
@@ -759,6 +764,30 @@ body {
   transform: none !important;
 }
 
+/* ===================== PRINT BUTTON ===================== */
+.print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--warning), #d97706);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: var(--shadow-md);
+  margin-left: 10px;
+}
+
+.print-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(135deg, #fbbf24, #d97706);
+}
+
 /* ===================== FEEDBACK ===================== */
 .feedback-section {
   margin-top: 20px;
@@ -945,6 +974,16 @@ body {
   .feedback-btn {
     width: 100%;
   }
+  
+  .download-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .print-btn {
+    margin-left: 0;
+  }
 }
 
 @media (max-width: 480px) {
@@ -988,6 +1027,48 @@ body {
     padding: 6px 12px; 
     font-size: 0.85rem; 
   }
+}
+
+/* ===================== PDF PREVIEW ===================== */
+.pdf-preview {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.pdf-preview-content {
+  background: white;
+  border-radius: 10px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: auto;
+  box-shadow: 0 0 50px rgba(0,0,0,0.5);
+}
+
+.close-preview {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
 }
 </style>
 </head>
@@ -1142,16 +1223,19 @@ body {
           <!-- Seats Section -->
           <div class="seats-section">
             <h3 class="section-title">
-              Your Seat Numbers
+              <span>💺</span> Your Seat Numbers
             </h3>
             <div class="seats-container" id="seatsBox" aria-live="polite"></div>
             <div id="seatCalculation" style="margin-top: 15px; font-size: 0.9rem; color: var(--text-secondary);"></div>
           </div>
           
-          <!-- Download Button -->
+          <!-- Download & Print Buttons -->
           <div class="download-section">
             <button id="downloadBtn" class="download-btn">
-              <span>📥</span> Download Ticket
+              <span>📥</span> Download PDF Ticket
+            </button>
+            <button id="printBtn" class="print-btn">
+              <span>🖨️</span> Print Ticket
             </button>
           </div>
           
@@ -1178,45 +1262,25 @@ body {
   </footer>
 </div>
 
+<!-- PDF Preview Modal -->
+<div class="pdf-preview" id="pdfPreview">
+  <button class="close-preview" onclick="closePreview()">×</button>
+  <div class="pdf-preview-content" id="pdfPreviewContent"></div>
+</div>
+
 <script>
 // ===================== CONFIGURATION =====================
-// replace this URL with your Google Apps Script URL if needed
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
 
 // ===================== BUS PRICE CONFIGURATION =====================
-// This should match what's in your Google Sheet
 const BUS_PRICES = {
   'bus1': 2500,
   'bus2': 2500,
   'bus3': 2500,
-  'default': 2500 // Default price if bus name doesn't match
+  'default': 2500
 };
 
-// Function to extract price from a string
-function extractPriceFromString(priceStr) {
-  if (!priceStr) return BUS_PRICES.default;
-  
-  // Try to find any number in the string
-  const priceMatch = priceStr.match(/\d+/);
-  if (priceMatch) {
-    return parseInt(priceMatch[0]);
-  }
-  
-  // Check for common price indicators
-  if (priceStr.toLowerCase().includes('2500') || priceStr.toLowerCase().includes('2,500')) {
-    return 2500;
-  }
-  if (priceStr.toLowerCase().includes('3000') || priceStr.toLowerCase().includes('3,000')) {
-    return 3000;
-  }
-  if (priceStr.toLowerCase().includes('3500') || priceStr.toLowerCase().includes('3,500')) {
-    return 3500;
-  }
-  
-  return BUS_PRICES.default;
-}
-
-// ===================== SKY / THEME / UI INIT =====================
+// ===================== INITIALIZATION =====================
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize theme
   const savedTheme = localStorage.getItem('lagan-theme') || 'light';
@@ -1235,33 +1299,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }, 300);
 
   // Theme toggle event
-  document.getElementById('themeToggle').addEventListener('click', function() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-
-    if (newTheme === 'dark') {
-      document.body.classList.remove('sun-risen');
-      setTimeout(() => {
-        document.documentElement.setAttribute('data-theme', newTheme);
-        updateThemeUI(newTheme);
-        localStorage.setItem('lagan-theme', newTheme);
-        setTimeout(() => {
-          document.body.classList.add('moon-risen');
-          createShootingStars();
-        }, 200);
-      }, 200);
-    } else {
-      document.body.classList.remove('moon-risen');
-      setTimeout(() => {
-        document.documentElement.setAttribute('data-theme', newTheme);
-        updateThemeUI(newTheme);
-        localStorage.setItem('lagan-theme', newTheme);
-        setTimeout(() => {
-          document.body.classList.add('sun-risen');
-        }, 200);
-      }, 200);
-    }
-  });
+  document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
   // Phone input validation
   const phoneInput = document.getElementById('phone');
@@ -1280,8 +1318,40 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('searchBtn').addEventListener('click', searchBooking);
 
   // Download button event
-  document.getElementById('downloadBtn').addEventListener('click', downloadTicket);
+  document.getElementById('downloadBtn').addEventListener('click', downloadPDFTicket);
+
+  // Print button event
+  document.getElementById('printBtn').addEventListener('click', printTicket);
 });
+
+// ===================== THEME FUNCTIONS =====================
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+  if (newTheme === 'dark') {
+    document.body.classList.remove('sun-risen');
+    setTimeout(() => {
+      document.documentElement.setAttribute('data-theme', newTheme);
+      updateThemeUI(newTheme);
+      localStorage.setItem('lagan-theme', newTheme);
+      setTimeout(() => {
+        document.body.classList.add('moon-risen');
+        createShootingStars();
+      }, 200);
+    }, 200);
+  } else {
+    document.body.classList.remove('moon-risen');
+    setTimeout(() => {
+      document.documentElement.setAttribute('data-theme', newTheme);
+      updateThemeUI(newTheme);
+      localStorage.setItem('lagan-theme', newTheme);
+      setTimeout(() => {
+        document.body.classList.add('sun-risen');
+      }, 200);
+    }, 200);
+  }
+}
 
 function updateThemeUI(theme) {
   const themeIcon = document.getElementById('themeIcon');
@@ -1356,13 +1426,33 @@ function createShootingStars() {
   }, 3000);
 }
 
-// ===================== IMPROVED DATE/TIME FORMATTING =====================
+// ===================== HELPER FUNCTIONS =====================
+function extractPriceFromString(priceStr) {
+  if (!priceStr) return BUS_PRICES.default;
+  
+  const priceMatch = priceStr.match(/\d+/);
+  if (priceMatch) {
+    return parseInt(priceMatch[0]);
+  }
+  
+  if (priceStr.toLowerCase().includes('2500') || priceStr.toLowerCase().includes('2,500')) {
+    return 2500;
+  }
+  if (priceStr.toLowerCase().includes('3000') || priceStr.toLowerCase().includes('3,000')) {
+    return 3000;
+  }
+  if (priceStr.toLowerCase().includes('3500') || priceStr.toLowerCase().includes('3,500')) {
+    return 3500;
+  }
+  
+  return BUS_PRICES.default;
+}
+
 function formatDateTime(dateStr, timeStr) {
   if (!dateStr || dateStr.trim() === '') return { date: '-', time: '-' };
   
   let dateObj;
   
-  // Try parsing as ISO date (e.g., "2024-12-25T08:30:00Z")
   if (typeof dateStr === 'string' && dateStr.includes('T')) {
     dateObj = new Date(dateStr);
     if (!isNaN(dateObj.getTime())) {
@@ -1370,41 +1460,31 @@ function formatDateTime(dateStr, timeStr) {
     }
   }
   
-  // Try parsing Excel/Google Sheets date formats
-  // Common formats: "25/12/2024", "12/25/2024", "25-12-2024", "2024-12-25"
   if (typeof dateStr === 'string') {
-    // Remove any time portion if present
     const dateOnly = dateStr.split(' ')[0];
     
-    // Try DD/MM/YYYY or MM/DD/YYYY
     if (dateOnly.includes('/')) {
       const parts = dateOnly.split('/');
       if (parts.length === 3) {
-        // Determine if it's DD/MM/YYYY or MM/DD/YYYY
         let day, month, year;
         
         if (parts[0].length === 4) {
-          // YYYY/MM/DD
           year = parseInt(parts[0]);
           month = parseInt(parts[1]) - 1;
           day = parseInt(parts[2]);
         } else if (parts[2].length === 4) {
-          // DD/MM/YYYY or MM/DD/YYYY
           const first = parseInt(parts[0]);
           const second = parseInt(parts[1]);
           
           if (first > 12) {
-            // DD/MM/YYYY (first part > 12 must be day)
             day = first;
             month = second - 1;
             year = parseInt(parts[2]);
           } else if (second > 12) {
-            // MM/DD/YYYY (second part > 12 must be day)
             month = first - 1;
             day = second;
             year = parseInt(parts[2]);
           } else {
-            // Ambiguous - assume DD/MM/YYYY
             day = first;
             month = second - 1;
             year = parseInt(parts[2]);
@@ -1420,12 +1500,10 @@ function formatDateTime(dateStr, timeStr) {
       }
     }
     
-    // Try YYYY-MM-DD
     if (dateOnly.includes('-')) {
       const parts = dateOnly.split('-');
       if (parts.length === 3) {
         if (parts[0].length === 4) {
-          // YYYY-MM-DD
           dateObj = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
           if (!isNaN(dateObj.getTime())) {
             return formatDateObj(dateObj, timeStr);
@@ -1435,7 +1513,6 @@ function formatDateTime(dateStr, timeStr) {
     }
   }
   
-  // If all parsing fails, return the original string
   return { date: dateStr, time: timeStr || '-' };
 }
 
@@ -1447,11 +1524,9 @@ function formatDateObj(dateObj, timeStr) {
   
   let time = '-';
   
-  // If timeStr is provided separately
   if (timeStr && typeof timeStr === 'string' && timeStr.trim() !== '') {
     time = formatTimeString(timeStr);
   } else if (dateObj.getHours() > 0 || dateObj.getMinutes() > 0) {
-    // If time is included in the date object
     let hours = dateObj.getHours();
     const minutes = dateObj.getMinutes().toString().padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -1468,22 +1543,18 @@ function formatDateObj(dateObj, timeStr) {
 function formatTimeString(timeStr) {
   if (!timeStr) return '-';
   
-  // Remove any AM/PM and whitespace
   const cleanTime = timeStr.toString().trim().toUpperCase();
-  
-  // Try to extract hours and minutes
   const timeMatch = cleanTime.match(/(\d{1,2})[:.](\d{2})/);
   if (timeMatch) {
     let hours = parseInt(timeMatch[1]);
     const minutes = timeMatch[2];
     
-    // Check if it's PM
     const isPM = cleanTime.includes('PM') || (hours < 12 && cleanTime.includes('P'));
     
     if (isPM && hours < 12) {
       hours += 12;
     } else if (!isPM && hours === 12 && (cleanTime.includes('AM') || cleanTime.includes('A'))) {
-      hours = 0; // 12 AM is 00:00
+      hours = 0;
     }
     
     const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -1492,8 +1563,24 @@ function formatTimeString(timeStr) {
     return `${displayHours}:${minutes} ${ampm}`;
   }
   
-  // Return original if no match
   return timeStr;
+}
+
+function getField(obj, possibleNames) {
+  if (!obj) return null;
+  for (const name of possibleNames) {
+    const keys = Object.keys(obj);
+    for (const key of keys) {
+      if (key.toLowerCase().replace(/\s+/g, '') === name.toLowerCase().replace(/\s+/g, '')) {
+        return obj[key];
+      }
+    }
+  }
+  const keys = Object.keys(obj);
+  for (const name of possibleNames) {
+    if (keys.includes(name)) return obj[name];
+  }
+  return null;
 }
 
 // ===================== BOOKING SEARCH =====================
@@ -1511,7 +1598,6 @@ function searchBooking() {
     return;
   }
 
-  // Show loading state
   btn.innerHTML = '<div class="spinner"></div> Searching...';
   btn.disabled = true;
 
@@ -1521,7 +1607,6 @@ function searchBooking() {
     didOpen: () => Swal.showLoading()
   });
 
-  // Fetch from Google Sheets
   fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}`)
     .then(response => response.json())
     .then(data => {
@@ -1539,10 +1624,8 @@ function searchBooking() {
         return;
       }
 
-      // Display results
       renderBooking(data.booking);
 
-      // Scroll to results
       document.querySelector('.results-card').scrollIntoView({
         behavior: 'smooth',
         block: 'start'
@@ -1563,25 +1646,8 @@ function searchBooking() {
     });
 }
 
-// ===================== RENDER BOOKING DATA WITH PAYMENT CALCULATION =====================
+// ===================== RENDER BOOKING DATA =====================
 function renderBooking(b) {
-  function getField(obj, possibleNames) {
-    if (!obj) return null;
-    for (const name of possibleNames) {
-      const keys = Object.keys(obj);
-      for (const key of keys) {
-        if (key.toLowerCase().replace(/\s+/g, '') === name.toLowerCase().replace(/\s+/g, '')) {
-          return obj[key];
-        }
-      }
-    }
-    const keys = Object.keys(obj);
-    for (const name of possibleNames) {
-      if (keys.includes(name)) return obj[name];
-    }
-    return null;
-  }
-
   const name = getField(b, ['Name', 'Passenger', 'Passenger Name', 'Full Name', 'Customer Name']) || '-';
   const bus = getField(b, ['Bus', 'Bus Name', 'Vehicle', 'Bus Number', 'Service']) || '-';
   const date = getField(b, ['Date', 'Travel Date', 'Journey Date', 'Departure Date', 'Date/Time']) || '';
@@ -1591,11 +1657,9 @@ function renderBooking(b) {
   const payment = getField(b, ['Payment', 'Amount', 'Payment Status', 'Fare', 'Price', 'Seat Price', 'Per Seat']) || '';
   const bookingId = getField(b, ['Booking ID', 'Reference', 'Ref No', 'Ticket No']) || '';
 
-  // Update display
   document.getElementById('passengerName').textContent = name;
   document.getElementById('busName').textContent = bus;
 
-  // Format date/time using improved function
   const formatted = formatDateTime(date, time);
   let displayDateTime = `${formatted.date} • ${formatted.time}`;
   
@@ -1605,7 +1669,6 @@ function renderBooking(b) {
   document.getElementById('dateTime').textContent = displayDateTime;
   document.getElementById('pickupLocation').textContent = pickup;
 
-  // ===================== SEATS DISPLAY & PAYMENT CALCULATION =====================
   const seatsBox = document.getElementById('seatsBox');
   const seatCalculation = document.getElementById('seatCalculation');
   seatsBox.innerHTML = '';
@@ -1630,10 +1693,8 @@ function renderBooking(b) {
         seatsBox.appendChild(seatElement);
       });
       
-      // Calculate total amount
       totalAmount = seatPrice * totalSeats;
       
-      // Show calculation breakdown
       seatCalculation.innerHTML = `
         <div style="background: var(--light-blue); padding: 12px; border-radius: var(--radius-sm); margin-top: 10px;">
           <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
@@ -1659,7 +1720,6 @@ function renderBooking(b) {
     totalAmount = 0;
   }
 
-  // ===================== PAYMENT DISPLAY =====================
   const paymentElement = document.getElementById('paymentAmount');
   
   if (totalSeats > 0 && totalAmount > 0) {
@@ -1672,13 +1732,11 @@ function renderBooking(b) {
       </div>
     `;
   } else if (payment && payment.trim() !== '') {
-    // Show the original payment text if no seats but payment exists
     paymentElement.textContent = payment;
   } else {
     paymentElement.textContent = 'Not Updated';
   }
 
-  // Show results
   document.getElementById('bookingDetails').style.display = 'block';
   document.getElementById('feedbackSection').style.display = 'block';
   const nr = document.getElementById('resultsBody').querySelector('.no-results');
@@ -1688,7 +1746,6 @@ function renderBooking(b) {
   bookingDetails.classList.remove('fade-in');
   setTimeout(() => bookingDetails.classList.add('fade-in'), 10);
 
-  // Store data for download
   window.currentBookingData = {
     passengerName: name,
     busName: bus,
@@ -1705,8 +1762,8 @@ function renderBooking(b) {
   };
 }
 
-// ===================== TICKET DOWNLOAD =====================
-function downloadTicket() {
+// ===================== PDF TICKET GENERATION =====================
+function downloadPDFTicket() {
   const data = window.currentBookingData;
   if (!data) {
     Swal.fire({
@@ -1720,145 +1777,611 @@ function downloadTicket() {
 
   const downloadBtn = document.getElementById('downloadBtn');
   const originalText = downloadBtn.innerHTML;
-  downloadBtn.innerHTML = '<div class="spinner"></div> Preparing...';
+  downloadBtn.innerHTML = '<div class="spinner"></div> Generating PDF...';
   downloadBtn.disabled = true;
 
-  // Create ticket HTML
-  const ticketHtml = `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Lagan Bus Ticket - ${data.passengerName}</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-    body { background: #f5f7fa; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-    .ticket { width: 100%; max-width: 400px; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-    .ticket-header { background: linear-gradient(135deg, #3a7bd5, #67b8f7); color: white; padding: 25px; text-align: center; }
-    .ticket-title { font-size: 24px; font-weight: 800; margin-bottom: 5px; }
-    .ticket-subtitle { font-size: 13px; opacity: 0.9; }
-    .ticket-body { padding: 25px; }
-    .passenger-name { text-align: center; font-size: 22px; font-weight: 800; color: #1e40af; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px dashed #e2e8f0; }
-    .info-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 25px; }
-    .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
-    .info-label { font-size: 13px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-    .info-value { font-size: 15px; font-weight: 700; color: #0f172a; }
-    .calculation-box { background: #f0f9ff; padding: 15px; border-radius: 10px; margin: 15px 0; }
-    .calc-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
-    .calc-total { border-top: 1px solid #cbd5e1; padding-top: 8px; margin-top: 8px; font-weight: 700; color: #0369a1; }
-    .seats-section { background: linear-gradient(135deg, rgba(58,123,213,0.05), rgba(103,184,247,0.02)); padding: 20px; border-radius: 10px; border: 1px dashed #dbeafe; margin-bottom: 25px; text-align: center; }
-    .seats-title { font-size: 16px; font-weight: 700; color: #1e40af; margin-bottom: 15px; }
-    .seats-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-    .seat { width: 45px; height: 45px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #3a7bd5, #1a5cb0); color: white; font-weight: 800; font-size: 14px; }
-    .contact-info { text-align: center; padding: 18px; background: #f0f9ff; border-radius: 10px; margin-bottom: 20px; }
-    .contact-title { font-weight: 700; color: #0369a1; margin-bottom: 8px; font-size: 15px; }
-    .contact-number { color: #475569; font-weight: 600; font-size: 16px; }
-    .ticket-footer { text-align: center; padding: 20px; color: #64748b; font-size: 12px; border-top: 1px solid #e2e8f0; }
-    @media print { body { background: white; padding: 0; } .ticket { box-shadow: none; } }
-  </style>
-</head>
-<body>
-  <div class="ticket">
-    <div class="ticket-header">
-      <h1 class="ticket-title">LAGAN BUS TICKET</h1>
-      <p class="ticket-subtitle">Safe Travels. May God Bless Your Journey.</p>
-    </div>
-    
-    <div class="ticket-body">
-      <div class="passenger-name">${data.passengerName}</div>
-      
-      <div class="info-grid">
-        <div class="info-row">
-          <div class="info-label">Bus Name</div>
-          <div class="info-value">${data.busName}</div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Date & Time</div>
-          <div class="info-value">${data.dateTime}</div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Pickup Location</div>
-          <div class="info-value">${data.pickupLocation}</div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Phone Number</div>
-          <div class="info-value">${data.phone}</div>
-        </div>
-      </div>
-      
-      <div class="calculation-box">
-        <div class="calc-row">
-          <span>Seats Booked:</span>
-          <span>${data.totalSeats} seat${data.totalSeats > 1 ? 's' : ''}</span>
-        </div>
-        <div class="calc-row">
-          <span>Price per Seat:</span>
-          <span>Rs. ${data.seatPrice ? data.seatPrice.toLocaleString() : '0'}</span>
-        </div>
-        <div class="calc-row calc-total">
-          <span>Total Amount:</span>
-          <span style="color: #059669; font-weight: 800;">Rs. ${data.totalAmount ? data.totalAmount.toLocaleString() : '0'}</span>
-        </div>
-      </div>
-      
-      <div class="seats-section">
-        <h3 class="seats-title">💺 Seat Numbers</h3>
-        <div class="seats-container">
-          ${data.seats && data.seats.trim() !== '' && data.seats.toLowerCase() !== 'not updated' ? 
-            data.seats.split(/[, \/]+/).filter(s => s.trim() !== '').map(seat => `
-              <div class="seat">${seat.trim()}</div>
-            `).join('') : 
-            '<div style="color:#64748b;font-style:italic;padding:10px;">No seat assigned</div>'
-          }
-        </div>
-      </div>
-      
-      <div class="contact-info">
-        <p class="contact-title">📞 Contact Information</p>
-        <p class="contact-number">0777 402 886 (Mr. Fawas)</p>
-        <p style="font-size: 12px; color: #64748b; margin-top: 5px;">For any inquiries or changes</p>
-      </div>
-      
-      <div class="ticket-footer">
-        <p>Ticket ID: ${data.bookingId || 'N/A'} | Generated: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
-        <p style="margin-top: 8px; font-weight: 600;">Made with ❤ by WEDOXA</p>
-      </div>
-    </div>
-  </div>
-  
-  <script>
-    setTimeout(() => {
-      window.print();
-    }, 500);
-  <\/script>
-</body>
-</html>`;
+  const ticketId = data.bookingId || `LAGAN-${Date.now().toString().slice(-6)}`;
+  const generatedTime = new Date().toLocaleString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
 
-  // Create blob and download
-  const blob = new Blob([ticketHtml], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `Lagan-Bus-Ticket-${data.passengerName.replace(/[^a-z0-9]/gi, '-')}.html`;
-  document.body.appendChild(a);
-  a.click();
-  
-  // Clean up
-  setTimeout(() => {
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  const tempDiv = document.createElement('div');
+  tempDiv.style.cssText = `
+    position: fixed;
+    top: -1000px;
+    left: -1000px;
+    width: 800px;
+    padding: 30px;
+    background: white;
+    z-index: 9999;
+  `;
+
+  tempDiv.innerHTML = `
+    <div id="ticketForPDF" style="
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      border: 2px solid #3a7bd5;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      background: white;
+      width: 100%;
+      max-width: 750px;
+      margin: 0 auto;
+    ">
+      <!-- Ticket Header -->
+      <div style="
+        background: linear-gradient(135deg, #3a7bd5, #67b8f7);
+        color: white;
+        padding: 25px 30px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      ">
+        <div style="
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          background: rgba(255,255,255,0.15);
+          padding: 5px 15px;
+          border-radius: 20px;
+          font-size: 12px;
+          font-weight: 600;
+        ">
+          ${ticketId}
+        </div>
+        <h1 style="
+          font-size: 32px;
+          font-weight: 900;
+          margin: 10px 0 5px 0;
+          letter-spacing: 1px;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        ">LAGAN BUS TICKET</h1>
+        <p style="
+          font-size: 14px;
+          opacity: 0.95;
+          margin-bottom: 5px;
+          font-weight: 500;
+        ">Safe Travels. May God Bless Your Journey.</p>
+        <div style="
+          display: inline-block;
+          background: rgba(255,255,255,0.2);
+          padding: 6px 20px;
+          border-radius: 50px;
+          font-size: 13px;
+          margin-top: 10px;
+        ">
+          📅 ${data.dateTime}
+        </div>
+      </div>
+
+      <!-- Ticket Body -->
+      <div style="padding: 30px;">
+        <!-- Passenger Info -->
+        <div style="
+          text-align: center;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 2px dashed #e2e8f0;
+        ">
+          <div style="
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+          ">Passenger</div>
+          <div style="
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e40af;
+            letter-spacing: 0.5px;
+          ">${data.passengerName}</div>
+        </div>
+
+        <!-- Journey Details -->
+        <div style="
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 20px;
+          margin-bottom: 30px;
+        ">
+          <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 8px;">🚌 Bus Name</div>
+            <div style="font-size: 18px; font-weight: 700; color: #0f172a;">${data.busName}</div>
+          </div>
+          
+          <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 8px;">📍 Pickup Location</div>
+            <div style="font-size: 18px; font-weight: 700; color: #0f172a;">${data.pickupLocation}</div>
+          </div>
+          
+          <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 8px;">📞 Phone Number</div>
+            <div style="font-size: 18px; font-weight: 700; color: #0f172a;">${data.phone}</div>
+          </div>
+          
+          <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 8px;">💰 Total Amount</div>
+            <div style="font-size: 18px; font-weight: 700; color: #059669;">
+              Rs. ${data.totalAmount ? data.totalAmount.toLocaleString() : '0'}
+            </div>
+          </div>
+        </div>
+
+        <!-- Seats Section -->
+        <div style="
+          background: linear-gradient(135deg, rgba(58,123,213,0.05), rgba(103,184,247,0.02));
+          border: 1px dashed #dbeafe;
+          border-radius: 15px;
+          padding: 25px;
+          margin-bottom: 25px;
+        ">
+          <div style="
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+          ">
+            <span>💺</span> Your Seat Numbers
+          </div>
+          
+          <div style="
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            min-height: 60px;
+          ">
+            ${data.seats && data.seats.trim() !== '' && data.seats.toLowerCase() !== 'not updated' ? 
+              data.seats.split(/[, \/]+/).filter(s => s.trim() !== '').map(seat => `
+                <div style="
+                  width: 60px;
+                  height: 60px;
+                  border-radius: 12px;
+                  background: linear-gradient(135deg, #3a7bd5, #1a5cb0);
+                  color: white;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 18px;
+                  font-weight: 800;
+                  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                ">${seat.trim()}</div>
+              `).join('') : 
+              `<div style="
+                padding: 20px;
+                text-align: center;
+                color: #64748b;
+                font-style: italic;
+                background: #f1f5f9;
+                border-radius: 10px;
+                width: 100%;
+              ">No seat assigned yet. Please contact Mr. Fawas.</div>`
+            }
+          </div>
+          
+          ${data.calculation ? `
+            <div style="
+              background: #f0f9ff;
+              border-radius: 10px;
+              padding: 15px;
+              margin-top: 20px;
+              border-left: 4px solid #3a7bd5;
+            ">
+              <div style="font-size: 14px; color: #0369a1; font-weight: 700; margin-bottom: 10px;">Payment Breakdown:</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px;">
+                <div>Seats Booked:</div>
+                <div style="text-align: right; font-weight: 600;">${data.totalSeats} seat${data.totalSeats > 1 ? 's' : ''}</div>
+                <div>Price per Seat:</div>
+                <div style="text-align: right; font-weight: 600;">Rs. ${data.seatPrice ? data.seatPrice.toLocaleString() : '0'}</div>
+                <div style="border-top: 1px solid #cbd5e1; padding-top: 8px; font-weight: 700;">Total Amount:</div>
+                <div style="border-top: 1px solid #cbd5e1; padding-top: 8px; text-align: right; font-weight: 700; color: #059669;">
+                  Rs. ${data.totalAmount ? data.totalAmount.toLocaleString() : '0'}
+                </div>
+              </div>
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- Contact & Footer -->
+        <div style="
+          background: #f8fafc;
+          border-radius: 15px;
+          padding: 25px;
+          border: 1px solid #e2e8f0;
+          text-align: center;
+        ">
+          <div style="
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+          ">
+            <span>📞</span> Contact Information
+          </div>
+          
+          <div style="
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #dbeafe;
+          ">
+            <div style="font-size: 18px; font-weight: 800; color: #3a7bd5; margin-bottom: 5px;">
+              0777 402 886
+            </div>
+            <div style="font-size: 14px; color: #475569;">Mr. Fawas - For Reservations & Inquiries</div>
+          </div>
+          
+          <div style="font-size: 11px; color: #64748b; margin-top: 20px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
+            <p style="margin-bottom: 8px;">Generated: ${generatedTime}</p>
+            <p style="font-weight: 600; color: #3a7bd5;">Made with ❤ by WEDOXA • Lagan Bus Services</p>
+            <p style="font-size: 10px; margin-top: 10px; color: #94a3b8;">
+              This is an official e-ticket. Please show this PDF to the bus conductor.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(tempDiv);
+
+  html2canvas(tempDiv.querySelector('#ticketForPDF'), {
+    scale: 2,
+    useCORS: true,
+    logging: false,
+    backgroundColor: '#ffffff'
+  }).then(canvas => {
+    document.body.removeChild(tempDiv);
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+
+    const imgData = canvas.toDataURL('image/png');
+    const imgWidth = 210;
+    const pageHeight = 297;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    
+    const x = 0;
+    let y = (pageHeight - imgHeight) / 2;
+    
+    if (imgHeight > pageHeight) {
+      y = 0;
+      pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+      pdf.setFontSize(10);
+      pdf.setTextColor(150, 150, 150);
+      pdf.text('Page 1 of 1', 105, 290, { align: 'center' });
+    } else {
+      pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+    }
+
+    const fileName = `Lagan-Ticket-${data.passengerName.replace(/[^a-z0-9]/gi, '-')}-${ticketId}.pdf`;
+    pdf.save(fileName);
+
+    downloadBtn.innerHTML = originalText;
+    downloadBtn.disabled = false;
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Ticket Downloaded!',
+      html: `Your PDF ticket has been saved as:<br><strong>${fileName}</strong>`,
+      confirmButtonColor: '#3a7bd5',
+      timer: 3000,
+      showConfirmButton: true
+    });
+  }).catch(error => {
+    console.error('Error generating PDF:', error);
+    document.body.removeChild(tempDiv);
+    
     downloadBtn.innerHTML = originalText;
     downloadBtn.disabled = false;
     
     Swal.fire({
-      icon: 'success',
-      title: 'Ticket Downloaded!',
-      text: 'Your ticket has been saved successfully',
-      confirmButtonColor: '#3a7bd5',
-      timer: 2000,
-      showConfirmButton: false
+      icon: 'error',
+      title: 'PDF Generation Failed',
+      text: 'Please try again or use the Print option',
+      confirmButtonColor: '#3a7bd5'
     });
-  }, 1000);
+  });
+}
+
+// ===================== PRINT TICKET =====================
+function printTicket() {
+  const data = window.currentBookingData;
+  if (!data) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'No Booking Data',
+      text: 'Please search for a booking first',
+      confirmButtonColor: '#3a7bd5'
+    });
+    return;
+  }
+
+  const printBtn = document.getElementById('printBtn');
+  const originalText = printBtn.innerHTML;
+  printBtn.innerHTML = '<div class="spinner"></div> Preparing...';
+  printBtn.disabled = true;
+
+  const ticketId = data.bookingId || `LAGAN-${Date.now().toString().slice(-6)}`;
+  const generatedTime = new Date().toLocaleString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Lagan Bus Ticket - ${data.passengerName}</title>
+      <style>
+        @media print {
+          @page { margin: 0; }
+          body { margin: 0.5cm; }
+        }
+        body {
+          font-family: 'Segoe UI', sans-serif;
+          margin: 0;
+          padding: 20px;
+          background: #f5f7fa;
+        }
+        .ticket {
+          max-width: 800px;
+          margin: 0 auto;
+          background: white;
+          border-radius: 20px;
+          overflow: hidden;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          border: 2px solid #3a7bd5;
+        }
+        .ticket-header {
+          background: linear-gradient(135deg, #3a7bd5, #67b8f7);
+          color: white;
+          padding: 25px 30px;
+          text-align: center;
+          position: relative;
+        }
+        .ticket-id {
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          background: rgba(255,255,255,0.15);
+          padding: 5px 15px;
+          border-radius: 20px;
+          font-size: 12px;
+          font-weight: 600;
+        }
+        .ticket-title {
+          font-size: 32px;
+          font-weight: 900;
+          margin: 10px 0 5px 0;
+          letter-spacing: 1px;
+        }
+        .ticket-subtitle {
+          font-size: 14px;
+          opacity: 0.95;
+          margin-bottom: 5px;
+          font-weight: 500;
+        }
+        .ticket-body {
+          padding: 30px;
+        }
+        .passenger-section {
+          text-align: center;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 2px dashed #e2e8f0;
+        }
+        .passenger-label {
+          font-size: 13px;
+          color: #64748b;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin-bottom: 8px;
+        }
+        .passenger-name {
+          font-size: 28px;
+          font-weight: 800;
+          color: #1e40af;
+          letter-spacing: 0.5px;
+        }
+        .details-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 20px;
+          margin-bottom: 30px;
+        }
+        .detail-card {
+          background: #f8fafc;
+          padding: 20px;
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+        }
+        .detail-label {
+          font-size: 12px;
+          color: #64748b;
+          font-weight: 600;
+          margin-bottom: 8px;
+        }
+        .detail-value {
+          font-size: 18px;
+          font-weight: 700;
+          color: #0f172a;
+        }
+        .seats-section {
+          background: linear-gradient(135deg, rgba(58,123,213,0.05), rgba(103,184,247,0.02));
+          border: 1px dashed #dbeafe;
+          border-radius: 15px;
+          padding: 25px;
+          margin-bottom: 25px;
+        }
+        .seats-title {
+          text-align: center;
+          font-size: 18px;
+          font-weight: 700;
+          color: #1e40af;
+          margin-bottom: 20px;
+        }
+        .seats-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          justify-content: center;
+          min-height: 60px;
+        }
+        .seat-box {
+          width: 60px;
+          height: 60px;
+          border-radius: 12px;
+          background: linear-gradient(135deg, #3a7bd5, #1a5cb0);
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 18px;
+          font-weight: 800;
+        }
+        .contact-section {
+          background: #f8fafc;
+          border-radius: 15px;
+          padding: 25px;
+          border: 1px solid #e2e8f0;
+          text-align: center;
+        }
+        .contact-title {
+          font-size: 16px;
+          font-weight: 700;
+          color: #1e40af;
+          margin-bottom: 15px;
+        }
+        .contact-info {
+          background: white;
+          padding: 15px;
+          border-radius: 10px;
+          margin-bottom: 15px;
+          border: 1px solid #dbeafe;
+        }
+        .contact-number {
+          font-size: 18px;
+          font-weight: 800;
+          color: #3a7bd5;
+          margin-bottom: 5px;
+        }
+        .footer {
+          font-size: 11px;
+          color: #64748b;
+          margin-top: 20px;
+          padding-top: 15px;
+          border-top: 1px solid #e2e8f0;
+          text-align: center;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="ticket">
+        <div class="ticket-header">
+          <div class="ticket-id">${ticketId}</div>
+          <h1 class="ticket-title">LAGAN BUS TICKET</h1>
+          <p class="ticket-subtitle">Safe Travels. May God Bless Your Journey.</p>
+          <div style="display: inline-block; background: rgba(255,255,255,0.2); padding: 6px 20px; border-radius: 50px; font-size: 13px; margin-top: 10px;">
+            📅 ${data.dateTime}
+          </div>
+        </div>
+        
+        <div class="ticket-body">
+          <div class="passenger-section">
+            <div class="passenger-label">Passenger</div>
+            <div class="passenger-name">${data.passengerName}</div>
+          </div>
+          
+          <div class="details-grid">
+            <div class="detail-card">
+              <div class="detail-label">🚌 Bus Name</div>
+              <div class="detail-value">${data.busName}</div>
+            </div>
+            <div class="detail-card">
+              <div class="detail-label">📍 Pickup Location</div>
+              <div class="detail-value">${data.pickupLocation}</div>
+            </div>
+            <div class="detail-card">
+              <div class="detail-label">📞 Phone Number</div>
+              <div class="detail-value">${data.phone}</div>
+            </div>
+            <div class="detail-card">
+              <div class="detail-label">💰 Total Amount</div>
+              <div class="detail-value" style="color: #059669;">Rs. ${data.totalAmount ? data.totalAmount.toLocaleString() : '0'}</div>
+            </div>
+          </div>
+          
+          <div class="seats-section">
+            <h3 class="seats-title">💺 Your Seat Numbers</h3>
+            <div class="seats-container">
+              ${data.seats && data.seats.trim() !== '' && data.seats.toLowerCase() !== 'not updated' ? 
+                data.seats.split(/[, \/]+/).filter(s => s.trim() !== '').map(seat => `
+                  <div class="seat-box">${seat.trim()}</div>
+                `).join('') : 
+                `<div style="padding: 20px; text-align: center; color: #64748b; font-style: italic; background: #f1f5f9; border-radius: 10px; width: 100%;">
+                  No seat assigned yet. Please contact Mr. Fawas.
+                </div>`
+              }
+            </div>
+          </div>
+          
+          <div class="contact-section">
+            <h3 class="contact-title">📞 Contact Information</h3>
+            <div class="contact-info">
+              <div class="contact-number">0777 402 886</div>
+              <div style="font-size: 14px; color: #475569;">Mr. Fawas - For Reservations & Inquiries</div>
+            </div>
+          </div>
+          
+          <div class="footer">
+            <p>Generated: ${generatedTime}</p>
+            <p style="font-weight: 600; color: #3a7bd5;">Made with ❤ by WEDOXA • Lagan Bus Services</p>
+            <p style="font-size: 10px; margin-top: 10px; color: #94a3b8;">
+              This is an official e-ticket. Please show this to the bus conductor.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <script>
+        setTimeout(() => {
+          window.print();
+          window.close();
+        }, 500);
+      <\/script>
+    </body>
+    </html>
+  `);
+  printWindow.document.close();
+
+  printBtn.innerHTML = originalText;
+  printBtn.disabled = false;
 }
 
 // ===================== FEEDBACK SYSTEM =====================
@@ -1874,26 +2397,22 @@ function sendFeedback(answer) {
     return;
   }
 
-  // Get the clicked button
   const clickedBtn = event.target.closest('.feedback-btn');
   const originalHTML = clickedBtn.innerHTML;
   const originalBg = clickedBtn.style.background;
   const originalColor = clickedBtn.style.color;
   const originalBorder = clickedBtn.style.borderColor;
   
-  // Immediately show visual feedback on button
   clickedBtn.innerHTML = `<span>✓</span> ${answer === 'Yes' ? 'Yes, All Good' : 'No, Issue Found'}`;
   clickedBtn.style.background = answer === 'Yes' ? 'var(--success-light)' : 'var(--danger-light)';
   clickedBtn.style.color = answer === 'Yes' ? 'var(--success)' : 'var(--danger)';
   clickedBtn.style.borderColor = answer === 'Yes' ? 'var(--success)' : 'var(--danger)';
   clickedBtn.disabled = true;
   
-  // Send feedback to Google Apps Script
   fetch(`${SCRIPT_URL}?action=feedback&phone=${encodeURIComponent(phone)}&answer=${encodeURIComponent(answer)}`)
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        // Show quick checkmark confirmation
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',
@@ -1911,7 +2430,6 @@ function sendFeedback(answer) {
           title: 'Feedback saved'
         });
         
-        // Keep button highlighted for 3 seconds, then reset
         setTimeout(() => {
           clickedBtn.innerHTML = originalHTML;
           clickedBtn.style.background = originalBg;
@@ -1920,7 +2438,6 @@ function sendFeedback(answer) {
           clickedBtn.disabled = false;
         }, 3000);
       } else {
-        // Reset button immediately on error
         clickedBtn.innerHTML = originalHTML;
         clickedBtn.style.background = originalBg;
         clickedBtn.style.color = originalColor;
@@ -1938,7 +2455,6 @@ function sendFeedback(answer) {
       }
     })
     .catch(error => {
-      // Reset button on error
       clickedBtn.innerHTML = originalHTML;
       clickedBtn.style.background = originalBg;
       clickedBtn.style.color = originalColor;
@@ -1955,6 +2471,17 @@ function sendFeedback(answer) {
       });
       console.error('Feedback error:', error);
     });
+}
+
+// ===================== PDF PREVIEW FUNCTIONS =====================
+function showPreview(html) {
+  document.getElementById('pdfPreviewContent').innerHTML = html;
+  document.getElementById('pdfPreview').style.display = 'flex';
+}
+
+function closePreview() {
+  document.getElementById('pdfPreview').style.display = 'none';
+  document.getElementById('pdfPreviewContent').innerHTML = '';
 }
 </script>
 </body>
