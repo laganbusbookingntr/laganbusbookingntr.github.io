@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,38 +6,187 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Lagan Bus Booking — Modern Booking Portal</title>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Lottie Animations -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.8/lottie.min.js"></script>
 <style>
-/* ===================== MODERN BLUE THEME WITH ADVANCED FEATURES ===================== */
+/* ===================== INTRO PAGE ===================== */
+.intro-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0EA5E9 0%, #1D4ED8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.intro-content {
+  text-align: center;
+  color: white;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+}
+
+.intro-logo {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 30px;
+  position: relative;
+}
+
+.intro-logo-icon {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: white;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  animation: logoFloat 2s ease-in-out infinite;
+}
+
+.intro-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.intro-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 40px;
+  line-height: 1.5;
+}
+
+/* Bus Animation Container */
+.bus-animation-container {
+  width: 300px;
+  height: 150px;
+  margin: 0 auto 40px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bus-track {
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.bus {
+  position: absolute;
+  bottom: 20px;
+  left: -100px;
+  font-size: 48px;
+  color: white;
+  animation: busDrive 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.5s;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes busDrive {
+  0% {
+    left: -100px;
+    transform: translateY(0) rotate(0deg);
+  }
+  20% {
+    transform: translateY(-10px) rotate(-5deg);
+  }
+  40% {
+    transform: translateY(0) rotate(5deg);
+  }
+  60% {
+    transform: translateY(-5px) rotate(-3deg);
+  }
+  80% {
+    transform: translateY(0) rotate(3deg);
+  }
+  100% {
+    left: 120%;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/* Loading Dots */
+.loading-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: dotPulse 1.5s ease-in-out infinite;
+}
+
+.dot:nth-child(1) { animation-delay: 0s; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+    background: rgba(255, 255, 255, 0.6);
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+    background: white;
+  }
+}
+
+/* ===================== MODERN BLUE THEME ===================== */
 :root {
-  /* Professional Blue Palette */
   --primary-blue: #0EA5E9;
   --secondary-blue: #1D4ED8;
   --accent-blue: #38BDF8;
   --light-blue: #E0F2FE;
   --dark-blue: #0C4A6E;
-  --navy-blue: #1E3A8A;
+  --success-green: #10B981;
+  --warning-orange: #F59E0B;
   --gradient-primary: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
   --gradient-glass: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(29, 78, 216, 0.05) 100%);
-  
-  /* Modern Design System */
-  --glass-bg: rgba(255, 255, 255, 0.9);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --shadow-soft: 0 8px 32px rgba(14, 165, 233, 0.08);
-  --shadow-medium: 0 12px 48px rgba(14, 165, 233, 0.12);
-  --shadow-hard: 0 20px 60px rgba(14, 165, 233, 0.2);
-  
-  /* Animation Variables */
-  --transition-smooth: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-bounce: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --glass-bg: rgba(255, 255, 255, 0.98);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --shadow-soft: 0 4px 20px rgba(14, 165, 233, 0.08);
+  --shadow-medium: 0 8px 32px rgba(14, 165, 233, 0.12);
+  --shadow-hard: 0 12px 48px rgba(14, 165, 233, 0.2);
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-theme="dark"] {
-  --glass-bg: rgba(30, 41, 59, 0.9);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --gradient-glass: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(29, 78, 216, 0.1) 100%);
+  --glass-bg: rgba(15, 23, 42, 0.98);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --dark-blue: #F1F5F9;
+  --light-blue: #1E293B;
 }
 
 * {
@@ -51,129 +201,59 @@ body {
   color: var(--dark-blue);
   min-height: 100vh;
   overflow-x: hidden;
-  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  opacity: 0;
+  animation: fadeIn 0.5s ease 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 [data-theme="dark"] body {
   background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  color: #E2E8F0;
 }
 
-/* ===================== ANIMATED BACKGROUND ELEMENTS ===================== */
-.animated-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+/* Hide main content initially */
+body.loading .modern-header,
+body.loading .container,
+body.loading .theme-toggle-enhanced {
+  opacity: 0;
   pointer-events: none;
-  z-index: -1;
-  overflow: hidden;
 }
 
-.floating-element {
-  position: absolute;
-  background: var(--gradient-primary);
-  opacity: 0.1;
-  border-radius: 50%;
-  filter: blur(40px);
-  animation: float 20s infinite linear;
-}
-
-.floating-element:nth-child(1) {
-  width: 400px;
-  height: 400px;
-  top: 10%;
-  left: 5%;
-  animation-delay: 0s;
-}
-
-.floating-element:nth-child(2) {
-  width: 300px;
-  height: 300px;
-  top: 60%;
-  right: 10%;
-  animation-delay: -5s;
-  background: linear-gradient(135deg, #38BDF8 0%, #0EA5E9 100%);
-}
-
-.floating-element:nth-child(3) {
-  width: 200px;
-  height: 200px;
-  bottom: 20%;
-  left: 20%;
-  animation-delay: -10s;
-  background: linear-gradient(135deg, #1D4ED8 0%, #0EA5E9 100%);
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  25% {
-    transform: translate(100px, -50px) rotate(90deg);
-  }
-  50% {
-    transform: translate(0, -100px) rotate(180deg);
-  }
-  75% {
-    transform: translate(-100px, -50px) rotate(270deg);
-  }
-}
-
-/* ===================== MODERN GLASS HEADER ===================== */
+/* ===================== MOBILE-FIRST HEADER ===================== */
 .modern-header {
-  position: relative;
-  padding: 80px 0 60px;
+  padding: 30px 20px;
   text-align: center;
-  background: linear-gradient(135deg, 
-    rgba(14, 165, 233, 0.95) 0%,
-    rgba(29, 78, 216, 0.9) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  margin-bottom: 60px;
+  background: var(--gradient-primary);
+  margin-bottom: 20px;
+  position: relative;
   overflow: hidden;
 }
 
-.header-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.3;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
-}
-
-/* Animated Bus Path */
-.bus-path {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100px;
-  background: url("data:image/svg+xml,%3Csvg width='1200' height='100' viewBox='0 0 1200 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,50 Q300,100 600,50 T1200,50' stroke='rgba(255,255,255,0.2)' fill='none' stroke-width='2' stroke-dasharray='10,5'/%3E%3C/svg%3E");
-  background-size: cover;
-  animation: movePath 30s linear infinite;
-}
-
-@keyframes movePath {
-  0% { background-position: 0 0; }
-  100% { background-position: 1200px 0; }
-}
-
-.header-content {
-  position: relative;
-  z-index: 2;
+@media (min-width: 768px) {
+  .modern-header {
+    padding: 50px 20px 40px;
+    margin-bottom: 40px;
+  }
 }
 
 .animated-logo {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 30px;
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px;
   position: relative;
-  animation: logoFloat 6s ease-in-out infinite;
+}
+
+@media (min-width: 768px) {
+  .animated-logo {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 25px;
+  }
 }
 
 .logo-main {
@@ -185,250 +265,312 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 48px;
+  font-size: 32px;
   color: white;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.logo-main::before {
-  content: '';
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.3), transparent 30%);
-  animation: rotateLogo 8s linear infinite;
-}
-
-@keyframes logoFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-15px) rotate(5deg); }
-}
-
-@keyframes rotateLogo {
-  100% { transform: rotate(360deg); }
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  animation: logoFloat 3s ease-in-out infinite;
 }
 
 .brand-title {
-  font-size: 3.5rem;
+  font-size: 1.8rem;
   font-weight: 900;
-  margin-bottom: 15px;
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 1) 0%,
-    rgba(224, 242, 254, 1) 50%,
-    rgba(255, 255, 255, 1) 100%);
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .brand-title {
+    font-size: 3rem;
+    margin-bottom: 12px;
+  }
 }
 
 .brand-subtitle {
-  font-size: 1.3rem;
+  font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.95);
   font-weight: 500;
-  max-width: 600px;
-  margin: 0 auto 40px;
-  line-height: 1.6;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  margin: 0 auto 20px;
+  line-height: 1.5;
+  padding: 0 15px;
+}
+
+@media (min-width: 768px) {
+  .brand-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 35px;
+  }
 }
 
 .contact-chip {
   display: inline-flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(20px);
-  padding: 18px 35px;
+  padding: 12px 20px;
   border-radius: 50px;
   color: white;
   font-weight: 600;
   border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 0.9rem;
   transition: all var(--transition-smooth);
-  position: relative;
-  overflow: hidden;
-}
-
-.contact-chip::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.7s;
-}
-
-.contact-chip:hover::before {
-  left: 100%;
 }
 
 .contact-chip:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
   background: rgba(255, 255, 255, 0.25);
 }
 
-/* ===================== INTERACTIVE FEATURES ===================== */
-.stats-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  max-width: 1200px;
-  margin: -30px auto 40px;
-  position: relative;
-  z-index: 2;
-}
-
-@media (max-width: 768px) {
-  .stats-container {
-    grid-template-columns: repeat(2, 1fr);
+@media (min-width: 768px) {
+  .contact-chip {
+    padding: 15px 30px;
+    gap: 12px;
+    font-size: 1rem;
   }
 }
 
-@media (max-width: 480px) {
+/* ===================== ANIMATED STATS COUNTER ===================== */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  max-width: 1200px;
+  margin: -15px auto 25px;
+  padding: 0 15px;
+}
+
+@media (min-width: 768px) {
   .stats-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin: -25px auto 35px;
   }
 }
 
 .stat-card {
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 20px;
-  padding: 25px;
+  border-radius: 16px;
+  padding: 18px 12px;
   text-align: center;
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-soft);
   transition: all var(--transition-smooth);
-  cursor: pointer;
-  animation: cardAppear 0.6s ease-out backwards;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: statCardAppear 0.6s ease forwards;
 }
 
-.stat-card:nth-child(1) { animation-delay: 0.2s; }
-.stat-card:nth-child(2) { animation-delay: 0.4s; }
-.stat-card:nth-child(3) { animation-delay: 0.6s; }
-.stat-card:nth-child(4) { animation-delay: 0.8s; }
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+.stat-card:nth-child(4) { animation-delay: 0.4s; }
 
-@keyframes cardAppear {
-  from { 
-    opacity: 0; 
-    transform: translateY(20px) scale(0.95); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateY(0) scale(1); 
+@keyframes statCardAppear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 .stat-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: var(--shadow-hard);
-  border-color: var(--primary-blue);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-medium);
+}
+
+@media (min-width: 768px) {
+  .stat-card {
+    padding: 22px;
+    border-radius: 20px;
+  }
 }
 
 .stat-icon {
-  width: 60px;
-  height: 60px;
+  width: 45px;
+  height: 45px;
   background: var(--gradient-primary);
-  border-radius: 15px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 15px;
+  margin: 0 auto 10px;
   color: white;
-  font-size: 24px;
-  transition: all var(--transition-smooth);
-  animation: iconBounce 0.5s ease 1s backwards;
+  font-size: 18px;
 }
 
-@keyframes iconBounce {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+@media (min-width: 768px) {
+  .stat-icon {
+    width: 55px;
+    height: 55px;
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
 }
 
 .stat-number {
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-weight: 800;
   color: var(--primary-blue);
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   display: block;
-  transition: all 0.3s ease;
+  font-feature-settings: "tnum";
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.stat-number .counting {
+  display: inline-block;
+  animation: countUp 0.5s ease-out;
+}
+
+/* Enhanced Number Animation */
+.number-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.digit {
+  position: relative;
+  display: inline-block;
+  animation: digitFlip 0.3s ease-out;
+  transform-style: preserve-3d;
+}
+
+@keyframes countUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes digitFlip {
+  0% {
+    transform: rotateX(-90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  .stat-number {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+    height: 45px;
+  }
 }
 
 .stat-label {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--dark-blue);
   font-weight: 600;
   opacity: 0.8;
 }
 
 [data-theme="dark"] .stat-label {
-  color: #E0F2FE;
+  color: #CBD5E1;
+}
+
+@media (min-width: 768px) {
+  .stat-label {
+    font-size: 0.85rem;
+  }
 }
 
 /* ===================== MAIN LAYOUT ===================== */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 15px;
 }
 
-.main-content {
-  display: grid;
-  grid-template-columns: 1fr 1.3fr;
-  gap: 40px;
-  margin-bottom: 60px;
-}
-
-@media (max-width: 992px) {
-  .main-content {
-    grid-template-columns: 1fr;
+@media (min-width: 768px) {
+  .container {
+    padding: 0 20px;
   }
 }
 
-/* ===================== ADVANCED SEARCH CARD ===================== */
+.main-content {
+  display: block;
+  gap: 25px;
+  margin-bottom: 35px;
+}
+
+@media (min-width: 992px) {
+  .main-content {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 35px;
+  }
+}
+
+/* ===================== MOBILE-FRIENDLY SEARCH CARD ===================== */
 .search-card-advanced {
   background: var(--glass-bg);
   backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border-radius: 30px;
-  padding: 40px;
+  border-radius: 22px;
+  padding: 25px 20px;
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-medium);
-  position: sticky;
-  top: 40px;
-  transition: all var(--transition-smooth);
+  margin-bottom: 25px;
 }
 
-.search-card-advanced:hover {
-  box-shadow: var(--shadow-hard);
-  border-color: var(--primary-blue);
+@media (min-width: 768px) {
+  .search-card-advanced {
+    padding: 35px;
+    border-radius: 28px;
+    margin-bottom: 0;
+    position: sticky;
+    top: 30px;
+  }
 }
 
 .card-header-advanced {
   display: flex;
   align-items: center;
-  gap: 20px;
-  margin-bottom: 40px;
-  padding-bottom: 25px;
+  gap: 15px;
+  margin-bottom: 25px;
+  padding-bottom: 18px;
   border-bottom: 2px solid var(--light-blue);
 }
 
+@media (min-width: 768px) {
+  .card-header-advanced {
+    gap: 20px;
+    margin-bottom: 35px;
+    padding-bottom: 22px;
+  }
+}
+
 .card-icon-advanced {
-  width: 70px;
-  height: 70px;
+  width: 55px;
+  height: 55px;
   background: var(--gradient-primary);
-  border-radius: 20px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 28px;
+  font-size: 22px;
+  flex-shrink: 0;
   position: relative;
   overflow: hidden;
 }
@@ -447,47 +589,49 @@ body {
   50% { transform: translateX(100%); }
 }
 
-.card-title-advanced {
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--dark-blue);
-  position: relative;
+@media (min-width: 768px) {
+  .card-icon-advanced {
+    width: 65px;
+    height: 65px;
+    font-size: 26px;
+    border-radius: 18px;
+  }
 }
 
-.card-title-advanced::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  width: 60px;
-  height: 4px;
-  background: var(--gradient-primary);
-  border-radius: 2px;
+.card-title-advanced {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--dark-blue);
 }
 
 [data-theme="dark"] .card-title-advanced {
   color: #F1F5F9;
 }
 
-/* Animated Input Field */
+@media (min-width: 768px) {
+  .card-title-advanced {
+    font-size: 1.8rem;
+  }
+}
+
+/* Mobile-optimized Input */
 .input-group-advanced {
-  margin-bottom: 30px;
-  position: relative;
+  margin-bottom: 22px;
 }
 
 .input-label-advanced {
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   font-weight: 700;
   color: var(--dark-blue);
-  font-size: 1rem;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 [data-theme="dark"] .input-label-advanced {
-  color: #E0F2FE;
+  color: #E2E8F0;
 }
 
 .input-wrapper-advanced {
@@ -496,15 +640,16 @@ body {
 
 .input-field-advanced {
   width: 100%;
-  padding: 22px 25px 22px 65px;
+  padding: 18px 20px 18px 55px;
   background: var(--glass-bg);
   border: 2px solid var(--glass-border);
-  border-radius: 18px;
+  border-radius: 16px;
   color: var(--dark-blue);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 500;
   transition: all var(--transition-smooth);
-  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+  -webkit-appearance: none;
+  font-family: 'Inter', sans-serif;
 }
 
 [data-theme="dark"] .input-field-advanced {
@@ -515,52 +660,92 @@ body {
 .input-field-advanced:focus {
   outline: none;
   border-color: var(--primary-blue);
-  box-shadow: 
-    0 0 0 4px rgba(14, 165, 233, 0.1),
-    inset 0 2px 10px rgba(14, 165, 233, 0.05);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
   transform: translateY(-2px);
-}
-
-.input-field-advanced::placeholder {
-  color: rgba(12, 74, 110, 0.5);
-}
-
-[data-theme="dark"] .input-field-advanced::placeholder {
-  color: rgba(203, 213, 225, 0.5);
 }
 
 .input-icon-advanced {
   position: absolute;
-  left: 25px;
+  left: 20px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--primary-blue);
-  font-size: 1.4rem;
-  z-index: 2;
+  font-size: 1.2rem;
+  z-index: 1;
 }
 
-/* Interactive Button */
+/* Example Numbers - Mobile Optimized */
+.example-numbers {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.example-text {
+  font-size: 0.8rem;
+  color: var(--dark-blue);
+  opacity: 0.7;
+  margin-bottom: 10px;
+  display: block;
+  font-weight: 500;
+}
+
+.example-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.example-btn {
+  padding: 10px 18px;
+  background: rgba(14, 165, 233, 0.1);
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  border-radius: 50px;
+  color: var(--primary-blue);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  white-space: nowrap;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+}
+
+.example-btn i {
+  font-size: 0.9rem;
+}
+
+.example-btn:hover {
+  background: rgba(14, 165, 233, 0.2);
+  transform: translateY(-2px);
+  border-color: var(--primary-blue);
+}
+
+/* Mobile-optimized Button */
 .search-btn-advanced {
   width: 100%;
-  padding: 24px;
+  padding: 20px;
   background: var(--gradient-primary);
   color: white;
   border: none;
-  border-radius: 18px;
-  font-size: 1.2rem;
+  border-radius: 16px;
+  font-size: 1.1rem;
   font-weight: 800;
   cursor: pointer;
   transition: all var(--transition-smooth);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  margin-top: 10px;
-  box-shadow: 
-    0 10px 30px rgba(14, 165, 233, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  gap: 12px;
+  margin-top: 5px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
   position: relative;
   overflow: hidden;
+  min-height: 60px;
 }
 
 .search-btn-advanced::before {
@@ -570,7 +755,7 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.7s;
 }
 
@@ -579,75 +764,93 @@ body {
 }
 
 .search-btn-advanced:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 
-    0 15px 40px rgba(14, 165, 233, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
 }
 
-.search-btn-advanced:active {
-  transform: translateY(-2px) scale(1);
+@media (min-width: 768px) {
+  .search-btn-advanced {
+    padding: 22px;
+    border-radius: 18px;
+    font-size: 1.2rem;
+    gap: 15px;
+  }
 }
 
-/* ===================== BOOKING STEPS ===================== */
+/* Mobile Booking Steps */
 .booking-steps {
-  margin-top: 40px;
-  padding: 30px;
+  margin-top: 25px;
+  padding: 22px 18px;
   background: var(--gradient-glass);
-  border-radius: 20px;
+  border-radius: 18px;
   border: 1px solid var(--glass-border);
 }
 
+@media (min-width: 768px) {
+  .booking-steps {
+    padding: 28px;
+    margin-top: 35px;
+  }
+}
+
 .steps-title {
-  font-size: 1.4rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: var(--dark-blue);
-  margin-bottom: 25px;
+  margin-bottom: 18px;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 [data-theme="dark"] .steps-title {
   color: #F1F5F9;
 }
 
-.steps-title i {
-  color: var(--primary-blue);
-  font-size: 1.6rem;
+@media (min-width: 768px) {
+  .steps-title {
+    font-size: 1.3rem;
+    margin-bottom: 22px;
+    gap: 12px;
+  }
 }
 
 .steps-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
 }
 
 .step-item {
   display: flex;
-  gap: 20px;
+  gap: 15px;
   align-items: flex-start;
-  padding: 20px;
+  padding: 16px;
   background: var(--glass-bg);
-  border-radius: 15px;
+  border-radius: 14px;
   border: 1px solid var(--glass-border);
   transition: all var(--transition-smooth);
-  position: relative;
-  overflow: hidden;
 }
 
 .step-item:hover {
-  transform: translateX(10px);
+  transform: translateX(5px);
   border-color: var(--primary-blue);
-  box-shadow: var(--shadow-medium);
+}
+
+@media (min-width: 768px) {
+  .step-item {
+    gap: 18px;
+    padding: 18px;
+    border-radius: 16px;
+  }
 }
 
 .step-number {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
   background: var(--gradient-primary);
   color: white;
   border-radius: 50%;
@@ -655,10 +858,17 @@ body {
   align-items: center;
   justify-content: center;
   font-weight: 900;
-  font-size: 1.2rem;
-  position: relative;
-  z-index: 2;
-  box-shadow: 0 5px 15px rgba(14, 165, 233, 0.3);
+  font-size: 1rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+@media (min-width: 768px) {
+  .step-number {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
 }
 
 .step-content {
@@ -666,106 +876,63 @@ body {
 }
 
 .step-title {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--dark-blue);
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 [data-theme="dark"] .step-title {
-  color: #E0F2FE;
+  color: #E2E8F0;
 }
 
-.step-title i {
-  color: var(--primary-blue);
-  font-size: 1rem;
+@media (min-width: 768px) {
+  .step-title {
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+    gap: 10px;
+  }
 }
 
 .step-description {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: var(--dark-blue);
-  opacity: 0.8;
-  line-height: 1.5;
+  opacity: 0.7;
+  line-height: 1.4;
 }
 
 [data-theme="dark"] .step-description {
-  color: #E0F2FE;
-  opacity: 0.7;
+  color: #CBD5E1;
 }
 
-.step-divider {
-  height: 20px;
-  width: 2px;
-  background: var(--gradient-primary);
-  margin-left: 20px;
-  position: relative;
-  opacity: 0.5;
-}
-
-.step-divider::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: -3px;
-  width: 8px;
-  height: 8px;
-  background: var(--primary-blue);
-  border-radius: 50%;
-  animation: pulseDot 2s infinite;
-}
-
-@keyframes pulseDot {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.2); opacity: 1; }
-}
-
-@media (max-width: 768px) {
-  .booking-steps {
-    padding: 25px 20px;
-  }
-  
-  .step-item {
-    padding: 15px;
-  }
-  
-  .step-divider {
-    display: none;
-  }
-}
-
-/* Features Section */
+/* Mobile Features Grid */
 .features-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-top: 40px;
+  gap: 10px;
+  margin-top: 25px;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .features-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  .features-grid {
-    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 35px;
   }
 }
 
 .feature-item {
   text-align: center;
-  padding: 20px;
+  padding: 15px 12px;
   background: var(--gradient-glass);
-  border-radius: 15px;
+  border-radius: 14px;
   transition: all var(--transition-smooth);
 }
 
 .feature-item:hover {
-  transform: translateY(-5px);
+  transform: translateY(-3px);
   background: var(--gradient-primary);
 }
 
@@ -774,48 +941,68 @@ body {
   color: white;
 }
 
+@media (min-width: 768px) {
+  .feature-item {
+    padding: 18px;
+    border-radius: 16px;
+  }
+}
+
 .feature-icon {
-  font-size: 28px;
+  font-size: 20px;
   color: var(--primary-blue);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   transition: all var(--transition-smooth);
 }
 
+@media (min-width: 768px) {
+  .feature-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+}
+
 .feature-text {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--dark-blue);
   transition: all var(--transition-smooth);
 }
 
 [data-theme="dark"] .feature-text {
-  color: #E0F2FE;
+  color: #CBD5E1;
 }
 
-/* ===================== ENHANCED RESULTS CARD ===================== */
+@media (min-width: 768px) {
+  .feature-text {
+    font-size: 0.85rem;
+  }
+}
+
+/* ===================== MODERN TICKET DESIGN ===================== */
 .results-card-enhanced {
   background: var(--glass-bg);
   backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border-radius: 30px;
+  border-radius: 22px;
   box-shadow: var(--shadow-medium);
   border: 1px solid var(--glass-border);
   overflow: hidden;
-  min-height: 600px;
+  min-height: 450px;
   display: flex;
   flex-direction: column;
-  transition: all var(--transition-smooth);
 }
 
-.results-card-enhanced:hover {
-  box-shadow: var(--shadow-hard);
-  border-color: var(--primary-blue);
+@media (min-width: 768px) {
+  .results-card-enhanced {
+    border-radius: 28px;
+    min-height: 650px;
+  }
 }
 
 .results-header-enhanced {
   background: var(--gradient-primary);
   color: white;
-  padding: 50px 40px;
+  padding: 25px 20px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -824,64 +1011,95 @@ body {
 .results-header-enhanced::before {
   content: '';
   position: absolute;
-  width: 300px;
-  height: 300px;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
   background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-  top: -150px;
-  left: -150px;
+  animation: rotate 20s linear infinite;
 }
 
-.results-header-enhanced::after {
-  content: '';
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
-  bottom: -100px;
-  right: -100px;
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (min-width: 768px) {
+  .results-header-enhanced {
+    padding: 40px;
+  }
 }
 
 .results-title-enhanced {
-  font-size: 2.5rem;
+  font-size: 1.6rem;
   font-weight: 900;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   position: relative;
-  z-index: 2;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 768px) {
+  .results-title-enhanced {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+  }
 }
 
 .results-subtitle-enhanced {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   opacity: 0.9;
-  position: relative;
-  z-index: 2;
   font-weight: 500;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .results-subtitle-enhanced {
+    font-size: 1.1rem;
+  }
 }
 
 .results-body-enhanced {
-  padding: 50px 40px;
+  padding: 25px 20px;
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* Enhanced No Results State */
-.no-results-enhanced {
-  text-align: center;
-  padding: 60px 20px;
-  animation: fadeIn 1s ease;
-}
-
-.no-results-icon-container {
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 30px;
   position: relative;
 }
 
+@media (min-width: 768px) {
+  .results-body-enhanced {
+    padding: 40px 35px;
+  }
+}
+
+/* Modern No Results */
+.no-results-enhanced {
+  text-align: center;
+  padding: 35px 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.no-results-icon-container {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .no-results-icon-container {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 25px;
+  }
+}
+
 .no-results-icon {
-  font-size: 60px;
+  font-size: 36px;
   color: var(--primary-blue);
   animation: bounce 2s ease-in-out infinite;
   position: relative;
@@ -894,64 +1112,45 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--gradient-glass);
+  background: var(--gradient-primary);
   border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-20px) scale(1.1); }
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.1); opacity: 0.7; }
+  opacity: 0.1;
+  animation: pulse 3s ease-in-out infinite;
 }
 
 .no-results-title-enhanced {
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   font-weight: 800;
-  margin-bottom: 15px;
-  color: var(--dark-blue);
+  margin-bottom: 10px;
   background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ===================== ENHANCED BOOKING DETAILS ===================== */
+@media (min-width: 768px) {
+  .no-results-title-enhanced {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+}
+
+/* ===================== MODERN TICKET DESIGN ===================== */
 .booking-details-enhanced {
   width: 100%;
-  animation: slideUpEnhanced 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes slideUpEnhanced {
-  from { 
-    opacity: 0; 
-    transform: translateY(50px) scale(0.95); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateY(0) scale(1); 
-  }
-}
-
+/* Modern Passenger Card */
 .passenger-card-enhanced {
-  background: var(--gradient-glass);
-  border-radius: 25px;
-  padding: 40px;
+  background: linear-gradient(135deg, var(--glass-bg) 0%, rgba(224, 242, 254, 0.2) 100%);
+  border-radius: 20px;
+  padding: 25px 20px;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 22px;
   border: 1px solid var(--glass-border);
   position: relative;
   overflow: hidden;
-  animation: cardAppear 0.6s ease 0.2s backwards;
-}
-
-@keyframes cardAppear {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .passenger-card-enhanced::before {
@@ -959,116 +1158,38 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 6px;
+  width: 5px;
   height: 100%;
   background: var(--gradient-primary);
-  border-radius: 3px 0 0 3px;
+  border-radius: 5px 0 0 5px;
+}
+
+@media (min-width: 768px) {
+  .passenger-card-enhanced {
+    padding: 35px 30px;
+    border-radius: 24px;
+    margin-bottom: 32px;
+  }
 }
 
 .passenger-avatar-enhanced {
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   background: var(--gradient-primary);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 42px;
-  margin: 0 auto 25px;
-  border: 4px solid var(--glass-bg);
-  box-shadow: 
-    0 15px 35px rgba(14, 165, 233, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  position: relative;
-  overflow: hidden;
-  animation: avatarAppear 0.8s ease 0.4s backwards;
-}
-
-@keyframes avatarAppear {
-  from { 
-    opacity: 0; 
-    transform: scale(0) rotate(-180deg); 
-  }
-  to { 
-    opacity: 1; 
-    transform: scale(1) rotate(0deg); 
-  }
-}
-
-.passenger-name-enhanced {
-  font-size: 2.2rem;
-  font-weight: 900;
-  margin-bottom: 10px;
-  color: var(--dark-blue);
-  position: relative;
-  display: inline-block;
-}
-
-.passenger-name-enhanced::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 4px;
-  background: var(--gradient-primary);
-  border-radius: 2px;
-}
-
-/* Enhanced Ticket Grid */
-.ticket-grid-enhanced {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 25px;
-  margin-bottom: 40px;
-}
-
-@media (max-width: 768px) {
-  .ticket-grid-enhanced {
-    grid-template-columns: 1fr;
-  }
-}
-
-.ticket-card-enhanced {
-  background: var(--glass-bg);
-  padding: 30px;
-  border-radius: 20px;
-  border: 1px solid var(--glass-border);
-  transition: all var(--transition-smooth);
-  position: relative;
-  overflow: hidden;
-  animation: cardAppear 0.6s ease var(--delay) backwards;
-}
-
-.ticket-card-enhanced:hover {
-  transform: translateY(-10px);
-  border-color: var(--primary-blue);
-  box-shadow: var(--shadow-hard);
-}
-
-.ticket-card-enhanced:nth-child(1) { --delay: 0.6s; }
-.ticket-card-enhanced:nth-child(2) { --delay: 0.7s; }
-.ticket-card-enhanced:nth-child(3) { --delay: 0.8s; }
-.ticket-card-enhanced:nth-child(4) { --delay: 0.9s; }
-
-.ticket-icon-enhanced {
-  width: 60px;
-  height: 60px;
-  background: var(--gradient-primary);
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 28px;
+  margin: 0 auto 18px;
+  border: 3px solid var(--glass-bg);
+  box-shadow: 0 8px 25px rgba(14, 165, 233, 0.3);
   position: relative;
   overflow: hidden;
 }
 
-.ticket-icon-enhanced::before {
+.passenger-avatar-enhanced::before {
   content: '';
   position: absolute;
   width: 100%;
@@ -1077,26 +1198,164 @@ body {
   animation: shine 2s infinite;
 }
 
+@media (min-width: 768px) {
+  .passenger-avatar-enhanced {
+    width: 85px;
+    height: 85px;
+    font-size: 34px;
+    margin-bottom: 22px;
+  }
+}
+
+.passenger-name-enhanced {
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 6px;
+  color: var(--dark-blue);
+  position: relative;
+  display: inline-block;
+}
+
+[data-theme="dark"] .passenger-name-enhanced {
+  color: #F1F5F9;
+}
+
+.passenger-name-enhanced::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: var(--gradient-primary);
+  border-radius: 2px;
+}
+
+@media (min-width: 768px) {
+  .passenger-name-enhanced {
+    font-size: 1.9rem;
+    margin-bottom: 8px;
+  }
+}
+
+/* Modern Ticket Grid */
+.ticket-grid-enhanced {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+@media (min-width: 768px) {
+  .ticket-grid-enhanced {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    margin-bottom: 32px;
+  }
+}
+
+.ticket-card-enhanced {
+  background: var(--glass-bg);
+  padding: 22px 18px;
+  border-radius: 18px;
+  border: 1px solid var(--glass-border);
+  transition: all var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.ticket-card-enhanced:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-blue);
+  box-shadow: var(--shadow-medium);
+}
+
+.ticket-card-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity var(--transition-smooth);
+}
+
+.ticket-card-enhanced:hover::before {
+  opacity: 1;
+}
+
+@media (min-width: 768px) {
+  .ticket-card-enhanced {
+    padding: 26px 22px;
+    border-radius: 20px;
+  }
+}
+
+.ticket-icon-enhanced {
+  width: 50px;
+  height: 50px;
+  background: var(--gradient-primary);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ticket-icon-enhanced::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3), transparent 70%);
+  animation: shine 2s infinite;
+}
+
+@media (min-width: 768px) {
+  .ticket-icon-enhanced {
+    width: 55px;
+    height: 55px;
+    font-size: 22px;
+    margin-bottom: 18px;
+  }
+}
+
 .ticket-label-enhanced {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--dark-blue);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-bottom: 12px;
+  letter-spacing: 1.2px;
+  margin-bottom: 8px;
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 10px;
-  opacity: 0.8;
+  gap: 8px;
+  opacity: 0.7;
 }
 
 [data-theme="dark"] .ticket-label-enhanced {
-  color: #E0F2FE;
+  color: #CBD5E1;
+}
+
+@media (min-width: 768px) {
+  .ticket-label-enhanced {
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
 }
 
 .ticket-value-enhanced {
-  font-size: 1.5rem;
-  font-weight: 900;
+  font-size: 1.2rem;
+  font-weight: 800;
   color: var(--dark-blue);
   line-height: 1.4;
 }
@@ -1105,16 +1364,29 @@ body {
   color: #F1F5F9;
 }
 
-/* Interactive Seats Section */
+.ticket-value-enhanced.paid {
+  color: var(--success-green);
+}
+
+.ticket-value-enhanced.pending {
+  color: var(--warning-orange);
+}
+
+@media (min-width: 768px) {
+  .ticket-value-enhanced {
+    font-size: 1.4rem;
+  }
+}
+
+/* Modern Seats Section */
 .seats-section-enhanced {
   background: var(--gradient-glass);
-  padding: 40px;
-  border-radius: 25px;
+  padding: 22px 18px;
+  border-radius: 20px;
   border: 2px dashed var(--glass-border);
-  margin-bottom: 40px;
+  margin-bottom: 22px;
   position: relative;
   overflow: hidden;
-  animation: cardAppear 0.6s ease 1s backwards;
 }
 
 .seats-section-enhanced::before {
@@ -1124,46 +1396,63 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='2' fill='rgba(14, 165, 233, 0.1)'/%3E%3C/svg%3E");
-  animation: moveBackground 20s linear infinite;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='rgba(14, 165, 233, 0.1)'/%3E%3C/svg%3E");
+  animation: moveBackground 15s linear infinite;
 }
 
-@keyframes moveBackground {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(100px, 100px); }
+@media (min-width: 768px) {
+  .seats-section-enhanced {
+    padding: 30px 25px;
+    border-radius: 24px;
+    margin-bottom: 32px;
+  }
 }
 
 .seats-title-enhanced {
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   font-weight: 900;
   color: var(--dark-blue);
-  margin-bottom: 30px;
+  margin-bottom: 18px;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 10px;
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
 [data-theme="dark"] .seats-title-enhanced {
   color: #F1F5F9;
 }
 
+@media (min-width: 768px) {
+  .seats-title-enhanced {
+    font-size: 1.5rem;
+    margin-bottom: 22px;
+    gap: 12px;
+  }
+}
+
 .seats-container-enhanced {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 10px;
   justify-content: center;
   position: relative;
-  z-index: 2;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .seats-container-enhanced {
+    gap: 15px;
+  }
 }
 
 .seat-enhanced {
-  width: 90px;
-  height: 90px;
-  border-radius: 20px;
+  width: 65px;
+  height: 65px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1171,99 +1460,77 @@ body {
   background: var(--gradient-primary);
   color: white;
   font-weight: 900;
+  border: 2px solid var(--glass-bg);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.25);
+  transition: all var(--transition-smooth);
+  cursor: pointer;
   position: relative;
   overflow: hidden;
-  border: 3px solid var(--glass-bg);
-  box-shadow: 
-    0 10px 30px rgba(14, 165, 233, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transition: all var(--transition-bounce);
-  cursor: pointer;
   animation: seatAppear 0.5s ease-out backwards;
-  animation-delay: calc(var(--index) * 0.1s);
-}
-
-@keyframes seatAppear {
-  from {
-    opacity: 0;
-    transform: scale(0.5) rotate(-180deg);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-  }
-}
-
-.seat-enhanced::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, 
-    var(--primary-blue), 
-    var(--secondary-blue), 
-    var(--accent-blue), 
-    var(--primary-blue));
-  border-radius: 22px;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity var(--transition-smooth);
-}
-
-.seat-enhanced:hover::before {
-  opacity: 1;
-  animation: borderRotate 2s linear infinite;
-}
-
-@keyframes borderRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 .seat-enhanced:hover {
-  transform: scale(1.2) rotate(10deg);
-  box-shadow: 
-    0 20px 50px rgba(14, 165, 233, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 10px 30px rgba(14, 165, 233, 0.4);
   z-index: 10;
 }
 
+@media (min-width: 768px) {
+  .seat-enhanced {
+    width: 75px;
+    height: 75px;
+    border-radius: 18px;
+  }
+}
+
 .seat-icon-enhanced {
-  font-size: 28px;
-  margin-bottom: 10px;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+@media (min-width: 768px) {
+  .seat-icon-enhanced {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
 }
 
 .seat-number-enhanced {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+  font-weight: 800;
 }
 
-/* Enhanced Download Button */
+/* Modern Download Button */
 .download-section-enhanced {
-  margin-top: 40px;
+  margin-top: 22px;
   text-align: center;
-  animation: cardAppear 0.6s ease 1.2s backwards;
+}
+
+@media (min-width: 768px) {
+  .download-section-enhanced {
+    margin-top: 32px;
+  }
 }
 
 .download-btn-enhanced {
   display: inline-flex;
   align-items: center;
-  gap: 15px;
-  padding: 22px 45px;
+  gap: 12px;
+  padding: 18px 32px;
   background: var(--gradient-primary);
   color: white;
   border: none;
-  border-radius: 20px;
-  font-size: 1.2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
   font-weight: 900;
   cursor: pointer;
-  transition: all var(--transition-bounce);
-  box-shadow: 
-    0 15px 40px rgba(14, 165, 233, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all var(--transition-smooth);
+  box-shadow: 0 8px 25px rgba(14, 165, 233, 0.3);
   position: relative;
   overflow: hidden;
+  min-height: 60px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
 }
 
 .download-btn-enhanced::before {
@@ -1273,7 +1540,7 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.7s;
 }
 
@@ -1282,50 +1549,75 @@ body {
 }
 
 .download-btn-enhanced:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 
-    0 20px 50px rgba(14, 165, 233, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(14, 165, 233, 0.4);
 }
 
-/* Enhanced Feedback */
+@media (min-width: 768px) {
+  .download-btn-enhanced {
+    padding: 20px 40px;
+    font-size: 1.2rem;
+    gap: 15px;
+  }
+}
+
+/* Modern Feedback */
 .feedback-section-enhanced {
-  margin-top: 40px;
-  padding: 40px;
+  margin-top: 22px;
+  padding: 22px 18px;
   background: var(--gradient-glass);
-  border-radius: 25px;
+  border-radius: 20px;
   border: 1px solid var(--glass-border);
   text-align: center;
-  animation: cardAppear 0.6s ease 1.4s backwards;
+}
+
+@media (min-width: 768px) {
+  .feedback-section-enhanced {
+    margin-top: 32px;
+    padding: 28px 24px;
+    border-radius: 24px;
+  }
 }
 
 .feedback-title-enhanced {
-  font-size: 1.4rem;
+  font-size: 1.1rem;
   font-weight: 900;
   color: var(--dark-blue);
-  margin-bottom: 25px;
+  margin-bottom: 18px;
+  line-height: 1.4;
 }
 
 [data-theme="dark"] .feedback-title-enhanced {
   color: #F1F5F9;
 }
 
-.feedback-buttons-enhanced {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
+@media (min-width: 768px) {
+  .feedback-title-enhanced {
+    font-size: 1.2rem;
+    margin-bottom: 22px;
+  }
 }
 
-@media (max-width: 480px) {
+.feedback-buttons-enhanced {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
   .feedback-buttons-enhanced {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 20px;
+    max-width: none;
   }
 }
 
 .feedback-btn-enhanced {
-  padding: 18px 36px;
-  border-radius: 18px;
+  padding: 16px 24px;
+  border-radius: 50px;
   border: 2px solid var(--glass-border);
   background: var(--glass-bg);
   color: var(--dark-blue);
@@ -1334,78 +1626,96 @@ body {
   transition: all var(--transition-smooth);
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-width: 160px;
   justify-content: center;
-  font-size: 1.1rem;
+  gap: 10px;
+  font-size: 1rem;
+  min-height: 54px;
+  font-family: 'Inter', sans-serif;
 }
 
 [data-theme="dark"] .feedback-btn-enhanced {
-  color: #E0F2FE;
+  color: #E2E8F0;
 }
 
 .feedback-btn-enhanced.yes:hover {
-  background: rgba(16, 185, 129, 0.2);
-  border-color: #10B981;
-  color: #10B981;
+  background: rgba(16, 185, 129, 0.15);
+  border-color: var(--success-green);
+  color: var(--success-green);
+  transform: translateY(-2px);
 }
 
 .feedback-btn-enhanced.no:hover {
-  background: rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.15);
   border-color: #EF4444;
   color: #EF4444;
+  transform: translateY(-2px);
 }
 
-/* ===================== ENHANCED THEME TOGGLE ===================== */
+/* Mobile Theme Toggle */
 .theme-toggle-enhanced {
   position: fixed;
-  bottom: 40px;
-  right: 40px;
+  bottom: 20px;
+  right: 20px;
   z-index: 1000;
 }
 
+@media (min-width: 768px) {
+  .theme-toggle-enhanced {
+    bottom: 30px;
+    right: 30px;
+  }
+}
+
 .theme-btn-enhanced {
-  width: 64px;
-  height: 64px;
+  width: 54px;
+  height: 54px;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 2px solid var(--glass-border);
   border-radius: 50%;
   color: var(--dark-blue);
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  transition: all var(--transition-bounce);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-hard);
+  transition: all var(--transition-smooth);
+  box-shadow: var(--shadow-medium);
 }
 
 .theme-btn-enhanced:hover {
   transform: rotate(180deg) scale(1.1);
-  box-shadow: 0 25px 60px rgba(14, 165, 233, 0.4);
   border-color: var(--primary-blue);
+  box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
 }
 
-/* ===================== ENHANCED FOOTER ===================== */
+/* Mobile Footer */
 .footer-enhanced {
   text-align: center;
-  padding: 50px 0;
+  padding: 25px 0;
   color: var(--dark-blue);
-  font-size: 1rem;
+  font-size: 0.85rem;
   border-top: 1px solid var(--glass-border);
-  margin-top: 60px;
-  position: relative;
-  overflow: hidden;
+  margin-top: 35px;
+}
+
+[data-theme="dark"] .footer-enhanced {
+  color: #94A3B8;
+}
+
+@media (min-width: 768px) {
+  .footer-enhanced {
+    padding: 40px 0;
+    font-size: 0.95rem;
+  }
 }
 
 .company-name-enhanced {
   font-weight: 900;
   color: var(--primary-blue);
   display: block;
-  margin-bottom: 10px;
-  font-size: 1.3rem;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
   position: relative;
   display: inline-block;
 }
@@ -1413,172 +1723,192 @@ body {
 .company-name-enhanced::after {
   content: '';
   position: absolute;
-  bottom: -5px;
+  bottom: -4px;
   left: 0;
   width: 100%;
-  height: 3px;
+  height: 2px;
   background: var(--gradient-primary);
-  border-radius: 2px;
+  border-radius: 1px;
   transform: scaleX(0);
-  transition: transform 0.6s ease;
+  transition: transform 0.3s ease;
 }
 
 .company-name-enhanced:hover::after {
   transform: scaleX(1);
 }
 
-/* ===================== LOADING STATES ===================== */
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(14, 165, 233, 0.95);
-  backdrop-filter: blur(20px);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
+@media (min-width: 768px) {
+  .company-name-enhanced {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
 }
 
-.loading-content {
-  text-align: center;
+/* Animations */
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
-.loading-lottie {
-  width: 200px;
-  height: 200px;
-  margin-bottom: 30px;
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
 }
 
-.loading-text {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: white;
-  letter-spacing: 2px;
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.1);
+  }
 }
 
-/* ===================== RESPONSIVE DESIGN ===================== */
-@media (max-width: 768px) {
-  .modern-header {
-    padding: 60px 0 40px;
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes seatAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes moveBackground {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  100% {
+    transform: translateY(-30px) translateX(30px);
+  }
+}
+
+/* Touch-friendly improvements */
+@media (max-width: 767px) {
+  button, 
+  .example-btn,
+  .search-btn-advanced,
+  .feedback-btn-enhanced,
+  .download-btn-enhanced {
+    min-height: 48px;
   }
   
-  .brand-title {
-    font-size: 2.5rem;
-  }
-  
-  .brand-subtitle {
-    font-size: 1.1rem;
-    padding: 0 20px;
-  }
-  
-  .search-card-advanced,
-  .results-card-enhanced {
-    padding: 30px;
-  }
-  
-  .card-title-advanced {
-    font-size: 1.6rem;
-  }
-  
-  .results-title-enhanced {
-    font-size: 2rem;
-  }
-  
-  .passenger-name-enhanced {
-    font-size: 1.8rem;
+  input,
+  select,
+  textarea {
+    font-size: 16px;
   }
   
   .seat-enhanced {
-    width: 75px;
-    height: 75px;
-  }
-  
-  .theme-toggle-enhanced {
-    bottom: 20px;
-    right: 20px;
-  }
-  
-  .theme-btn-enhanced {
-    width: 56px;
-    height: 56px;
-    font-size: 1.2rem;
+    min-width: 65px;
+    min-height: 65px;
   }
 }
 
-/* ===================== CUSTOM SCROLLBAR ===================== */
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbars but keep functionality */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
+  background: rgba(14, 165, 233, 0.05);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--gradient-primary);
-  border-radius: 6px;
-  border: 3px solid var(--glass-bg);
+  background: rgba(14, 165, 233, 0.3);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+  background: rgba(14, 165, 233, 0.5);
 }
 
-/* ===================== ANIMATION CLASSES ===================== */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Loading spinner for search button */
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
 }
-
-.fade-in {
-  animation: fadeIn 0.6s ease;
-}
-
-.pulse {
-  animation: pulse 2s infinite;
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
-<body>
-<!-- Animated Background -->
-<div class="animated-bg">
-  <div class="floating-element"></div>
-  <div class="floating-element"></div>
-  <div class="floating-element"></div>
-</div>
-
-<!-- Loading Overlay -->
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="loading-content">
-    <div class="loading-lottie" id="loadingAnimation"></div>
-    <div class="loading-text">Loading Your Experience...</div>
+<body class="loading">
+<!-- Intro Page -->
+<div class="intro-overlay" id="introOverlay">
+  <div class="intro-content">
+    <div class="intro-logo">
+      <div class="intro-logo-icon">
+        <i class="fas fa-bus"></i>
+      </div>
+    </div>
+    
+    <h1 class="intro-title">Lagan Bus Booking</h1>
+    
+    <p class="intro-subtitle">Loading your booking experience...</p>
+    
+    <div class="bus-animation-container">
+      <div class="bus-track"></div>
+      <div class="bus">
+        <i class="fas fa-bus"></i>
+      </div>
+    </div>
+    
+    <div class="loading-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
   </div>
 </div>
 
 <!-- Modern Glass Header -->
 <header class="modern-header">
-  <div class="header-background"></div>
-  <div class="bus-path"></div>
+  <div class="animated-logo">
+    <div class="logo-main">
+      <i class="fas fa-bus"></i>
+    </div>
+  </div>
   
-  <div class="header-content">
-    <div class="animated-logo">
-      <div class="logo-main">
-        <i class="fas fa-bus"></i>
-      </div>
-    </div>
-    
-    <h1 class="brand-title">Welcome To Lagan Bus Booking</h1>
-    
-    <p class="brand-subtitle">Safe Travels. May God Bless Your Journey.</p>
-    
-    <div class="contact-chip">
-      <i class="fas fa-phone-alt"></i>
-      <span>For Reservations: <strong>0777 402 886</strong> (Mr. Fawas)</span>
-    </div>
+  <h1 class="brand-title">Welcome To Lagan Bus Booking</h1>
+  
+  <p class="brand-subtitle">Safe Travels. May God Bless Your Journey.</p>
+  
+  <div class="contact-chip">
+    <i class="fas fa-phone-alt"></i>
+    <span>For Reservations: <strong>0777 402 886</strong> (Mr. Fawas)</span>
   </div>
 </header>
 
@@ -1598,7 +1928,7 @@ body {
         <i class="fas fa-bus"></i>
       </div>
       <span class="stat-number" id="busCount">0+</span>
-      <div class="stat-label">Comforable Buses</div>
+      <div class="stat-label">Modern Buses</div>
     </div>
     
     <div class="stat-card">
@@ -1671,11 +2001,9 @@ body {
                 <i class="fas fa-phone-alt"></i>
                 Enter Phone Number
               </h4>
-              <p class="step-description">Type the 10-digit phone number you used for booking (e.g., 077XXXXXXX)</p>
+              <p class="step-description">Type the 10-digit phone number you used for booking</p>
             </div>
           </div>
-          
-          <div class="step-divider"></div>
           
           <div class="step-item">
             <div class="step-number">2</div>
@@ -1684,11 +2012,9 @@ body {
                 <i class="fas fa-search"></i>
                 Click Check Booking
               </h4>
-              <p class="step-description">Press the "Check My Booking" button to search our database</p>
+              <p class="step-description">Press the button to search our database instantly</p>
             </div>
           </div>
-          
-          <div class="step-divider"></div>
           
           <div class="step-item">
             <div class="step-number">3</div>
@@ -1697,7 +2023,7 @@ body {
                 <i class="fas fa-ticket-alt"></i>
                 View & Download Ticket
               </h4>
-              <p class="step-description">See your booking details and download your e-ticket instantly</p>
+              <p class="step-description">See your booking details and download e-ticket</p>
             </div>
           </div>
         </div>
@@ -1854,264 +2180,328 @@ body {
   </footer>
 </div>
 
-<!-- JavaScript -->
+<!-- Hidden div for PDF generation -->
+<div id="pdfContainer" style="display: none;"></div>
+
 <script>
-// ===================== ENHANCED INITIALIZATION =====================
+// ===================== CONFIGURATION =====================
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzA7bUEAUyfW8C478oXTnbHQe50OgnX4G2dWRyMNJb3Iqa-xFGRXcdcx963xbOePp-9mw/exec";
+
+// ===================== BUS PRICE CONFIGURATION =====================
+const BUS_PRICES = {
+  'bus1': 2500,
+  'bus2': 2500,
+  'bus3': 2500,
+  'default': 2500
+};
+
+// ===================== INITIALIZATION =====================
 document.addEventListener('DOMContentLoaded', function() {
-  // Show loading animation briefly
-  document.getElementById('loadingOverlay').style.display = 'flex';
+  // Show intro page
+  const introOverlay = document.getElementById('introOverlay');
+  const body = document.body;
   
-  // Load Lottie animation
-  const animationContainer = document.getElementById('loadingAnimation');
-  if (animationContainer) {
-    lottie.loadAnimation({
-      container: animationContainer,
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: 'https://assets5.lottiefiles.com/packages/lf20_kdxrj6nb.json'
-    });
-  }
-  
-  // Hide loading after 1.5 seconds
+  // Remove loading class after 3 seconds (when bus animation completes)
   setTimeout(() => {
-    document.getElementById('loadingOverlay').style.display = 'none';
+    introOverlay.style.opacity = '0';
+    introOverlay.style.transform = 'translateY(-20px)';
     
-    // Animate stats counting with staggered start
-    setTimeout(animateStats, 500);
-    
-    // Initialize theme
-    const savedTheme = localStorage.getItem('lagan-theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    updateThemeUI(savedTheme);
-    
-    // Add click to re-animate stats
-    document.querySelectorAll('.stat-card').forEach(card => {
-      card.addEventListener('click', function() {
-        const numberElement = this.querySelector('.stat-number');
-        const id = numberElement.id;
+    setTimeout(() => {
+      introOverlay.style.display = 'none';
+      body.classList.remove('loading');
+      
+      // Start enhanced stats animation
+      animateEnhancedStats();
+      
+      // Initialize theme
+      const savedTheme = localStorage.getItem('lagan-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeUI(savedTheme);
+      
+      // Phone input validation
+      const phoneInput = document.getElementById('phone');
+      phoneInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 10) value = value.substring(0, 10);
+        e.target.value = value;
         
-        // Find counter config
-        const counters = [
-          { element: 'passengerCount', end: 10000, suffix: '+' },
-          { element: 'busCount', end: 50, suffix: '+' },
-          { element: 'customerServiceCount', end: 100, suffix: '%' },
-          { element: 'bookingCount', end: 99, suffix: '%' }
-        ];
-        
-        const counter = counters.find(c => c.element === id);
-        if (counter) {
-          // Reset and re-animate this specific counter
-          numberElement.textContent = '0' + counter.suffix;
-          animateSingleStat(counter);
-          
-          // Add visual feedback
-          this.style.transform = 'translateY(-5px) scale(1.05)';
-          setTimeout(() => {
-            this.style.transform = '';
-          }, 300);
+        // Visual feedback
+        const icon = this.parentNode.querySelector('.input-icon-advanced');
+        if (value.length === 10) {
+          this.style.borderColor = '#10B981';
+          if (icon) icon.style.color = '#10B981';
+        } else if (value.length >= 9) {
+          this.style.borderColor = '#F59E0B';
+          if (icon) icon.style.color = '#F59E0B';
+        } else {
+          this.style.borderColor = '';
+          if (icon) icon.style.color = '';
         }
       });
-    });
-  }, 1500);
 
-  // Theme toggle with enhanced animation
-  const themeToggle = document.getElementById('themeToggle');
-  themeToggle.addEventListener('click', function() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    
-    // Add enhanced animation
-    this.style.transform = 'rotate(180deg) scale(0.9)';
-    setTimeout(() => {
-      document.documentElement.setAttribute('data-theme', newTheme);
-      updateThemeUI(newTheme);
-      localStorage.setItem('lagan-theme', newTheme);
-      this.style.transform = 'rotate(360deg) scale(1)';
-    }, 300);
-  });
+      // Enter key to search
+      phoneInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') searchBooking();
+      });
 
-  // Phone input with enhanced validation
-  const phoneInput = document.getElementById('phone');
-  phoneInput.addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.length > 10) value = value.substring(0, 10);
-    e.target.value = value;
-    
-    // Visual feedback
-    const icon = this.parentNode.querySelector('.input-icon-advanced');
-    if (value.length === 10) {
-      this.style.borderColor = '#10B981';
-      icon.style.color = '#10B981';
-      icon.classList.add('pulse');
-    } else if (value.length >= 9) {
-      this.style.borderColor = '#F59E0B';
-      icon.style.color = '#F59E0B';
-      icon.classList.remove('pulse');
-    } else {
-      this.style.borderColor = '';
-      icon.style.color = '';
-      icon.classList.remove('pulse');
-    }
-  });
+      // Search button event
+      document.getElementById('searchBtn').addEventListener('click', searchBooking);
 
-  // Enhanced search button
-  const searchBtn = document.getElementById('searchBtn');
-  searchBtn.addEventListener('mouseenter', function() {
-    this.style.transform = 'translateY(-5px) scale(1.02)';
-  });
-  
-  searchBtn.addEventListener('mouseleave', function() {
-    this.style.transform = 'translateY(0) scale(1)';
-  });
-
-  // Enter key to search
-  phoneInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') searchBooking();
-  });
-
-  // Search button event
-  searchBtn.addEventListener('click', searchBooking);
-
-  // Download button event
-  document.getElementById('downloadBtn').addEventListener('click', downloadTicket);
-  
-  // Auto-focus with animation
-  setTimeout(() => {
-    phoneInput.focus();
-    phoneInput.style.transform = 'scale(1.02)';
-    phoneInput.style.boxShadow = '0 0 0 3px rgba(14, 165, 233, 0.1)';
-    setTimeout(() => {
-      phoneInput.style.transform = '';
-      phoneInput.style.boxShadow = '';
-    }, 500);
-  }, 2000);
+      // Download button event
+      document.getElementById('downloadBtn').addEventListener('click', downloadPDFTicket);
+      
+      // Theme toggle event
+      document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    }, 800);
+  }, 3000);
 });
 
-// Animate stats counting for all stats
-function animateStats() {
-  const counters = [
-    { element: 'passengerCount', end: 10000, suffix: '+' },
-    { element: 'busCount', end: 50, suffix: '+' },
-    { element: 'customerServiceCount', end: 100, suffix: '%' },
-    { element: 'bookingCount', end: 99, suffix: '%' }
+// Enhanced animated stats counter with digit flipping animation
+function animateEnhancedStats() {
+  const stats = [
+    { id: 'passengerCount', target: 10000, suffix: '+', duration: 2500 },
+    { id: 'busCount', target: 50, suffix: '+', duration: 2000 },
+    { id: 'customerServiceCount', target: 100, suffix: '%', duration: 2200 },
+    { id: 'bookingCount', target: 99, suffix: '%', duration: 1800 }
   ];
   
-  // Reset all counters to 0 first
-  counters.forEach(counter => {
-    const element = document.getElementById(counter.element);
-    if (element) {
-      element.textContent = '0' + counter.suffix;
-    }
-  });
-  
-  // Animate each counter
-  counters.forEach(counter => {
-    const element = document.getElementById(counter.element);
+  stats.forEach((stat, index) => {
+    const element = document.getElementById(stat.id);
     if (!element) return;
     
-    // Add visual animation to the stat card
-    const statCard = element.closest('.stat-card');
-    if (statCard) {
-      statCard.style.transform = 'translateY(10px)';
-      statCard.style.opacity = '0.8';
-    }
-    
-    let start = 0;
-    const duration = 2000; // 2 seconds
-    const increment = counter.end / (duration / 16); // 60fps
-    
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= counter.end) {
-        element.textContent = counter.end + counter.suffix;
-        clearInterval(timer);
-        
-        // Add completion animation
-        if (statCard) {
-          statCard.style.transform = 'translateY(0)';
-          statCard.style.opacity = '1';
-          
-          // Add celebration effect for 100% and 99%
-          if (counter.element === 'customerServiceCount' || counter.element === 'bookingCount') {
-            const icon = statCard.querySelector('.stat-icon');
-            if (icon) {
-              icon.style.transform = 'scale(1.2)';
-              icon.style.boxShadow = '0 0 30px rgba(14, 165, 233, 0.6)';
-              setTimeout(() => {
-                icon.style.transform = 'scale(1)';
-                icon.style.boxShadow = '';
-              }, 300);
-            }
-          }
-        }
-      } else {
-        // Format number with comma for large numbers
-        let displayNum = Math.floor(start);
-        if (counter.end >= 1000) {
-          displayNum = displayNum.toLocaleString();
-        }
-        element.textContent = displayNum + counter.suffix;
-      }
-    }, 16);
+    // Start animation with delay for each stat
+    setTimeout(() => {
+      animateDigitCounter(element, stat.target, stat.suffix, stat.duration);
+    }, index * 400);
   });
 }
 
-// Function to animate a single stat
-function animateSingleStat(counter) {
-  const element = document.getElementById(counter.element);
-  if (!element) return;
+// Animate counter with digit-by-digit animation
+function animateDigitCounter(element, target, suffix, duration) {
+  const start = 0;
+  const increment = target / (duration / 16);
+  let current = start;
+  const startTime = Date.now();
   
-  const statCard = element.closest('.stat-card');
-  const icon = statCard.querySelector('.stat-icon');
-  
-  // Add pulse effect to icon
-  if (icon) {
-    icon.style.animation = 'pulse 0.5s ease';
-    setTimeout(() => {
-      icon.style.animation = '';
-    }, 500);
-  }
-  
-  let start = 0;
-  const duration = 1500; // 1.5 seconds
-  const increment = counter.end / (duration / 16);
+  // Clear element and add container
+  element.innerHTML = `<div class="number-container">0${suffix}</div>`;
   
   const timer = setInterval(() => {
-    start += increment;
-    if (start >= counter.end) {
-      element.textContent = counter.end + counter.suffix;
+    const elapsed = Date.now() - startTime;
+    current = Math.min(target, start + (increment * (elapsed / 16)));
+    
+    if (current >= target) {
       clearInterval(timer);
-      
-      // Celebration effect
-      if (icon) {
-        icon.style.transform = 'scale(1.1) rotate(360deg)';
-        icon.style.transition = 'all 0.5s ease';
-        setTimeout(() => {
-          icon.style.transform = '';
-        }, 500);
-      }
+      const formattedNumber = formatNumber(target);
+      element.innerHTML = createDigitAnimation(formattedNumber, suffix, true);
     } else {
-      let displayNum = Math.floor(start);
-      if (counter.end >= 1000) {
-        displayNum = displayNum.toLocaleString();
-      }
-      element.textContent = displayNum + counter.suffix;
+      const formattedNumber = formatNumber(Math.floor(current));
+      element.innerHTML = createDigitAnimation(formattedNumber, suffix, false);
     }
   }, 16);
 }
 
+// Create digit-by-digit animation
+function createDigitAnimation(number, suffix, isFinal) {
+  const digits = number.toString().split('');
+  const digitElements = digits.map((digit, index) => {
+    const delay = index * 0.1;
+    return `<span class="digit" style="animation-delay: ${delay}s; animation-duration: ${isFinal ? '0.5s' : '0.3s'}">${digit}</span>`;
+  }).join('');
+  
+  return `<div class="number-container">${digitElements}<span style="margin-left: 4px;">${suffix}</span></div>`;
+}
+
+// Format numbers with commas
+function formatNumber(num) {
+  if (num >= 1000) {
+    return num.toLocaleString();
+  }
+  return num.toString();
+}
+
+// ===================== THEME FUNCTIONS =====================
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  const themeBtn = document.getElementById('themeToggle');
+  
+  // Add rotation animation
+  themeBtn.style.transform = 'rotate(180deg) scale(0.9)';
+  
+  setTimeout(() => {
+    document.documentElement.setAttribute('data-theme', newTheme);
+    updateThemeUI(newTheme);
+    localStorage.setItem('lagan-theme', newTheme);
+    themeBtn.style.transform = 'rotate(360deg) scale(1)';
+  }, 300);
+}
+
 function updateThemeUI(theme) {
   const themeIcon = document.getElementById('themeIcon');
-  
-  if (theme === 'dark') {
-    themeIcon.className = 'fas fa-sun';
-  } else {
-    themeIcon.className = 'fas fa-moon';
+  if (themeIcon) {
+    themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
   }
 }
 
-// ===================== ENHANCED SEARCH FUNCTION =====================
+// ===================== HELPER FUNCTIONS =====================
+function extractPriceFromString(priceStr) {
+  if (!priceStr) return BUS_PRICES.default;
+  
+  const priceMatch = priceStr.match(/\d+/);
+  if (priceMatch) {
+    return parseInt(priceMatch[0]);
+  }
+  
+  if (priceStr.toLowerCase().includes('2500') || priceStr.toLowerCase().includes('2,500')) {
+    return 2500;
+  }
+  if (priceStr.toLowerCase().includes('3000') || priceStr.toLowerCase().includes('3,000')) {
+    return 3000;
+  }
+  if (priceStr.toLowerCase().includes('3500') || priceStr.toLowerCase().includes('3,500')) {
+    return 3500;
+  }
+  
+  return BUS_PRICES.default;
+}
+
+function formatDateTime(dateStr, timeStr) {
+  if (!dateStr || dateStr.trim() === '') return { date: '-', time: '-' };
+  
+  let dateObj;
+  
+  if (typeof dateStr === 'string' && dateStr.includes('T')) {
+    dateObj = new Date(dateStr);
+    if (!isNaN(dateObj.getTime())) {
+      return formatDateObj(dateObj, timeStr);
+    }
+  }
+  
+  if (typeof dateStr === 'string') {
+    const dateOnly = dateStr.split(' ')[0];
+    
+    if (dateOnly.includes('/')) {
+      const parts = dateOnly.split('/');
+      if (parts.length === 3) {
+        let day, month, year;
+        
+        if (parts[0].length === 4) {
+          year = parseInt(parts[0]);
+          month = parseInt(parts[1]) - 1;
+          day = parseInt(parts[2]);
+        } else if (parts[2].length === 4) {
+          const first = parseInt(parts[0]);
+          const second = parseInt(parts[1]);
+          
+          if (first > 12) {
+            day = first;
+            month = second - 1;
+            year = parseInt(parts[2]);
+          } else if (second > 12) {
+            month = first - 1;
+            day = second;
+            year = parseInt(parts[2]);
+          } else {
+            day = first;
+            month = second - 1;
+            year = parseInt(parts[2]);
+          }
+        }
+        
+        if (day && month >= 0 && year) {
+          dateObj = new Date(year, month, day);
+          if (!isNaN(dateObj.getTime())) {
+            return formatDateObj(dateObj, timeStr);
+          }
+        }
+      }
+    }
+    
+    if (dateOnly.includes('-')) {
+      const parts = dateOnly.split('-');
+      if (parts.length === 3) {
+        if (parts[0].length === 4) {
+          dateObj = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+          if (!isNaN(dateObj.getTime())) {
+            return formatDateObj(dateObj, timeStr);
+          }
+        }
+      }
+    }
+  }
+  
+  return { date: dateStr, time: timeStr || '-' };
+}
+
+function formatDateObj(dateObj, timeStr) {
+  const day = dateObj.getDate().toString().padStart(2, '0');
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const month = months[dateObj.getMonth()];
+  const year = dateObj.getFullYear();
+  
+  let time = '-';
+  
+  if (timeStr && typeof timeStr === 'string' && timeStr.trim() !== '') {
+    time = formatTimeString(timeStr);
+  } else if (dateObj.getHours() > 0 || dateObj.getMinutes() > 0) {
+    let hours = dateObj.getHours();
+    const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    time = `${hours}:${minutes} ${ampm}`;
+  }
+  
+  return {
+    date: `${day} ${month} ${year}`,
+    time: time
+  };
+}
+
+function formatTimeString(timeStr) {
+  if (!timeStr) return '-';
+  
+  const cleanTime = timeStr.toString().trim().toUpperCase();
+  const timeMatch = cleanTime.match(/(\d{1,2})[:.](\d{2})/);
+  if (timeMatch) {
+    let hours = parseInt(timeMatch[1]);
+    const minutes = timeMatch[2];
+    
+    const isPM = cleanTime.includes('PM') || (hours < 12 && cleanTime.includes('P'));
+    
+    if (isPM && hours < 12) {
+      hours += 12;
+    } else if (!isPM && hours === 12 && (cleanTime.includes('AM') || cleanTime.includes('A'))) {
+      hours = 0;
+    }
+    
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12;
+    
+    return `${displayHours}:${minutes} ${ampm}`;
+  }
+  
+  return timeStr;
+}
+
+function getField(obj, possibleNames) {
+  if (!obj) return null;
+  for (const name of possibleNames) {
+    const keys = Object.keys(obj);
+    for (const key of keys) {
+      if (key.toLowerCase().replace(/\s+/g, '') === name.toLowerCase().replace(/\s+/g, '')) {
+        return obj[key];
+      }
+    }
+  }
+  const keys = Object.keys(obj);
+  for (const name of possibleNames) {
+    if (keys.includes(name)) return obj[name];
+  }
+  return null;
+}
+
+// ===================== BOOKING SEARCH =====================
 function searchBooking() {
   const phone = document.getElementById('phone').value.trim();
   const btn = document.getElementById('searchBtn');
@@ -2123,27 +2513,29 @@ function searchBooking() {
       text: 'Please enter a valid 10-digit phone number',
       confirmButtonColor: '#0EA5E9',
       background: 'var(--glass-bg)',
-      color: 'var(--dark-blue)',
-      customClass: {
-        popup: 'glass-card'
-      }
+      color: 'var(--dark-blue)'
     });
     return;
   }
 
-  // Show enhanced loading state
   const originalText = btn.innerHTML;
   btn.innerHTML = '<div class="spinner"></div> Searching...';
   btn.disabled = true;
-  document.getElementById('loadingOverlay').style.display = 'flex';
 
-  // Fetch from Google Sheets
+  Swal.fire({
+    title: 'Finding your booking...',
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading(),
+    background: 'var(--glass-bg)',
+    color: 'var(--dark-blue)'
+  });
+
   fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}`)
     .then(response => response.json())
     .then(data => {
       btn.innerHTML = originalText;
       btn.disabled = false;
-      document.getElementById('loadingOverlay').style.display = 'none';
+      Swal.close();
 
       if (!data.success) {
         Swal.fire({
@@ -2152,37 +2544,22 @@ function searchBooking() {
           text: 'We could not find a booking with this phone number',
           confirmButtonColor: '#0EA5E9',
           background: 'var(--glass-bg)',
-          color: 'var(--dark-blue)',
-          customClass: {
-            popup: 'glass-card'
-          }
+          color: 'var(--dark-blue)'
         });
         return;
       }
 
-      // Display results with enhanced animation
       renderBooking(data.booking);
 
-      // Enhanced scroll animation
-      const resultsCard = document.querySelector('.results-card-enhanced');
-      resultsCard.style.transform = 'translateY(50px) scale(0.95)';
-      resultsCard.style.opacity = '0';
-      
-      setTimeout(() => {
-        resultsCard.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-        
-        resultsCard.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-        resultsCard.style.transform = 'translateY(0) scale(1)';
-        resultsCard.style.opacity = '1';
-      }, 300);
+      document.querySelector('.results-card-enhanced').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
     })
     .catch(error => {
       btn.innerHTML = originalText;
       btn.disabled = false;
-      document.getElementById('loadingOverlay').style.display = 'none';
+      Swal.close();
 
       Swal.fire({
         icon: 'error',
@@ -2190,57 +2567,26 @@ function searchBooking() {
         text: 'Please check your internet connection and try again',
         confirmButtonColor: '#0EA5E9',
         background: 'var(--glass-bg)',
-        color: 'var(--dark-blue)',
-        customClass: {
-          popup: 'glass-card'
-        }
+        color: 'var(--dark-blue)'
       });
       console.error('Error:', error);
     });
 }
 
-// ===================== ENHANCED RENDER FUNCTION =====================
+// ===================== RENDER BOOKING DATA =====================
 function renderBooking(b) {
-  function getField(obj, possibleNames) {
-    if (!obj) return null;
-    for (const name of possibleNames) {
-      const keys = Object.keys(obj);
-      for (const key of keys) {
-        if (key.toLowerCase().replace(/\s+/g, '') === name.toLowerCase().replace(/\s+/g, '')) {
-          return obj[key];
-        }
-      }
-    }
-    const keys = Object.keys(obj);
-    for (const name of possibleNames) {
-      if (keys.includes(name)) return obj[name];
-    }
-    return null;
-  }
-
   const name = getField(b, ['Name', 'Passenger', 'Passenger Name', 'Full Name', 'Customer Name']) || '-';
   const bus = getField(b, ['Bus', 'Bus Name', 'Vehicle', 'Bus Number', 'Service']) || '-';
   const date = getField(b, ['Date', 'Travel Date', 'Journey Date', 'Departure Date', 'Date/Time']) || '';
   const time = getField(b, ['Time', 'Departure Time', 'Travel Time', 'Time Slot']) || '';
   const seat = getField(b, ['Seat', 'Seats', 'Seat Number', 'Seat Numbers', 'Seat No']) || '';
   const pickup = getField(b, ['Pickup', 'Pickup Location', 'Boarding Point', 'Pickup Point']) || '-';
-  const payment = getField(b, ['Payment', 'Amount', 'Payment Status', 'Fare', 'Price']) || '-';
+  const payment = getField(b, ['Payment', 'Amount', 'Payment Status', 'Fare', 'Price', 'Seat Price', 'Per Seat']) || '';
   const bookingId = getField(b, ['Booking ID', 'Reference', 'Ref No', 'Ticket No']) || '';
 
-  // Update display with enhanced animations
-  const passengerName = document.getElementById('passengerName');
-  passengerName.textContent = name;
-  passengerName.style.opacity = '0';
-  passengerName.style.transform = 'translateY(20px)';
-  
-  setTimeout(() => {
-    passengerName.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-    passengerName.style.opacity = '1';
-    passengerName.style.transform = 'translateY(0)';
-  }, 200);
-  
-  document.getElementById('bookingId').textContent = bookingId ? `Booking ID: ${bookingId}` : 'Booking ID: -';
+  document.getElementById('passengerName').textContent = name;
   document.getElementById('busName').textContent = bus;
+  document.getElementById('bookingId').textContent = `Booking ID: ${bookingId || 'N/A'}`;
 
   const formatted = formatDateTime(date, time);
   let displayDateTime = `${formatted.date} • ${formatted.time}`;
@@ -2251,302 +2597,462 @@ function renderBooking(b) {
   document.getElementById('dateTime').textContent = displayDateTime;
   document.getElementById('pickupLocation').textContent = pickup;
 
-  // Payment display with enhanced styling
-  const paymentElement = document.getElementById('paymentAmount');
-  const paymentText = (payment && typeof payment === 'string' && payment.trim() !== '') ? payment : 'Not Updated';
-  
-  // Add visual indicators based on payment status
-  if (paymentText.toLowerCase().includes('paid') || paymentText.toLowerCase().includes('complete')) {
-    paymentElement.style.color = '#10B981';
-  } else if (paymentText.toLowerCase().includes('pending')) {
-    paymentElement.style.color = '#F59E0B';
-  } else {
-    paymentElement.style.color = '';
-  }
-  
-  paymentElement.textContent = paymentText;
-
-  // ===================== ENHANCED SEATS DISPLAY =====================
   const seatsBox = document.getElementById('seatsBox');
   seatsBox.innerHTML = '';
-  
+
+  let totalSeats = 0;
+  let seatPrice = extractPriceFromString(payment);
+  let totalAmount = 0;
+
   if (seat && String(seat).trim() !== '' && String(seat).trim().toLowerCase() !== 'not updated' && String(seat).trim() !== '-') {
     const seats = String(seat).split(/[, \/]+/).filter(s => s.trim() !== '' && s.trim() !== '-');
-    if (seats.length > 0) {
+    totalSeats = seats.length;
+    
+    if (totalSeats > 0) {
       seats.forEach((seatNum, index) => {
         const seatElement = document.createElement('div');
         seatElement.className = 'seat-enhanced';
-        seatElement.style.setProperty('--index', index);
+        seatElement.style.animationDelay = `${index * 0.1}s`;
         seatElement.innerHTML = `
           <div class="seat-icon-enhanced"><i class="fas fa-chair"></i></div>
           <div class="seat-number-enhanced">${seatNum.trim()}</div>
         `;
-        
-        // Add click sound effect simulation
-        seatElement.addEventListener('click', function() {
-          this.style.transform = 'scale(0.9)';
-          setTimeout(() => {
-            this.style.transform = 'scale(1.2) rotate(10deg)';
-          }, 100);
-        });
-        
         seatsBox.appendChild(seatElement);
       });
+      
+      totalAmount = seatPrice * totalSeats;
     } else {
-      seatsBox.innerHTML = '<div class="no-seats">No seat assigned yet. Please contact Mr. Fawas.</div>';
+      seatsBox.innerHTML = '<p style="color: var(--dark-blue); opacity: 0.7;">No seat assigned yet. Please contact Mr. Fawas.</p>';
+      totalAmount = 0;
     }
   } else {
-    seatsBox.innerHTML = '<div class="no-seats">No seat assigned yet. Please contact Mr. Fawas.</div>';
+    seatsBox.innerHTML = '<p style="color: var(--dark-blue); opacity: 0.7;">No seat assigned yet. Please contact Mr. Fawas.</p>';
+    totalAmount = 0;
   }
 
-  // Show results with enhanced animations
+  const paymentElement = document.getElementById('paymentAmount');
+  
+  if (totalSeats > 0 && totalAmount > 0) {
+    paymentElement.innerHTML = `
+      <div style="font-weight: 700; color: var(--success-green);">
+        Rs. ${totalAmount.toLocaleString()}
+      </div>
+      <div style="font-size: 0.8rem; color: var(--dark-blue); opacity: 0.7; margin-top: 3px;">
+        ${totalSeats} seat${totalSeats > 1 ? 's' : ''} × Rs. ${seatPrice.toLocaleString()}
+      </div>
+    `;
+    paymentElement.className = 'ticket-value-enhanced paid';
+  } else if (payment && payment.trim() !== '') {
+    paymentElement.textContent = payment;
+    paymentElement.className = 'ticket-value-enhanced pending';
+  } else {
+    paymentElement.textContent = 'Payment Pending';
+    paymentElement.className = 'ticket-value-enhanced pending';
+  }
+
   document.getElementById('bookingDetails').style.display = 'block';
   document.getElementById('feedbackSection').style.display = 'block';
-  
-  const noResults = document.getElementById('resultsBody').querySelector('.no-results-enhanced');
-  if (noResults) {
-    noResults.style.opacity = '0';
-    noResults.style.transform = 'scale(0.9)';
-    setTimeout(() => {
-      noResults.style.display = 'none';
-    }, 300);
-  }
+  const noResults = document.querySelector('.no-results-enhanced');
+  if (noResults) noResults.style.display = 'none';
 
-  // Store data for download
+  const bookingDetails = document.getElementById('bookingDetails');
+  bookingDetails.classList.remove('booking-details-enhanced');
+  setTimeout(() => bookingDetails.classList.add('booking-details-enhanced'), 10);
+
   window.currentBookingData = {
     passengerName: name,
     busName: bus,
     dateTime: displayDateTime,
     pickupLocation: pickup,
-    paymentAmount: paymentText,
+    paymentAmount: totalAmount > 0 ? `Rs. ${totalAmount.toLocaleString()}` : (payment || 'Payment Pending'),
+    seatPrice: seatPrice,
+    totalSeats: totalSeats,
+    totalAmount: totalAmount,
     seats: seat,
     bookingId: bookingId,
     phone: document.getElementById('phone').value.trim()
   };
 }
 
-// Configuration
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKWNQcXnjjzh540oJWgZJsJi1wQMd0PS94pjiHXy7VjlrR95ME2xnveTuDhPvlZScdow/exec";
-
-// Date/Time formatting functions
-function formatDateTime(dateStr, timeStr) {
-  if (!dateStr || dateStr.trim() === '') return { date: '-', time: '-' };
-  try {
-    let dateObj;
-    if (dateStr.includes('/')) {
-      const parts = dateStr.split('/');
-      if (parts.length === 3) {
-        let day = parseInt(parts[0]);
-        let month = parseInt(parts[1]) - 1;
-        let year = parseInt(parts[2]);
-        if (year < 100) year = 2000 + year;
-        dateObj = new Date(year, month, day);
-      } else {
-        dateObj = new Date(dateStr);
-      }
-    } else if (dateStr.includes('-')) {
-      const parts = dateStr.split('-');
-      if (parts.length === 3) {
-        let year = parseInt(parts[0]);
-        let month = parseInt(parts[1]) - 1;
-        let day = parseInt(parts[2]);
-        dateObj = new Date(year, month, day);
-      } else {
-        dateObj = new Date(dateStr);
-      }
-    } else {
-      dateObj = new Date(dateStr);
-    }
-    return formatDateObj(dateObj, timeStr);
-  } catch (e) {
-    console.log('Date parse error:', e, 'for date:', dateStr);
-    return { date: dateStr, time: timeStr || '-' };
-  }
-}
-
-function formatDateObj(dateObj, timeStr) {
-  if (!(dateObj instanceof Date) || isNaN(dateObj)) {
-    return { date: '-', time: timeStr || '-' };
-  }
-  const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
-  const date = dateObj.toLocaleDateString('en-US', options);
-  const time = timeStr ? formatTimeString(timeStr) : '-';
-  return { date, time };
-}
-
-function formatTimeString(timeStr) {
-  if (!timeStr) return '-';
-  const cleaned = timeStr.toString().toLowerCase().replace(/\s/g, '');
-  if (cleaned.includes('am') || cleaned.includes('pm')) {
-    return timeStr.trim();
-  }
-  if (cleaned.includes(':')) {
-    const [hours, minutes] = cleaned.split(':');
-    let h = parseInt(hours);
-    const m = minutes ? parseInt(minutes) : 0;
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    h = h % 12 || 12;
-    return `${h}:${m.toString().padStart(2, '0')} ${ampm}`;
-  }
-  const num = parseInt(cleaned);
-  if (!isNaN(num)) {
-    const h = num % 12 || 12;
-    const ampm = num >= 12 ? 'PM' : 'AM';
-    return `${h}:00 ${ampm}`;
-  }
-  return timeStr;
-}
-
-// Ticket download function
-function downloadTicket() {
-  if (!window.currentBookingData) {
+// ===================== FIXED PDF TICKET GENERATION =====================
+function downloadPDFTicket() {
+  const data = window.currentBookingData;
+  if (!data) {
     Swal.fire({
       icon: 'warning',
       title: 'No Booking Data',
-      text: 'Please check your booking first',
-      confirmButtonColor: '#0EA5E9'
+      text: 'Please search for a booking first',
+      confirmButtonColor: '#0EA5E9',
+      background: 'var(--glass-bg)',
+      color: 'var(--dark-blue)'
     });
     return;
   }
 
-  const data = window.currentBookingData;
-  document.getElementById('loadingOverlay').style.display = 'flex';
+  const downloadBtn = document.getElementById('downloadBtn');
+  const originalText = downloadBtn.innerHTML;
+  downloadBtn.innerHTML = '<div class="spinner"></div> Generating...';
+  downloadBtn.disabled = true;
 
+  const generatedTime = new Date().toLocaleString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  // Create ticket HTML directly in a visible div first
+  const pdfContainer = document.getElementById('pdfContainer');
+  pdfContainer.innerHTML = `
+    <div id="ticketContent" style="
+      width: 210mm;
+      min-height: 297mm;
+      background: white;
+      padding: 20mm;
+      font-family: 'Inter', sans-serif;
+      box-sizing: border-box;
+    ">
+      <!-- Ticket Header -->
+      <div style="
+        background: linear-gradient(135deg, #0EA5E9, #1D4ED8);
+        color: white;
+        padding: 25px;
+        text-align: center;
+        border-radius: 15px 15px 0 0;
+        margin-bottom: 30px;
+      ">
+        <h1 style="font-size: 32px; font-weight: 900; margin: 0 0 10px 0;">LAGAN BUS TICKET</h1>
+        <p style="font-size: 16px; opacity: 0.95; margin: 0 0 15px 0;">Safe Travels. May God Bless Your Journey</p>
+        <div style="
+          display: inline-block;
+          background: rgba(255,255,255,0.2);
+          padding: 8px 20px;
+          border-radius: 50px;
+          font-size: 14px;
+          font-weight: 600;
+        ">
+          📅 ${data.dateTime}
+        </div>
+      </div>
+
+      <!-- Passenger Info -->
+      <div style="
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px dashed #e2e8f0;
+      ">
+        <div style="font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 8px;">PASSENGER</div>
+        <div style="font-size: 28px; font-weight: 800; color: #1e40af;">${data.passengerName}</div>
+        <div style="font-size: 14px; color: #64748b; margin-top: 8px;">Booking ID: ${data.bookingId || 'N/A'}</div>
+      </div>
+
+      <!-- Journey Details -->
+      <div style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 30px;
+      ">
+        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+          <div style="font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 10px;">🚌 Bus Name</div>
+          <div style="font-size: 20px; font-weight: 700; color: #0f172a;">${data.busName}</div>
+        </div>
+        
+        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+          <div style="font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 10px;">📍 Pickup Location</div>
+          <div style="font-size: 20px; font-weight: 700; color: #0f172a;">${data.pickupLocation}</div>
+        </div>
+        
+        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+          <div style="font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 10px;">📞 Phone Number</div>
+          <div style="font-size: 20px; font-weight: 700; color: #0f172a;">${data.phone}</div>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #f0f9ff, #e0f2fe); padding: 20px; border-radius: 12px; border: 1px solid #bae6fd;">
+          <div style="font-size: 14px; color: #059669; font-weight: 600; margin-bottom: 10px;">💰 Total Amount</div>
+          <div style="font-size: 22px; font-weight: 800; color: #065f46;">Rs. ${data.totalAmount ? data.totalAmount.toLocaleString() : '0'}</div>
+        </div>
+      </div>
+
+      <!-- Seats Section -->
+      <div style="
+        background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(29, 78, 216, 0.04));
+        padding: 25px;
+        border-radius: 15px;
+        border: 2px dashed #dbeafe;
+        margin-bottom: 30px;
+      ">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <h3 style="font-size: 18px; font-weight: 700; color: #1e40af; margin: 0 0 10px 0;">💺 Your Seat Numbers</h3>
+          <p style="font-size: 14px; color: #64748b; margin: 0;">Please Occupy The Seats Mentioned Below</p>
+        </div>
+        
+        <div style="
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          justify-content: center;
+          min-height: 60px;
+        ">
+          ${data.seats && data.seats.trim() !== '' && data.seats.toLowerCase() !== 'not updated' ? 
+            data.seats.split(/[, \/]+/).filter(s => s.trim() !== '').map(seat => `
+              <div style="
+                width: 60px;
+                height: 60px;
+                border-radius: 12px;
+                background: linear-gradient(135deg, #0EA5E9, #1D4ED8);
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                font-weight: 800;
+                box-shadow: 0 4px 8px rgba(14, 165, 233, 0.2);
+              ">${seat.trim()}</div>
+            `).join('') : 
+            `<div style="
+              padding: 20px;
+              text-align: center;
+              color: #64748b;
+              font-style: italic;
+              background: #f1f5f9;
+              border-radius: 12px;
+              width: 100%;
+              font-size: 16px;
+            ">No seat assigned yet. Please contact Mr. Fawas.</div>`
+          }
+        </div>
+      </div>
+
+      <!-- Contact & Footer -->
+      <div style="
+        background: #f8fafc;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+      ">
+        <div style="
+          background: white;
+          padding: 20px;
+          border-radius: 12px;
+          margin-bottom: 20px;
+          border: 1px solid #dbeafe;
+        ">
+          <div style="font-size: 22px; font-weight: 800; color: #0EA5E9; margin-bottom: 8px;">
+            0777 402 886
+          </div>
+          <div style="font-size: 16px; color: #475569; font-weight: 600;">Mr. Fawas - For Reservations & Inquiries</div>
+        </div>
+        
+        <div style="
+          font-size: 12px;
+          color: #64748b;
+          line-height: 1.5;
+        ">
+          <div style="margin-bottom: 8px;">
+            <strong>Generated:</strong> ${generatedTime}
+          </div>
+          <div style="font-weight: 700; color: #0EA5E9; margin: 10px 0;">
+            Made with ❤ by WEDOXA • Lagan Bus Services
+          </div>
+          <div style="font-size: 11px; color: #94a3b8; font-style: italic; margin-top: 8px;">
+            This is an official e-ticket. Please show this PDF to the bus conductor.
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Show the container briefly to ensure rendering
+  pdfContainer.style.display = 'block';
+  pdfContainer.style.position = 'fixed';
+  pdfContainer.style.top = '0';
+  pdfContainer.style.left = '0';
+  pdfContainer.style.width = '210mm';
+  pdfContainer.style.height = '297mm';
+  pdfContainer.style.overflow = 'hidden';
+  pdfContainer.style.zIndex = '9999';
+  pdfContainer.style.background = 'white';
+
+  // Use setTimeout to ensure DOM is updated
   setTimeout(() => {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4'
+    const ticketElement = document.getElementById('ticketContent');
+    
+    html2canvas(ticketElement, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#ffffff',
+      width: ticketElement.offsetWidth,
+      height: ticketElement.offsetHeight
+    }).then(canvas => {
+      // Hide container
+      pdfContainer.style.display = 'none';
+      pdfContainer.innerHTML = '';
+      
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      const imgData = canvas.toDataURL('image/png', 1.0);
+      const pdfWidth = 210;
+      const pdfHeight = 297;
+      
+      // Calculate dimensions to fit A4
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+      // Add image to PDF
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+
+      const fileName = `Lagan-Ticket-${data.passengerName.replace(/[^a-z0-9]/gi, '-')}-${Date.now().toString().slice(-6)}.pdf`;
+      
+      // Save the PDF
+      pdf.save(fileName);
+
+      // Restore button state
+      downloadBtn.innerHTML = originalText;
+      downloadBtn.disabled = false;
+
+      // Show success notification
+      Swal.fire({
+        icon: 'success',
+        title: 'Ticket Downloaded!',
+        html: `<div style="text-align: center;">
+                <div style="font-size: 24px; margin-bottom: 10px;">🎫</div>
+                <div style="font-weight: 600; color: #0EA5E9; margin-bottom: 10px;">Your ticket is ready!</div>
+                <div style="font-size: 14px; color: #64748b;">Saved as: <strong>${fileName}</strong></div>
+              </div>`,
+        confirmButtonColor: '#0EA5E9',
+        timer: 3000,
+        showConfirmButton: true,
+        timerProgressBar: true,
+        background: 'var(--glass-bg)',
+        color: 'var(--dark-blue)'
+      });
+    }).catch(error => {
+      console.error('PDF Generation Error:', error);
+      pdfContainer.style.display = 'none';
+      pdfContainer.innerHTML = '';
+      
+      downloadBtn.innerHTML = originalText;
+      downloadBtn.disabled = false;
+      
+      Swal.fire({
+        icon: 'error',
+        title: 'Generation Failed',
+        text: 'Failed to generate PDF. Please try again.',
+        confirmButtonColor: '#0EA5E9',
+        background: 'var(--glass-bg)',
+        color: 'var(--dark-blue)'
+      });
     });
-
-    // Background gradient
-    const gradient = doc.context2d.createLinearGradient(0, 0, 210, 0);
-    gradient.addColorStop(0, '#0EA5E9');
-    gradient.addColorStop(1, '#1D4ED8');
-    doc.setFillColor(14, 165, 233);
-    doc.rect(0, 0, 210, 50, 'F');
-
-    // Header
-    doc.setFontSize(24);
-    doc.setTextColor(255, 255, 255);
-    doc.setFont('helvetica', 'bold');
-    doc.text('LAGAN BUS BOOKING', 105, 25, { align: 'center' });
-
-    doc.setFontSize(12);
-    doc.text('E-TICKET', 105, 35, { align: 'center' });
-
-    // Ticket content
-    doc.setFillColor(255, 255, 255);
-    doc.roundedRect(10, 60, 190, 120, 5, 5, 'F');
-
-    // Passenger info
-    doc.setFontSize(18);
-    doc.setTextColor(0, 0, 0);
-    doc.text('PASSENGER INFORMATION', 20, 75);
-
-    doc.setDrawColor(14, 165, 233);
-    doc.setLineWidth(0.5);
-    doc.line(20, 78, 190, 78);
-
-    doc.setFontSize(14);
-    doc.text(`Name: ${data.passengerName}`, 30, 90);
-    doc.text(`Booking ID: ${data.bookingId || '-'}`, 30, 100);
-    doc.text(`Phone: ${data.phone}`, 130, 90);
-
-    // Journey details
-    doc.setFontSize(16);
-    doc.text('JOURNEY DETAILS', 20, 115);
-
-    doc.line(20, 118, 190, 118);
-
-    const details = [
-      [`Bus: ${data.busName}`, `Date & Time: ${data.dateTime}`],
-      [`Pickup: ${data.pickupLocation}`, `Payment: ${data.paymentAmount}`],
-      [`Seats: ${data.seats || 'Not assigned'}`, `Downloaded: ${new Date().toLocaleDateString()}`]
-    ];
-
-    let yPos = 130;
-    details.forEach(row => {
-      doc.setFontSize(12);
-      doc.text(row[0], 30, yPos);
-      doc.text(row[1], 120, yPos);
-      yPos += 15;
-    });
-
-    // Footer
-    doc.setFontSize(10);
-    doc.setTextColor(100, 100, 100);
-    doc.text('For any issues, contact Mr. Fawas: 0777 402 886', 105, 200, { align: 'center' });
-    doc.text('Thank you for choosing Lagan Bus Booking! Safe travels!', 105, 205, { align: 'center' });
-
-    // Border
-    doc.setDrawColor(14, 165, 233);
-    doc.setLineWidth(1);
-    doc.roundedRect(5, 5, 200, 287, 5, 5);
-
-    const fileName = `Lagan-Ticket-${data.passengerName.replace(/\s+/g, '-')}-${Date.now()}.pdf`;
-    doc.save(fileName);
-
-    document.getElementById('loadingOverlay').style.display = 'none';
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Ticket Downloaded!',
-      text: `Your e-ticket has been saved as ${fileName}`,
-      confirmButtonColor: '#0EA5E9'
-    });
-  }, 1000);
+  }, 100);
 }
 
-// Feedback system
+// ===================== FEEDBACK SYSTEM =====================
 function sendFeedback(answer) {
+  const phone = document.getElementById('phone').value.trim();
+  if (!phone) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Enter Phone Number',
+      text: 'Please search first',
+      confirmButtonColor: '#0EA5E9',
+      background: 'var(--glass-bg)',
+      color: 'var(--dark-blue)'
+    });
+    return;
+  }
+
   const clickedBtn = event.target.closest('.feedback-btn-enhanced');
   const originalHTML = clickedBtn.innerHTML;
-  clickedBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+  const originalBg = clickedBtn.style.background;
+  const originalColor = clickedBtn.style.color;
+  const originalBorder = clickedBtn.style.borderColor;
+  
+  clickedBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sending...`;
   clickedBtn.disabled = true;
-
-  const bookingData = window.currentBookingData || {};
-  const feedbackData = {
-    passengerName: bookingData.passengerName || 'Unknown',
-    phone: bookingData.phone || document.getElementById('phone').value || 'Unknown',
-    answer: answer,
-    timestamp: new Date().toISOString(),
-    bookingDetails: {
-      bus: bookingData.busName || '-',
-      dateTime: bookingData.dateTime || '-',
-      seats: bookingData.seats || '-'
-    }
-  };
-
-  setTimeout(() => {
-    clickedBtn.innerHTML = originalHTML;
-    clickedBtn.disabled = false;
-
-    const title = answer === 'Yes' ? 'Thank You!' : 'We Apologize!';
-    const text = answer === 'Yes' 
-      ? 'We\'re glad you received correct information. Have a safe journey!' 
-      : 'We\'re sorry for the inconvenience. Please contact Mr. Fawas immediately at 0777 402 886.';
-
-    Swal.fire({
-      icon: answer === 'Yes' ? 'success' : 'info',
-      title: title,
-      text: text,
-      confirmButtonColor: '#0EA5E9',
-      showCancelButton: answer === 'No',
-      cancelButtonText: 'Call Support',
-      showConfirmButton: true,
-      confirmButtonText: 'OK'
-    }).then((result) => {
-      if (answer === 'No' && result.dismiss === Swal.DismissReason.cancel) {
-        window.location.href = 'tel:0777402886';
+  
+  fetch(`${SCRIPT_URL}?action=feedback&phone=${encodeURIComponent(phone)}&answer=${encodeURIComponent(answer)}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const title = answer === 'Yes' ? 'Thank You!' : 'We Apologize!';
+        const text = answer === 'Yes' 
+          ? 'We\'re glad you received correct information. Have a safe journey!' 
+          : 'We\'re sorry for the inconvenience. Please contact Mr. Fawas immediately at 0777 402 886.';
+        
+        clickedBtn.innerHTML = `<i class="fas fa-check"></i> ${answer === 'Yes' ? 'Yes, All Good' : 'No, Issue Found'}`;
+        clickedBtn.style.background = answer === 'Yes' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)';
+        clickedBtn.style.color = answer === 'Yes' ? 'var(--success-green)' : '#EF4444';
+        clickedBtn.style.borderColor = answer === 'Yes' ? 'var(--success-green)' : '#EF4444';
+        
+        Swal.fire({
+          icon: answer === 'Yes' ? 'success' : 'info',
+          title: title,
+          text: text,
+          confirmButtonColor: '#0EA5E9',
+          showCancelButton: answer === 'No',
+          cancelButtonText: 'Call Support',
+          showConfirmButton: true,
+          confirmButtonText: 'OK',
+          background: 'var(--glass-bg)',
+          color: 'var(--dark-blue)'
+        });
+        
+        setTimeout(() => {
+          clickedBtn.innerHTML = originalHTML;
+          clickedBtn.style.background = originalBg;
+          clickedBtn.style.color = originalColor;
+          clickedBtn.style.borderColor = originalBorder;
+          clickedBtn.disabled = false;
+        }, 3000);
+      } else {
+        clickedBtn.innerHTML = originalHTML;
+        clickedBtn.style.background = originalBg;
+        clickedBtn.style.color = originalColor;
+        clickedBtn.style.borderColor = originalBorder;
+        clickedBtn.disabled = false;
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed to save',
+          text: 'Please try again',
+          confirmButtonColor: '#0EA5E9',
+          timer: 2000,
+          showConfirmButton: false,
+          background: 'var(--glass-bg)',
+          color: 'var(--dark-blue)'
+        });
       }
+    })
+    .catch(error => {
+      clickedBtn.innerHTML = originalHTML;
+      clickedBtn.style.background = originalBg;
+      clickedBtn.style.color = originalColor;
+      clickedBtn.style.borderColor = originalBorder;
+      clickedBtn.disabled = false;
+      
+      Swal.fire({
+        icon: 'error',
+        title: 'Connection Error',
+        text: 'Please try again',
+        confirmButtonColor: '#0EA5E9',
+        timer: 2000,
+        showConfirmButton: false,
+        background: 'var(--glass-bg)',
+        color: 'var(--dark-blue)'
+      });
+      console.error('Feedback error:', error);
     });
-
-    console.log('Feedback sent:', feedbackData);
-  }, 1500);
 }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>
+[file content end]
