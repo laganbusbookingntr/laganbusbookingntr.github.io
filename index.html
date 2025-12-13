@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -161,6 +160,208 @@
     opacity: 1;
     background: white;
   }
+}
+
+/* ===================== INFORMATION LOADING PAGE ===================== */
+.info-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.info-loading-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.info-loading-content {
+  text-align: center;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  background: var(--glass-bg);
+  border-radius: 28px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-hard);
+  transform: translateY(20px);
+  transition: transform 0.5s ease;
+}
+
+.info-loading-overlay.active .info-loading-content {
+  transform: translateY(0);
+}
+
+.info-loading-icon {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 30px;
+  position: relative;
+}
+
+.info-loading-icon-inner {
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  color: white;
+  animation: loadingRotate 2s linear infinite;
+}
+
+.info-loading-icon-inner::after {
+  content: '';
+  position: absolute;
+  width: 110%;
+  height: 110%;
+  border-radius: 50%;
+  background: conic-gradient(transparent, var(--primary-blue), transparent);
+  animation: borderRotate 2s linear infinite;
+}
+
+@keyframes loadingRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes borderRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.info-loading-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.info-loading-subtitle {
+  font-size: 1rem;
+  color: var(--dark-blue);
+  opacity: 0.8;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+[data-theme="dark"] .info-loading-subtitle {
+  color: #E2E8F0;
+}
+
+/* Progress Animation */
+.progress-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(14, 165, 233, 0.1);
+  border-radius: 4px;
+  margin: 30px auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 4px;
+  position: relative;
+  transition: width 0.3s ease;
+  animation: progressShimmer 2s infinite;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes progressShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.loading-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+  text-align: left;
+}
+
+.loading-step {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px;
+  background: var(--gradient-glass);
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  opacity: 0.5;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.loading-step.active {
+  opacity: 1;
+  transform: translateX(0);
+  border-color: var(--primary-blue);
+}
+
+.loading-step-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.loading-step-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--dark-blue);
+}
+
+[data-theme="dark"] .loading-step-text {
+  color: #E2E8F0;
 }
 
 /* ===================== MODERN BLUE THEME ===================== */
@@ -1894,6 +2095,47 @@ html {
   </div>
 </div>
 
+<!-- Information Loading Overlay -->
+<div class="info-loading-overlay" id="infoLoading">
+  <div class="info-loading-content">
+    <div class="info-loading-icon">
+      <div class="info-loading-icon-inner">
+        <i class="fas fa-bus"></i>
+      </div>
+    </div>
+    
+    <h2 class="info-loading-title">Loading Your Information</h2>
+    <p class="info-loading-subtitle">Please wait while we retrieve your booking details...</p>
+    
+    <div class="progress-container">
+      <div class="progress-bar" id="loadingProgress"></div>
+    </div>
+    
+    <div class="loading-steps">
+      <div class="loading-step" id="step1">
+        <div class="loading-step-icon">
+          <i class="fas fa-search"></i>
+        </div>
+        <div class="loading-step-text">Searching in database</div>
+      </div>
+      
+      <div class="loading-step" id="step2">
+        <div class="loading-step-icon">
+          <i class="fas fa-ticket-alt"></i>
+        </div>
+        <div class="loading-step-text">Fetching booking details</div>
+      </div>
+      
+      <div class="loading-step" id="step3">
+        <div class="loading-step-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="loading-step-text">Preparing your ticket</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modern Glass Header -->
 <header class="modern-header">
   <div class="animated-logo">
@@ -2256,6 +2498,51 @@ document.addEventListener('DOMContentLoaded', function() {
   }, 3000);
 });
 
+// ===================== LOADING SCREEN FUNCTIONS =====================
+function showLoadingScreen() {
+  const loadingScreen = document.getElementById('infoLoading');
+  loadingScreen.classList.add('active');
+  
+  // Reset progress and steps
+  const progressBar = document.getElementById('loadingProgress');
+  const steps = ['step1', 'step2', 'step3'];
+  
+  progressBar.style.width = '0%';
+  steps.forEach(step => {
+    document.getElementById(step).classList.remove('active');
+  });
+  
+  // Animate progress
+  let progress = 0;
+  const progressInterval = setInterval(() => {
+    progress += Math.random() * 15 + 5;
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(progressInterval);
+      
+      // Complete animation after a delay
+      setTimeout(() => {
+        hideLoadingScreen();
+      }, 500);
+    }
+    progressBar.style.width = progress + '%';
+    
+    // Activate steps based on progress
+    if (progress >= 30 && progress < 70) {
+      document.getElementById('step1').classList.add('active');
+    } else if (progress >= 70 && progress < 90) {
+      document.getElementById('step2').classList.add('active');
+    } else if (progress >= 90) {
+      document.getElementById('step3').classList.add('active');
+    }
+  }, 200);
+}
+
+function hideLoadingScreen() {
+  const loadingScreen = document.getElementById('infoLoading');
+  loadingScreen.classList.remove('active');
+}
+
 // Enhanced animated stats counter with digit flipping animation
 function animateEnhancedStats() {
   const stats = [
@@ -2522,20 +2809,15 @@ function searchBooking() {
   btn.innerHTML = '<div class="spinner"></div> Searching...';
   btn.disabled = true;
 
-  Swal.fire({
-    title: 'Finding your booking...',
-    allowOutsideClick: false,
-    didOpen: () => Swal.showLoading(),
-    background: 'var(--glass-bg)',
-    color: 'var(--dark-blue)'
-  });
+  // Show the enhanced loading screen
+  showLoadingScreen();
 
   fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}`)
     .then(response => response.json())
     .then(data => {
       btn.innerHTML = originalText;
       btn.disabled = false;
-      Swal.close();
+      hideLoadingScreen();
 
       if (!data.success) {
         Swal.fire({
@@ -2559,7 +2841,7 @@ function searchBooking() {
     .catch(error => {
       btn.innerHTML = originalText;
       btn.disabled = false;
-      Swal.close();
+      hideLoadingScreen();
 
       Swal.fire({
         icon: 'error',
@@ -3055,4 +3337,3 @@ function sendFeedback(answer) {
 </script>
 </body>
 </html>
-[file content end]
