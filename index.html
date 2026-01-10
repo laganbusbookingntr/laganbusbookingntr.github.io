@@ -2,954 +2,331 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Lagan Bus Booking — Modern Booking Portal</title>
+<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Lagan Bus Booking — Nintavur</title>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* ===================== INTRO PAGE ===================== */
-.intro-overlay {
+/* ===================== PREMIUM VARIABLES ===================== */
+:root {
+  --primary: #3B82F6;
+  --primary-dark: #1D4ED8;
+  --primary-light: #93C5FD;
+  --primary-gradient: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+  --primary-gradient-hover: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  --secondary: #10B981;
+  --secondary-dark: #059669;
+  --accent: #8B5CF6;
+  --danger: #EF4444;
+  --warning: #F59E0B;
+  --light: #FFFFFF;
+  --dark: #0F172A;
+  --gray: #64748B;
+  --glass: rgba(255, 255, 255, 0.95);
+  --glass-dark: rgba(15, 23, 42, 0.95);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 12px 32px -8px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, 0.16);
+  --shadow-xl: 0 32px 64px -16px rgba(0, 0, 0, 0.2);
+  --shadow-blue: 0 16px 48px rgba(59, 130, 246, 0.25);
+  --shadow-green: 0 16px 48px rgba(16, 185, 129, 0.25);
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --gradient-primary: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+  --gradient-success: linear-gradient(135deg, #10B981 0%, #3B82F6 100%);
+  --gradient-dark: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  --gradient-light: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+  --image-overlay: linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9));
+  --wedoxa-color: #FF6B35;
+}
+
+[data-theme="dark"] {
+  --light: #0F172A;
+  --dark: #F1F5F9;
+  --gray: #94A3B8;
+  --glass: rgba(15, 23, 42, 0.95);
+  --glass-dark: rgba(30, 41, 59, 0.95);
+  --gradient-light: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+}
+
+/* ===================== BASE STYLES ===================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--gradient-light);
+  color: var(--dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+  opacity: 0;
+  animation: pageFadeIn 0.6s ease-out forwards;
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  touch-action: manipulation;
+}
+
+@keyframes pageFadeIn {
+  to { opacity: 1; }
+}
+
+/* ===================== WELCOME OVERLAY ===================== */
+.welcome-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0EA5E9 0%, #1D4ED8 100%);
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  animation: welcomeFadeOut 0.5s ease 1s forwards;
 }
 
-.intro-content {
-  text-align: center;
-  color: white;
-  padding: 30px;
-  max-width: 500px;
-  width: 90%;
+@keyframes welcomeFadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
 }
 
-.intro-logo {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 30px;
-  position: relative;
-}
-
-.intro-logo-icon {
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+.welcome-logo {
+  width: 120px;
+  height: 120px;
+  background: var(--primary-gradient);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 30px;
+  animation: logoPulse 1.5s ease infinite;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(59, 130, 246, 0.3);
+}
+
+@keyframes logoPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.welcome-logo::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: rotate(45deg);
+  animation: shine 2s infinite linear;
+}
+
+.welcome-logo i {
   font-size: 48px;
   color: white;
-  border: 3px solid rgba(255, 255, 255, 0.3);
   animation: logoFloat 2s ease-in-out infinite;
 }
 
-.intro-title {
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.welcome-text {
+  text-align: center;
+  animation: textSlideUp 0.8s ease 0.3s both;
+}
+
+@keyframes textSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.welcome-title {
   font-size: 2.5rem;
   font-weight: 900;
-  margin-bottom: 15px;
+  color: white;
+  margin-bottom: 10px;
   background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.intro-subtitle {
+.welcome-subtitle {
   font-size: 1.1rem;
-  opacity: 0.9;
-  margin-bottom: 40px;
-  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
 }
 
-/* Bus Animation Container */
-.bus-animation-container {
-  width: 300px;
-  height: 150px;
-  margin: 0 auto 40px;
+/* ===================== PREMIUM HEADER WITH IMAGE ===================== */
+.premium-header {
   position: relative;
-  overflow: hidden;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.bus-track {
-  position: absolute;
-  bottom: 40px;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
-}
-
-.bus {
-  position: absolute;
-  bottom: 20px;
-  left: -100px;
-  font-size: 48px;
-  color: white;
-  animation: busDrive 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  animation-delay: 0.5s;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
-}
-
-@keyframes busDrive {
-  0% {
-    left: -100px;
-    transform: translateY(0) rotate(0deg);
-  }
-  20% {
-    transform: translateY(-10px) rotate(-5deg);
-  }
-  40% {
-    transform: translateY(0) rotate(5deg);
-  }
-  60% {
-    transform: translateY(-5px) rotate(-3deg);
-  }
-  80% {
-    transform: translateY(0) rotate(3deg);
-  }
-  100% {
-    left: 120%;
-    transform: translateY(0) rotate(0deg);
-  }
-}
-
-/* Loading Dots */
-.loading-dots {
+  min-height: 100vh;
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin-top: 30px;
+  overflow: hidden;
+  margin-bottom: 40px;
+  padding: 20px;
 }
 
-.dot {
-  width: 12px;
-  height: 12px;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 50%;
-  animation: dotPulse 1.5s ease-in-out infinite;
-}
-
-.dot:nth-child(1) { animation-delay: 0s; }
-.dot:nth-child(2) { animation-delay: 0.2s; }
-.dot:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes dotPulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.6;
-    background: rgba(255, 255, 255, 0.6);
-  }
-  50% {
-    transform: scale(1.3);
-    opacity: 1;
-    background: white;
-  }
-}
-
-/* ===================== INFORMATION LOADING PAGE ===================== */
-.info-loading-overlay {
-  position: fixed;
+.header-background {
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9998;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  background: 
+    linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.95)),
+    url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
+  z-index: -2;
 }
 
-.info-loading-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.info-loading-content {
-  text-align: center;
-  padding: 40px;
-  max-width: 500px;
-  width: 90%;
-  background: var(--glass-bg);
-  border-radius: 28px;
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-hard);
-  transform: translateY(20px);
-  transition: transform 0.5s ease;
-}
-
-.info-loading-overlay.active .info-loading-content {
-  transform: translateY(0);
-}
-
-.info-loading-icon {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 30px;
-  position: relative;
-}
-
-.info-loading-icon-inner {
+.header-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background: var(--gradient-primary);
+  background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.2) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.2) 0%, transparent 50%);
+  z-index: -1;
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  animation: headerSlideUp 0.8s ease 0.2s both;
+}
+
+@keyframes headerSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logo-container {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 25px;
+  position: relative;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(3deg); }
+}
+
+.logo-circle {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 42px;
   color: white;
-  animation: loadingRotate 2s linear infinite;
-}
-
-.info-loading-icon-inner::after {
-  content: '';
-  position: absolute;
-  width: 110%;
-  height: 110%;
-  border-radius: 50%;
-  background: conic-gradient(transparent, var(--primary-blue), transparent);
-  animation: borderRotate 2s linear infinite;
-}
-
-@keyframes loadingRotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes borderRotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.info-loading-title {
-  font-size: 1.8rem;
-  font-weight: 800;
-  margin-bottom: 15px;
-  background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.info-loading-subtitle {
-  font-size: 1rem;
-  color: var(--dark-blue);
-  opacity: 0.8;
-  margin-bottom: 30px;
-  line-height: 1.5;
-}
-
-[data-theme="dark"] .info-loading-subtitle {
-  color: #E2E8F0;
-}
-
-/* Progress Animation */
-.progress-container {
-  width: 100%;
-  height: 8px;
-  background: rgba(14, 165, 233, 0.1);
-  border-radius: 4px;
-  margin: 30px auto;
-  overflow: hidden;
-  position: relative;
-}
-
-.progress-bar {
-  width: 0%;
-  height: 100%;
-  background: var(--gradient-primary);
-  border-radius: 4px;
-  position: relative;
-  transition: width 0.3s ease;
-  animation: progressShimmer 2s infinite;
-}
-
-.progress-bar::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-@keyframes progressShimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-.loading-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 25px;
-  text-align: left;
-}
-
-.loading-step {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 12px;
-  background: var(--gradient-glass);
-  border-radius: 12px;
-  border: 1px solid var(--glass-border);
-  opacity: 0.5;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
-}
-
-.loading-step.active {
-  opacity: 1;
-  transform: translateX(0);
-  border-color: var(--primary-blue);
-}
-
-.loading-step-icon {
-  width: 36px;
-  height: 36px;
-  background: var(--gradient-primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-
-.loading-step-text {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--dark-blue);
-}
-
-[data-theme="dark"] .loading-step-text {
-  color: #E2E8F0;
-}
-
-/* ===================== MODERN BLUE THEME ===================== */
-:root {
-  --primary-blue: #0EA5E9;
-  --secondary-blue: #1D4ED8;
-  --accent-blue: #38BDF8;
-  --light-blue: #E0F2FE;
-  --dark-blue: #0C4A6E;
-  --success-green: #10B981;
-  --warning-orange: #F59E0B;
-  --gradient-primary: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
-  --gradient-glass: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(29, 78, 216, 0.05) 100%);
-  --glass-bg: rgba(255, 255, 255, 0.98);
-  --glass-border: rgba(255, 255, 255, 0.25);
-  --shadow-soft: 0 4px 20px rgba(14, 165, 233, 0.08);
-  --shadow-medium: 0 8px 32px rgba(14, 165, 233, 0.12);
-  --shadow-hard: 0 12px 48px rgba(14, 165, 233, 0.2);
-  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-[data-theme="dark"] {
-  --glass-bg: rgba(15, 23, 42, 0.98);
-  --glass-border: rgba(255, 255, 255, 0.15);
-  --dark-blue: #F1F5F9;
-  --light-blue: #1E293B;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
-  color: var(--dark-blue);
-  min-height: 100vh;
-  overflow-x: hidden;
-  -webkit-tap-highlight-color: transparent;
-  opacity: 0;
-  animation: fadeIn 0.5s ease 0.5s forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-[data-theme="dark"] body {
-  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-  color: #E2E8F0;
-}
-
-/* Hide main content initially */
-body.loading .modern-header,
-body.loading .container,
-body.loading .theme-toggle-enhanced {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* ===================== MOBILE-FIRST HEADER ===================== */
-.modern-header {
-  padding: 30px 20px;
-  text-align: center;
-  background: var(--gradient-primary);
-  margin-bottom: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   position: relative;
   overflow: hidden;
 }
 
-@media (min-width: 768px) {
-  .modern-header {
-    padding: 50px 20px 40px;
-    margin-bottom: 40px;
-  }
+.logo-circle::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: rotate(45deg);
+  animation: shine 3s infinite linear;
 }
 
-.animated-logo {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 15px;
-  position: relative;
-}
-
-@media (min-width: 768px) {
-  .animated-logo {
-    width: 90px;
-    height: 90px;
-    margin-bottom: 25px;
-  }
-}
-
-.logo-main {
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  animation: logoFloat 3s ease-in-out infinite;
-}
-
-.brand-title {
-  font-size: 1.8rem;
+.header-title {
+  font-size: 2.8rem;
   font-weight: 900;
-  margin-bottom: 8px;
+  margin-bottom: 15px;
   background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  line-height: 1.1;
   letter-spacing: -0.5px;
-  line-height: 1.2;
 }
 
-@media (min-width: 768px) {
-  .brand-title {
-    font-size: 3rem;
-    margin-bottom: 12px;
-  }
-}
-
-.brand-subtitle {
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 500;
-  max-width: 500px;
-  margin: 0 auto 20px;
-  line-height: 1.5;
-  padding: 0 15px;
-}
-
-@media (min-width: 768px) {
-  .brand-subtitle {
-    font-size: 1.2rem;
-    margin-bottom: 35px;
-  }
-}
-
-.contact-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(20px);
-  padding: 12px 20px;
-  border-radius: 50px;
-  color: white;
-  font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  font-size: 0.9rem;
-  transition: all var(--transition-smooth);
-}
-
-.contact-chip:hover {
-  transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.25);
-}
-
-@media (min-width: 768px) {
-  .contact-chip {
-    padding: 15px 30px;
-    gap: 12px;
-    font-size: 1rem;
-  }
-}
-
-/* ===================== ANIMATED STATS COUNTER ===================== */
-.stats-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  max-width: 1200px;
-  margin: -15px auto 25px;
-  padding: 0 15px;
-}
-
-@media (min-width: 768px) {
-  .stats-container {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin: -25px auto 35px;
-  }
-}
-
-.stat-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  border-radius: 16px;
-  padding: 18px 12px;
-  text-align: center;
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-soft);
-  transition: all var(--transition-smooth);
-  opacity: 0;
-  transform: translateY(20px);
-  animation: statCardAppear 0.6s ease forwards;
-}
-
-.stat-card:nth-child(1) { animation-delay: 0.1s; }
-.stat-card:nth-child(2) { animation-delay: 0.2s; }
-.stat-card:nth-child(3) { animation-delay: 0.3s; }
-.stat-card:nth-child(4) { animation-delay: 0.4s; }
-
-@keyframes statCardAppear {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-medium);
-}
-
-@media (min-width: 768px) {
-  .stat-card {
-    padding: 22px;
-    border-radius: 20px;
-  }
-}
-
-.stat-icon {
-  width: 45px;
-  height: 45px;
-  background: var(--gradient-primary);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 10px;
-  color: white;
-  font-size: 18px;
-}
-
-@media (min-width: 768px) {
-  .stat-icon {
-    width: 55px;
-    height: 55px;
-    font-size: 22px;
-    margin-bottom: 15px;
-  }
-}
-
-.stat-number {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--primary-blue);
-  margin-bottom: 4px;
-  display: block;
-  font-feature-settings: "tnum";
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-}
-
-.stat-number .counting {
-  display: inline-block;
-  animation: countUp 0.5s ease-out;
-}
-
-/* Enhanced Number Animation */
-.number-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.digit {
-  position: relative;
-  display: inline-block;
-  animation: digitFlip 0.3s ease-out;
-  transform-style: preserve-3d;
-}
-
-@keyframes countUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes digitFlip {
-  0% {
-    transform: rotateX(-90deg);
-    opacity: 0;
-  }
-  100% {
-    transform: rotateX(0deg);
-    opacity: 1;
-  }
-}
-
-@media (min-width: 768px) {
-  .stat-number {
-    font-size: 1.8rem;
-    margin-bottom: 5px;
-    height: 45px;
-  }
-}
-
-.stat-label {
-  font-size: 0.75rem;
-  color: var(--dark-blue);
-  font-weight: 600;
-  opacity: 0.8;
-}
-
-[data-theme="dark"] .stat-label {
-  color: #CBD5E1;
-}
-
-@media (min-width: 768px) {
-  .stat-label {
-    font-size: 0.85rem;
-  }
-}
-
-/* ===================== MAIN LAYOUT ===================== */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
-}
-
-@media (min-width: 768px) {
-  .container {
-    padding: 0 20px;
-  }
-}
-
-.main-content {
-  display: block;
-  gap: 25px;
-  margin-bottom: 35px;
-}
-
-@media (min-width: 992px) {
-  .main-content {
-    display: grid;
-    grid-template-columns: 1fr 1.3fr;
-    gap: 35px;
-  }
-}
-
-/* ===================== MOBILE-FRIENDLY SEARCH CARD ===================== */
-.search-card-advanced {
-  background: var(--glass-bg);
-  backdrop-filter: blur(30px);
-  border-radius: 22px;
-  padding: 25px 20px;
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-medium);
-  margin-bottom: 25px;
-}
-
-@media (min-width: 768px) {
-  .search-card-advanced {
-    padding: 35px;
-    border-radius: 28px;
-    margin-bottom: 0;
-    position: sticky;
-    top: 30px;
-  }
-}
-
-.card-header-advanced {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 25px;
-  padding-bottom: 18px;
-  border-bottom: 2px solid var(--light-blue);
-}
-
-@media (min-width: 768px) {
-  .card-header-advanced {
-    gap: 20px;
-    margin-bottom: 35px;
-    padding-bottom: 22px;
-  }
-}
-
-.card-icon-advanced {
-  width: 55px;
-  height: 55px;
-  background: var(--gradient-primary);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 22px;
-  flex-shrink: 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.card-icon-advanced::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3), transparent 70%);
-  animation: shine 3s infinite;
-}
-
-@keyframes shine {
-  0%, 100% { transform: translateX(-100%); }
-  50% { transform: translateX(100%); }
-}
-
-@media (min-width: 768px) {
-  .card-icon-advanced {
-    width: 65px;
-    height: 65px;
-    font-size: 26px;
-    border-radius: 18px;
-  }
-}
-
-.card-title-advanced {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--dark-blue);
-}
-
-[data-theme="dark"] .card-title-advanced {
-  color: #F1F5F9;
-}
-
-@media (min-width: 768px) {
-  .card-title-advanced {
-    font-size: 1.8rem;
-  }
-}
-
-/* Mobile-optimized Input */
-.input-group-advanced {
-  margin-bottom: 22px;
-}
-
-.input-label-advanced {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: 700;
-  color: var(--dark-blue);
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-[data-theme="dark"] .input-label-advanced {
-  color: #E2E8F0;
-}
-
-.input-wrapper-advanced {
-  position: relative;
-}
-
-.input-field-advanced {
-  width: 100%;
-  padding: 18px 20px 18px 55px;
-  background: var(--glass-bg);
-  border: 2px solid var(--glass-border);
-  border-radius: 16px;
-  color: var(--dark-blue);
-  font-size: 1rem;
-  font-weight: 500;
-  transition: all var(--transition-smooth);
-  -webkit-appearance: none;
-  font-family: 'Inter', sans-serif;
-}
-
-[data-theme="dark"] .input-field-advanced {
-  color: #F1F5F9;
-  background: rgba(30, 41, 59, 0.7);
-}
-
-.input-field-advanced:focus {
-  outline: none;
-  border-color: var(--primary-blue);
-  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
-  transform: translateY(-2px);
-}
-
-.input-icon-advanced {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--primary-blue);
-  font-size: 1.2rem;
-  z-index: 1;
-}
-
-/* Example Numbers - Mobile Optimized */
-.example-numbers {
-  margin-top: 15px;
-  text-align: center;
-}
-
-.example-text {
-  font-size: 0.8rem;
-  color: var(--dark-blue);
-  opacity: 0.7;
-  margin-bottom: 10px;
-  display: block;
-  font-weight: 500;
-}
-
-.example-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-}
-
-.example-btn {
-  padding: 10px 18px;
-  background: rgba(14, 165, 233, 0.1);
-  border: 1px solid rgba(14, 165, 233, 0.25);
-  border-radius: 50px;
-  color: var(--primary-blue);
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all var(--transition-smooth);
-  white-space: nowrap;
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: 'Inter', sans-serif;
-}
-
-.example-btn i {
-  font-size: 0.9rem;
-}
-
-.example-btn:hover {
-  background: rgba(14, 165, 233, 0.2);
-  transform: translateY(-2px);
-  border-color: var(--primary-blue);
-}
-
-/* Mobile-optimized Button */
-.search-btn-advanced {
-  width: 100%;
-  padding: 20px;
-  background: var(--gradient-primary);
-  color: white;
-  border: none;
-  border-radius: 16px;
+.header-subtitle {
   font-size: 1.1rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all var(--transition-smooth);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 5px;
-  font-family: 'Inter', sans-serif;
-  letter-spacing: 0.5px;
-  position: relative;
-  overflow: hidden;
-  min-height: 60px;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 25px;
+  line-height: 1.6;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 400;
 }
 
-.search-btn-advanced::before {
+.contact-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  padding: 16px 28px;
+  border-radius: var(--radius-full);
+  color: white;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 1rem;
+  transition: var(--transition);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  animation: badgePulse 2s ease infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2); }
+  50% { box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4); }
+}
+
+.contact-badge::before {
   content: '';
   position: absolute;
   top: 0;
@@ -960,422 +337,134 @@ body.loading .theme-toggle-enhanced {
   transition: left 0.7s;
 }
 
-.search-btn-advanced:hover::before {
+.contact-badge:hover::before {
   left: 100%;
 }
 
-.search-btn-advanced:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+.contact-badge:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(255, 255, 255, 0.1);
 }
 
-@media (min-width: 768px) {
-  .search-btn-advanced {
-    padding: 22px;
-    border-radius: 18px;
-    font-size: 1.2rem;
-    gap: 15px;
-  }
-}
-
-/* Mobile Booking Steps */
-.booking-steps {
-  margin-top: 25px;
-  padding: 22px 18px;
-  background: var(--gradient-glass);
-  border-radius: 18px;
-  border: 1px solid var(--glass-border);
-}
-
-@media (min-width: 768px) {
-  .booking-steps {
-    padding: 28px;
-    margin-top: 35px;
-  }
-}
-
-.steps-title {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--dark-blue);
-  margin-bottom: 18px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-[data-theme="dark"] .steps-title {
-  color: #F1F5F9;
-}
-
-@media (min-width: 768px) {
-  .steps-title {
-    font-size: 1.3rem;
-    margin-bottom: 22px;
-    gap: 12px;
-  }
-}
-
-.steps-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.step-item {
-  display: flex;
-  gap: 15px;
-  align-items: flex-start;
-  padding: 16px;
-  background: var(--glass-bg);
-  border-radius: 14px;
-  border: 1px solid var(--glass-border);
-  transition: all var(--transition-smooth);
-}
-
-.step-item:hover {
-  transform: translateX(5px);
-  border-color: var(--primary-blue);
-}
-
-@media (min-width: 768px) {
-  .step-item {
-    gap: 18px;
-    padding: 18px;
-    border-radius: 16px;
-  }
-}
-
-.step-number {
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
-  background: var(--gradient-primary);
+/* ===================== WEDOXA BADGE ===================== */
+.wedoxa-badge {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+  background: var(--wedoxa-color);
   color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  font-size: 1rem;
-  flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
-}
-
-@media (min-width: 768px) {
-  .step-number {
-    width: 38px;
-    height: 38px;
-    font-size: 1.1rem;
-  }
-}
-
-.step-content {
-  flex: 1;
-}
-
-.step-title {
-  font-size: 0.95rem;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.8rem;
   font-weight: 700;
-  color: var(--dark-blue);
-  margin-bottom: 5px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  box-shadow: var(--shadow-md);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  animation: slideInRight 0.6s ease 0.5s both;
 }
 
-[data-theme="dark"] .step-title {
-  color: #E2E8F0;
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
-@media (min-width: 768px) {
-  .step-title {
-    font-size: 1.05rem;
-    margin-bottom: 6px;
-    gap: 10px;
-  }
+/* ===================== FEATURES SECTION ===================== */
+.features-section {
+  padding: 60px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease 0.4s forwards;
 }
 
-.step-description {
-  font-size: 0.85rem;
-  color: var(--dark-blue);
-  opacity: 0.7;
-  line-height: 1.4;
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
 }
 
-[data-theme="dark"] .step-description {
-  color: #CBD5E1;
+.section-title {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 40px;
+  color: var(--dark);
+  position: relative;
+  line-height: 1.2;
 }
 
-/* Mobile Features Grid */
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-full);
+}
+
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 60px;
 }
 
-@media (min-width: 768px) {
-  .features-grid {
-    gap: 18px;
-    margin-top: 35px;
-  }
-}
-
-.feature-item {
+.feature-card {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-xl);
+  padding: 30px;
   text-align: center;
-  padding: 15px 12px;
-  background: var(--gradient-glass);
-  border-radius: 14px;
-  transition: all var(--transition-smooth);
+  border: 1px solid rgba(226, 232, 240, 0.5);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: cardReveal 0.6s ease forwards;
 }
 
-.feature-item:hover {
-  transform: translateY(-3px);
+.feature-card:nth-child(1) { animation-delay: 0.2s; }
+.feature-card:nth-child(2) { animation-delay: 0.4s; }
+.feature-card:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes cardReveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
   background: var(--gradient-primary);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
 }
 
-.feature-item:hover .feature-icon,
-.feature-item:hover .feature-text {
-  color: white;
+.feature-card:hover::before {
+  transform: scaleX(1);
 }
 
-@media (min-width: 768px) {
-  .feature-item {
-    padding: 18px;
-    border-radius: 16px;
-  }
+.feature-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--primary);
 }
 
 .feature-icon {
-  font-size: 20px;
-  color: var(--primary-blue);
-  margin-bottom: 8px;
-  transition: all var(--transition-smooth);
-}
-
-@media (min-width: 768px) {
-  .feature-icon {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-}
-
-.feature-text {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--dark-blue);
-  transition: all var(--transition-smooth);
-}
-
-[data-theme="dark"] .feature-text {
-  color: #CBD5E1;
-}
-
-@media (min-width: 768px) {
-  .feature-text {
-    font-size: 0.85rem;
-  }
-}
-
-/* ===================== MODERN TICKET DESIGN ===================== */
-.results-card-enhanced {
-  background: var(--glass-bg);
-  backdrop-filter: blur(30px);
-  border-radius: 22px;
-  box-shadow: var(--shadow-medium);
-  border: 1px solid var(--glass-border);
-  overflow: hidden;
-  min-height: 450px;
-  display: flex;
-  flex-direction: column;
-}
-
-@media (min-width: 768px) {
-  .results-card-enhanced {
-    border-radius: 28px;
-    min-height: 650px;
-  }
-}
-
-.results-header-enhanced {
-  background: var(--gradient-primary);
-  color: white;
-  padding: 25px 20px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.results-header-enhanced::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-  animation: rotate 20s linear infinite;
-}
-
-@keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@media (min-width: 768px) {
-  .results-header-enhanced {
-    padding: 40px;
-  }
-}
-
-.results-title-enhanced {
-  font-size: 1.6rem;
-  font-weight: 900;
-  margin-bottom: 6px;
-  position: relative;
-  z-index: 1;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-@media (min-width: 768px) {
-  .results-title-enhanced {
-    font-size: 2.2rem;
-    margin-bottom: 8px;
-  }
-}
-
-.results-subtitle-enhanced {
-  font-size: 0.9rem;
-  opacity: 0.9;
-  font-weight: 500;
-  position: relative;
-  z-index: 1;
-}
-
-@media (min-width: 768px) {
-  .results-subtitle-enhanced {
-    font-size: 1.1rem;
-  }
-}
-
-.results-body-enhanced {
-  padding: 25px 20px;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-@media (min-width: 768px) {
-  .results-body-enhanced {
-    padding: 40px 35px;
-  }
-}
-
-/* Modern No Results */
-.no-results-enhanced {
-  text-align: center;
-  padding: 35px 20px;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.no-results-icon-container {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 20px;
-  position: relative;
-}
-
-@media (min-width: 768px) {
-  .no-results-icon-container {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 25px;
-  }
-}
-
-.no-results-icon {
-  font-size: 36px;
-  color: var(--primary-blue);
-  animation: bounce 2s ease-in-out infinite;
-  position: relative;
-  z-index: 2;
-}
-
-.no-results-icon-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--gradient-primary);
-  border-radius: 50%;
-  opacity: 0.1;
-  animation: pulse 3s ease-in-out infinite;
-}
-
-.no-results-title-enhanced {
-  font-size: 1.3rem;
-  font-weight: 800;
-  margin-bottom: 10px;
-  background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-@media (min-width: 768px) {
-  .no-results-title-enhanced {
-    font-size: 1.6rem;
-    margin-bottom: 12px;
-  }
-}
-
-/* ===================== MODERN TICKET DESIGN ===================== */
-.booking-details-enhanced {
-  width: 100%;
-  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Modern Passenger Card */
-.passenger-card-enhanced {
-  background: linear-gradient(135deg, var(--glass-bg) 0%, rgba(224, 242, 254, 0.2) 100%);
-  border-radius: 20px;
-  padding: 25px 20px;
-  text-align: center;
-  margin-bottom: 22px;
-  border: 1px solid var(--glass-border);
-  position: relative;
-  overflow: hidden;
-}
-
-.passenger-card-enhanced::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 100%;
-  background: var(--gradient-primary);
-  border-radius: 5px 0 0 5px;
-}
-
-@media (min-width: 768px) {
-  .passenger-card-enhanced {
-    padding: 35px 30px;
-    border-radius: 24px;
-    margin-bottom: 32px;
-  }
-}
-
-.passenger-avatar-enhanced {
   width: 70px;
   height: 70px;
+  margin: 0 auto 20px;
   background: var(--gradient-primary);
   border-radius: 50%;
   display: flex;
@@ -1383,358 +472,337 @@ body.loading .theme-toggle-enhanced {
   justify-content: center;
   color: white;
   font-size: 28px;
-  margin: 0 auto 18px;
-  border: 3px solid var(--glass-bg);
-  box-shadow: 0 8px 25px rgba(14, 165, 233, 0.3);
-  position: relative;
+  box-shadow: var(--shadow-blue);
+  transition: var(--transition);
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.feature-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.feature-description {
+  color: var(--gray);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* ===================== MAIN CONTAINER ===================== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease 0.6s forwards;
+}
+
+/* ===================== PREMIUM TABS ===================== */
+.tabs-wrapper {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid rgba(226, 232, 240, 0.5);
+  margin-bottom: 60px;
   overflow: hidden;
-}
-
-.passenger-avatar-enhanced::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3), transparent 70%);
-  animation: shine 2s infinite;
-}
-
-@media (min-width: 768px) {
-  .passenger-avatar-enhanced {
-    width: 85px;
-    height: 85px;
-    font-size: 34px;
-    margin-bottom: 22px;
-  }
-}
-
-.passenger-name-enhanced {
-  font-size: 1.5rem;
-  font-weight: 900;
-  margin-bottom: 6px;
-  color: var(--dark-blue);
   position: relative;
-  display: inline-block;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: slideInUp 0.6s ease 0.8s forwards;
 }
 
-[data-theme="dark"] .passenger-name-enhanced {
-  color: #F1F5F9;
+@keyframes slideInUp {
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.passenger-name-enhanced::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background: var(--gradient-primary);
-  border-radius: 2px;
-}
-
-@media (min-width: 768px) {
-  .passenger-name-enhanced {
-    font-size: 1.9rem;
-    margin-bottom: 8px;
-  }
-}
-
-/* Modern Ticket Grid */
-.ticket-grid-enhanced {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 15px;
-  margin-bottom: 22px;
-}
-
-@media (min-width: 768px) {
-  .ticket-grid-enhanced {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
-    margin-bottom: 32px;
-  }
-}
-
-.ticket-card-enhanced {
-  background: var(--glass-bg);
-  padding: 22px 18px;
-  border-radius: 18px;
-  border: 1px solid var(--glass-border);
-  transition: all var(--transition-smooth);
-  position: relative;
-  overflow: hidden;
-}
-
-.ticket-card-enhanced:hover {
-  transform: translateY(-5px);
-  border-color: var(--primary-blue);
-  box-shadow: var(--shadow-medium);
-}
-
-.ticket-card-enhanced::before {
+.tabs-wrapper::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+.tabs-nav {
+  display: flex;
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(241, 245, 249, 0.9) 100%);
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tabs-nav::-webkit-scrollbar {
+  display: none;
+}
+
+[data-theme="dark"] .tabs-nav {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%);
+}
+
+.tab-btn {
+  flex: 1;
+  min-width: 140px;
+  padding: 22px 15px;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.tab-btn.active {
+  color: var(--primary);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] .tab-btn.active {
+  background: rgba(30, 41, 59, 0.6);
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
   height: 4px;
   background: var(--gradient-primary);
-  opacity: 0;
-  transition: opacity var(--transition-smooth);
+  border-radius: var(--radius-full);
+  animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 12px rgba(59, 130, 246, 0.4);
 }
 
-.ticket-card-enhanced:hover::before {
-  opacity: 1;
+@keyframes slideIn {
+  from { width: 0; opacity: 0; }
+  to { width: 80px; opacity: 1; }
 }
 
-@media (min-width: 768px) {
-  .ticket-card-enhanced {
-    padding: 26px 22px;
-    border-radius: 20px;
+.tab-btn:hover:not(.active) {
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.tab-btn i {
+  font-size: 1.2rem;
+}
+
+.tab-content {
+  display: none;
+  padding: 30px;
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* ===================== CHECK BOOKING TAB ===================== */
+.check-booking {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+@media (min-width: 992px) {
+  .check-booking {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
-.ticket-icon-enhanced {
-  width: 50px;
-  height: 50px;
+/* Search Card with Image */
+.search-card {
+  background: var(--glass);
+  padding: 30px;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(226, 232, 240, 0.5);
+  box-shadow: var(--shadow-lg);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeInUp 0.6s ease 1s forwards;
+}
+
+.search-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
   background: var(--gradient-primary);
-  border-radius: 14px;
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+.search-card:hover::before {
+  transform: scaleX(1);
+}
+
+.search-card:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--primary);
+}
+
+.search-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.search-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 20px;
-  margin-bottom: 15px;
+  font-size: 24px;
+  box-shadow: var(--shadow-blue);
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
-.ticket-icon-enhanced::after {
+.search-icon::after {
   content: '';
   position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3), transparent 70%);
-  animation: shine 2s infinite;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: rotate(45deg);
+  animation: shine 3s infinite linear;
 }
 
-@media (min-width: 768px) {
-  .ticket-icon-enhanced {
-    width: 55px;
-    height: 55px;
-    font-size: 22px;
-    margin-bottom: 18px;
-  }
+.search-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--dark);
+  line-height: 1.2;
 }
 
-.ticket-label-enhanced {
-  font-size: 0.75rem;
-  color: var(--dark-blue);
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  margin-bottom: 8px;
-  font-weight: 700;
+.input-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: var(--dark);
+  font-size: 0.95rem;
   display: flex;
   align-items: center;
   gap: 8px;
-  opacity: 0.7;
 }
 
-[data-theme="dark"] .ticket-label-enhanced {
-  color: #CBD5E1;
-}
-
-@media (min-width: 768px) {
-  .ticket-label-enhanced {
-    font-size: 0.8rem;
-    letter-spacing: 1.5px;
-    margin-bottom: 10px;
-    gap: 10px;
-  }
-}
-
-.ticket-value-enhanced {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: var(--dark-blue);
-  line-height: 1.4;
-}
-
-[data-theme="dark"] .ticket-value-enhanced {
-  color: #F1F5F9;
-}
-
-.ticket-value-enhanced.paid {
-  color: var(--success-green);
-}
-
-.ticket-value-enhanced.pending {
-  color: var(--warning-orange);
-}
-
-@media (min-width: 768px) {
-  .ticket-value-enhanced {
-    font-size: 1.4rem;
-  }
-}
-
-/* Modern Seats Section */
-.seats-section-enhanced {
-  background: var(--gradient-glass);
-  padding: 22px 18px;
-  border-radius: 20px;
-  border: 2px dashed var(--glass-border);
-  margin-bottom: 22px;
+.input-wrapper {
   position: relative;
-  overflow: hidden;
 }
 
-.seats-section-enhanced::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
+.search-input {
   width: 100%;
-  height: 100%;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='rgba(14, 165, 233, 0.1)'/%3E%3C/svg%3E");
-  animation: moveBackground 15s linear infinite;
+  padding: 18px 18px 18px 50px;
+  background: rgba(248, 250, 252, 0.8);
+  border: 2px solid #E2E8F0;
+  border-radius: var(--radius-md);
+  color: var(--dark);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: var(--transition);
+  font-family: 'Inter', sans-serif;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-@media (min-width: 768px) {
-  .seats-section-enhanced {
-    padding: 30px 25px;
-    border-radius: 24px;
-    margin-bottom: 32px;
-  }
+[data-theme="dark"] .search-input {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: #334155;
+  color: var(--dark);
 }
 
-.seats-title-enhanced {
-  font-size: 1.3rem;
-  font-weight: 900;
-  color: var(--dark-blue);
-  margin-bottom: 18px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  position: relative;
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+  background: white;
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .search-input:focus {
+  background: rgba(30, 41, 59, 1);
+}
+
+.input-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary);
+  font-size: 1.2rem;
   z-index: 1;
 }
 
-[data-theme="dark"] .seats-title-enhanced {
-  color: #F1F5F9;
-}
-
-@media (min-width: 768px) {
-  .seats-title-enhanced {
-    font-size: 1.5rem;
-    margin-bottom: 22px;
-    gap: 12px;
-  }
-}
-
-.seats-container-enhanced {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
-}
-
-@media (min-width: 768px) {
-  .seats-container-enhanced {
-    gap: 15px;
-  }
-}
-
-.seat-enhanced {
-  width: 65px;
-  height: 65px;
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: var(--gradient-primary);
-  color: white;
-  font-weight: 900;
-  border: 2px solid var(--glass-bg);
-  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.25);
-  transition: all var(--transition-smooth);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  animation: seatAppear 0.5s ease-out backwards;
-}
-
-.seat-enhanced:hover {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 10px 30px rgba(14, 165, 233, 0.4);
-  z-index: 10;
-}
-
-@media (min-width: 768px) {
-  .seat-enhanced {
-    width: 75px;
-    height: 75px;
-    border-radius: 18px;
-  }
-}
-
-.seat-icon-enhanced {
-  font-size: 18px;
-  margin-bottom: 5px;
-}
-
-@media (min-width: 768px) {
-  .seat-icon-enhanced {
-    font-size: 22px;
-    margin-bottom: 6px;
-  }
-}
-
-.seat-number-enhanced {
-  font-size: 1.1rem;
-  font-weight: 800;
-}
-
-/* Modern Download Button */
-.download-section-enhanced {
-  margin-top: 22px;
-  text-align: center;
-}
-
-@media (min-width: 768px) {
-  .download-section-enhanced {
-    margin-top: 32px;
-  }
-}
-
-.download-btn-enhanced {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 18px 32px;
+.search-btn {
+  width: 100%;
+  padding: 18px;
   background: var(--gradient-primary);
   color: white;
   border: none;
-  border-radius: 50px;
+  border-radius: var(--radius-md);
   font-size: 1.1rem;
-  font-weight: 900;
+  font-weight: 700;
   cursor: pointer;
-  transition: all var(--transition-smooth);
-  box-shadow: 0 8px 25px rgba(14, 165, 233, 0.3);
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  font-family: 'Inter', sans-serif;
   position: relative;
   overflow: hidden;
-  min-height: 60px;
-  font-family: 'Inter', sans-serif;
-  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-blue);
 }
 
-.download-btn-enhanced::before {
+.search-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+  background: var(--primary-gradient-hover);
+}
+
+.search-btn::before {
   content: '';
   position: absolute;
   top: 0;
@@ -1742,1598 +810,2997 @@ body.loading .theme-toggle-enhanced {
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.7s;
+  transition: left 0.6s;
 }
 
-.download-btn-enhanced:hover::before {
+.search-btn:hover::before {
   left: 100%;
 }
 
-.download-btn-enhanced:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(14, 165, 233, 0.4);
+/* How to Check Steps */
+.how-to-steps {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(226, 232, 240, 0.5);
 }
 
-@media (min-width: 768px) {
-  .download-btn-enhanced {
-    padding: 20px 40px;
-    font-size: 1.2rem;
-    gap: 15px;
-  }
-}
-
-/* Modern Feedback */
-.feedback-section-enhanced {
-  margin-top: 22px;
-  padding: 22px 18px;
-  background: var(--gradient-glass);
-  border-radius: 20px;
-  border: 1px solid var(--glass-border);
-  text-align: center;
-}
-
-@media (min-width: 768px) {
-  .feedback-section-enhanced {
-    margin-top: 32px;
-    padding: 28px 24px;
-    border-radius: 24px;
-  }
-}
-
-.feedback-title-enhanced {
+.steps-title {
   font-size: 1.1rem;
-  font-weight: 900;
-  color: var(--dark-blue);
-  margin-bottom: 18px;
-  line-height: 1.4;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-[data-theme="dark"] .feedback-title-enhanced {
-  color: #F1F5F9;
-}
-
-@media (min-width: 768px) {
-  .feedback-title-enhanced {
-    font-size: 1.2rem;
-    margin-bottom: 22px;
-  }
-}
-
-.feedback-buttons-enhanced {
+.steps-list {
   display: flex;
   flex-direction: column;
+  gap: 14px;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
   gap: 12px;
-  justify-content: center;
-  max-width: 300px;
-  margin: 0 auto;
+  transition: var(--transition);
+  padding: 5px;
+  border-radius: var(--radius-sm);
 }
 
-@media (min-width: 768px) {
-  .feedback-buttons-enhanced {
-    flex-direction: row;
-    gap: 20px;
-    max-width: none;
-  }
+.step-item:hover {
+  transform: translateX(5px);
+  background: rgba(59, 130, 246, 0.05);
 }
 
-.feedback-btn-enhanced {
-  padding: 16px 24px;
-  border-radius: 50px;
-  border: 2px solid var(--glass-border);
-  background: var(--glass-bg);
-  color: var(--dark-blue);
-  font-weight: 700;
-  cursor: pointer;
-  transition: all var(--transition-smooth);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-size: 1rem;
-  min-height: 54px;
-  font-family: 'Inter', sans-serif;
-}
-
-[data-theme="dark"] .feedback-btn-enhanced {
-  color: #E2E8F0;
-}
-
-.feedback-btn-enhanced.yes:hover {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: var(--success-green);
-  color: var(--success-green);
-  transform: translateY(-2px);
-}
-
-.feedback-btn-enhanced.no:hover {
-  background: rgba(239, 68, 68, 0.15);
-  border-color: #EF4444;
-  color: #EF4444;
-  transform: translateY(-2px);
-}
-
-/* Mobile Theme Toggle */
-.theme-toggle-enhanced {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
-}
-
-@media (min-width: 768px) {
-  .theme-toggle-enhanced {
-    bottom: 30px;
-    right: 30px;
-  }
-}
-
-.theme-btn-enhanced {
-  width: 54px;
-  height: 54px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  border: 2px solid var(--glass-border);
+.step-number {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  background: var(--gradient-primary);
+  color: white;
   border-radius: 50%;
-  color: var(--dark-blue);
-  font-size: 1.2rem;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--transition-smooth);
-  box-shadow: var(--shadow-medium);
+  font-weight: 800;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-blue);
 }
 
-.theme-btn-enhanced:hover {
-  transform: rotate(180deg) scale(1.1);
-  border-color: var(--primary-blue);
-  box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+.step-text {
+  font-size: 0.95rem;
+  color: var(--gray);
+  line-height: 1.5;
+  padding-top: 3px;
 }
 
-/* Mobile Footer */
-.footer-enhanced {
+/* Results Panel */
+.results-panel {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.6s ease 1.2s forwards;
+}
+
+.results-panel.show {
+  opacity: 1;
+  transform: translateY(0);
+  animation: none;
+}
+
+.results-header {
   text-align: center;
-  padding: 25px 0;
-  color: var(--dark-blue);
-  font-size: 0.85rem;
-  border-top: 1px solid var(--glass-border);
-  margin-top: 35px;
+  margin-bottom: 30px;
+  position: relative;
 }
 
-[data-theme="dark"] .footer-enhanced {
-  color: #94A3B8;
-}
-
-@media (min-width: 768px) {
-  .footer-enhanced {
-    padding: 40px 0;
-    font-size: 0.95rem;
-  }
-}
-
-.company-name-enhanced {
+.results-title {
+  font-size: 1.8rem;
   font-weight: 900;
-  color: var(--primary-blue);
-  display: block;
-  margin-bottom: 8px;
-  font-size: 1.1rem;
+  color: var(--dark);
+  margin-bottom: 10px;
   position: relative;
   display: inline-block;
 }
 
-.company-name-enhanced::after {
+.results-title::after {
   content: '';
   position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 100%;
-  height: 2px;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
   background: var(--gradient-primary);
-  border-radius: 1px;
+  border-radius: var(--radius-full);
+}
+
+.results-subtitle {
+  color: var(--gray);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Premium Ticket Card - PROFESSIONAL VERSION */
+.ticket-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #E5E7EB;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  animation: cardReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center top;
+  display: none;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+@keyframes cardReveal {
+  0% { opacity: 0; transform: perspective(1000px) rotateX(-10deg) scale(0.98); }
+  100% { opacity: 1; transform: perspective(1000px) rotateX(0deg) scale(1); }
+}
+
+.ticket-header {
+  background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+  color: white;
+  padding: 24px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ticket-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: rotate(45deg);
+  animation: shine 3s infinite linear;
+}
+
+.ticket-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.5px;
+}
+
+.ticket-subtitle {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  font-weight: 400;
+  position: relative;
+  z-index: 1;
+}
+
+.ticket-body {
+  padding: 32px;
+}
+
+.passenger-section {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #F3F4F6;
+  position: relative;
+}
+
+.passenger-section::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 6px;
+  background: #3B82F6;
+  border-radius: 3px;
+}
+
+.passenger-avatar {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 28px;
+  margin: 0 auto 20px;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.passenger-avatar::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: rotate(45deg);
+  animation: shine 3s infinite linear;
+}
+
+.passenger-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 12px;
+  line-height: 1.2;
+  letter-spacing: -0.25px;
+}
+
+.booking-id {
+  color: #6B7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: #F3F4F6;
+  padding: 6px 16px;
+  border-radius: 20px;
+  display: inline-block;
+  letter-spacing: 0.5px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.detail-card {
+  background: #F9FAFB;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .detail-card {
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(51, 65, 85, 0.5);
+}
+
+.detail-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3B82F6, #1E3A8A);
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
 
-.company-name-enhanced:hover::after {
+.detail-card:hover::before {
   transform: scaleX(1);
 }
 
-@media (min-width: 768px) {
-  .company-name-enhanced {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-  }
+.detail-card:hover {
+  transform: translateY(-4px);
+  border-color: #3B82F6;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+  background: white;
 }
 
-/* Animations */
-@keyframes logoFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+[data-theme="dark"] .detail-card:hover {
+  background: rgba(30, 41, 59, 0.8);
 }
 
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
+.detail-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3B82F6;
+  font-size: 18px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.detail-card:hover .detail-icon {
+  background: rgba(59, 130, 246, 0.15);
+  transform: scale(1.05);
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.detail-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.4;
+}
+
+.detail-value.paid {
+  color: #10B981;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-value.paid::after {
+  content: '✓';
+  background: #10B981;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.detail-value.pending {
+  color: #F59E0B;
+}
+
+.detail-value.pending::after {
+  content: '●';
+  margin-left: 6px;
+  font-size: 10px;
+  animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
-  0%, 100% {
-    opacity: 0.1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.2;
-    transform: scale(1.1);
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 32px;
 }
 
-@keyframes seatAppear {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes moveBackground {
-  0% {
-    transform: translateY(0) translateX(0);
-  }
-  100% {
-    transform: translateY(-30px) translateX(30px);
-  }
-}
-
-/* Touch-friendly improvements */
-@media (max-width: 767px) {
-  button, 
-  .example-btn,
-  .search-btn-advanced,
-  .feedback-btn-enhanced,
-  .download-btn-enhanced {
-    min-height: 48px;
+@media (min-width: 640px) {
+  .action-buttons {
+    flex-direction: row;
   }
   
-  input,
-  select,
-  textarea {
-    font-size: 16px;
+  .ticket-card {
+    max-width: 90%;
+  }
+}
+
+@media (min-width: 768px) {
+  .ticket-card {
+    max-width: 80%;
   }
   
-  .seat-enhanced {
-    min-width: 65px;
-    min-height: 65px;
+  .details-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+.btn {
+  padding: 16px 24px;
+  border-radius: 12px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow: hidden;
+  min-width: 200px;
 }
 
-/* Hide scrollbars but keep functionality */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(14, 165, 233, 0.05);
-  border-radius: 4px;
+.btn:hover::before {
+  left: 100%;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(14, 165, 233, 0.3);
-  border-radius: 4px;
+.btn-primary {
+  background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+  color: white;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(14, 165, 233, 0.5);
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.35);
+  background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
 }
 
-/* Loading spinner for search button */
+.btn-secondary {
+  background: white;
+  color: #374151;
+  border: 2px solid #E5E7EB;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(51, 65, 85, 0.8);
+}
+
+.btn-secondary:hover {
+  background: #F9FAFB;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-color: #3B82F6;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: rgba(30, 41, 59, 1);
+}
+
+/* ===================== NEW BOOKING TAB ===================== */
+.new-booking {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+@media (min-width: 992px) {
+  .new-booking {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+}
+
+/* Booking Form */
+.booking-form {
+  background: var(--glass);
+  padding: 30px;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(226, 232, 240, 0.5);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeInUp 0.6s ease 1s forwards;
+}
+
+.booking-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-success);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+.booking-form:hover::before {
+  transform: scaleX(1);
+}
+
+.booking-form:hover {
+  transform: translateY(-5px) scale(1.01);
+}
+
+.booking-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.booking-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--gradient-success);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  box-shadow: var(--shadow-green);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.booking-icon::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: rotate(45deg);
+  animation: shine 3s infinite linear;
+}
+
+.booking-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--dark);
+  line-height: 1.2;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+  .form-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.form-select {
+  width: 100%;
+  padding: 18px 18px 18px 50px;
+  background: rgba(248, 250, 252, 0.8);
+  border: 2px solid #E2E8F0;
+  border-radius: var(--radius-md);
+  color: var(--dark);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: var(--transition);
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%233B82F6' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 18px;
+}
+
+[data-theme="dark"] .form-select {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: #334155;
+  color: var(--dark);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+  background: white;
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .form-select:focus {
+  background: rgba(30, 41, 59, 1);
+}
+
+.whatsapp-btn {
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 25px;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(37, 211, 102, 0.2);
+}
+
+.whatsapp-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 24px 56px rgba(37, 211, 102, 0.3);
+  background: linear-gradient(135deg, #1EBE5A 0%, #0D7B6B 100%);
+}
+
+.whatsapp-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s;
+}
+
+.whatsapp-btn:hover::before {
+  left: 100%;
+}
+
+/* Instructions Card with Bus Image */
+.instructions-card {
+  background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)),
+              url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+  background-size: cover;
+  background-position: center;
+  padding: 30px;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  height: fit-content;
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeInUp 0.6s ease 1.2s forwards;
+}
+
+.instructions-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.instructions-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  box-shadow: var(--shadow-blue);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.instructions-icon::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: rotate(45deg);
+  animation: shine 3s infinite linear;
+}
+
+.instructions-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: white;
+  line-height: 1.2;
+}
+
+.booking-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.step-item {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+  transition: var(--transition);
+  padding: 5px;
+  border-radius: var(--radius-md);
+}
+
+.step-item:hover {
+  transform: translateX(5px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.step-number {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background: var(--gradient-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-blue);
+  position: relative;
+  overflow: hidden;
+}
+
+.step-number::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: rotate(45deg);
+  animation: shine 3s infinite linear;
+}
+
+.step-content {
+  flex: 1;
+  padding-top: 4px;
+}
+
+.step-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.3;
+}
+
+.step-description {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+}
+
+.highlight-step {
+  background: rgba(16, 185, 129, 0.2);
+  padding: 15px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  margin-top: 10px;
+}
+
+.highlight-step .step-title {
+  color: #10B981;
+}
+
+.whatsapp-contact {
+  background: rgba(37, 211, 102, 0.2);
+  padding: 25px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(37, 211, 102, 0.3);
+  text-align: center;
+  margin-top: 25px;
+  backdrop-filter: blur(10px);
+}
+
+.contact-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #25D366;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(37, 211, 102, 0.2);
+}
+
+.contact-link:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 48px rgba(37, 211, 102, 0.3);
+}
+
+.contact-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s;
+}
+
+.contact-link:hover::before {
+  left: 100%;
+}
+
+/* ===================== FLEET PREVIEW ===================== */
+.fleet-section {
+  padding: 60px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease 1.4s forwards;
+}
+
+.fleet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.fleet-card {
+  background: var(--glass);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  transition: var(--transition);
+  position: relative;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: cardReveal 0.6s ease forwards;
+}
+
+.fleet-card:nth-child(1) { animation-delay: 0.2s; }
+.fleet-card:nth-child(2) { animation-delay: 0.4s; }
+.fleet-card:nth-child(3) { animation-delay: 0.6s; }
+
+.fleet-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-xl);
+}
+
+.fleet-image {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.fleet-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.fleet-image i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 56px;
+  color: white;
+  opacity: 0.8;
+  transition: var(--transition);
+}
+
+.fleet-card:hover .fleet-image i {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.fleet-content {
+  padding: 25px;
+}
+
+.fleet-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.fleet-description {
+  color: var(--gray);
+  line-height: 1.6;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+}
+
+.fleet-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.feature-tag {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--primary);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.fleet-card:hover .feature-tag {
+  background: rgba(59, 130, 246, 0.2);
+  transform: translateY(-2px);
+}
+
+/* ===================== PREMIUM FOOTER ===================== */
+.premium-footer {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  color: white;
+  padding: 60px 20px 30px;
+  margin-top: 60px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease 1.6s forwards;
+}
+
+.premium-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+@media (min-width: 768px) {
+  .footer-content {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.footer-logo {
+  font-size: 2rem;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 15px;
+  display: inline-block;
+  background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footer-description {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+.footer-links h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.footer-links ul {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  padding: 5px 0;
+}
+
+.footer-links a:hover {
+  color: var(--primary);
+  transform: translateX(5px);
+}
+
+.footer-contact h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+}
+
+.contact-item i {
+  color: var(--primary);
+  font-size: 1.1rem;
+  width: 20px;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+/* ===================== THEME TOGGLE ===================== */
+.theme-toggle {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.theme-btn {
+  width: 56px;
+  height: 56px;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(226, 232, 240, 0.5);
+  border-radius: 50%;
+  color: var(--dark);
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  box-shadow: var(--shadow-xl);
+  position: relative;
+  overflow: hidden;
+  animation: themeBtnFloat 3s ease-in-out infinite;
+}
+
+@keyframes themeBtnFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(180deg); }
+}
+
+.theme-btn:hover {
+  transform: scale(1.1) rotate(180deg);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-blue);
+  animation: none;
+}
+
+/* ===================== LOADING OVERLAY ===================== */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.loading-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.advanced-spinner {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 20px;
+}
+
+.advanced-spinner::before,
+.advanced-spinner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  animation: spin 1.8s linear infinite;
+}
+
+.advanced-spinner::before {
+  border: 3px solid transparent;
+  border-top-color: var(--primary);
+  animation-delay: -0.5s;
+  filter: drop-shadow(0 0 8px var(--primary));
+}
+
+.advanced-spinner::after {
+  border: 3px solid transparent;
+  border-top-color: var(--accent);
+  filter: drop-shadow(0 0 8px var(--accent));
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  background: linear-gradient(90deg, #3B82F6, #8B5CF6, #3B82F6);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 2s linear infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ===================== UTILITIES ===================== */
 .spinner {
   display: inline-block;
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255,255,255,0.3);
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   border-top-color: white;
-  animation: spin 1s linear infinite;
+  animation: spin 0.8s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+
+.hidden {
+  display: none;
+}
+
+/* ===================== RESPONSIVE DESIGN - PROFESSIONAL MOBILE SIZING ===================== */
+@media (max-width: 768px) {
+  .premium-header {
+    min-height: 80vh;
+    padding: 15px;
+  }
+  
+  .header-content {
+    padding: 15px;
+  }
+  
+  .logo-container {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+  }
+  
+  .logo-circle {
+    font-size: 36px;
+  }
+  
+  .header-title {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+  }
+  
+  .header-subtitle {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  
+  .contact-badge {
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    gap: 8px;
+    flex-direction: row;
+  }
+  
+  .wedoxa-badge {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .features-section {
+    padding: 40px 15px;
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+  
+  .features-grid,
+  .fleet-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .feature-card,
+  .fleet-card {
+    padding: 25px;
+  }
+  
+  .tab-content {
+    padding: 20px;
+  }
+  
+  .search-card,
+  .booking-form,
+  .instructions-card {
+    padding: 25px;
+  }
+  
+  .search-title,
+  .booking-title,
+  .instructions-title {
+    font-size: 1.4rem;
+  }
+  
+  .search-icon,
+  .booking-icon,
+  .instructions-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  
+  .ticket-header {
+    padding: 20px;
+  }
+  
+  .ticket-title {
+    font-size: 1.3rem;
+  }
+  
+  .ticket-body {
+    padding: 20px;
+  }
+  
+  .passenger-avatar {
+    width: 64px;
+    height: 64px;
+    font-size: 24px;
+  }
+  
+  .passenger-name {
+    font-size: 1.4rem;
+  }
+  
+  .detail-card {
+    padding: 16px;
+  }
+  
+  .detail-value {
+    font-size: 1rem;
+  }
+  
+  .btn {
+    min-width: auto;
+    width: 100%;
+  }
+  
+  .footer-content {
+    gap: 30px;
+  }
+  
+  .footer-logo {
+    font-size: 1.8rem;
+  }
+  
+  .theme-toggle {
+    bottom: 20px;
+    right: 15px;
+  }
+  
+  .theme-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+  
+  /* Mobile form optimizations */
+  .search-input,
+  .form-select {
+    padding: 16px 16px 16px 45px;
+    font-size: 16px; /* Prevents iOS zoom */
+    min-height: 56px; /* Better touch target */
+  }
+  
+  .search-btn,
+  .whatsapp-btn,
+  .btn {
+    padding: 16px;
+    font-size: 1rem;
+    min-height: 56px; /* Better touch target */
+  }
+  
+  .form-row {
+    gap: 15px;
+  }
+  
+  .input-icon {
+    left: 16px;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-title {
+    font-size: 1.8rem;
+  }
+  
+  .header-subtitle {
+    font-size: 0.95rem;
+  }
+  
+  .contact-badge {
+    padding: 12px 18px;
+    font-size: 0.9rem;
+    gap: 6px;
+    text-align: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .section-title {
+    font-size: 1.6rem;
+  }
+  
+  .tab-btn {
+    padding: 18px 10px;
+    font-size: 0.95rem;
+    min-width: 120px;
+  }
+  
+  .search-card,
+  .booking-form,
+  .instructions-card {
+    padding: 20px;
+  }
+  
+  .search-title,
+  .booking-title,
+  .instructions-title {
+    font-size: 1.3rem;
+  }
+  
+  .passenger-name {
+    font-size: 1.3rem;
+  }
+  
+  .details-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .btn {
+    padding: 14px 20px;
+    font-size: 0.95rem;
+  }
+  
+  .welcome-title {
+    font-size: 2rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1rem;
+  }
+  
+  .welcome-logo {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .welcome-logo i {
+    font-size: 40px;
+  }
+  
+  /* Extra small devices */
+  .wedoxa-badge {
+    padding: 5px 10px;
+    font-size: 0.65rem;
+    top: 8px;
+    right: 8px;
+  }
+  
+  .wedoxa-badge i {
+    font-size: 0.7rem;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .feature-card:hover,
+  .fleet-card:hover,
+  .detail-card:hover,
+  .search-card:hover,
+  .booking-form:hover,
+  .tab-btn:hover:not(.active) {
+    transform: none;
+  }
+  
+  .feature-card:active,
+  .fleet-card:active,
+  .detail-card:active,
+  .search-card:active,
+  .booking-form:active {
+    transform: scale(0.98);
+  }
+  
+  .search-btn:active,
+  .whatsapp-btn:active,
+  .btn:active,
+  .contact-link:active {
+    transform: scale(0.98);
+  }
+  
+  .step-item:hover {
+    transform: none;
+  }
+  
+  .step-item:active {
+    transform: translateX(5px);
+  }
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .premium-header {
+    min-height: -webkit-fill-available;
+  }
+  
+  .header-background {
+    background-attachment: scroll;
+  }
+  
+  .glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: blur(20px);
+  }
+  
+  /* Prevent automatic zoom on input focus */
+  input[type="tel"],
+  input[type="text"],
+  input[type="date"],
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Fix for form submission */
+.booking-form form {
+  display: block;
+}
+
+/* Fix for hanging issue */
+*:focus {
+  outline: none;
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Animation performance */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 </style>
 </head>
-<body class="loading">
-<!-- Intro Page -->
-<div class="intro-overlay" id="introOverlay">
-  <div class="intro-content">
-    <div class="intro-logo">
-      <div class="intro-logo-icon">
-        <i class="fas fa-bus"></i>
-      </div>
-    </div>
-    
-    <h1 class="intro-title">Lagan Bus Booking</h1>
-    
-    <p class="intro-subtitle">Loading your booking experience...</p>
-    
-    <div class="bus-animation-container">
-      <div class="bus-track"></div>
-      <div class="bus">
-        <i class="fas fa-bus"></i>
-      </div>
-    </div>
-    
-    <div class="loading-dots">
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-    </div>
+<body>
+<!-- Welcome Overlay -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-logo">
+    <i class="fas fa-bus"></i>
+  </div>
+  <div class="welcome-text">
+    <h1 class="welcome-title">Lagan Bus Services</h1>
+    <p class="welcome-subtitle">Premium Travel Experience</p>
   </div>
 </div>
 
-<!-- Information Loading Overlay -->
-<div class="info-loading-overlay" id="infoLoading">
-  <div class="info-loading-content">
-    <div class="info-loading-icon">
-      <div class="info-loading-icon-inner">
+<!-- WEDOXA Company Badge -->
+<div class="wedoxa-badge">
+  <i class="fas fa-crown"></i>
+  <span>WEDOXA</span>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="advanced-spinner"></div>
+  <p class="loading-text" id="loadingText">Processing...</p>
+</div>
+
+<!-- Premium Header with Hero Image -->
+<header class="premium-header">
+  <div class="header-background"></div>
+  <div class="header-content">
+    <div class="logo-container">
+      <div class="logo-circle">
         <i class="fas fa-bus"></i>
       </div>
     </div>
     
-    <h2 class="info-loading-title">Loading Your Information</h2>
-    <p class="info-loading-subtitle">Please wait while we retrieve your booking details...</p>
+    <h1 class="header-title">Lagan Bus Services</h1>
     
-    <div class="progress-container">
-      <div class="progress-bar" id="loadingProgress"></div>
-    </div>
+    <p class="header-subtitle">Experience luxury travel with premium comfort, safety, and reliability across Sri Lanka</p>
     
-    <div class="loading-steps">
-      <div class="loading-step" id="step1">
-        <div class="loading-step-icon">
-          <i class="fas fa-search"></i>
-        </div>
-        <div class="loading-step-text">Searching in database</div>
-      </div>
-      
-      <div class="loading-step" id="step2">
-        <div class="loading-step-icon">
-          <i class="fas fa-ticket-alt"></i>
-        </div>
-        <div class="loading-step-text">Fetching booking details</div>
-      </div>
-      
-      <div class="loading-step" id="step3">
-        <div class="loading-step-icon">
-          <i class="fas fa-check-circle"></i>
-        </div>
-        <div class="loading-step-text">Preparing your ticket</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modern Glass Header -->
-<header class="modern-header">
-  <div class="animated-logo">
-    <div class="logo-main">
-      <i class="fas fa-bus"></i>
-    </div>
-  </div>
-  
-  <h1 class="brand-title">Welcome To Lagan Bus Booking</h1>
-  
-  <p class="brand-subtitle">Safe Travels. May God Bless Your Journey.</p>
-  
-  <div class="contact-chip">
-    <i class="fas fa-phone-alt"></i>
-    <span>For Reservations: <strong>0777 402 886</strong> (Mr. Fawas)</span>
+    <a href="https://wa.me/94701362527" target="_blank" class="contact-badge">
+      <i class="fab fa-whatsapp"></i>
+      <span>24/7 WhatsApp Support: <strong>+94701362527</strong></span>
+    </a>
   </div>
 </header>
 
-<!-- Stats Section -->
-<div class="container">
-  <div class="stats-container">
-    <div class="stat-card">
-      <div class="stat-icon">
-        <i class="fas fa-users"></i>
+<!-- Features Section -->
+<section class="features-section">
+  <h2 class="section-title">Why Choose Lagan?</h2>
+  
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="fas fa-shield-alt"></i>
       </div>
-      <span class="stat-number" id="passengerCount">0+</span>
-      <div class="stat-label">Happy Passengers</div>
+      <h3 class="feature-title">Premium Safety</h3>
+      <p class="feature-description">GPS tracked buses with professional drivers and comprehensive insurance for your peace of mind.</p>
     </div>
     
-    <div class="stat-card">
-      <div class="stat-icon">
-        <i class="fas fa-bus"></i>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="fas fa-couch"></i>
       </div>
-      <span class="stat-number" id="busCount">0+</span>
-      <div class="stat-label">Modern Buses</div>
+      <h3 class="feature-title">Luxury Comfort</h3>
+      <p class="feature-description">Air-conditioned coaches with reclining seats, WiFi, and entertainment systems for a relaxing journey.</p>
     </div>
     
-    <div class="stat-card">
-      <div class="stat-icon">
-        <i class="fas fa-headset"></i>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="fas fa-bolt"></i>
       </div>
-      <span class="stat-number" id="customerServiceCount">0%</span>
-      <div class="stat-label">Customer Service</div>
-    </div>
-    
-    <div class="stat-card">
-      <div class="stat-icon">
-        <i class="fas fa-check-circle"></i>
-      </div>
-      <span class="stat-number" id="bookingCount">0%</span>
-      <div class="stat-label">Booking Accuracy</div>
+      <h3 class="feature-title">Instant Booking</h3>
+      <p class="feature-description">Book your seat in seconds with instant confirmation and real-time updates on your booking status.</p>
     </div>
   </div>
+</section>
+
+<!-- Main Container -->
+<div class="container">
+  <!-- Premium Tabs Wrapper -->
+  <div class="tabs-wrapper">
+    <nav class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('checkTab')">
+        <i class="fas fa-search"></i>
+        <span>Check Booking</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('newTab')">
+        <i class="fas fa-plus-circle"></i>
+        <span>New Booking</span>
+      </button>
+    </nav>
+    
+    <!-- Check Booking Tab -->
+    <div id="checkTab" class="tab-content active">
+      <div class="check-booking">
+        <!-- Search Card -->
+        <div class="search-card">
+          <div class="search-header">
+            <div class="search-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <h2 class="search-title">Find Your Booking</h2>
+          </div>
+          
+          <div class="input-group">
+            <label class="input-label" for="checkPhone">
+              <i class="fas fa-mobile-alt"></i>
+              WhatsApp Number
+            </label>
+            <div class="input-wrapper">
+              <i class="input-icon fas fa-phone"></i>
+              <input type="tel" id="checkPhone" class="search-input" 
+                     placeholder="947XXXXXXXX" 
+                     maxlength="10"
+                     inputmode="numeric"
+                     pattern="[0-9]*">
+            </div>
+          </div>
+          
+          <button id="checkBtn" class="search-btn" type="button">
+            <i class="fas fa-search"></i> Check Booking Status
+          </button>
+          
+          <!-- How to Check Booking Steps -->
+          <div class="how-to-steps">
+            <h3 class="steps-title">
+              <i class="fas fa-info-circle"></i>
+              How to Check Your Booking
+            </h3>
+            <div class="steps-list">
+              <div class="step-item">
+                <div class="step-number">1</div>
+                <p class="step-text">Enter the WhatsApp number used during booking</p>
+              </div>
+              <div class="step-item">
+                <div class="step-number">2</div>
+                <p class="step-text">Click "Check Booking Status" button</p>
+              </div>
+              <div class="step-item">
+                <div class="step-number">3</div>
+                <p class="step-text">View your booking details instantly</p>
+              </div>
+              <div class="step-item">
+                <div class="step-number">4</div>
+                <p class="step-text">Download ticket or make new booking if needed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Results Panel -->
+        <div class="results-panel" id="resultsPanel">
+          <div class="results-header">
+            <h2 class="results-title">Booking Details</h2>
+            <p class="results-subtitle">Your confirmed travel information</p>
+          </div>
+          
+          <!-- Ticket Card - PROFESSIONAL VERSION -->
+          <div class="ticket-card" id="ticketCard">
+            <div class="ticket-header">
+              <h3 class="ticket-title">Travel Ticket</h3>
+              <p class="ticket-subtitle">Lagan Bus Services - Premium Travel</p>
+            </div>
+            
+            <div class="ticket-body">
+              <div class="passenger-section">
+                <div class="passenger-avatar">
+                  <i class="fas fa-user"></i>
+                </div>
+                <h3 id="displayPassengerName" class="passenger-name">-</h3>
+                <p id="displayBookingId" class="booking-id">Booking ID: -</p>
+              </div>
+              
+              <div class="details-grid">
+                <div class="detail-card">
+                  <div class="detail-icon">
+                    <i class="fas fa-bus"></i>
+                  </div>
+                  <div class="detail-label">Bus Service</div>
+                  <div id="displayBusName" class="detail-value">-</div>
+                </div>
+                
+                <div class="detail-card">
+                  <div class="detail-icon">
+                    <i class="far fa-calendar-alt"></i>
+                  </div>
+                  <div class="detail-label">Travel Date & Time</div>
+                  <div id="displayDateTime" class="detail-value">-</div>
+                </div>
+                
+                <div class="detail-card">
+                  <div class="detail-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </div>
+                  <div class="detail-label">Pickup Point</div>
+                  <div id="displayPickup" class="detail-value">-</div>
+                </div>
+                
+                <div class="detail-card">
+                  <div class="detail-icon">
+                    <i class="fas fa-credit-card"></i>
+                  </div>
+                  <div class="detail-label">Payment Status</div>
+                  <div id="displayPayment" class="detail-value pending">-</div>
+                </div>
+              </div>
+              
+              <div class="action-buttons">
+                <button id="downloadTicketBtn" class="btn btn-primary" type="button">
+                  <i class="fas fa-download"></i> Download Ticket
+                </button>
+                <button class="btn btn-secondary" type="button" onclick="switchTab('newTab')">
+                  <i class="fas fa-plus"></i> New Booking
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Initial State -->
+          <div id="initialState" style="text-align: center; padding: 40px 15px;">
+            <div style="font-size: 60px; color: var(--primary); margin-bottom: 20px; opacity: 0.1;">
+              <i class="fas fa-ticket-alt"></i>
+            </div>
+            <h3 style="font-size: 1.3rem; font-weight: 700; color: var(--dark); margin-bottom: 10px;">
+              No Booking Selected
+            </h3>
+            <p style="color: var(--gray); max-width: 300px; margin: 0 auto; line-height: 1.5; font-size: 0.9rem;">
+              Enter your WhatsApp number to check your booking status and view all travel details.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- New Booking Tab -->
+    <div id="newTab" class="tab-content">
+      <div class="new-booking">
+        <!-- Booking Form -->
+        <div class="booking-form">
+          <div class="booking-header">
+            <div class="booking-icon">
+              <i class="fas fa-calendar-plus"></i>
+            </div>
+            <h2 class="booking-title">New Booking Request</h2>
+          </div>
+          
+          <form id="bookingForm" onsubmit="return false;">
+            <div class="form-row">
+              <div class="input-group">
+                <label class="input-label" for="passengerName">
+                  <i class="fas fa-user"></i>
+                  Full Name
+                </label>
+                <div class="input-wrapper">
+                  <i class="input-icon fas fa-user"></i>
+                  <input type="text" id="passengerName" class="search-input" 
+                         placeholder="Enter your full name" required>
+                </div>
+              </div>
+              
+              <div class="input-group">
+                <label class="input-label" for="passengerPhone">
+                  <i class="fas fa-phone"></i>
+                  WhatsApp Number
+                </label>
+                <div class="input-wrapper">
+                  <i class="input-icon fas fa-mobile-alt"></i>
+                  <input type="tel" id="passengerPhone" class="search-input" 
+                         placeholder="947XXXXXXXX" maxlength="10" required
+                         inputmode="numeric"
+                         pattern="[0-9]*">
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="input-group">
+                <label class="input-label" for="fromLocation">
+                  <i class="fas fa-map-marker-alt"></i>
+                  From (Origin)
+                </label>
+                <div class="input-wrapper">
+                  <i class="input-icon fas fa-location-arrow"></i>
+                  <input type="text" id="fromLocation" class="search-input" 
+                         placeholder="Starting location" required>
+                </div>
+              </div>
+              
+              <div class="input-group">
+                <label class="input-label" for="toLocation">
+                  <i class="fas fa-map-marker-alt"></i>
+                  To (Destination)
+                </label>
+                <div class="input-wrapper">
+                  <i class="input-icon fas fa-flag-checkered"></i>
+                  <input type="text" id="toLocation" class="search-input" 
+                         placeholder="Destination" required>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="input-group">
+                <label class="input-label" for="travelDate">
+                  <i class="fas fa-calendar-alt"></i>
+                  Travel Date
+                </label>
+                <div class="input-wrapper">
+                  <i class="input-icon far fa-calendar"></i>
+                  <input type="date" id="travelDate" class="search-input" required>
+                </div>
+              </div>
+              
+              <div class="input-group">
+                <label class="input-label" for="busName">
+                  <i class="fas fa-bus"></i>
+                  Preferred Bus
+                </label>
+                <div class="input-wrapper">
+                  <i class="input-icon fas fa-bus"></i>
+                  <select id="busName" class="form-select" required>
+                    <option value="">Select bus service</option>
+                    <option value="Sakeer Express">Sakeer Express</option>
+                    <option value="RS Express">RS Express</option>
+                    <option value="Myown Express">Myown Express</option>
+                    <option value="Al Ahla">Al Ahla</option>
+                    <option value="Al Rashith">Al Rashith</option>
+                    <option value="Star Travels">Star Travels</option>
+                    <option value="Lloyds Travels">Lloyds Travels</option>
+                    <option value="Super Line">Super Line</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="input-group">
+                <label class="input-label" for="seatCount">
+                  <i class="fas fa-chair"></i>
+                  Number of Seats
+                </label>
+                <div class="input-wrapper">
+                  <i class="input-icon fas fa-users"></i>
+                  <select id="seatCount" class="form-select" required>
+                    <option value="">Select seats</option>
+                    <option value="1">1 Seat</option>
+                    <option value="2">2 Seats</option>
+                    <option value="3">3 Seats</option>
+                    <option value="4">4 Seats</option>
+                    <option value="5">5 Seats</option>
+                    <option value="6">6 Seats</option>
+                    <option value="7">7 Seats</option>
+                    <option value="8">8 Seats</option>
+                    <option value="9">9 Seats</option>
+                    <option value="10">10 Seats</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <button type="button" id="whatsappSubmitBtn" class="whatsapp-btn">
+              <i class="fab fa-whatsapp"></i> Send Booking via WhatsApp
+            </button>
+          </form>
+        </div>
+        
+        <!-- Instructions Card with Bus Image -->
+        <div class="instructions-card">
+          <div class="instructions-header">
+            <div class="instructions-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h2 class="instructions-title">How to Book</h2>
+          </div>
+          
+          <div class="booking-steps">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h3 class="step-title">Fill Booking Form</h3>
+                <p class="step-description">Complete all details accurately in the form</p>
+              </div>
+            </div>
+            
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h3 class="step-title">Submit via WhatsApp</h3>
+                <p class="step-description">Click the WhatsApp button to send your request</p>
+              </div>
+            </div>
+            
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h3 class="step-title">Attach Payment Slip</h3>
+                <div class="highlight-step">
+                  <h4 class="step-title">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Important Step
+                  </h4>
+                  <p class="step-description">
+                    When WhatsApp opens, <strong>manually attach your payment slip photo/screenshot</strong> before sending
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h3 class="step-title">Wait for Confirmation</h3>
+                <p class="step-description">Our team will verify and confirm within 24 hours</p>
+              </div>
+            </div>
+            
+            <div class="step-item">
+              <div class="step-number">5</div>
+              <div class="step-content">
+                <h3 class="step-title">Check Your Booking</h3>
+                <p class="step-description">Use the Check Booking tab to view confirmed details</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="whatsapp-contact">
+            <h3 class="contact-title">
+              <i class="fab fa-whatsapp"></i> Customer Support
+            </h3>
+            <a href="https://wa.me/94701362527" target="_blank" class="contact-link">
+              <i class="fab fa-whatsapp"></i> WhatsApp Support
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Fleet Preview Section -->
+  <section class="fleet-section">
+    <h2 class="section-title">Our Premium Fleet</h2>
+    
+    <div class="fleet-grid">
+      <div class="fleet-card">
+        <div class="fleet-image">
+          <i class="fas fa-bus"></i>
+        </div>
+        <div class="fleet-content">
+          <h3 class="fleet-title">Executive Class</h3>
+          <p class="fleet-description">Luxury coaches with extra legroom, premium seating, and onboard entertainment.</p>
+          <div class="fleet-features">
+            <span class="feature-tag">WiFi</span>
+            <span class="feature-tag">USB Charging</span>
+            <span class="feature-tag">Refreshments</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="fleet-card">
+        <div class="fleet-image">
+          <i class="fas fa-shuttle-van"></i>
+        </div>
+        <div class="fleet-content">
+          <h3 class="fleet-title">Express Service</h3>
+          <p class="fleet-description">Direct routes with minimal stops for faster travel between major cities.</p>
+          <div class="fleet-features">
+            <span class="feature-tag">Direct Route</span>
+            <span class="feature-tag">Priority Boarding</span>
+            <span class="feature-tag">Air Conditioned</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="fleet-card">
+        <div class="fleet-image">
+          <i class="fas fa-bus-alt"></i>
+        </div>
+        <div class="fleet-content">
+          <h3 class="fleet-title">Family Coach</h3>
+          <p class="fleet-description">Spacious seating perfect for family travel with child-friendly amenities.</p>
+          <div class="fleet-features">
+            <span class="feature-tag">Family Seating</span>
+            <span class="feature-tag">Storage Space</span>
+            <span class="feature-tag">Entertainment</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
 
+<!-- Premium Footer -->
+<footer class="premium-footer">
+  <div class="footer-content">
+    <div class="footer-about">
+      <div class="footer-logo">LAGAN</div>
+      <p class="footer-description">
+        Providing premium bus services across Sri Lanka since 2010. 
+        Experience luxury travel with safety, comfort, and reliability.
+      </p>
+      <div style="margin-top: 15px; padding: 10px; background: rgba(255, 107, 53, 0.1); border-radius: var(--radius-md); border-left: 4px solid var(--wedoxa-color);">
+        <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.9);">
+          <i class="fas fa-crown" style="color: var(--wedoxa-color); margin-right: 5px;"></i>
+          <strong>Developed by WEDOXA</strong>
+        </p>
+      </div>
+    </div>
+    
+    <div class="footer-links">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#" onclick="event.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'});"><i class="fas fa-chevron-right"></i> Home</a></li>
+        <li><a href="#" onclick="event.preventDefault(); switchTab('checkTab');"><i class="fas fa-chevron-right"></i> Check Booking</a></li>
+        <li><a href="#" onclick="event.preventDefault(); switchTab('newTab');"><i class="fas fa-chevron-right"></i> New Booking</a></li>
+        <li><a href="#" onclick="event.preventDefault(); document.querySelector('.fleet-section').scrollIntoView({behavior: 'smooth'});"><i class="fas fa-chevron-right"></i> Our Fleet</a></li>
+        <li><a href="https://wa.me/94701362527" target="_blank"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+      </ul>
+    </div>
+    
+    <div class="footer-contact">
+      <h3>Contact Info</h3>
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-headset"></i>
+          <span>Support: Mr. Fawas +94701362527</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-clock"></i>
+          <span>Hours: 7:00 AM - 10:00 PM</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <span>Email: laganbusbooking@gmail.com</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Nintavur, Sri Lanka (Infront of HNB)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-bottom">
+    <p>&copy; 2024 Lagan Bus Services. All rights reserved. | Premium Travel Solutions</p>
+    <p style="margin-top: 5px; font-size: 0.8rem; opacity: 0.7;">Powered by WEDOXA Technologies</p>
+  </div>
+</footer>
+
 <!-- Theme Toggle -->
-<div class="theme-toggle-enhanced">
-  <button class="theme-btn-enhanced" id="themeToggle">
+<div class="theme-toggle">
+  <button class="theme-btn" id="themeToggle">
     <i class="fas fa-moon" id="themeIcon"></i>
   </button>
 </div>
 
-<!-- Main Content -->
-<div class="container">
-  <main class="main-content">
-    
-    <!-- Advanced Search Card -->
-    <div class="search-card-advanced" role="region" aria-label="Check Booking">
-      <div class="card-header-advanced">
-        <div class="card-icon-advanced">
-          <i class="fas fa-search"></i>
-        </div>
-        <h2 class="card-title-advanced">Check Your Booking</h2>
-      </div>
-      
-      <div class="input-group-advanced">
-        <label class="input-label-advanced" for="phone">
-          <i class="fas fa-mobile-alt"></i>
-          Phone Number
-        </label>
-        <div class="input-wrapper-advanced">
-          <i class="input-icon-advanced fas fa-phone"></i>
-          <input type="tel" id="phone" class="input-field-advanced" 
-                 placeholder="Enter 10-digit number (077XXXXXXX)" 
-                 maxlength="10" inputmode="tel" aria-label="Phone number">
-        </div>
-      </div>
-      
-      <button id="searchBtn" class="search-btn-advanced" aria-label="Check my booking">
-        <i class="fas fa-search"></i> Check My Booking
-      </button>
-      
-      <!-- Booking Steps Section -->
-      <div class="booking-steps">
-        <h3 class="steps-title">
-          <i class="fas fa-info-circle"></i>
-          How to Check Your Booking
-        </h3>
-        
-        <div class="steps-container">
-          <div class="step-item">
-            <div class="step-number">1</div>
-            <div class="step-content">
-              <h4 class="step-title">
-                <i class="fas fa-phone-alt"></i>
-                Enter Phone Number
-              </h4>
-              <p class="step-description">Type the 10-digit phone number you used for booking</p>
-            </div>
-          </div>
-          
-          <div class="step-item">
-            <div class="step-number">2</div>
-            <div class="step-content">
-              <h4 class="step-title">
-                <i class="fas fa-search"></i>
-                Click Check Booking
-              </h4>
-              <p class="step-description">Press the button to search our database instantly</p>
-            </div>
-          </div>
-          
-          <div class="step-item">
-            <div class="step-number">3</div>
-            <div class="step-content">
-              <h4 class="step-title">
-                <i class="fas fa-ticket-alt"></i>
-                View & Download Ticket
-              </h4>
-              <p class="step-description">See your booking details and download e-ticket</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="features-grid">
-        <div class="feature-item">
-          <div class="feature-icon">
-            <i class="fas fa-shield-alt"></i>
-          </div>
-          <div class="feature-text">Secure Booking</div>
-        </div>
-        
-        <div class="feature-item">
-          <div class="feature-icon">
-            <i class="fas fa-bolt"></i>
-          </div>
-          <div class="feature-text">Instant Results</div>
-        </div>
-        
-        <div class="feature-item">
-          <div class="feature-icon">
-            <i class="fas fa-download"></i>
-          </div>
-          <div class="feature-text">E-Ticket Download</div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Enhanced Results Card -->
-    <div class="results-card-enhanced" role="region" aria-label="Booking details">
-      <div class="results-header-enhanced">
-        <h2 class="results-title-enhanced">Your Booking Details</h2>
-        <p class="results-subtitle-enhanced">Find all your travel information here</p>
-      </div>
-      
-      <div class="results-body-enhanced" id="resultsBody">
-        <!-- Initial state -->
-        <div class="no-results-enhanced" aria-live="polite">
-          <div class="no-results-icon-container">
-            <div class="no-results-icon-bg"></div>
-            <div class="no-results-icon">
-              <i class="fas fa-bus"></i>
-            </div>
-          </div>
-          <h3 class="no-results-title-enhanced">Ready to Check Your Booking?</h3>
-          <p style="color: var(--dark-blue); opacity: 0.7; max-width: 400px; margin: 0 auto;">
-            Enter your phone number above to access your premium booking details instantly
-          </p>
-        </div>
-        
-        <!-- Booking Details -->
-        <div id="bookingDetails" style="display: none;" class="booking-details-enhanced">
-          <!-- Passenger Info -->
-          <div class="passenger-card-enhanced">
-            <div class="passenger-avatar-enhanced">
-              <i class="fas fa-user"></i>
-            </div>
-            <div class="ticket-label-enhanced" style="margin-bottom: 10px;">
-              <i class="fas fa-user-tag"></i>
-              PASSENGER INFORMATION
-            </div>
-            <h3 id="passengerName" class="passenger-name-enhanced">-</h3>
-            <p class="passenger-id" id="bookingId" style="color: var(--dark-blue); opacity: 0.7; margin-top: 10px;">Booking ID: -</p>
-          </div>
-          
-          <!-- Ticket Info Grid -->
-          <div class="ticket-grid-enhanced">
-            <div class="ticket-card-enhanced">
-              <div class="ticket-icon-enhanced">
-                <i class="fas fa-bus"></i>
-              </div>
-              <div class="ticket-label-enhanced">
-                <i class="fas fa-tag"></i>
-                BUS NAME
-              </div>
-              <div id="busName" class="ticket-value-enhanced">-</div>
-            </div>
-            
-            <div class="ticket-card-enhanced">
-              <div class="ticket-icon-enhanced">
-                <i class="far fa-calendar-alt"></i>
-              </div>
-              <div class="ticket-label-enhanced">
-                <i class="far fa-clock"></i>
-                DATE & TIME
-              </div>
-              <div id="dateTime" class="ticket-value-enhanced">-</div>
-            </div>
-            
-            <div class="ticket-card-enhanced">
-              <div class="ticket-icon-enhanced">
-                <i class="fas fa-map-marker-alt"></i>
-              </div>
-              <div class="ticket-label-enhanced">
-                <i class="fas fa-location-arrow"></i>
-                PICKUP LOCATION
-              </div>
-              <div id="pickupLocation" class="ticket-value-enhanced">-</div>
-            </div>
-            
-            <div class="ticket-card-enhanced">
-              <div class="ticket-icon-enhanced">
-                <i class="fas fa-money-bill-wave"></i>
-              </div>
-              <div class="ticket-label-enhanced">
-                <i class="fas fa-credit-card"></i>
-                PAYMENT STATUS
-              </div>
-              <div id="paymentAmount" class="ticket-value-enhanced">-</div>
-            </div>
-          </div>
-          
-          <!-- Seats Section -->
-          <div class="seats-section-enhanced">
-            <h3 class="seats-title-enhanced">
-              <i class="fas fa-chair"></i>
-              YOUR SEAT NUMBERS
-            </h3>
-            <div class="seats-container-enhanced" id="seatsBox" aria-live="polite"></div>
-          </div>
-          
-          <!-- Download Button -->
-          <div class="download-section-enhanced">
-            <button id="downloadBtn" class="download-btn-enhanced">
-              <i class="fas fa-download"></i> DOWNLOAD TICKET
-            </button>
-          </div>
-          
-          <!-- Feedback Section -->
-          <div id="feedbackSection" class="feedback-section-enhanced" style="display: none;">
-            <h3 class="feedback-title-enhanced">Did you receive your correct seat information?</h3>
-            <div class="feedback-buttons-enhanced">
-              <button class="feedback-btn-enhanced yes" onclick="sendFeedback('Yes')">
-                <i class="fas fa-thumbs-up"></i> Yes, All Good
-              </button>
-              <button class="feedback-btn-enhanced no" onclick="sendFeedback('No')">
-                <i class="fas fa-thumbs-down"></i> No, Issue Found
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-  
-  <!-- Enhanced Footer -->
-  <footer class="footer-enhanced" role="contentinfo">
-    <span class="company-name-enhanced">WEDOXA</span>
-    <p style="margin-top: 15px; opacity: 0.8;">Made with <span style="color:#ef4444;">❤</span> by WEDOXA</p>
-    <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.6;">
-      &copy; 2024 Lagan Bus Booking. All rights reserved.
-    </p>
-  </footer>
-</div>
-
-<!-- Hidden div for PDF generation -->
-<div id="pdfContainer" style="display: none;"></div>
-
 <script>
-// ===================== CONFIGURATION =====================
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzA7bUEAUyfW8C478oXTnbHQe50OgnX4G2dWRyMNJb3Iqa-xFGRXcdcx963xbOePp-9mw/exec";
+// Configuration
+const ADMIN_WHATSAPP_NUMBER = "94701362527";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQExDkV7FJGlc9N8Y1lRnhf6KMvKMsHhCN7obc4L7fpGXyGRDHsbNmGLvSRDzGqsLZJw/exec";
 
-// ===================== BUS PRICE CONFIGURATION =====================
-const BUS_PRICES = {
-  'bus1': 2500,
-  'bus2': 2500,
-  'bus3': 2500,
-  'default': 2500
+// Bus pricing data
+const busPrices = {
+    "Sakeer Express": 2700,
+    "RS Express": 2900,
+    "Myown Express": 2700,
+    "Al Ahla": 2800,
+    "Al Rashith": 2700,
+    "Star Travels": 1600,
+    "Lloyds Travels": 2700,
+    "Super Line": 2700
 };
 
-// ===================== INITIALIZATION =====================
+// State management
+let currentBookingData = null;
+let isLoading = false;
+
+// Initialize
 document.addEventListener('DOMContentLoaded', function() {
-  // Show intro page
-  const introOverlay = document.getElementById('introOverlay');
-  const body = document.body;
+  console.log('Page loaded - initializing...');
   
-  // Remove loading class after 3 seconds (when bus animation completes)
+  // Set min date for travel date
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('travelDate').min = today;
+  
+  // Set default date to tomorrow
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('travelDate').value = tomorrow.toISOString().split('T')[0];
+  
+  // Phone number formatting
+  document.getElementById('checkPhone').addEventListener('input', formatPhone);
+  document.getElementById('passengerPhone').addEventListener('input', formatPhone);
+  
+  // Event listeners
+  document.getElementById('checkBtn').addEventListener('click', checkBooking);
+  document.getElementById('downloadTicketBtn').addEventListener('click', downloadTicket);
+  document.getElementById('whatsappSubmitBtn').addEventListener('click', submitBooking);
+  document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+  
+  // Initialize theme
+  initTheme();
+  
+  // Auto-hide welcome overlay
   setTimeout(() => {
-    introOverlay.style.opacity = '0';
-    introOverlay.style.transform = 'translateY(-20px)';
-    
-    setTimeout(() => {
-      introOverlay.style.display = 'none';
-      body.classList.remove('loading');
-      
-      // Start enhanced stats animation
-      animateEnhancedStats();
-      
-      // Initialize theme
-      const savedTheme = localStorage.getItem('lagan-theme') || 'light';
-      document.documentElement.setAttribute('data-theme', savedTheme);
-      updateThemeUI(savedTheme);
-      
-      // Phone input validation
-      const phoneInput = document.getElementById('phone');
-      phoneInput.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 10) value = value.substring(0, 10);
-        e.target.value = value;
-        
-        // Visual feedback
-        const icon = this.parentNode.querySelector('.input-icon-advanced');
-        if (value.length === 10) {
-          this.style.borderColor = '#10B981';
-          if (icon) icon.style.color = '#10B981';
-        } else if (value.length >= 9) {
-          this.style.borderColor = '#F59E0B';
-          if (icon) icon.style.color = '#F59E0B';
-        } else {
-          this.style.borderColor = '';
-          if (icon) icon.style.color = '';
-        }
-      });
-
-      // Enter key to search
-      phoneInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') searchBooking();
-      });
-
-      // Search button event
-      document.getElementById('searchBtn').addEventListener('click', searchBooking);
-
-      // Download button event
-      document.getElementById('downloadBtn').addEventListener('click', downloadPDFTicket);
-      
-      // Theme toggle event
-      document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-    }, 800);
-  }, 3000);
-});
-
-// ===================== LOADING SCREEN FUNCTIONS =====================
-function showLoadingScreen() {
-  const loadingScreen = document.getElementById('infoLoading');
-  loadingScreen.classList.add('active');
-  
-  // Reset progress and steps
-  const progressBar = document.getElementById('loadingProgress');
-  const steps = ['step1', 'step2', 'step3'];
-  
-  progressBar.style.width = '0%';
-  steps.forEach(step => {
-    document.getElementById(step).classList.remove('active');
-  });
-  
-  // Animate progress
-  let progress = 0;
-  const progressInterval = setInterval(() => {
-    progress += Math.random() * 15 + 5;
-    if (progress >= 100) {
-      progress = 100;
-      clearInterval(progressInterval);
-      
-      // Complete animation after a delay
+    const welcomeOverlay = document.getElementById('welcomeOverlay');
+    if (welcomeOverlay) {
+      welcomeOverlay.style.opacity = '0';
       setTimeout(() => {
-        hideLoadingScreen();
+        welcomeOverlay.style.display = 'none';
       }, 500);
     }
-    progressBar.style.width = progress + '%';
-    
-    // Activate steps based on progress
-    if (progress >= 30 && progress < 70) {
-      document.getElementById('step1').classList.add('active');
-    } else if (progress >= 70 && progress < 90) {
-      document.getElementById('step2').classList.add('active');
-    } else if (progress >= 90) {
-      document.getElementById('step3').classList.add('active');
-    }
-  }, 200);
-}
-
-function hideLoadingScreen() {
-  const loadingScreen = document.getElementById('infoLoading');
-  loadingScreen.classList.remove('active');
-}
-
-// Enhanced animated stats counter with digit flipping animation
-function animateEnhancedStats() {
-  const stats = [
-    { id: 'passengerCount', target: 10000, suffix: '+', duration: 2500 },
-    { id: 'busCount', target: 50, suffix: '+', duration: 2000 },
-    { id: 'customerServiceCount', target: 100, suffix: '%', duration: 2200 },
-    { id: 'bookingCount', target: 99, suffix: '%', duration: 1800 }
-  ];
+  }, 1500);
   
-  stats.forEach((stat, index) => {
-    const element = document.getElementById(stat.id);
-    if (!element) return;
-    
-    // Start animation with delay for each stat
-    setTimeout(() => {
-      animateDigitCounter(element, stat.target, stat.suffix, stat.duration);
-    }, index * 400);
-  });
-}
-
-// Animate counter with digit-by-digit animation
-function animateDigitCounter(element, target, suffix, duration) {
-  const start = 0;
-  const increment = target / (duration / 16);
-  let current = start;
-  const startTime = Date.now();
+  // Initialize booking form display
+  document.getElementById('initialState').style.display = 'block';
+  document.getElementById('ticketCard').style.display = 'none';
   
-  // Clear element and add container
-  element.innerHTML = `<div class="number-container">0${suffix}</div>`;
-  
-  const timer = setInterval(() => {
-    const elapsed = Date.now() - startTime;
-    current = Math.min(target, start + (increment * (elapsed / 16)));
-    
-    if (current >= target) {
-      clearInterval(timer);
-      const formattedNumber = formatNumber(target);
-      element.innerHTML = createDigitAnimation(formattedNumber, suffix, true);
-    } else {
-      const formattedNumber = formatNumber(Math.floor(current));
-      element.innerHTML = createDigitAnimation(formattedNumber, suffix, false);
-    }
-  }, 16);
-}
+  console.log('Initialization complete');
+});
 
-// Create digit-by-digit animation
-function createDigitAnimation(number, suffix, isFinal) {
-  const digits = number.toString().split('');
-  const digitElements = digits.map((digit, index) => {
-    const delay = index * 0.1;
-    return `<span class="digit" style="animation-delay: ${delay}s; animation-duration: ${isFinal ? '0.5s' : '0.3s'}">${digit}</span>`;
-  }).join('');
+// Show loading overlay
+function showLoading(message = 'Processing...') {
+  if (isLoading) return;
   
-  return `<div class="number-container">${digitElements}<span style="margin-left: 4px;">${suffix}</span></div>`;
-}
-
-// Format numbers with commas
-function formatNumber(num) {
-  if (num >= 1000) {
-    return num.toLocaleString();
+  isLoading = true;
+  const loadingOverlay = document.getElementById('loadingOverlay');
+  const loadingText = document.getElementById('loadingText');
+  
+  if (loadingOverlay && loadingText) {
+    loadingText.textContent = message;
+    loadingOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
   }
-  return num.toString();
+  
+  // Disable buttons
+  document.getElementById('checkBtn')?.setAttribute('disabled', 'true');
+  document.getElementById('whatsappSubmitBtn')?.setAttribute('disabled', 'true');
+  document.getElementById('downloadTicketBtn')?.setAttribute('disabled', 'true');
 }
 
-// ===================== THEME FUNCTIONS =====================
+// Hide loading overlay
+function hideLoading() {
+  isLoading = false;
+  const loadingOverlay = document.getElementById('loadingOverlay');
+  if (loadingOverlay) {
+    loadingOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  
+  // Enable buttons
+  document.getElementById('checkBtn')?.removeAttribute('disabled');
+  document.getElementById('whatsappSubmitBtn')?.removeAttribute('disabled');
+  document.getElementById('downloadTicketBtn')?.removeAttribute('disabled');
+}
+
+// Theme Functions
+function initTheme() {
+  const savedTheme = localStorage.getItem('lagan-theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeIcon(savedTheme);
+}
+
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-  const themeBtn = document.getElementById('themeToggle');
+  
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('lagan-theme', newTheme);
+  updateThemeIcon(newTheme);
   
   // Add rotation animation
-  themeBtn.style.transform = 'rotate(180deg) scale(0.9)';
-  
-  setTimeout(() => {
-    document.documentElement.setAttribute('data-theme', newTheme);
-    updateThemeUI(newTheme);
-    localStorage.setItem('lagan-theme', newTheme);
-    themeBtn.style.transform = 'rotate(360deg) scale(1)';
-  }, 300);
-}
-
-function updateThemeUI(theme) {
-  const themeIcon = document.getElementById('themeIcon');
-  if (themeIcon) {
-    themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  const themeBtn = document.getElementById('themeToggle');
+  if (themeBtn) {
+    themeBtn.style.transform = 'rotate(180deg) scale(0.9)';
+    setTimeout(() => {
+      themeBtn.style.transform = 'rotate(360deg) scale(1)';
+    }, 300);
   }
 }
 
-// ===================== HELPER FUNCTIONS =====================
-function extractPriceFromString(priceStr) {
-  if (!priceStr) return BUS_PRICES.default;
-  
-  const priceMatch = priceStr.match(/\d+/);
-  if (priceMatch) {
-    return parseInt(priceMatch[0]);
+function updateThemeIcon(theme) {
+  const icon = document.getElementById('themeIcon');
+  if (icon) {
+    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
   }
-  
-  if (priceStr.toLowerCase().includes('2500') || priceStr.toLowerCase().includes('2,500')) {
-    return 2500;
-  }
-  if (priceStr.toLowerCase().includes('3000') || priceStr.toLowerCase().includes('3,000')) {
-    return 3000;
-  }
-  if (priceStr.toLowerCase().includes('3500') || priceStr.toLowerCase().includes('3,500')) {
-    return 3500;
-  }
-  
-  return BUS_PRICES.default;
 }
 
-function formatDateTime(dateStr, timeStr) {
-  if (!dateStr || dateStr.trim() === '') return { date: '-', time: '-' };
+// Tab Switching
+function switchTab(tabId) {
+  if (isLoading) return;
   
-  let dateObj;
+  // Update tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
   
-  if (typeof dateStr === 'string' && dateStr.includes('T')) {
-    dateObj = new Date(dateStr);
-    if (!isNaN(dateObj.getTime())) {
-      return formatDateObj(dateObj, timeStr);
-    }
+  // Activate selected tab
+  const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => 
+    btn.getAttribute('onclick')?.includes(tabId)
+  );
+  if (activeBtn) activeBtn.classList.add('active');
+  
+  const tabContent = document.getElementById(tabId);
+  if (tabContent) {
+    tabContent.classList.add('active');
   }
   
-  if (typeof dateStr === 'string') {
-    const dateOnly = dateStr.split(' ')[0];
-    
-    if (dateOnly.includes('/')) {
-      const parts = dateOnly.split('/');
-      if (parts.length === 3) {
-        let day, month, year;
-        
-        if (parts[0].length === 4) {
-          year = parseInt(parts[0]);
-          month = parseInt(parts[1]) - 1;
-          day = parseInt(parts[2]);
-        } else if (parts[2].length === 4) {
-          const first = parseInt(parts[0]);
-          const second = parseInt(parts[1]);
-          
-          if (first > 12) {
-            day = first;
-            month = second - 1;
-            year = parseInt(parts[2]);
-          } else if (second > 12) {
-            month = first - 1;
-            day = second;
-            year = parseInt(parts[2]);
-          } else {
-            day = first;
-            month = second - 1;
-            year = parseInt(parts[2]);
-          }
-        }
-        
-        if (day && month >= 0 && year) {
-          dateObj = new Date(year, month, day);
-          if (!isNaN(dateObj.getTime())) {
-            return formatDateObj(dateObj, timeStr);
-          }
-        }
-      }
-    }
-    
-    if (dateOnly.includes('-')) {
-      const parts = dateOnly.split('-');
-      if (parts.length === 3) {
-        if (parts[0].length === 4) {
-          dateObj = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-          if (!isNaN(dateObj.getTime())) {
-            return formatDateObj(dateObj, timeStr);
-          }
-        }
-      }
-    }
+  // Reset booking display when switching to check tab
+  if (tabId === 'checkTab') {
+    const initialState = document.getElementById('initialState');
+    const ticketCard = document.getElementById('ticketCard');
+    if (initialState) initialState.style.display = 'block';
+    if (ticketCard) ticketCard.style.display = 'none';
   }
-  
-  return { date: dateStr, time: timeStr || '-' };
 }
 
-function formatDateObj(dateObj, timeStr) {
-  const day = dateObj.getDate().toString().padStart(2, '0');
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const month = months[dateObj.getMonth()];
-  const year = dateObj.getFullYear();
-  
-  let time = '-';
-  
-  if (timeStr && typeof timeStr === 'string' && timeStr.trim() !== '') {
-    time = formatTimeString(timeStr);
-  } else if (dateObj.getHours() > 0 || dateObj.getMinutes() > 0) {
-    let hours = dateObj.getHours();
-    const minutes = dateObj.getMinutes().toString().padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-    time = `${hours}:${minutes} ${ampm}`;
-  }
-  
-  return {
-    date: `${day} ${month} ${year}`,
-    time: time
-  };
+// Phone Number Formatting
+function formatPhone(e) {
+  let value = e.target.value.replace(/\D/g, '');
+  if (value.length > 10) value = value.substring(0, 10);
+  e.target.value = value;
 }
 
-function formatTimeString(timeStr) {
-  if (!timeStr) return '-';
+// Check Booking
+async function checkBooking() {
+  console.log('checkBooking function called');
   
-  const cleanTime = timeStr.toString().trim().toUpperCase();
-  const timeMatch = cleanTime.match(/(\d{1,2})[:.](\d{2})/);
-  if (timeMatch) {
-    let hours = parseInt(timeMatch[1]);
-    const minutes = timeMatch[2];
-    
-    const isPM = cleanTime.includes('PM') || (hours < 12 && cleanTime.includes('P'));
-    
-    if (isPM && hours < 12) {
-      hours += 12;
-    } else if (!isPM && hours === 12 && (cleanTime.includes('AM') || cleanTime.includes('A'))) {
-      hours = 0;
-    }
-    
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const displayHours = hours % 12 || 12;
-    
-    return `${displayHours}:${minutes} ${ampm}`;
-  }
+  const phone = document.getElementById('checkPhone').value.trim();
+  const btn = document.getElementById('checkBtn');
   
-  return timeStr;
-}
-
-function getField(obj, possibleNames) {
-  if (!obj) return null;
-  for (const name of possibleNames) {
-    const keys = Object.keys(obj);
-    for (const key of keys) {
-      if (key.toLowerCase().replace(/\s+/g, '') === name.toLowerCase().replace(/\s+/g, '')) {
-        return obj[key];
-      }
-    }
-  }
-  const keys = Object.keys(obj);
-  for (const name of possibleNames) {
-    if (keys.includes(name)) return obj[name];
-  }
-  return null;
-}
-
-// ===================== BOOKING SEARCH =====================
-function searchBooking() {
-  const phone = document.getElementById('phone').value.trim();
-  const btn = document.getElementById('searchBtn');
-
   if (!phone || phone.length < 9) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Enter Phone Number',
-      text: 'Please enter a valid 10-digit phone number',
-      confirmButtonColor: '#0EA5E9',
-      background: 'var(--glass-bg)',
-      color: 'var(--dark-blue)'
-    });
+    showToast('Please enter a valid 10-digit phone number', 'warning');
+    vibrate();
     return;
   }
-
+  
   const originalText = btn.innerHTML;
   btn.innerHTML = '<div class="spinner"></div> Searching...';
   btn.disabled = true;
-
-  // Show the enhanced loading screen
-  showLoadingScreen();
-
-  fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}`)
-    .then(response => response.json())
-    .then(data => {
-      btn.innerHTML = originalText;
-      btn.disabled = false;
-      hideLoadingScreen();
-
-      if (!data.success) {
-        Swal.fire({
-          icon: 'error',
-          title: 'No Booking Found',
-          text: 'We could not find a booking with this phone number',
-          confirmButtonColor: '#0EA5E9',
-          background: 'var(--glass-bg)',
-          color: 'var(--dark-blue)'
-        });
-        return;
-      }
-
-      renderBooking(data.booking);
-
-      document.querySelector('.results-card-enhanced').scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    })
-    .catch(error => {
-      btn.innerHTML = originalText;
-      btn.disabled = false;
-      hideLoadingScreen();
-
-      Swal.fire({
-        icon: 'error',
-        title: 'Connection Error',
-        text: 'Please check your internet connection and try again',
-        confirmButtonColor: '#0EA5E9',
-        background: 'var(--glass-bg)',
-        color: 'var(--dark-blue)'
-      });
-      console.error('Error:', error);
-    });
-}
-
-// ===================== RENDER BOOKING DATA =====================
-function renderBooking(b) {
-  const name = getField(b, ['Name', 'Passenger', 'Passenger Name', 'Full Name', 'Customer Name']) || '-';
-  const bus = getField(b, ['Bus', 'Bus Name', 'Vehicle', 'Bus Number', 'Service']) || '-';
-  const date = getField(b, ['Date', 'Travel Date', 'Journey Date', 'Departure Date', 'Date/Time']) || '';
-  const time = getField(b, ['Time', 'Departure Time', 'Travel Time', 'Time Slot']) || '';
-  const seat = getField(b, ['Seat', 'Seats', 'Seat Number', 'Seat Numbers', 'Seat No']) || '';
-  const pickup = getField(b, ['Pickup', 'Pickup Location', 'Boarding Point', 'Pickup Point']) || '-';
-  const payment = getField(b, ['Payment', 'Amount', 'Payment Status', 'Fare', 'Price', 'Seat Price', 'Per Seat']) || '';
-  const bookingId = getField(b, ['Booking ID', 'Reference', 'Ref No', 'Ticket No']) || '';
-
-  document.getElementById('passengerName').textContent = name;
-  document.getElementById('busName').textContent = bus;
-  document.getElementById('bookingId').textContent = `Booking ID: ${bookingId || 'N/A'}`;
-
-  const formatted = formatDateTime(date, time);
-  let displayDateTime = `${formatted.date} • ${formatted.time}`;
   
-  if (displayDateTime.includes('Invalid') || displayDateTime.includes('NaN') || displayDateTime.includes('undefined')) {
-    displayDateTime = '-';
-  }
-  document.getElementById('dateTime').textContent = displayDateTime;
-  document.getElementById('pickupLocation').textContent = pickup;
-
-  const seatsBox = document.getElementById('seatsBox');
-  seatsBox.innerHTML = '';
-
-  let totalSeats = 0;
-  let seatPrice = extractPriceFromString(payment);
-  let totalAmount = 0;
-
-  if (seat && String(seat).trim() !== '' && String(seat).trim().toLowerCase() !== 'not updated' && String(seat).trim() !== '-') {
-    const seats = String(seat).split(/[, \/]+/).filter(s => s.trim() !== '' && s.trim() !== '-');
-    totalSeats = seats.length;
+  showLoading('Searching for booking...');
+  
+  try {
+    console.log('Checking booking for phone:', phone);
     
-    if (totalSeats > 0) {
-      seats.forEach((seatNum, index) => {
-        const seatElement = document.createElement('div');
-        seatElement.className = 'seat-enhanced';
-        seatElement.style.animationDelay = `${index * 0.1}s`;
-        seatElement.innerHTML = `
-          <div class="seat-icon-enhanced"><i class="fas fa-chair"></i></div>
-          <div class="seat-number-enhanced">${seatNum.trim()}</div>
-        `;
-        seatsBox.appendChild(seatElement);
-      });
+    // First try Google Sheets API
+    console.log('Trying Google Sheets API...');
+    try {
+      const apiUrl = `${SCRIPT_URL}?phone=${encodeURIComponent(phone)}&method=search`;
+      console.log('Calling API:', apiUrl);
       
-      totalAmount = seatPrice * totalSeats;
-    } else {
-      seatsBox.innerHTML = '<p style="color: var(--dark-blue); opacity: 0.7;">No seat assigned yet. Please contact Mr. Fawas.</p>';
-      totalAmount = 0;
+      const response = await fetch(apiUrl);
+      console.log('Response status:', response.status);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Google Sheets response:', data);
+        
+        if (data.success && data.booking) {
+          displayBookingDetails(data.booking);
+          document.getElementById('resultsPanel')?.classList.add('show');
+          showToast('Booking found!', 'success');
+          hideLoading();
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+          return;
+        } else {
+          console.log('No booking found in Google Sheets');
+        }
+      }
+    } catch (apiError) {
+      console.log('Google Sheets API failed:', apiError.message);
     }
-  } else {
-    seatsBox.innerHTML = '<p style="color: var(--dark-blue); opacity: 0.7;">No seat assigned yet. Please contact Mr. Fawas.</p>';
-    totalAmount = 0;
+    
+    // Try local storage as fallback
+    const storedBookings = localStorage.getItem('lagan-bookings');
+    console.log('Trying local storage...');
+    
+    if (storedBookings) {
+      try {
+        const bookings = JSON.parse(storedBookings);
+        
+        // Find booking for this phone
+        const booking = bookings.find(b => {
+          return b.phone === phone || b.Phone === phone;
+        });
+        
+        if (booking) {
+          console.log('Found booking in local storage:', booking);
+          displayBookingDetails(booking);
+          document.getElementById('resultsPanel')?.classList.add('show');
+          showToast('Booking found!', 'success');
+          hideLoading();
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+          return;
+        }
+      } catch (e) {
+        console.error('Error parsing local storage:', e);
+      }
+    }
+    
+    // Check demo data
+    if (phone === '94701362527' || phone === '94701234567') {
+      const demoBooking = {
+        Name: phone === '94701362527' ? 'Demo User' : 'Test Passenger',
+        'Booking ID': 'LGN-' + Date.now().toString().slice(-6),
+        Bus: 'Sakeer Express',
+        Date: new Date(Date.now() + 86400000 * 3).toISOString().split('T')[0],
+        Time: '08:30 AM',
+        Pickup: phone === '94701362527' ? 'Colombo Fort' : 'Kandy',
+        Payment: 'Paid - LKR 2,500',
+        Seat: phone === '94701362527' ? 'A12, A13' : 'B05',
+        phone: phone
+      };
+      
+      displayBookingDetails(demoBooking);
+      document.getElementById('resultsPanel')?.classList.add('show');
+      showToast('Demo booking loaded!', 'success');
+      
+    } else {
+      console.log('No booking found');
+      showToast('No booking found with this number', 'info');
+      vibrate();
+      
+      // Show error state
+      const ticketCard = document.getElementById('ticketCard');
+      const initialState = document.getElementById('initialState');
+      if (ticketCard) ticketCard.style.display = 'none';
+      if (initialState) initialState.style.display = 'block';
+    }
+    
+  } catch (error) {
+    console.error('Error in checkBooking:', error);
+    showToast('Connection error. Check your internet connection.', 'error');
+    vibrate();
+    
+    // Show error state
+    const ticketCard = document.getElementById('ticketCard');
+    const initialState = document.getElementById('initialState');
+    if (ticketCard) ticketCard.style.display = 'none';
+    if (initialState) initialState.style.display = 'block';
+    
+  } finally {
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+    hideLoading();
   }
-
-  const paymentElement = document.getElementById('paymentAmount');
-  
-  if (totalSeats > 0 && totalAmount > 0) {
-    paymentElement.innerHTML = `
-      <div style="font-weight: 700; color: var(--success-green);">
-        Rs. ${totalAmount.toLocaleString()}
-      </div>
-      <div style="font-size: 0.8rem; color: var(--dark-blue); opacity: 0.7; margin-top: 3px;">
-        ${totalSeats} seat${totalSeats > 1 ? 's' : ''} × Rs. ${seatPrice.toLocaleString()}
-      </div>
-    `;
-    paymentElement.className = 'ticket-value-enhanced paid';
-  } else if (payment && payment.trim() !== '') {
-    paymentElement.textContent = payment;
-    paymentElement.className = 'ticket-value-enhanced pending';
-  } else {
-    paymentElement.textContent = 'Payment Pending';
-    paymentElement.className = 'ticket-value-enhanced pending';
-  }
-
-  document.getElementById('bookingDetails').style.display = 'block';
-  document.getElementById('feedbackSection').style.display = 'block';
-  const noResults = document.querySelector('.no-results-enhanced');
-  if (noResults) noResults.style.display = 'none';
-
-  const bookingDetails = document.getElementById('bookingDetails');
-  bookingDetails.classList.remove('booking-details-enhanced');
-  setTimeout(() => bookingDetails.classList.add('booking-details-enhanced'), 10);
-
-  window.currentBookingData = {
-    passengerName: name,
-    busName: bus,
-    dateTime: displayDateTime,
-    pickupLocation: pickup,
-    paymentAmount: totalAmount > 0 ? `Rs. ${totalAmount.toLocaleString()}` : (payment || 'Payment Pending'),
-    seatPrice: seatPrice,
-    totalSeats: totalSeats,
-    totalAmount: totalAmount,
-    seats: seat,
-    bookingId: bookingId,
-    phone: document.getElementById('phone').value.trim()
-  };
 }
 
-// ===================== FIXED PDF TICKET GENERATION =====================
-function downloadPDFTicket() {
-  const data = window.currentBookingData;
-  if (!data) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'No Booking Data',
-      text: 'Please search for a booking first',
-      confirmButtonColor: '#0EA5E9',
-      background: 'var(--glass-bg)',
-      color: 'var(--dark-blue)'
-    });
+// Display Booking Details
+function displayBookingDetails(booking) {
+  console.log('Displaying booking details:', booking);
+  
+  // Extract data with multiple fallbacks
+  const name = booking.Name || booking.name || 'Not Provided';
+  const bus = booking.Bus || booking.bus || 'Not Assigned';
+  const date = booking.Date || booking.date || '';
+  const time = booking.Time || booking.time || '';
+  const seat = booking.Seat || booking.seat || '';
+  const pickup = booking.Pickup || booking.pickup || 'Not Specified';
+  const payment = booking.Payment || booking.payment || 'Payment Pending';
+  const bookingId = booking['Booking ID'] || booking.bookingId || 'N/A';
+  const phone = booking.phone || booking.Phone || document.getElementById('checkPhone')?.value.trim() || '';
+  
+  // Format date and time together
+  let displayDateTime = '-';
+  if (date && time) {
+    displayDateTime = `${date} ${time}`;
+  } else if (date) {
+    displayDateTime = date;
+  } else if (time) {
+    displayDateTime = time;
+  }
+  
+  // Update UI elements
+  const elements = {
+    passengerName: document.getElementById('displayPassengerName'),
+    bookingId: document.getElementById('displayBookingId'),
+    busName: document.getElementById('displayBusName'),
+    dateTime: document.getElementById('displayDateTime'),
+    pickup: document.getElementById('displayPickup'),
+    payment: document.getElementById('displayPayment')
+  };
+  
+  // Set text content
+  if (elements.passengerName) elements.passengerName.textContent = name || '-';
+
+  // Show SEAT NUMBERS instead of Booking ID
+  if (elements.bookingId) {
+    if (seat && seat !== 'To be assigned') {
+      elements.bookingId.textContent = `Seats: ${seat}`;
+    } else {
+      elements.bookingId.textContent = 'Seats: To be assigned';
+    }
+  }
+
+  if (elements.busName) elements.busName.textContent = bus || '-';
+  if (elements.dateTime) elements.dateTime.textContent = displayDateTime || '-';
+  if (elements.pickup) elements.pickup.textContent = pickup || '-';
+  
+  // Payment status
+  if (elements.payment) {
+    const paymentText = payment || 'Payment Pending';
+    if (paymentText.toLowerCase().includes('paid') || paymentText.toLowerCase().includes('complete')) {
+      elements.payment.textContent = 'Payment Confirmed ✓';
+      elements.payment.className = 'detail-value paid';
+    } else if (paymentText.toLowerCase().includes('pending')) {
+      elements.payment.textContent = paymentText;
+      elements.payment.className = 'detail-value pending';
+    } else {
+      elements.payment.textContent = paymentText;
+      elements.payment.className = 'detail-value pending';
+    }
+  }
+  
+  // Show results
+  const ticketCard = document.getElementById('ticketCard');
+  const initialState = document.getElementById('initialState');
+  
+  if (ticketCard) {
+    ticketCard.style.display = 'block';
+    ticketCard.style.animation = 'cardReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+  }
+  
+  if (initialState) {
+    initialState.style.display = 'none';
+  }
+  
+  // Store for PDF
+  currentBookingData = {
+    name, bus, date: displayDateTime, pickup,
+    payment: elements.payment?.textContent || payment, seat, bookingId, phone
+  };
+  
+  console.log('Current booking data stored:', currentBookingData);
+}
+
+// Submit New Booking
+async function submitBooking() {
+  if (isLoading) return;
+  
+  // Collect form data
+  const formData = {
+    name: document.getElementById('passengerName').value.trim(),
+    phone: document.getElementById('passengerPhone').value.trim(),
+    from: document.getElementById('fromLocation').value.trim(),
+    to: document.getElementById('toLocation').value.trim(),
+    date: document.getElementById('travelDate').value,
+    bus: document.getElementById('busName').value,
+    seats: document.getElementById('seatCount').value
+  };
+  
+  // Validation
+  if (!formData.name || formData.name.length < 3) {
+    showToast('Please enter your full name', 'warning');
+    vibrate();
     return;
   }
-
-  const downloadBtn = document.getElementById('downloadBtn');
-  const originalText = downloadBtn.innerHTML;
-  downloadBtn.innerHTML = '<div class="spinner"></div> Generating...';
-  downloadBtn.disabled = true;
-
-  const generatedTime = new Date().toLocaleString('en-GB', {
+  
+  if (!formData.phone || formData.phone.length < 9) {
+    showToast('Please enter a valid WhatsApp number', 'warning');
+    vibrate();
+    return;
+  }
+  
+  if (!formData.from || !formData.to) {
+    showToast('Please enter both origin and destination', 'warning');
+    vibrate();
+    return;
+  }
+  
+  if (!formData.date) {
+    showToast('Please select travel date', 'warning');
+    vibrate();
+    return;
+  }
+  
+  if (!formData.bus) {
+    showToast('Please select a bus service', 'warning');
+    vibrate();
+    return;
+  }
+  
+  if (!formData.seats) {
+    showToast('Please select number of seats', 'warning');
+    vibrate();
+    return;
+  }
+  
+  // Format date
+  const dateObj = new Date(formData.date);
+  const formattedDate = dateObj.toLocaleDateString('en-GB', {
+    weekday: 'short',
     day: 'numeric',
     month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
+    year: 'numeric'
   });
-
-  // Create ticket HTML directly in a visible div first
-  const pdfContainer = document.getElementById('pdfContainer');
-  pdfContainer.innerHTML = `
-    <div id="ticketContent" style="
-      width: 210mm;
-      min-height: 297mm;
-      background: white;
-      padding: 20mm;
-      font-family: 'Inter', sans-serif;
-      box-sizing: border-box;
-    ">
-      <!-- Ticket Header -->
-      <div style="
-        background: linear-gradient(135deg, #0EA5E9, #1D4ED8);
-        color: white;
-        padding: 25px;
-        text-align: center;
-        border-radius: 15px 15px 0 0;
-        margin-bottom: 30px;
-      ">
-        <h1 style="font-size: 32px; font-weight: 900; margin: 0 0 10px 0;">LAGAN BUS TICKET</h1>
-        <p style="font-size: 16px; opacity: 0.95; margin: 0 0 15px 0;">Safe Travels. May God Bless Your Journey</p>
-        <div style="
-          display: inline-block;
-          background: rgba(255,255,255,0.2);
-          padding: 8px 20px;
-          border-radius: 50px;
-          font-size: 14px;
-          font-weight: 600;
-        ">
-          📅 ${data.dateTime}
-        </div>
-      </div>
-
-      <!-- Passenger Info -->
-      <div style="
-        text-align: center;
-        margin-bottom: 30px;
-        padding-bottom: 20px;
-        border-bottom: 2px dashed #e2e8f0;
-      ">
-        <div style="font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 8px;">PASSENGER</div>
-        <div style="font-size: 28px; font-weight: 800; color: #1e40af;">${data.passengerName}</div>
-        <div style="font-size: 14px; color: #64748b; margin-top: 8px;">Booking ID: ${data.bookingId || 'N/A'}</div>
-      </div>
-
-      <!-- Journey Details -->
-      <div style="
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        margin-bottom: 30px;
-      ">
-        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
-          <div style="font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 10px;">🚌 Bus Name</div>
-          <div style="font-size: 20px; font-weight: 700; color: #0f172a;">${data.busName}</div>
+  
+  // Create WhatsApp message
+  const whatsappMessage = `*NEW BOOKING REQUEST*%0A%0A` +
+    `👤 *Passenger Name:* ${formData.name}%0A` +
+    `📱 *WhatsApp Number:* ${formData.phone}%0A` +
+    `📍 *Journey:* ${formData.from} → ${formData.to}%0A` +
+    `📅 *Travel Date:* ${formattedDate}%0A` +
+    `🚌 *Bus Service:* ${formData.bus}%0A` +
+    `💺 *Seats Required:* ${formData.seats} seat${formData.seats > 1 ? 's' : ''}%0A%0A` +
+    `💰 *Payment Slip:* Please attach payment confirmation%0A` +
+    `🕒 *Submitted:* ${new Date().toLocaleTimeString('en-GB', {hour: '2-digit', minute:'2-digit'})}%0A` +
+    `🌐 *Via:* Lagan Premium Booking System (Powered by WEDOXA)`;
+  
+  // Show confirmation
+  const { value: confirm } = await Swal.fire({
+    icon: 'info',
+    title: 'Ready to Send?',
+    html: `
+      <div style="text-align: left; font-size: 1rem">
+        <p style="margin-bottom: 15px; font-weight: 600;">Your booking details are ready to send.</p>
+        
+        <div style="background: rgba(59, 130, 246, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #3B82F6;">
+          <strong style="color: var(--primary);">Important:</strong> After WhatsApp opens, you need to:
         </div>
         
-        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
-          <div style="font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 10px;">📍 Pickup Location</div>
-          <div style="font-size: 20px; font-weight: 700; color: #0f172a;">${data.pickupLocation}</div>
+        <div style="background: rgba(245, 158, 11, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #F59E0B;">
+          <strong>1.</strong> Take a screenshot of your payment slip<br>
+          <strong>2.</strong> Attach it to the WhatsApp message<br>
+          <strong>3.</strong> Then send the complete message
         </div>
         
-        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
-          <div style="font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 10px;">📞 Phone Number</div>
-          <div style="font-size: 20px; font-weight: 700; color: #0f172a;">${data.phone}</div>
-        </div>
-        
-        <div style="background: linear-gradient(135deg, #f0f9ff, #e0f2fe); padding: 20px; border-radius: 12px; border: 1px solid #bae6fd;">
-          <div style="font-size: 14px; color: #059669; font-weight: 600; margin-bottom: 10px;">💰 Total Amount</div>
-          <div style="font-size: 22px; font-weight: 800; color: #065f46;">Rs. ${data.totalAmount ? data.totalAmount.toLocaleString() : '0'}</div>
-        </div>
+        <p style="font-size: 0.9rem; color: var(--gray);">
+          Without the payment slip, your booking cannot be processed.
+        </p>
       </div>
-
-      <!-- Seats Section -->
-      <div style="
-        background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(29, 78, 216, 0.04));
-        padding: 25px;
-        border-radius: 15px;
-        border: 2px dashed #dbeafe;
-        margin-bottom: 30px;
-      ">
-        <div style="text-align: center; margin-bottom: 20px;">
-          <h3 style="font-size: 18px; font-weight: 700; color: #1e40af; margin: 0 0 10px 0;">💺 Your Seat Numbers</h3>
-          <p style="font-size: 14px; color: #64748b; margin: 0;">Please Occupy The Seats Mentioned Below</p>
-        </div>
-        
-        <div style="
-          display: flex;
-          flex-wrap: wrap;
-          gap: 12px;
-          justify-content: center;
-          min-height: 60px;
-        ">
-          ${data.seats && data.seats.trim() !== '' && data.seats.toLowerCase() !== 'not updated' ? 
-            data.seats.split(/[, \/]+/).filter(s => s.trim() !== '').map(seat => `
-              <div style="
-                width: 60px;
-                height: 60px;
-                border-radius: 12px;
-                background: linear-gradient(135deg, #0EA5E9, #1D4ED8);
-                color: white;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 20px;
-                font-weight: 800;
-                box-shadow: 0 4px 8px rgba(14, 165, 233, 0.2);
-              ">${seat.trim()}</div>
-            `).join('') : 
-            `<div style="
-              padding: 20px;
-              text-align: center;
-              color: #64748b;
-              font-style: italic;
-              background: #f1f5f9;
-              border-radius: 12px;
-              width: 100%;
-              font-size: 16px;
-            ">No seat assigned yet. Please contact Mr. Fawas.</div>`
-          }
-        </div>
-      </div>
-
-      <!-- Contact & Footer -->
-      <div style="
-        background: #f8fafc;
-        padding: 25px;
-        border-radius: 15px;
-        text-align: center;
-      ">
-        <div style="
-          background: white;
-          padding: 20px;
-          border-radius: 12px;
-          margin-bottom: 20px;
-          border: 1px solid #dbeafe;
-        ">
-          <div style="font-size: 22px; font-weight: 800; color: #0EA5E9; margin-bottom: 8px;">
-            0777 402 886
-          </div>
-          <div style="font-size: 16px; color: #475569; font-weight: 600;">Mr. Fawas - For Reservations & Inquiries</div>
-        </div>
-        
-        <div style="
-          font-size: 12px;
-          color: #64748b;
-          line-height: 1.5;
-        ">
-          <div style="margin-bottom: 8px;">
-            <strong>Generated:</strong> ${generatedTime}
-          </div>
-          <div style="font-weight: 700; color: #0EA5E9; margin: 10px 0;">
-            Made with ❤ by WEDOXA • Lagan Bus Services
-          </div>
-          <div style="font-size: 11px; color: #94a3b8; font-style: italic; margin-top: 8px;">
-            This is an official e-ticket. Please show this PDF to the bus conductor.
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Show the container briefly to ensure rendering
-  pdfContainer.style.display = 'block';
-  pdfContainer.style.position = 'fixed';
-  pdfContainer.style.top = '0';
-  pdfContainer.style.left = '0';
-  pdfContainer.style.width = '210mm';
-  pdfContainer.style.height = '297mm';
-  pdfContainer.style.overflow = 'hidden';
-  pdfContainer.style.zIndex = '9999';
-  pdfContainer.style.background = 'white';
-
-  // Use setTimeout to ensure DOM is updated
-  setTimeout(() => {
-    const ticketElement = document.getElementById('ticketContent');
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'Open WhatsApp',
+    cancelButtonText: 'Cancel',
+    confirmButtonColor: '#25D366',
+    background: 'var(--glass)',
+    color: 'var(--dark)',
+    width: window.innerWidth < 768 ? '90vw' : '600px',
+    backdrop: 'rgba(0, 0, 0, 0.3)',
+    customClass: {
+      popup: 'glass'
+    }
+  });
+  
+  if (confirm) {
+    // Store booking locally
+    const bookingId = 'LGN-' + Date.now().toString().slice(-6);
+    const newBooking = {
+      phone: formData.phone,
+      Name: formData.name,
+      'Booking ID': bookingId,
+      Bus: formData.bus,
+      Date: formData.date,
+      Time: 'To be confirmed',
+      Pickup: formData.from,
+      Payment: 'Pending - Awaiting payment slip',
+      Seat: 'To be assigned'
+    };
     
-    html2canvas(ticketElement, {
-      scale: 2,
-      useCORS: true,
-      logging: false,
-      backgroundColor: '#ffffff',
-      width: ticketElement.offsetWidth,
-      height: ticketElement.offsetHeight
-    }).then(canvas => {
-      // Hide container
-      pdfContainer.style.display = 'none';
-      pdfContainer.innerHTML = '';
+    // Store in local storage
+    let bookings = [];
+    try {
+      const stored = localStorage.getItem('lagan-bookings');
+      if (stored) {
+        bookings = JSON.parse(stored);
+      }
+    } catch (e) {
+      console.log('Error reading from storage');
+    }
+    
+    // Remove existing booking for this phone
+    bookings = bookings.filter(b => b.phone !== formData.phone && b.Phone !== formData.phone);
+    bookings.push(newBooking);
+    
+    try {
+      localStorage.setItem('lagan-bookings', JSON.stringify(bookings));
+      console.log('Booking saved to local storage:', newBooking);
+    } catch (e) {
+      console.log('Error saving to storage');
+    }
+    
+    // Reset form
+    document.getElementById('bookingForm').reset();
+    
+    // Set default date to tomorrow
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    document.getElementById('travelDate').value = tomorrow.toISOString().split('T')[0];
+    
+    // Show loading briefly
+    showLoading('Opening WhatsApp...');
+    
+    // Open WhatsApp after short delay
+    setTimeout(() => {
+      hideLoading();
       
+      // Create WhatsApp URL
+      const whatsappUrl = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${whatsappMessage}`;
+      
+      // Open in new tab
+      const newWindow = window.open(whatsappUrl, '_blank');
+      if (!newWindow) {
+        showToast('Please allow popups to open WhatsApp', 'warning');
+        // Fallback: Show URL
+        Swal.fire({
+          title: 'Copy WhatsApp Message',
+          html: `<p>If WhatsApp didn't open automatically, copy this URL:</p>
+                 <input type="text" value="${whatsappUrl}" readonly style="width:100%; padding:10px; margin:10px 0;">`,
+          confirmButtonText: 'OK'
+        });
+      }
+      
+      // Show success message
+      Swal.fire({
+        icon: 'success',
+        title: 'Request Sent!',
+        html: `
+          <div style="text-align: center;">
+            <div style="font-size: 56px; color: #25D366; margin-bottom: 20px;">
+              <i class="fab fa-whatsapp"></i>
+            </div>
+            <p style="color: var(--dark); font-weight: 700; margin-bottom: 12px; font-size: 1.2rem">
+              Booking request submitted successfully!
+            </p>
+            <p style="font-size: 1rem; color: var(--gray); margin-bottom: 15px;">
+              Your temporary booking ID: <strong>${bookingId}</strong>
+            </p>
+            <p style="font-size: 1rem; color: var(--gray); margin-bottom: 20px;">
+              Our team will contact you once your booking is confirmed.
+            </p>
+            <p style="font-size: 0.9rem; color: var(--gray);">
+              <strong>Next Step:</strong> Check booking status with your phone number
+            </p>
+          </div>
+        `,
+        timer: 4000,
+        showConfirmButton: false,
+        background: 'var(--glass)',
+        color: 'var(--dark)',
+        backdrop: 'rgba(0, 0, 0, 0.3)',
+        customClass: {
+          popup: 'glass'
+        }
+      }).then(() => {
+        // Switch to check booking tab
+        switchTab('checkTab');
+        // Auto-fill the phone number
+        const checkPhoneInput = document.getElementById('checkPhone');
+        if (checkPhoneInput) {
+          checkPhoneInput.value = formData.phone;
+        }
+      });
+    }, 800);
+  }
+}
+
+// Download Ticket - PROFESSIONAL VERSION
+async function downloadTicket() {
+  if (!currentBookingData) {
+    showToast('No booking data available', 'warning');
+    vibrate();
+    return;
+  }
+  
+  const btn = document.getElementById('downloadTicketBtn');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<div class="spinner"></div> Generating...';
+  btn.disabled = true;
+  
+  showLoading('Generating ticket PDF...');
+  
+  try {
+    // Check if jsPDF is available
+    if (typeof window.jspdf === 'undefined') {
+      throw new Error('PDF library not loaded');
+    }
+    
+    const { jsPDF } = window.jspdf;
+    
+    // Create PDF with A5 size (perfect for tickets)
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a5'
+    });
+    
+    // Page dimensions
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    
+    // Header with gradient
+    pdf.setFillColor(59, 130, 246);
+    pdf.rect(0, 0, pageWidth, 25, 'F');
+    
+    // Add subtle gradient effect
+    pdf.setFillColor(30, 58, 138, 0.7);
+    pdf.rect(0, 0, pageWidth, 25, 'F');
+    
+    // Header text
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(16);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('LAGAN BUS SERVICES', pageWidth / 2, 12, { align: 'center' });
+    
+    pdf.setFontSize(9);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('Premium Travel Ticket', pageWidth / 2, 18, { align: 'center' });
+    
+    // Ticket border
+    pdf.setDrawColor(59, 130, 246);
+    pdf.setLineWidth(0.3);
+    pdf.rect(5, 5, pageWidth - 10, pageHeight - 10);
+    
+    // Passenger information
+    pdf.setTextColor(17, 24, 39);
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('PASSENGER TICKET', pageWidth / 2, 35, { align: 'center' });
+    
+    // Passenger name
+    pdf.setFontSize(18);
+    pdf.text(currentBookingData.name, pageWidth / 2, 45, { align: 'center' });
+    
+    // Booking details
+    pdf.setFontSize(9);
+    pdf.setTextColor(107, 114, 128);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Booking Details', pageWidth / 2, 55, { align: 'center' });
+    
+    // Divider
+    pdf.setDrawColor(229, 231, 235);
+    pdf.setLineWidth(0.2);
+    pdf.line(15, 58, pageWidth - 15, 58);
+    
+    // Details table
+    let yPos = 65;
+    const detailRows = [
+      { label: 'Bus Service', value: currentBookingData.bus },
+      { label: 'Travel Date', value: currentBookingData.date },
+      { label: 'Pickup Point', value: currentBookingData.pickup },
+      { label: 'Seat Number', value: currentBookingData.seat || 'To be assigned' },
+      { label: 'Payment Status', value: currentBookingData.payment }
+    ];
+    
+    pdf.setFontSize(8);
+    pdf.setTextColor(107, 114, 128);
+    
+    detailRows.forEach((row, index) => {
+      pdf.text(`${row.label}:`, 20, yPos + (index * 7));
+      pdf.setTextColor(17, 24, 39);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(row.value, 60, yPos + (index * 7));
+      pdf.setTextColor(107, 114, 128);
+      pdf.setFont('helvetica', 'normal');
+    });
+    
+    yPos += 40;
+    
+    // Important instructions
+    pdf.setFillColor(254, 252, 232);
+    pdf.setDrawColor(245, 158, 11);
+    pdf.setLineWidth(0.2);
+    pdf.roundedRect(15, yPos, pageWidth - 30, 25, 2, 2, 'FD');
+    
+    pdf.setFontSize(8);
+    pdf.setTextColor(180, 83, 9);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Important Instructions:', 20, yPos + 6);
+    
+    const instructions = [
+      '• Arrive 30 minutes before departure',
+      '• Show this ticket to conductor',
+      '• Keep ID proof ready for verification',
+      '• For changes: WhatsApp +94701362527'
+    ];
+    
+    pdf.setFontSize(7);
+    pdf.setTextColor(120, 53, 15);
+    pdf.setFont('helvetica', 'normal');
+    
+    instructions.forEach((text, index) => {
+      pdf.text(text, 22, yPos + 12 + (index * 4));
+    });
+    
+    yPos += 30;
+    
+    // Footer
+    pdf.setDrawColor(229, 231, 235);
+    pdf.setLineWidth(0.2);
+    pdf.line(15, yPos, pageWidth - 15, yPos);
+    
+    pdf.setFontSize(7);
+    pdf.setTextColor(156, 163, 175);
+    pdf.setFont('helvetica', 'normal');
+    
+    pdf.text('Lagan Bus Services • Since 2010', pageWidth / 2, yPos + 7, { align: 'center' });
+    pdf.text('Customer Care: +94701362527 • 24/7 WhatsApp', pageWidth / 2, yPos + 11, { align: 'center' });
+    pdf.text('Have a safe and pleasant journey!', pageWidth / 2, yPos + 15, { align: 'center' });
+    
+    // QR code placeholder
+    pdf.setFillColor(59, 130, 246, 0.1);
+    pdf.circle(pageWidth - 20, pageHeight - 20, 6, 'F');
+    pdf.setFontSize(6);
+    pdf.setTextColor(59, 130, 246);
+    pdf.text('QR', pageWidth - 20, pageHeight - 20, { align: 'center' });
+    
+    // Generate filename
+    const safeName = currentBookingData.name.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 20);
+    const fileName = `Lagan_Ticket_${safeName}_${Date.now()}.pdf`;
+    
+    // Save PDF
+    setTimeout(() => {
+      pdf.save(fileName);
+      showToast('Ticket downloaded successfully! ✓', 'success');
+      vibrate('success');
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+      hideLoading();
+    }, 500);
+    
+  } catch (error) {
+    console.error('PDF Generation Error:', error);
+    
+    // Alternative method
+    try {
+      const ticketCard = document.getElementById('ticketCard');
+      if (!ticketCard) throw new Error('Ticket card not found');
+      
+      const originalDisplay = ticketCard.style.display;
+      ticketCard.style.display = 'block';
+      
+      const canvas = await html2canvas(ticketCard, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff'
+      });
+      
+      ticketCard.style.display = originalDisplay;
+      
+      const imgData = canvas.toDataURL('image/png');
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4'
       });
-
-      const imgData = canvas.toDataURL('image/png', 1.0);
-      const pdfWidth = 210;
-      const pdfHeight = 297;
       
-      // Calculate dimensions to fit A4
-      const imgWidth = pdfWidth;
-      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+      const imgWidth = 190;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
       
-      // Add image to PDF
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-
-      const fileName = `Lagan-Ticket-${data.passengerName.replace(/[^a-z0-9]/gi, '-')}-${Date.now().toString().slice(-6)}.pdf`;
-      
-      // Save the PDF
+      const safeName = currentBookingData.name.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 20);
+      const fileName = `Lagan_Ticket_${safeName}_${Date.now()}.pdf`;
       pdf.save(fileName);
-
-      // Restore button state
-      downloadBtn.innerHTML = originalText;
-      downloadBtn.disabled = false;
-
-      // Show success notification
-      Swal.fire({
-        icon: 'success',
-        title: 'Ticket Downloaded!',
-        html: `<div style="text-align: center;">
-                <div style="font-size: 24px; margin-bottom: 10px;">🎫</div>
-                <div style="font-weight: 600; color: #0EA5E9; margin-bottom: 10px;">Your ticket is ready!</div>
-                <div style="font-size: 14px; color: #64748b;">Saved as: <strong>${fileName}</strong></div>
-              </div>`,
-        confirmButtonColor: '#0EA5E9',
-        timer: 3000,
-        showConfirmButton: true,
-        timerProgressBar: true,
-        background: 'var(--glass-bg)',
-        color: 'var(--dark-blue)'
-      });
-    }).catch(error => {
-      console.error('PDF Generation Error:', error);
-      pdfContainer.style.display = 'none';
-      pdfContainer.innerHTML = '';
       
-      downloadBtn.innerHTML = originalText;
-      downloadBtn.disabled = false;
+      showToast('Ticket downloaded!', 'success');
       
-      Swal.fire({
-        icon: 'error',
-        title: 'Generation Failed',
-        text: 'Failed to generate PDF. Please try again.',
-        confirmButtonColor: '#0EA5E9',
-        background: 'var(--glass-bg)',
-        color: 'var(--dark-blue)'
-      });
-    });
-  }, 100);
-}
-
-// ===================== FEEDBACK SYSTEM =====================
-function sendFeedback(answer) {
-  const phone = document.getElementById('phone').value.trim();
-  if (!phone) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Enter Phone Number',
-      text: 'Please search first',
-      confirmButtonColor: '#0EA5E9',
-      background: 'var(--glass-bg)',
-      color: 'var(--dark-blue)'
-    });
-    return;
+    } catch (fallbackError) {
+      console.error('Fallback PDF Error:', fallbackError);
+      showToast('Failed to generate PDF. Please try again.', 'error');
+    } finally {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+      hideLoading();
+    }
   }
-
-  const clickedBtn = event.target.closest('.feedback-btn-enhanced');
-  const originalHTML = clickedBtn.innerHTML;
-  const originalBg = clickedBtn.style.background;
-  const originalColor = clickedBtn.style.color;
-  const originalBorder = clickedBtn.style.borderColor;
-  
-  clickedBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sending...`;
-  clickedBtn.disabled = true;
-  
-  fetch(`${SCRIPT_URL}?action=feedback&phone=${encodeURIComponent(phone)}&answer=${encodeURIComponent(answer)}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        const title = answer === 'Yes' ? 'Thank You!' : 'We Apologize!';
-        const text = answer === 'Yes' 
-          ? 'We\'re glad you received correct information. Have a safe journey!' 
-          : 'We\'re sorry for the inconvenience. Please contact Mr. Fawas immediately at 0777 402 886.';
-        
-        clickedBtn.innerHTML = `<i class="fas fa-check"></i> ${answer === 'Yes' ? 'Yes, All Good' : 'No, Issue Found'}`;
-        clickedBtn.style.background = answer === 'Yes' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)';
-        clickedBtn.style.color = answer === 'Yes' ? 'var(--success-green)' : '#EF4444';
-        clickedBtn.style.borderColor = answer === 'Yes' ? 'var(--success-green)' : '#EF4444';
-        
-        Swal.fire({
-          icon: answer === 'Yes' ? 'success' : 'info',
-          title: title,
-          text: text,
-          confirmButtonColor: '#0EA5E9',
-          showCancelButton: answer === 'No',
-          cancelButtonText: 'Call Support',
-          showConfirmButton: true,
-          confirmButtonText: 'OK',
-          background: 'var(--glass-bg)',
-          color: 'var(--dark-blue)'
-        });
-        
-        setTimeout(() => {
-          clickedBtn.innerHTML = originalHTML;
-          clickedBtn.style.background = originalBg;
-          clickedBtn.style.color = originalColor;
-          clickedBtn.style.borderColor = originalBorder;
-          clickedBtn.disabled = false;
-        }, 3000);
-      } else {
-        clickedBtn.innerHTML = originalHTML;
-        clickedBtn.style.background = originalBg;
-        clickedBtn.style.color = originalColor;
-        clickedBtn.style.borderColor = originalBorder;
-        clickedBtn.disabled = false;
-        
-        Swal.fire({
-          icon: 'error',
-          title: 'Failed to save',
-          text: 'Please try again',
-          confirmButtonColor: '#0EA5E9',
-          timer: 2000,
-          showConfirmButton: false,
-          background: 'var(--glass-bg)',
-          color: 'var(--dark-blue)'
-        });
-      }
-    })
-    .catch(error => {
-      clickedBtn.innerHTML = originalHTML;
-      clickedBtn.style.background = originalBg;
-      clickedBtn.style.color = originalColor;
-      clickedBtn.style.borderColor = originalBorder;
-      clickedBtn.disabled = false;
-      
-      Swal.fire({
-        icon: 'error',
-        title: 'Connection Error',
-        text: 'Please try again',
-        confirmButtonColor: '#0EA5E9',
-        timer: 2000,
-        showConfirmButton: false,
-        background: 'var(--glass-bg)',
-        color: 'var(--dark-blue)'
-      });
-      console.error('Feedback error:', error);
-    });
 }
+
+// Utility Functions
+function showToast(message, type = 'info') {
+  try {
+    const toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 4000,
+      timerProgressBar: true,
+      background: 'var(--glass)',
+      color: 'var(--dark)',
+      backdrop: 'transparent',
+      customClass: {
+        popup: 'glass'
+      },
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      }
+    });
+    
+    const icon = type === 'success' ? 'success' : 
+                 type === 'error' ? 'error' : 
+                 type === 'warning' ? 'warning' : 'info';
+    
+    toast.fire({
+      icon,
+      title: message
+    });
+  } catch (e) {
+    console.error('Toast error:', e);
+    alert(message);
+  }
+}
+
+// Haptic feedback for mobile
+function vibrate(type = 'error') {
+  if ('vibrate' in navigator) {
+    try {
+      if (type === 'success') {
+        navigator.vibrate([50, 50, 50]);
+      } else {
+        navigator.vibrate(100);
+      }
+    } catch (e) {
+      // Ignore vibration errors
+    }
+  }
+}
+
+// Prevent memory leaks and hanging
+window.addEventListener('beforeunload', () => {
+  if (isLoading) {
+    hideLoading();
+  }
+});
+
+// Add error boundary for unhandled errors
+window.addEventListener('error', (event) => {
+  console.error('Unhandled error:', event.error);
+  showToast('An error occurred. Please refresh the page.', 'error');
+});
+
+// Add unhandled promise rejection handler
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled promise rejection:', event.reason);
+  showToast('An error occurred. Please try again.', 'error');
+});
 </script>
 </body>
 </html>
