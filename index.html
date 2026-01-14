@@ -3219,19 +3219,20 @@ button:disabled {
                   <div id="displayRoute" class="detail-value">-</div>
                 </div>
                 
+                <!-- NEW: Payment Status Card -->
                 <div class="detail-card">
                   <div class="detail-icon">
-                    <i class="fas fa-credit-card"></i>
+                    <i class="fas fa-check-circle"></i>
                   </div>
                   <div class="detail-label">Payment Status</div>
-                  <div id="displayPayment" class="detail-value pending">-</div>
+                  <div id="displayPaymentStatus" class="detail-value pending">-</div>
                 </div>
                 
                 <div class="detail-card">
                   <div class="detail-icon">
                     <i class="fas fa-users"></i>
                   </div>
-                  <div class="detail-label">Seats Booked</div>
+                  <div class="detail-label">Seat Numbers</div>
                   <div id="displaySeats" class="detail-value">-</div>
                 </div>
                 
@@ -3423,7 +3424,7 @@ button:disabled {
 // ============ CONFIGURATION ============
 // REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT URL
 // Get it from: Script Editor → Deploy → New deployment → Copy Web App URL
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykIreUYV6tXhDL5c-I7aLkEqg65zvf1PqkBfm0hrnAt3rnuJi7odjin4uChUiPXOzhGA/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMGUJLqcQ2Oldz6Yj8ECjHzRNVOKnWIjQRTw5P65zx4XweFjLGe8130SYMdQ0mUg9uIA/exec";
 
 const ADMIN_WHATSAPP_NUMBER = "94701362527";
 
@@ -3895,8 +3896,9 @@ async function checkBooking() {
         Payment: data.booking.Payment || "Payment Pending",
         Seat: data.booking.Seat || "To be assigned",
         'Total Cost': data.booking.TotalAmount || 0,
-        SeatCount: data.booking.SeatCount || 1,
-        PricePerSeat: data.booking.PricePerSeat || 0
+        SeatCount: data.booking.SeatCount || data.booking.SeatNumbers || 1,
+        PricePerSeat: data.booking.PricePerSeat || 0,
+        'Payment Status': data.booking['Payment Status'] || 'Payment Pending'
       });
       
       showToast('Booking found!', 'success');
@@ -3935,8 +3937,9 @@ function displayBookingDetails(booking) {
   const bookingId = booking['Booking ID'] || booking.bookingId || 'N/A';
   const phone = booking.phone || booking.Phone || document.getElementById('checkPhone')?.value.trim() || '';
   const totalCost = booking['Total Cost'] || booking.totalCost || booking.TotalAmount || 0;
-  const seatCount = booking.SeatCount || booking.seatCount || 1;
+  const seatCount = booking.SeatCount || booking.seatCount || booking.SeatNumbers || 1;
   const pricePerSeat = booking.PricePerSeat || 0;
+  const paymentStatus = booking['Payment Status'] || booking.paymentStatus || 'Payment Pending';
   
   let displayDateTime = '-';
   if (date && time) {
@@ -3957,12 +3960,30 @@ function displayBookingDetails(booking) {
   document.getElementById('displaySeats').textContent = `${seatCount} seat${seatCount > 1 ? 's' : ''}`;
   document.getElementById('displayTotalAmount').textContent = `LKR ${totalCost.toLocaleString()}`;
   
+  // Update payment status element
+  const paymentStatusElement = document.getElementById('displayPaymentStatus');
+  if (paymentStatusElement) {
+    paymentStatusElement.textContent = paymentStatus;
+    
+    if (paymentStatus.toLowerCase().includes('paid') || 
+        paymentStatus.toLowerCase().includes('complete') ||
+        paymentStatus.toLowerCase().includes('confirmed')) {
+      paymentStatusElement.className = 'detail-value paid';
+    } else if (paymentStatus.toLowerCase().includes('pending')) {
+      paymentStatusElement.className = 'detail-value pending';
+    } else {
+      paymentStatusElement.className = 'detail-value';
+    }
+  }
+  
   const paymentElement = document.getElementById('displayPayment');
-  paymentElement.textContent = payment;
-  if (payment.toLowerCase().includes('paid') || payment.toLowerCase().includes('complete')) {
-    paymentElement.className = 'detail-value paid';
-  } else {
-    paymentElement.className = 'detail-value pending';
+  if (paymentElement) {
+    paymentElement.textContent = payment;
+    if (payment.toLowerCase().includes('paid') || payment.toLowerCase().includes('complete')) {
+      paymentElement.className = 'detail-value paid';
+    } else {
+      paymentElement.className = 'detail-value pending';
+    }
   }
   
   document.getElementById('ticketCard').style.display = 'block';
@@ -3970,7 +3991,9 @@ function displayBookingDetails(booking) {
   
   currentBookingData = {
     name, bus, date: displayDateTime, from, to, route: routeDisplay,
-    payment: payment, seatCount, bookingId, phone, totalCost, seat: seat || `${seatCount} seat(s)`
+    payment: payment, seatCount, bookingId, phone, totalCost, 
+    seat: seat || `${seatCount} seat(s)`,
+    paymentStatus: paymentStatus
   };
   
   console.log('Current booking data stored:', currentBookingData);
@@ -4303,7 +4326,7 @@ async function downloadTicket() {
       { label: 'Route:', value: currentBookingData.route },
       { label: 'Seats:', value: currentBookingData.seatCount ? `${currentBookingData.seatCount} seat${currentBookingData.seatCount > 1 ? 's' : ''}` : 'To be assigned' },
       { label: 'Total Amount:', value: currentBookingData.totalCost ? `LKR ${currentBookingData.totalCost.toLocaleString()}` : 'N/A' },
-      { label: 'Payment:', value: currentBookingData.payment }
+      { label: 'Payment Status:', value: currentBookingData.paymentStatus || 'Payment Pending' }
     ];
     
     details.forEach((detail, index) => {
