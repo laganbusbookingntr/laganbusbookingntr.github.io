@@ -348,10 +348,27 @@ body {
   color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   transition: color 0.3s;
+  position: relative;
+  padding: 0.5rem 0;
 }
 
 .nav-link:hover {
   color: var(--gold);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gold-gradient);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
 }
 
 .nav-actions {
@@ -699,6 +716,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  position: relative;
 }
 
 @media (max-width: 768px) {
@@ -782,11 +800,35 @@ body {
   transform: translateX(-50%);
   animation: bounce 2s infinite;
   color: var(--gold);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
 }
 
 @keyframes bounce {
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+.scroll-indicator a {
+  color: var(--gold);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.scroll-indicator i {
+  font-size: 1.5rem;
+}
+
+.scroll-indicator span {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
 }
 
 /* ===================== SCROLL TO TOP BUTTON ===================== */
@@ -1681,29 +1723,20 @@ body {
   box-shadow: 0 12px 32px rgba(37, 211, 102, 0.3);
 }
 
-/* ===================== FEATURES SECTION ===================== */
-.features-section {
+/* ===================== MODERN ROUTES BOXES ===================== */
+.routes-section {
   padding: 6rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 1400px;
+  margin: 0 auto 6rem;
 }
 
-.section-header {
+.routes-header {
   text-align: center;
   max-width: 48rem;
   margin: 0 auto 5rem;
 }
 
-.section-badge {
-  font-size: 0.75rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  color: var(--primary);
-  margin-bottom: 1rem;
-}
-
-.section-title {
+.routes-title {
   font-size: 3rem;
   font-weight: 900;
   color: var(--text-primary);
@@ -1711,41 +1744,218 @@ body {
   line-height: 1.1;
 }
 
-.section-divider {
-  height: 0.375rem;
-  width: 6rem;
-  background: var(--primary);
-  border-radius: 9999px;
+.routes-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  max-width: 36rem;
   margin: 0 auto;
+  line-height: 1.6;
 }
 
-.features-grid {
+.routes-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.route-box {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.route-box:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--gold);
+}
+
+.route-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gold-gradient);
+}
+
+.route-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.route-box-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--primary-gradient);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.route-box-title {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.route-box-price {
+  background: var(--gold-gradient);
+  color: var(--slate-950);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 900;
+  display: inline-block;
+}
+
+.route-box-details {
+  margin-top: auto;
+}
+
+.route-box-stops {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.route-stop {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.route-stop i {
+  color: var(--gold);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.route-box-highlights {
+  background: rgba(216, 179, 93, 0.1);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-top: 1rem;
+  border-left: 3px solid var(--gold);
+}
+
+.route-box-highlights p {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  margin: 0;
+}
+
+.route-box-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.route-feature {
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--primary);
+  padding: 0.375rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.route-box-1::before {
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+}
+
+.route-box-2::before {
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+}
+
+.route-box-3::before {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+}
+
+.route-box-4::before {
+  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+}
+
+.route-box-5::before {
+  background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+}
+
+/* ===================== MODERN FLEET SECTION ===================== */
+.fleet-section {
+  padding: 6rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto 6rem;
+  background: var(--gradient-light);
+  border-radius: 3rem;
+}
+
+.fleet-header {
+  text-align: center;
+  max-width: 48rem;
+  margin: 0 auto 5rem;
+}
+
+.fleet-title {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.fleet-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  max-width: 36rem;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.fleet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
 }
 
-@media (min-width: 768px) {
-  .features-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.feature-card {
+.fleet-card {
   background: var(--card);
+  border-radius: var(--radius-lg);
   padding: 2.5rem;
-  border-radius: 2rem;
   border: 1px solid var(--border);
-  transition: all 0.5s;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.feature-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--primary);
+.fleet-card:hover {
+  transform: translateY(-5px);
   box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
 }
 
-.feature-icon {
+.fleet-card-icon {
   width: 70px;
   height: 70px;
   background: var(--primary-gradient);
@@ -1756,176 +1966,139 @@ body {
   color: white;
   font-size: 1.75rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
-  transition: all 0.5s;
+  transition: all 0.3s ease;
 }
 
-.feature-card:hover .feature-icon {
+.fleet-card:hover .fleet-card-icon {
   transform: scale(1.1) rotate(5deg);
 }
 
-.feature-title {
+.fleet-card-title {
   font-size: 1.5rem;
   font-weight: 900;
   color: var(--text-primary);
   margin-bottom: 1rem;
 }
 
-.feature-description {
+.fleet-card-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.fleet-card-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fleet-feature {
+  background: rgba(216, 179, 93, 0.1);
+  color: var(--gold-dark);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ===================== MODERN SAFETY SECTION ===================== */
+.safety-section {
+  padding: 6rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto 6rem;
+}
+
+.safety-header {
+  text-align: center;
+  max-width: 48rem;
+  margin: 0 auto 5rem;
+}
+
+.safety-title {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.safety-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  max-width: 36rem;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.safety-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.safety-card {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.safety-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--secondary);
+}
+
+.safety-card-icon {
+  width: 70px;
+  height: 70px;
+  background: var(--gradient-success);
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.safety-card:hover .safety-card-icon {
+  transform: scale(1.1);
+}
+
+.safety-card-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.safety-card-description {
   color: var(--text-secondary);
   line-height: 1.6;
 }
 
-/* ===================== FLEET SECTION ===================== */
-.fleet-section {
-  padding: 6rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  background: var(--slate-950);
-  border-radius: 4rem;
-  overflow: hidden;
-  position: relative;
-}
-
-.fleet-background {
+.safety-card::before {
+  content: '';
   position: absolute;
   top: 0;
+  left: 0;
   right: 0;
-  width: 24rem;
-  height: 24rem;
-  background: rgba(37, 99, 235, 0.1);
-  border-radius: 50%;
-  filter: blur(120px);
-  transform: translate(50%, -50%);
+  height: 4px;
+  background: var(--gradient-success);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
 }
 
-.fleet-content {
-  position: relative;
-  z-index: 10;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 4rem;
-  align-items: center;
-}
-
-@media (min-width: 1024px) {
-  .fleet-content {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.fleet-info h2 {
-  font-size: 3.5rem;
-  font-weight: 900;
-  color: white;
-  margin-bottom: 2.5rem;
-  line-height: 1.1;
-}
-
-.fleet-info h2 span {
-  color: var(--gold);
-}
-
-.fleet-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-}
-
-.fleet-item {
-  display: flex;
-  gap: 2.5rem;
-  align-items: flex-start;
-}
-
-.fleet-number {
-  font-size: 3rem;
-  font-weight: 900;
-  color: var(--gold);
-  opacity: 0.4;
-  font-family: 'Playfair Display', serif;
-  transition: opacity 0.5s;
-}
-
-.fleet-item:hover .fleet-number {
-  opacity: 1;
-}
-
-.fleet-details h3 {
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: white;
-  margin-bottom: 0.75rem;
-}
-
-.fleet-description {
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 1rem;
-  line-height: 1.6;
-}
-
-.fleet-tags {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.fleet-tag {
-  font-size: 0.625rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--gold);
-  border: 1px solid rgba(216, 179, 93, 0.3);
-  padding: 0.375rem 0.75rem;
-  border-radius: 9999px;
-  background: rgba(216, 179, 93, 0.1);
-}
-
-.fleet-image {
-  position: relative;
-}
-
-.fleet-image img {
-  width: 100%;
-  border-radius: 3.5rem;
-  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.16);
-  border: 8px solid rgba(255, 255, 255, 0.05);
-  filter: grayscale(0.5) opacity(0.95);
-  transition: all 1s;
-  animation: image-zoom 20s ease-in-out infinite alternate;
-}
-
-@keyframes image-zoom {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.05); }
-}
-
-.fleet-image:hover img {
-  filter: grayscale(0) opacity(1);
-}
-
-.fleet-badge {
-  position: absolute;
-  bottom: -2.5rem;
-  left: -2.5rem;
-  background: var(--primary);
-  padding: 2.5rem;
-  border-radius: 3rem;
-  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.16);
-  transform: translateY(0);
-  transition: all 0.5s;
-}
-
-.fleet-image:hover .fleet-badge {
-  transform: translateY(-10px);
-}
-
-.fleet-badge p {
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: white;
-  line-height: 1.2;
+.safety-card:hover::before {
+  transform: scaleX(1);
 }
 
 /* ===================== FOOTER ===================== */
@@ -2119,6 +2292,13 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.3em;
   color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.developer-badge:hover {
+  background: rgba(216, 179, 93, 0.2);
+  transform: translateY(-2px);
 }
 
 .developer-badge i {
@@ -2427,6 +2607,20 @@ body {
     width: 100%;
   }
   
+  .scroll-indicator {
+    bottom: 1.5rem;
+    position: relative;
+    margin-top: 2rem;
+  }
+  
+  .scroll-indicator i {
+    font-size: 1.25rem;
+  }
+  
+  .scroll-indicator span {
+    font-size: 0.7rem;
+  }
+  
   /* Enhanced mobile navigation */
   .elite-nav {
     padding: 0.75rem 1rem;
@@ -2512,51 +2706,28 @@ body {
     font-size: 1rem;
   }
   
-  .features-section,
-  .fleet-section {
+  .routes-section,
+  .fleet-section,
+  .safety-section {
     padding: 4rem 1rem;
   }
   
-  .section-title {
+  .routes-title,
+  .fleet-title,
+  .safety-title {
     font-size: 2rem;
   }
   
-  .features-grid {
+  .routes-grid,
+  .fleet-grid,
+  .safety-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
   
-  .feature-card {
-    padding: 1.5rem;
-  }
-  
-  /* Fleet section mobile */
-  .fleet-section {
-    border-radius: 2rem;
-    padding: 3rem 1rem;
-  }
-  
-  .fleet-info h2 {
-    font-size: 2rem;
-  }
-  
-  .fleet-item {
-    gap: 1rem;
-  }
-  
-  .fleet-number {
-    font-size: 2rem;
-  }
-  
-  .fleet-image img {
-    border-radius: 2rem;
-  }
-  
-  .fleet-badge {
-    position: relative;
-    bottom: 0;
-    left: 0;
-    margin-top: 1rem;
+  .route-box,
+  .fleet-card,
+  .safety-card {
     padding: 1.5rem;
   }
   
@@ -2614,6 +2785,10 @@ body {
   
   .support-panel {
     width: 250px;
+  }
+  
+  .scroll-indicator {
+    bottom: 1rem;
   }
   
   /* Bus loader mobile */
@@ -2763,9 +2938,9 @@ button:disabled {
     
     <!-- Desktop Navigation -->
     <div class="nav-links">
+      <a href="#routes" class="nav-link">Routes</a>
       <a href="#fleet" class="nav-link">Fleet</a>
       <a href="#safety" class="nav-link">Safety</a>
-      <a href="#routes" class="nav-link">Routes</a>
       <a href="#support" class="nav-link" onclick="toggleSupportPanel(); return false;">Support</a>
     </div>
     
@@ -2786,9 +2961,9 @@ button:disabled {
   
   <!-- Mobile Navigation Links -->
   <div class="mobile-nav-links" id="mobileNavLinks">
+    <a href="#routes" class="nav-link" onclick="closeMobileMenu()">Routes</a>
     <a href="#fleet" class="nav-link" onclick="closeMobileMenu()">Fleet</a>
     <a href="#safety" class="nav-link" onclick="closeMobileMenu()">Safety</a>
-    <a href="#routes" class="nav-link" onclick="closeMobileMenu()">Routes</a>
     <a href="#support" class="nav-link" onclick="toggleSupportPanel(); closeMobileMenu();">Support</a>
     <a href="#booking-portal" class="nav-link" onclick="switchTab('newTab'); closeMobileMenu();">Book Seat</a>
   </div>
@@ -2826,10 +3001,14 @@ button:disabled {
     </div>
     
     <div class="scroll-indicator">
-      <i class="fas fa-chevron-down"></i>
+      <a href="#booking-portal">
+        <i class="fas fa-chevron-down"></i>
+        <span>Scroll to Book</span>
+      </a>
     </div>
   </div>
 </header>
+
 
 <!-- Booking Portal -->
 <section class="booking-portal" id="booking-portal">
@@ -2886,7 +3065,7 @@ button:disabled {
                   <i class="fas fa-mobile-alt"></i>
                 </div>
                 <input type="tel" id="passengerPhone" class="form-input" 
-                       placeholder="07XXXXXXXX" maxlength="10" required
+                       placeholder="947XXXXXXXX" maxlength="10" required
                        inputmode="numeric"
                        pattern="[0-9]*">
               </div>
@@ -2901,33 +3080,15 @@ button:disabled {
                 </div>
                 <select id="fromLocation" class="form-select" required>
                   <option value="">Select origin city</option>
-                  <option value="Not Updated">Not Updated</option>
-                  <option value="Kattunayaka Airport">Kattunayaka Airport</option>
-                  <option value="Orugodawatta">Orugodawatta</option>
-                  <option value="Wellampitiya">Wellampitiya</option>
-                  <option value="Kolonnawa">Kolonnawa</option>
-                  <option value="Rajagiriya">Rajagiriya</option>
-                  <option value="Mardana">Mardana</option>
-                  <option value="Pettah">Pettah</option>
-                  <option value="Galle Face">Galle Face</option>
-                  <option value="Technical Junction">Technical Junction</option>
-                  <option value="Wellawatta">Wellawatta</option>
-                  <option value="Dehiwala">Dehiwala</option>
-
-                  
-                  <option value="Nintavur">Nintavur</option>
                   <option value="Sammanthurai">Sammanthurai</option>
-                  <option value="Sainthamaruthu">Sainthamaruthu</option>
+                  <option value="Nintavur">Nintavur</option>
                   <option value="Kalmunai">Kalmunai</option>
                   <option value="Maruthamunai">Maruthamunai</option>
-                  <option value="Palamunai">Palamunai</option>
-                  <option value="Akkaraipattu">Akkaraipattu</option>
-                  <option value="Oluvil">Oluvil</option>
                   <option value="Batticaloa">Batticaloa</option>
-                  <option value="Polonnaruwa">Polonnaruwa</option>
-                  <option value="Ampara">Ampara</option>
+                  <option value="Polonaruwa">Polonaruwa</option>
+                  <option value="Kattunayaka Airport">Kattunayaka Airport</option>
+                  <option value="Akkaraipattu">Akkaraipattu</option>
                 </select>
-
               </div>
               
               <div class="form-group">
@@ -2939,32 +3100,17 @@ button:disabled {
                   <i class="fas fa-flag-checkered"></i>
                 </div>
                 <select id="toLocation" class="form-select" required>
-                  <option value="">Select origin city</option>
-                  <option value="Not Updated">Not Updated</option>
+                  <option value="">Select destination city</option>
                   <option value="Kattunayaka Airport">Kattunayaka Airport</option>
-                  <option value="Orugodawatta">Orugodawatta</option>
+                  <option value="Colombo">Colombo</option>
+                  <option value="Orugudwaththa">Orugudwaththa</option>
                   <option value="Wellampitiya">Wellampitiya</option>
                   <option value="Kolonnawa">Kolonnawa</option>
                   <option value="Rajagiriya">Rajagiriya</option>
                   <option value="Mardana">Mardana</option>
-                  <option value="Pettah">Pettah</option>
-                  <option value="Galle Face">Galle Face</option>
-                  <option value="Technical Junction">Technical Junction</option>
-                  <option value="Wellawatta">Wellawatta</option>
+                  <option value="Kolluppitiya">Kolluppitiya</option>
+                  <option value="Wellwaththa">Wellwaththa</option>
                   <option value="Dehiwala">Dehiwala</option>
-
-                  
-                  <option value="Nintavur">Nintavur</option>
-                  <option value="Sammanthurai">Sammanthurai</option>
-                  <option value="Sainthamaruthu">Sainthamaruthu</option>
-                  <option value="Kalmunai">Kalmunai</option>
-                  <option value="Maruthamunai">Maruthamunai</option>
-                  <option value="Palamunai">Palamunai</option>
-                  <option value="Akkaraipattu">Akkaraipattu</option>
-                  <option value="Oluvil">Oluvil</option>
-                  <option value="Batticaloa">Batticaloa</option>
-                  <option value="Polonnaruwa">Polonnaruwa</option>
-                  <option value="Ampara">Ampara</option>
                 </select>
               </div>
               
@@ -2989,14 +3135,14 @@ button:disabled {
                 </div>
                 <select id="busName" class="form-select" required>
                   <option value="">Select bus service</option>
-                  <option value="Sakeer Express">Sakeer Express</option>
-                  <option value="RS Express">RS Express</option>
-                  <option value="Myown Express">Myown Express</option>
-                  <option value="Al Ahla">Al Ahla</option>
-                  <option value="Al Rashith">Al Rashith</option>
-                  <option value="Star Travels">Star Travels</option>
-                  <option value="Lloyds Travels">Lloyds Travels</option>
-                  <option value="Super Line">Super Line</option>
+                  <option value="Sakeer Express">Sakeer Express - LKR 2,700</option>
+                  <option value="RS Express">RS Express - LKR 2,900</option>
+                  <option value="Myown Express">Myown Express - LKR 2,700</option>
+                  <option value="Al Ahla">Al Ahla - LKR 2,800</option>
+                  <option value="Al Rashith">Al Rashith - LKR 2,700</option>
+                  <option value="Star Travels">Star Travels - LKR 1,600</option>
+                  <option value="Lloyds Travels">Lloyds Travels - LKR 2,700</option>
+                  <option value="Super Line">Super Line - LKR 2,700</option>
                 </select>
               </div>
               
@@ -3279,95 +3425,85 @@ button:disabled {
   </div>
 </section>
 
-<!-- Features Section -->
-<section class="features-section" id="safety">
-  <div class="section-header">
-    <div class="section-badge">Elite Standards</div>
-    <h2 class="section-title">Crafted for the Discerning Traveler.</h2>
-    <div class="section-divider"></div>
+<!-- Fleet Section -->
+<section class="fleet-section" id="fleet">
+  <div class="fleet-header">
+    <h2 class="fleet-title">Modern Fleet & Amenities</h2>
+    <p class="fleet-subtitle">State-of-the-art coaches equipped with premium features for your comfort and safety</p>
   </div>
   
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon">
-        <i class="fas fa-shield-alt"></i>
-      </div>
-      <h3 class="feature-title">Premium Safety</h3>
-      <p class="feature-description">GPS tracked buses with professional drivers and comprehensive insurance for your peace of mind.</p>
-    </div>
-    
-    <div class="feature-card">
-      <div class="feature-icon">
+  <div class="fleet-grid">
+    <div class="fleet-card">
+      <div class="fleet-card-icon">
         <i class="fas fa-couch"></i>
       </div>
-      <h3 class="feature-title">Luxury Comfort</h3>
-      <p class="feature-description">Air-conditioned coaches with reclining seats, WiFi, and entertainment systems for a relaxing journey.</p>
+      <h3 class="fleet-card-title">Premium Seating</h3>
+      <p class="fleet-card-description">Ergonomic reclining seats with extra legroom, adjustable headrests, and premium upholstery for maximum comfort during long journeys.</p>
+      <div class="fleet-card-features">
+        <span class="fleet-feature">Reclining</span>
+        <span class="fleet-feature">Legroom</span>
+        <span class="fleet-feature">Comfort</span>
+      </div>
     </div>
     
-    <div class="feature-card">
-      <div class="feature-icon">
-        <i class="fas fa-bolt"></i>
+    <div class="fleet-card">
+      <div class="fleet-card-icon">
+        <i class="fas fa-wifi"></i>
       </div>
-      <h3 class="feature-title">Instant Booking</h3>
-      <p class="feature-description">Book your seat in seconds with instant confirmation and real-time updates on your booking status.</p>
+      <h3 class="fleet-card-title">Connectivity</h3>
+      <p class="fleet-card-description">High-speed WiFi, USB charging ports at every seat, and entertainment systems with movies and music for your journey.</p>
+      <div class="fleet-card-features">
+        <span class="fleet-feature">WiFi</span>
+        <span class="fleet-feature">Charging</span>
+        <span class="fleet-feature">Entertainment</span>
+      </div>
+    </div>
+    
+    <div class="fleet-card">
+      <div class="fleet-card-icon">
+        <i class="fas fa-snowflake"></i>
+      </div>
+      <h3 class="fleet-card-title">Climate Control</h3>
+      <p class="fleet-card-description">Advanced air conditioning systems with individual zone controls to maintain perfect temperature throughout your journey.</p>
+      <div class="fleet-card-features">
+        <span class="fleet-feature">AC</span>
+        <span class="fleet-feature">Climate</span>
+        <span class="fleet-feature">Comfort</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Fleet Section -->
-<section class="fleet-section" id="fleet">
-  <div class="fleet-background"></div>
-  <div class="fleet-content">
-    <div class="fleet-info">
-      <h2>Curated <span>Fleet</span> of Modern Coaches.</h2>
-      
-      <div class="fleet-list">
-        <div class="fleet-item">
-          <div class="fleet-number">01</div>
-          <div class="fleet-details">
-            <h3>Executive Class</h3>
-            <p class="fleet-description">Luxury coaches with extra legroom, premium seating and onboard entertainment.</p>
-            <div class="fleet-tags">
-              <span class="fleet-tag">WiFi</span>
-              <span class="fleet-tag">USB Charging</span>
-              <span class="fleet-tag">Refreshments</span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="fleet-item">
-          <div class="fleet-number">02</div>
-          <div class="fleet-details">
-            <h3>Express Service</h3>
-            <p class="fleet-description">Direct routes with minimal stops for faster travel between major cities.</p>
-            <div class="fleet-tags">
-              <span class="fleet-tag">Direct Route</span>
-              <span class="fleet-tag">Priority Boarding</span>
-              <span class="fleet-tag">Air Conditioned</span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="fleet-item">
-          <div class="fleet-number">03</div>
-          <div class="fleet-details">
-            <h3>Family Coach</h3>
-            <p class="fleet-description">Spacious seating perfect for family travel with child-friendly amenities.</p>
-            <div class="fleet-tags">
-              <span class="fleet-tag">Family Seating</span>
-              <span class="fleet-tag">Storage Space</span>
-              <span class="fleet-tag">Entertainment</span>
-            </div>
-          </div>
-        </div>
+<!-- Safety Section -->
+<section class="safety-section" id="safety">
+  <div class="safety-header">
+    <h2 class="safety-title">Premium Safety Standards</h2>
+    <p class="safety-subtitle">Your safety is our top priority with comprehensive measures and modern technology</p>
+  </div>
+  
+  <div class="safety-grid">
+    <div class="safety-card">
+      <div class="safety-card-icon">
+        <i class="fas fa-shield-alt"></i>
       </div>
+      <h3 class="safety-card-title">GPS Tracking</h3>
+      <p class="safety-card-description">Real-time GPS tracking on all buses with live monitoring for enhanced security and accurate arrival predictions.</p>
     </div>
     
-    <div class="fleet-image">
-      <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1200" alt="Elite Coach Interior">
-      <div class="fleet-badge">
-        <p>Premium<br/>Hospitality</p>
+    <div class="safety-card">
+      <div class="safety-card-icon">
+        <i class="fas fa-user-tie"></i>
       </div>
+      <h3 class="safety-card-title">Professional Drivers</h3>
+      <p class="safety-card-description">Experienced and certified drivers with comprehensive training and regular health check-ups for your safety.</p>
+    </div>
+    
+    <div class="safety-card">
+      <div class="safety-card-icon">
+        <i class="fas fa-ambulance"></i>
+      </div>
+      <h3 class="safety-card-title">Emergency Response</h3>
+      <p class="safety-card-description">24/7 emergency support, first aid kits on all buses, and direct contact with emergency services when needed.</p>
     </div>
   </div>
 </section>
@@ -3394,9 +3530,9 @@ button:disabled {
     <div class="footer-column">
       <h4>Navigation</h4>
       <ul class="footer-links">
-        <li><a href="#fleet">Our Fleet</a></li>
-        <li><a href="#safety">Safety</a></li>
         <li><a href="#routes">Routes</a></li>
+        <li><a href="#fleet">Fleet</a></li>
+        <li><a href="#safety">Safety</a></li>
         <li><a href="#support" onclick="toggleSupportPanel(); return false;">Support</a></li>
       </ul>
     </div>
@@ -3422,7 +3558,7 @@ button:disabled {
   
   <div class="footer-bottom">
     <p class="copyright">© 2024 Lagan Bus Services. All Rights Reserved.</p>
-    <div class="developer-badge">
+    <div class="developer-badge" onclick="window.open('https://wedoxa2025-info.github.io/wedoxa/', '_blank')">
       <i class="fas fa-code"></i>
       Designed by <strong>Wedoxa Intelligence</strong>
     </div>
@@ -3432,7 +3568,7 @@ button:disabled {
 <script>
 // ============ CONFIGURATION ============
 // REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT URL
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2R2ECYJKYUZYhchKU-BRUXpCG5eedcE-hAGbZ0csLX9hmSaEJNFUGwsNgsoQAZwV1zg/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx21luIFxNJXN1V6AtyEIhCHHUN30TLOdts8rWbsGV05qwAdN-biwSNp1T2QQvg00ncBg/exec";
 
 const ADMIN_WHATSAPP_NUMBER = "94701362527";
 
@@ -3901,7 +4037,7 @@ async function checkBooking() {
     if (data.success && data.booking) {
       console.log('Booking found:', data.booking);
       
-      displayBookingDetails(data.booking);
+      displayBookingDetails(data);
       
       showToast('Booking found!', 'success');
       
@@ -3925,40 +4061,44 @@ async function checkBooking() {
   }
 }
 
-function displayBookingDetails(booking) {
-  console.log('Displaying booking details:', booking);
+// FIXED: displayBookingDetails function - accepts the full response object
+function displayBookingDetails(response) {
+  console.log('Displaying booking details:', response);
+  
+  // Check if response has the correct structure
+  if (!response || !response.booking) {
+    console.error('Invalid response structure:', response);
+    showToast('Invalid booking data received', 'error');
+    return;
+  }
+  
+  const booking = response.booking;
   
   const name = booking.Name || 'Not Provided';
   const bus = booking.Bus || 'Not Assigned';
   const date = booking.Date || '';
   const time = booking.Time || '';
   
+  // Use DateTime from server if available, otherwise combine date and time
+  const displayDateTime = booking.DateTime || 
+                         (date && time ? `${date} ${time}` : 
+                         date ? date : 
+                         time ? time : 'To be confirmed');
+  
   // Get seat numbers EXACTLY as admin entered
-  const seatNumbers = booking.SeatNumbers || '';
+  const seatNumbers = booking.SeatNumbers || booking['Seat Number'] || '';
   
   // Get pickup and destination
   const pickup = booking.Pickup || 'Not Specified';
   const destination = booking.Destination || 'Not Specified';
   
   // Get payment info EXACTLY as admin entered
-  const paymentInfo = booking.Payment || 'Payment Pending';
+  const paymentInfo = booking.Payment || booking['Payment/Amount'] || 'Payment Pending';
   const totalAmount = booking.TotalAmount || 0;
   const paymentStatus = booking.PaymentStatus || 'Payment Pending';
   
   const bookingId = booking['Booking ID'] || 'N/A';
   const phone = booking.Phone || document.getElementById('checkPhone')?.value.trim() || '';
-  
-  // Format date and time
-  let displayDateTime = '-';
-  if (date && time) {
-    // Format time (remove any . and replace with :)
-    const formattedTime = time.replace(/\./g, ':');
-    displayDateTime = `${date} ${formattedTime}`;
-  } else if (date) {
-    displayDateTime = date;
-  } else if (time) {
-    displayDateTime = time.replace(/\./g, ':');
-  }
   
   const routeDisplay = `${pickup} → ${destination}`;
   
@@ -3969,7 +4109,7 @@ function displayBookingDetails(booking) {
   document.getElementById('displayDateTime').textContent = displayDateTime;
   document.getElementById('displayRoute').textContent = routeDisplay;
   
-  // Show EXACT seat numbers (e.g., "10,11,12", "5.07", "27")
+  // Show EXACT seat numbers
   document.getElementById('displaySeatNumbers').textContent = seatNumbers || 'To be assigned';
   
   // Show payment status
@@ -4014,6 +4154,7 @@ function displayBookingDetails(booking) {
     name, 
     bus, 
     date: displayDateTime, 
+    time: time,
     pickup, 
     destination, 
     route: routeDisplay,
