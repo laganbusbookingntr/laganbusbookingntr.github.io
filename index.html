@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="format-detection" content="telephone=no">
 <title>Lagan Bus Booking | Luxury Bus Travel Sri Lanka</title>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -2625,7 +2626,7 @@ body {
   transform: translateX(-50%) translateY(0);
 }
 
-/* ===================== ENHANCED MOBILE VIEW ===================== */
+/* ===================== ENHANCED MOBILE PHONE INPUT ===================== */
 @media (max-width: 768px) {
   html {
     font-size: 14px;
@@ -2655,46 +2656,13 @@ body {
   
   .hero-title {
     font-size: 2.5rem !important;
+    line-height: 1.2;
   }
   
   .hero-subtitle {
     font-size: 1rem;
     padding: 0 1rem;
-  }
-  
-  .admin-contact-badge {
-    padding: 0.75rem 1.5rem !important;
-    font-size: 0.9rem !important;
-    min-width: 220px !important;
-    width: auto !important;
-  }
-  
-  .hero-primary-btn {
-    padding: 0.75rem 1.5rem !important;
-    font-size: 0.9rem !important;
-    min-width: 220px !important;
-    width: auto !important;
-  }
-  
-  .hero-actions {
-    flex-direction: column;
-    gap: 0.75rem;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .scroll-indicator {
-    bottom: 1.5rem;
-    position: relative;
-    margin-top: 2rem;
-  }
-  
-  .scroll-indicator i {
-    font-size: 1.25rem;
-  }
-  
-  .scroll-indicator span {
-    font-size: 0.7rem;
+    line-height: 1.6;
   }
   
   /* Enhanced mobile navigation */
@@ -2741,6 +2709,68 @@ body {
     display: none;
   }
   
+  /* Phone input fields - CRITICAL FIXES */
+  .phone-input,
+  .phone-input-enhanced,
+  .form-input[type="tel"] {
+    font-size: 16px !important; /* Prevent iOS zoom */
+    padding: 1rem 1rem 1rem 3.5rem !important;
+    height: 56px !important;
+    min-height: 44px !important; /* Apple's recommended minimum touch target */
+  }
+  
+  /* Improve touch targets */
+  input, select, button {
+    min-height: 44px !important;
+  }
+  
+  /* Specifically target phone inputs in forms */
+  #passengerPhone,
+  #checkPhone {
+    font-size: 18px !important;
+    letter-spacing: 1px;
+    inputmode: "tel";
+  }
+  
+  .phone-input-icon,
+  .form-icon-left {
+    font-size: 1.5rem !important;
+    left: 1rem !important;
+    top: 3.8rem !important; /* Adjusted position */
+  }
+  
+  /* Admin contact button and reserve button */
+  .admin-contact-badge,
+  .hero-primary-btn {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.9rem !important;
+    min-width: 220px !important;
+    width: auto !important;
+    min-height: 44px !important;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .scroll-indicator {
+    bottom: 1.5rem;
+    position: relative;
+    margin-top: 2rem;
+  }
+  
+  .scroll-indicator i {
+    font-size: 1.25rem;
+  }
+  
+  .scroll-indicator span {
+    font-size: 0.7rem;
+  }
+  
+  /* Booking portal mobile adjustments */
   .booking-portal {
     margin: 0 auto 4rem;
     padding: 0 1rem;
@@ -2792,6 +2822,7 @@ body {
   .fleet-title,
   .safety-title {
     font-size: 2rem;
+    line-height: 1.2;
   }
   
   .routes-grid,
@@ -2831,6 +2862,11 @@ body {
   .gender-seats-container {
     grid-template-columns: 1fr;
   }
+  
+  /* Ensure proper keyboard on mobile */
+  input[type="tel"] {
+    inputmode: "tel";
+  }
 }
 
 @media (max-width: 480px) {
@@ -2838,13 +2874,25 @@ body {
     font-size: 2rem !important;
   }
   
-  .portal-tab {
-    padding: 1rem;
+  /* Even smaller screens */
+  .phone-input,
+  .phone-input-enhanced,
+  .form-input[type="tel"] {
+    font-size: 18px !important;
+    padding: 0.875rem 0.875rem 0.875rem 3rem !important;
   }
   
-  .hero-badge {
-    font-size: 0.6rem;
-    padding: 0.5rem 1rem;
+  #passengerPhone,
+  #checkPhone {
+    font-size: 16px !important;
+  }
+  
+  /* Adjust icon positions for smaller screens */
+  .phone-input-icon,
+  .form-icon-left {
+    left: 0.875rem !important;
+    top: 3.5rem !important;
+    font-size: 1.25rem !important;
   }
   
   .admin-contact-badge {
@@ -2857,6 +2905,15 @@ body {
     font-size: 0.75rem !important;
     padding: 0.6rem 1.2rem !important;
     min-width: 200px !important;
+  }
+  
+  .portal-tab {
+    padding: 1rem;
+  }
+  
+  .hero-badge {
+    font-size: 0.6rem;
+    padding: 0.5rem 1rem;
   }
   
   .scroll-to-top {
@@ -2894,6 +2951,14 @@ body {
     0% { transform: scale(1.05); }
     100% { transform: scale(1.15); }
   }
+  
+  /* Fix for iOS Safari input styling */
+  .phone-input,
+  .phone-input-enhanced,
+  .form-input {
+    -webkit-appearance: none;
+    border-radius: 1rem !important;
+  }
 }
 
 /* Fix for hanging issue */
@@ -2921,6 +2986,30 @@ button:disabled {
   min-width: 240px;
   text-align: center;
   justify-content: center;
+}
+
+/* Prevent zoom on focus in iOS */
+@media screen and (max-width: 767px) {
+  input[type="tel"],
+  input[type="text"],
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Improve phone input placeholder visibility */
+.phone-input::placeholder,
+.phone-input-enhanced::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .phone-input::placeholder,
+  .phone-input-enhanced::placeholder {
+    font-size: 0.85rem;
+  }
 }
 </style>
 </head>
