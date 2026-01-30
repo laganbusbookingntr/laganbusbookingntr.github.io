@@ -661,7 +661,7 @@ body {
     text-shadow: 
       0 0 30px rgba(255, 255, 255, 0.3),
       0 4px 20px rgba(0, 0, 0, 0.3);
-  }
+    }
 }
 
 @media (min-width: 768px) {
@@ -1316,6 +1316,25 @@ body {
   color: var(--warning);
 }
 
+/* Male and Female Seat Specific Styles */
+.male-seat-icon {
+  background: rgba(37, 99, 235, 0.1) !important;
+  color: #2563eb !important;
+}
+
+.female-seat-icon {
+  background: rgba(219, 39, 119, 0.1) !important;
+  color: #db2777 !important;
+}
+
+.male-seat-value {
+  color: #2563eb !important;
+}
+
+.female-seat-value {
+  color: #db2777 !important;
+}
+
 .ticket-actions {
   display: flex;
   flex-direction: column;
@@ -1482,6 +1501,59 @@ body {
   transform: translateY(-50%);
   color: var(--icon-color);
   font-size: 1.25rem;
+}
+
+/* Gender seat selector */
+.gender-seats-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.gender-seat-group {
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1rem;
+  transition: all 0.3s;
+}
+
+.gender-seat-group:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.gender-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.gender-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.male-icon {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+}
+
+.female-icon {
+  background: rgba(219, 39, 119, 0.1);
+  color: #db2777;
+}
+
+.gender-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
 }
 
 .total-cost-display {
@@ -2573,8 +2645,12 @@ body {
   }
   
   @keyframes mobile-slow-zoom {
-    0% { transform: scale(1.1) rotate(0deg); }
-    100% { transform: scale(1.2) rotate(0.3deg); }
+    0% { 
+      transform: scale(1.1) rotate(0deg);
+    }
+    100% { 
+      transform: scale(1.2) rotate(0.3deg);
+    }
   }
   
   .hero-title {
@@ -2750,6 +2826,10 @@ body {
   .bus {
     width: 100px;
     height: 50px;
+  }
+  
+  .gender-seats-container {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -3064,10 +3144,12 @@ button:disabled {
                 <div class="form-icon-left">
                   <i class="fas fa-mobile-alt"></i>
                 </div>
-                <input type="tel" id="passengerPhone" class="form-input" 
-                       placeholder="947XXXXXXXX" maxlength="10" required
+                <input type="tel" id="passengerPhone" class="form-input phone-input-enhanced" 
+                       placeholder="077XXXXXXX" 
+                       maxlength="12"
                        inputmode="numeric"
-                       pattern="[0-9]*">
+                       pattern="[0-9]*"
+                       required>
               </div>
               
               <div class="form-group">
@@ -3088,6 +3170,16 @@ button:disabled {
                   <option value="Polonaruwa">Polonaruwa</option>
                   <option value="Kattunayaka Airport">Kattunayaka Airport</option>
                   <option value="Akkaraipattu">Akkaraipattu</option>
+                  <option value="Kattunayaka Airport">Kattunayaka Airport</option>
+                  <option value="Colombo">Colombo</option>
+                  <option value="Orugudwaththa">Orugudwaththa</option>
+                  <option value="Wellampitiya">Wellampitiya</option>
+                  <option value="Kolonnawa">Kolonnawa</option>
+                  <option value="Rajagiriya">Rajagiriya</option>
+                  <option value="Mardana">Mardana</option>
+                  <option value="Kolluppitiya">Kolluppitiya</option>
+                  <option value="Wellwaththa">Wellwaththa</option>
+                  <option value="Dehiwala">Dehiwala</option>
                 </select>
               </div>
               
@@ -3101,6 +3193,14 @@ button:disabled {
                 </div>
                 <select id="toLocation" class="form-select" required>
                   <option value="">Select destination city</option>
+                  <option value="Sammanthurai">Sammanthurai</option>
+                  <option value="Nintavur">Nintavur</option>
+                  <option value="Kalmunai">Kalmunai</option>
+                  <option value="Maruthamunai">Maruthamunai</option>
+                  <option value="Batticaloa">Batticaloa</option>
+                  <option value="Polonaruwa">Polonaruwa</option>
+                  <option value="Kattunayaka Airport">Kattunayaka Airport</option>
+                  <option value="Akkaraipattu">Akkaraipattu</option>
                   <option value="Kattunayaka Airport">Kattunayaka Airport</option>
                   <option value="Colombo">Colombo</option>
                   <option value="Orugudwaththa">Orugudwaththa</option>
@@ -3124,7 +3224,7 @@ button:disabled {
                 </div>
                 <input type="date" id="travelDate" class="form-input" required>
               </div>
-              
+
               <div class="form-group">
                 <label class="form-label" for="busName">
                   <i class="fas fa-bus"></i>
@@ -3133,7 +3233,7 @@ button:disabled {
                 <div class="form-icon-left">
                   <i class="fas fa-bus"></i>
                 </div>
-                <select id="busName" class="form-select" required>
+                <select id="busName" class="form-select" required onchange="calculateTotalCost(); updateTravelTime(this.value);">
                   <option value="">Select bus service</option>
                   <option value="Sakeer Express">Sakeer Express - LKR 2,700</option>
                   <option value="RS Express">RS Express - LKR 2,900</option>
@@ -3147,26 +3247,77 @@ button:disabled {
               </div>
               
               <div class="form-group">
-                <label class="form-label" for="seatCount">
-                  <i class="fas fa-chair"></i>
-                  Number of Seats
+                <label class="form-label" for="travelTime">
+                  <i class="fas fa-clock"></i>
+                  Preferred Time
                 </label>
                 <div class="form-icon-left">
-                  <i class="fas fa-users"></i>
+                  <i class="far fa-clock"></i>
                 </div>
-                <select id="seatCount" class="form-select" required>
-                  <option value="">Select seats</option>
-                  <option value="1">1 Seat</option>
-                  <option value="2">2 Seats</option>
-                  <option value="3">3 Seats</option>
-                  <option value="4">4 Seats</option>
-                  <option value="5">5 Seats</option>
-                  <option value="6">6 Seats</option>
-                  <option value="7">7 Seats</option>
-                  <option value="8">8 Seats</option>
-                  <option value="9">9 Seats</option>
-                  <option value="10">10 Seats</option>
+                <select id="travelTime" class="form-select" required>
+                  
                 </select>
+              </div>
+              
+              
+              
+              <!-- Gender-based Seat Selection -->
+              <div class="form-group" style="grid-column: span 2;">
+                <label class="form-label">
+                  <i class="fas fa-users"></i>
+                  Seats Required (Separate by Gender)
+                </label>
+                <div class="gender-seats-container">
+                  <!-- Male Seats -->
+                  <div class="gender-seat-group">
+                    <div class="gender-header">
+                      <div class="gender-icon male-icon">
+                        <i class="fas fa-mars"></i>
+                      </div>
+                      <div class="gender-title">Male Seats</div>
+                    </div>
+                    <select id="maleSeats" class="form-select" onchange="calculateTotalCost()">
+                      <option value="0">0 Seat</option>
+                      <option value="1">1 Seat</option>
+                      <option value="2">2 Seats</option>
+                      <option value="3">3 Seats</option>
+                      <option value="4">4 Seats</option>
+                      <option value="5">5 Seats</option>
+                      <option value="6">6 Seats</option>
+                      <option value="7">7 Seats</option>
+                      <option value="8">8 Seats</option>
+                      <option value="9">9 Seats</option>
+                      <option value="10">10 Seats</option>
+                    </select>
+                  </div>
+                  
+                  <!-- Female Seats -->
+                  <div class="gender-seat-group">
+                    <div class="gender-header">
+                      <div class="gender-icon female-icon">
+                        <i class="fas fa-venus"></i>
+                      </div>
+                      <div class="gender-title">Female Seats</div>
+                    </div>
+                    <select id="femaleSeats" class="form-select" onchange="calculateTotalCost()">
+                      <option value="0">0 Seat</option>
+                      <option value="1">1 Seat</option>
+                      <option value="2">2 Seats</option>
+                      <option value="3">3 Seats</option>
+                      <option value="4">4 Seats</option>
+                      <option value="5">5 Seats</option>
+                      <option value="6">6 Seats</option>
+                      <option value="7">7 Seats</option>
+                      <option value="8">8 Seats</option>
+                      <option value="9">9 Seats</option>
+                      <option value="10">10 Seats</option>
+                    </select>
+                  </div>
+                </div>
+                <div style="margin-top: 10px; font-size: 0.85rem; color: var(--text-secondary);">
+                  <i class="fas fa-info-circle" style="color: var(--gold);"></i>
+                  Admin will assign specific seat numbers based on gender
+                </div>
               </div>
             </div>
             
@@ -3297,9 +3448,9 @@ button:disabled {
             <div class="phone-input-icon">
               <i class="fas fa-phone"></i>
             </div>
-            <input type="tel" id="checkPhone" class="phone-input" 
-                   placeholder="947XXXXXXXX" 
-                   maxlength="10"
+            <input type="tel" id="checkPhone" class="phone-input phone-input-enhanced" 
+                   placeholder="0XXXXXXXXX or 94XXXXXXXXX" 
+                   maxlength="12"
                    inputmode="numeric"
                    pattern="[0-9]*">
           </div>
@@ -3319,6 +3470,9 @@ button:disabled {
               <li>View all your travel details</li>
               <li>Download your ticket if confirmed</li>
             </ul>
+            <div style="margin-top: 10px; padding: 8px; background: rgba(37, 99, 235, 0.1); border-radius: 6px; font-size: 0.8rem; color: var(--primary);">
+              <i class="fas fa-info-circle"></i> <strong>Note:</strong> Accepts 0XXXXXXXXX, 94XXXXXXXXX, or XXXXXXXXX formats
+            </div>
           </div>
         </div>
         
@@ -3381,16 +3535,25 @@ button:disabled {
                   <div id="displayPaymentStatus" class="detail-value pending">-</div>
                 </div>
                 
-                <!-- Seat Numbers Card - FIXED: Shows exact seat numbers -->
+                <!-- Male Seats Card -->
                 <div class="detail-card">
-                  <div class="detail-icon">
-                    <i class="fas fa-chair"></i>
+                  <div class="detail-icon male-seat-icon">
+                    <i class="fas fa-mars"></i>
                   </div>
-                  <div class="detail-label">Seat Numbers</div>
-                  <div id="displaySeatNumbers" class="detail-value">-</div>
+                  <div class="detail-label">Male Seats</div>
+                  <div id="displayMaleSeats" class="detail-value male-seat-value">To be assigned</div>
                 </div>
                 
-                <!-- Total Amount Card - FIXED: Shows exact amount from sheet -->
+                <!-- Female Seats Card -->
+                <div class="detail-card">
+                  <div class="detail-icon female-seat-icon">
+                    <i class="fas fa-venus"></i>
+                  </div>
+                  <div class="detail-label">Female Seats</div>
+                  <div id="displayFemaleSeats" class="detail-value female-seat-value">To be assigned</div>
+                </div>
+                
+                <!-- Total Amount Card -->
                 <div class="detail-card">
                   <div class="detail-icon">
                     <i class="fas fa-money-bill-wave"></i>
@@ -3567,12 +3730,10 @@ button:disabled {
 
 <script>
 // ============ CONFIGURATION ============
-// REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT URL
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx21luIFxNJXN1V6AtyEIhCHHUN30TLOdts8rWbsGV05qwAdN-biwSNp1T2QQvg00ncBg/exec";
-
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxH_Nq8RbHfe-xTaRqxR1gL9Bpz0IHfwIfpEzWiQqXjhnsrPbAuGX2PkK07JtFSSIBy/exec";
 const ADMIN_WHATSAPP_NUMBER = "94701362527";
 
-// Bus pricing data (per seat) - For new booking calculations only
+// Bus pricing data (per seat)
 const busPrices = {
     "Sakeer Express": 2700,
     "RS Express": 2900,
@@ -3582,6 +3743,18 @@ const busPrices = {
     "Star Travels": 1600,
     "Lloyds Travels": 2700,
     "Super Line": 2700
+};
+
+// Bus service to travel time mapping
+const busTravelTimes = {
+    "Sakeer Express": "9:00 PM",
+    "RS Express": "9:00 PM",
+    "Myown Express": "8:45 PM",
+    "Al Ahla": "8:30 PM",
+    "Al Rashith": "8:00 PM",
+    "Star Travels": "9:30 PM",
+    "Lloyds Travels": "9:00 PM",
+    "Super Line": "9:00 PM"
 };
 
 // Bank details
@@ -3615,13 +3788,15 @@ document.addEventListener('DOMContentLoaded', function() {
   tomorrow.setDate(tomorrow.getDate() + 1);
   document.getElementById('travelDate').value = tomorrow.toISOString().split('T')[0];
   
-  // Phone number formatting
-  document.getElementById('checkPhone').addEventListener('input', formatPhone);
-  document.getElementById('passengerPhone').addEventListener('input', formatPhone);
+  // Enhanced phone number formatting
+  document.querySelectorAll('.phone-input-enhanced').forEach(input => {
+    input.addEventListener('input', formatPhoneEnhanced);
+  });
   
-  // Cost calculation (for new booking tab only)
+  // Cost calculation
   document.getElementById('busName').addEventListener('change', calculateTotalCost);
-  document.getElementById('seatCount').addEventListener('change', calculateTotalCost);
+  document.getElementById('maleSeats').addEventListener('change', calculateTotalCost);
+  document.getElementById('femaleSeats').addEventListener('change', calculateTotalCost);
   
   // Event listeners
   document.getElementById('checkBtn').addEventListener('click', checkBooking);
@@ -3739,20 +3914,64 @@ function closeMobileMenu() {
   }
 }
 
+// New function to update travel time based on bus selection
+function updateTravelTime(busService) {
+  const travelTimeSelect = document.getElementById('travelTime');
+  
+  if (!travelTimeSelect || !busService) return;
+  
+  // Clear current options
+  travelTimeSelect.innerHTML = '<option value="">Select preferred time</option>';
+  
+  if (busTravelTimes[busService]) {
+    const time = busTravelTimes[busService];
+    const timeSlot = `${time}`;
+    
+    // Create and select the specific time option
+    const option = document.createElement('option');
+    option.value = timeSlot;
+    option.textContent = timeSlot;
+    option.selected = true;
+    
+    travelTimeSelect.appendChild(option);
+    
+    // Add other time options as disabled (for reference)
+    const otherTimes = [
+      "Morning (6:00 AM - 10:00 AM)",
+      "Afternoon (12:00 PM - 4:00 PM)",
+      "Night (10:00 PM - 2:00 AM)"
+    ];
+    
+    otherTimes.forEach(timeText => {
+      const disabledOption = document.createElement('option');
+      disabledOption.value = timeText;
+      disabledOption.textContent = timeText;
+      disabledOption.disabled = true;
+      travelTimeSelect.appendChild(disabledOption);
+    });
+    
+    // Show a small notification
+    showToast(`${busService} is scheduled to depart at ${time}`, 'info');
+
+  } else {
+   
+  }
+}
+
 function calculateTotalCost() {
-    // This is only for NEW BOOKING tab, not for check booking
     const busSelect = document.getElementById('busName');
-    const seatSelect = document.getElementById('seatCount');
+    const maleSeats = parseInt(document.getElementById('maleSeats').value) || 0;
+    const femaleSeats = parseInt(document.getElementById('femaleSeats').value) || 0;
     const totalCostElement = document.getElementById('totalCostDisplay');
     
-    if (!busSelect || !seatSelect || !totalCostElement) return;
+    if (!busSelect || !totalCostElement) return;
     
     const selectedBus = busSelect.value;
-    const selectedSeats = parseInt(seatSelect.value) || 0;
+    const totalSeats = maleSeats + femaleSeats;
     
-    if (selectedBus && selectedSeats > 0) {
+    if (selectedBus && totalSeats > 0) {
         const pricePerSeat = busPrices[selectedBus] || 0;
-        const totalCost = pricePerSeat * selectedSeats;
+        const totalCost = pricePerSeat * totalSeats;
         
         totalCostElement.innerHTML = `
             <div class="cost-row">
@@ -3764,30 +3983,50 @@ function calculateTotalCost() {
                 <span class="cost-value">LKR ${pricePerSeat.toLocaleString()}</span>
             </div>
             <div class="cost-row">
-                <span class="cost-label">Seats Requested:</span>
-                <span class="cost-value">${selectedSeats}</span>
+                <span class="cost-label">Male Seats:</span>
+                <span class="cost-value">${maleSeats}</span>
+            </div>
+            <div class="cost-row">
+                <span class="cost-label">Female Seats:</span>
+                <span class="cost-value">${femaleSeats}</span>
+            </div>
+            <div class="cost-row">
+                <span class="cost-label">Total Seats:</span>
+                <span class="cost-value">${totalSeats}</span>
             </div>
             <div class="cost-total">
                 <span class="total-label">Estimated Total:</span>
                 <span class="total-amount">LKR ${totalCost.toLocaleString()}</span>
             </div>
-            <div style="margin-top: 10px; padding: 10px; background: rgba(245, 158, 11, 0.1); border-radius: 8px; font-size: 0.85rem;">
-                <i class="fas fa-info-circle" style="color: #F59E0B;"></i>
-                <span style="color: var(--text-primary);">Admin will assign exact seat numbers and final amount</span>
+            <div style="margin-top: 15px; padding: 12px; background: rgba(245, 158, 11, 0.1); border-radius: 8px; border-left: 3px solid #F59E0B;">
+                <p style="color: var(--warning); font-weight: 600; margin-bottom: 5px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-info-circle"></i> Important Notes:
+                </p>
+                <p style="color: var(--text-primary); font-size: 0.9rem; line-height: 1.4;">
+                    1. Admin will assign specific seat numbers based on gender<br>
+                    2. Male and female seats may be in separate areas<br>
+                    3. Final seat numbers will be confirmed after payment
+                </p>
             </div>
         `;
     } else {
-        totalCostElement.innerHTML = '';
+        totalCostElement.innerHTML = `
+            <div style="text-align: center; padding: 1rem; color: var(--text-secondary);">
+                <i class="fas fa-chair" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                <p>Select bus service and seats to see estimated cost</p>
+            </div>
+        `;
     }
 }
 
 async function showBankDetailsModal() {
     const busSelect = document.getElementById('busName');
-    const seatSelect = document.getElementById('seatCount');
+    const maleSeats = parseInt(document.getElementById('maleSeats').value) || 0;
+    const femaleSeats = parseInt(document.getElementById('femaleSeats').value) || 0;
     const selectedBus = busSelect?.value;
-    const selectedSeats = parseInt(seatSelect?.value) || 0;
+    const totalSeats = maleSeats + femaleSeats;
     const pricePerSeat = busPrices[selectedBus] || 0;
-    const totalCost = pricePerSeat * selectedSeats;
+    const totalCost = pricePerSeat * totalSeats;
     
     Swal.fire({
         title: 'Secure Payment Details',
@@ -3869,6 +4108,10 @@ async function showBankDetailsModal() {
         showCloseButton: true,
         didOpen: () => {
             window.bankDetailsText = `Estimated Amount: LKR ${totalCost.toLocaleString()}
+Bus Service: ${selectedBus}
+Male Seats: ${maleSeats}
+Female Seats: ${femaleSeats}
+Total Seats: ${totalSeats}
 Bank: ${bankDetails.bankName}
 Account Name: ${bankDetails.accountName}
 Account Number: ${bankDetails.accountNumber}
@@ -4002,10 +4245,54 @@ function switchTab(tabId) {
   closeMobileMenu();
 }
 
-function formatPhone(e) {
+// ============ ENHANCED PHONE NUMBER FUNCTIONS ============
+
+function formatPhoneEnhanced(e) {
   let value = e.target.value.replace(/\D/g, '');
-  if (value.length > 10) value = value.substring(0, 10);
+  
+  // Keep as is - don't modify format
+  // Just limit to reasonable length (12 digits max)
+  if (value.length > 12) {
+    value = value.substring(0, 12);
+  }
+  
   e.target.value = value;
+}
+
+function normalizePhoneNumber(phone) {
+  if (!phone) return '';
+  
+  // Remove all non-digits
+  let clean = phone.replace(/\D/g, '');
+  
+  // Get last 9 digits (Sri Lankan mobile numbers are 9 digits)
+  if (clean.length >= 9) {
+    clean = clean.substring(clean.length - 9);
+  }
+  
+  return clean;
+}
+
+function getPhoneSearchVariants(phone) {
+  const variants = new Set();
+  
+  if (!phone) return Array.from(variants);
+  
+  // Normalize to last 9 digits
+  const normalized = normalizePhoneNumber(phone);
+  
+  // Add different formats
+  variants.add(normalized); // 742663484
+  variants.add('0' + normalized); // 0742663484
+  variants.add('94' + normalized); // 94742663484
+  
+  // Also try the original cleaned version
+  const originalClean = phone.replace(/\D/g, '');
+  if (originalClean) {
+    variants.add(originalClean);
+  }
+  
+  return Array.from(variants);
 }
 
 // ============ BOOKING FUNCTIONS ============
@@ -4017,7 +4304,7 @@ async function checkBooking() {
   const btn = document.getElementById('checkBtn');
   
   if (!phone || phone.length < 9) {
-    showToast('Please enter a valid 10-digit phone number', 'warning');
+    showToast('Please enter a valid phone number (9+ digits)', 'warning');
     vibrate();
     return;
   }
@@ -4031,18 +4318,42 @@ async function checkBooking() {
   try {
     console.log('Searching for phone:', phone);
     
-    const response = await fetch(GOOGLE_SCRIPT_URL + `?phone=${phone}&method=search`);
-    const data = await response.json();
+    // Get all possible phone variants
+    const phoneVariants = getPhoneSearchVariants(phone);
+    console.log('Phone search variants:', phoneVariants);
     
-    if (data.success && data.booking) {
-      console.log('Booking found:', data.booking);
-      
-      displayBookingDetails(data);
-      
+    // Try each variant
+    let foundBooking = null;
+    let searchResults = null;
+    
+    for (const variant of phoneVariants) {
+      try {
+        const response = await fetch(GOOGLE_SCRIPT_URL + `?phone=${variant}&method=search`);
+        const data = await response.json();
+        
+        if (data.success && data.booking) {
+          foundBooking = data.booking;
+          searchResults = data;
+          console.log('Found booking with variant:', variant);
+          break;
+        } else if (data.success && data.allBookings && data.allBookings.length > 0) {
+          foundBooking = data.allBookings[0];
+          searchResults = data;
+          console.log('Found multiple bookings with variant:', variant);
+          break;
+        }
+      } catch (error) {
+        console.error(`Error searching with variant ${variant}:`, error);
+      }
+    }
+    
+    if (foundBooking) {
+      console.log('Booking found:', foundBooking);
+      displayBookingDetails(searchResults);
       showToast('Booking found!', 'success');
       
     } else {
-      showToast(data.message || 'No booking found', 'info');
+      showToast('No booking found for this number', 'info');
       
       const ticketCard = document.getElementById('ticketCard');
       const initialState = document.getElementById('initialState');
@@ -4061,11 +4372,9 @@ async function checkBooking() {
   }
 }
 
-// FIXED: displayBookingDetails function - accepts the full response object
 function displayBookingDetails(response) {
   console.log('Displaying booking details:', response);
   
-  // Check if response has the correct structure
   if (!response || !response.booking) {
     console.error('Invalid response structure:', response);
     showToast('Invalid booking data received', 'error');
@@ -4074,74 +4383,75 @@ function displayBookingDetails(response) {
   
   const booking = response.booking;
   
-  const name = booking.Name || 'Not Provided';
-  const bus = booking.Bus || 'Not Assigned';
-  const date = booking.Date || '';
-  const time = booking.Time || '';
+  // Generate booking ID
+  const bookingId = booking["Booking ID"] || 
+                   (booking.rowIndex ? `LGN-${booking.rowIndex.toString().padStart(4, '0')}` : 
+                   `LGN-${Date.now().toString().slice(-6)}`);
   
-  // Use DateTime from server if available, otherwise combine date and time
-  const displayDateTime = booking.DateTime || 
-                         (date && time ? `${date} ${time}` : 
-                         date ? date : 
-                         time ? time : 'To be confirmed');
-  
-  // Get seat numbers EXACTLY as admin entered
-  const seatNumbers = booking.SeatNumbers || booking['Seat Number'] || '';
-  
-  // Get pickup and destination
-  const pickup = booking.Pickup || 'Not Specified';
-  const destination = booking.Destination || 'Not Specified';
-  
-  // Get payment info EXACTLY as admin entered
-  const paymentInfo = booking.Payment || booking['Payment/Amount'] || 'Payment Pending';
-  const totalAmount = booking.TotalAmount || 0;
-  const paymentStatus = booking.PaymentStatus || 'Payment Pending';
-  
-  const bookingId = booking['Booking ID'] || 'N/A';
-  const phone = booking.Phone || document.getElementById('checkPhone')?.value.trim() || '';
-  
-  const routeDisplay = `${pickup} → ${destination}`;
-  
-  // Update UI with EXACT data from sheet
-  document.getElementById('displayPassengerName').textContent = name;
+  // Update basic information
+  document.getElementById('displayPassengerName').textContent = booking.Name || 'Not Provided';
   document.getElementById('displayBookingId').textContent = `Booking ID: ${bookingId}`;
-  document.getElementById('displayBusName').textContent = bus;
-  document.getElementById('displayDateTime').textContent = displayDateTime;
-  document.getElementById('displayRoute').textContent = routeDisplay;
+  document.getElementById('displayBusName').textContent = booking.Bus || 'Not Assigned';
   
-  // Show EXACT seat numbers
-  document.getElementById('displaySeatNumbers').textContent = seatNumbers || 'To be assigned';
+  // Combine Date and Time
+  const displayDate = booking.Date || booking.dateFormatted || 'To be confirmed';
+  const displayTime = booking.Time || booking.time || '';
+  document.getElementById('displayDateTime').textContent = displayTime ? 
+    `${displayDate} at ${displayTime}` : displayDate;
+  
+  // Display route
+  const pickup = booking.Pickup || booking.pickup || '';
+  const destination = booking.Destination || booking.destination || '';
+  document.getElementById('displayRoute').textContent = pickup && destination ? 
+    `${pickup} → ${destination}` : 'Route not specified';
+  
+  // Display male and female seats
+  const maleSeats = booking["Male Seat"] || booking.maleSeats || booking.maleSeatCount || 0;
+  const femaleSeats = booking["Female Seat"] || booking.femaleSeats || booking.femaleSeatCount || 0;
+  
+  document.getElementById('displayMaleSeats').textContent = 
+    maleSeats && maleSeats !== '0' ? maleSeats.toString() : 'To be assigned';
+  
+  document.getElementById('displayFemaleSeats').textContent = 
+    femaleSeats && femaleSeats !== '0' ? femaleSeats.toString() : 'To be assigned';
   
   // Show payment status
   const paymentStatusElement = document.getElementById('displayPaymentStatus');
   if (paymentStatusElement) {
-    paymentStatusElement.textContent = paymentStatus;
+    const paymentValue = booking.Payment || booking.payment || 'Not Updated';
+    const paymentStr = paymentValue.toString().toLowerCase();
     
-    if (paymentStatus.toLowerCase().includes('paid') || 
-        paymentStatus.toLowerCase().includes('done')) {
+    if (paymentStr.includes('paid') || 
+        paymentStr.includes('done') ||
+        paymentStr.includes('completed') ||
+        paymentStr.includes('received') ||
+        (parseFloat(paymentValue) > 0 && !isNaN(paymentValue))) {
       paymentStatusElement.className = 'detail-value paid';
-    } else if (paymentStatus.toLowerCase().includes('not paid') || 
-               paymentStatus.toLowerCase().includes('pending')) {
+      paymentStatusElement.textContent = 'Paid';
+    } else if (paymentStr.includes('not paid') || 
+               paymentStr.includes('pending') ||
+               paymentStr.includes('not updated')) {
       paymentStatusElement.className = 'detail-value pending';
+      paymentStatusElement.textContent = 'Payment Pending';
     } else {
       paymentStatusElement.className = 'detail-value';
+      paymentStatusElement.textContent = paymentValue;
     }
   }
   
-  // Show EXACT total amount from sheet
+  // Show total amount
   const totalAmountElement = document.getElementById('displayTotalAmount');
   if (totalAmountElement) {
-    if (totalAmount > 0) {
-      totalAmountElement.textContent = `LKR ${totalAmount.toLocaleString()}`;
+    const total = booking.Total || booking.totalAmount || booking.total || 0;
+    const estimated = booking.estimatedTotal || 0;
+    
+    if (total && parseFloat(total) > 0) {
+      const amount = parseFloat(total);
+      totalAmountElement.textContent = `LKR ${amount.toLocaleString()}`;
+    } else if (estimated > 0) {
+      totalAmountElement.textContent = `LKR ${estimated.toLocaleString()} (Est.)`;
     } else {
-      // Try to extract amount from payment info string
-      const amountMatch = paymentInfo.match(/(\d+(?:,\d+)*(?:\.\d+)?)/);
-      if (amountMatch) {
-        const extractedAmount = parseFloat(amountMatch[1].replace(/,/g, ''));
-        totalAmountElement.textContent = `LKR ${extractedAmount.toLocaleString()}`;
-      } else {
-        totalAmountElement.textContent = paymentInfo;
-      }
+      totalAmountElement.textContent = 'To be confirmed';
     }
   }
   
@@ -4151,19 +4461,22 @@ function displayBookingDetails(response) {
   
   // Store current booking data for PDF download
   currentBookingData = {
-    name, 
-    bus, 
-    date: displayDateTime, 
-    time: time,
-    pickup, 
-    destination, 
-    route: routeDisplay,
-    seatNumbers,
-    paymentInfo,
-    totalAmount,
-    paymentStatus,
-    bookingId, 
-    phone
+    name: booking.Name || booking.name,
+    phone: booking.Phone || booking.phone,
+    bus: booking.Bus || booking.bus,
+    date: displayDate,
+    time: displayTime,
+    pickup: pickup,
+    destination: destination,
+    route: pickup && destination ? `${pickup} → ${destination}` : '',
+    maleSeats: maleSeats.toString(),
+    femaleSeats: femaleSeats.toString(),
+    totalSeats: (parseInt(maleSeats) || 0) + (parseInt(femaleSeats) || 0),
+    payment: booking.Payment || booking.payment,
+    totalAmount: booking.Total || booking.totalAmount || 0,
+    paymentStatus: paymentStatusElement?.textContent || 'Payment Pending',
+    bookingId: bookingId,
+    bookedDate: booking["Booked Date"] || booking.bookedDateFormatted
   };
   
   console.log('Current booking data stored:', currentBookingData);
@@ -4178,12 +4491,17 @@ async function submitBooking() {
     from: document.getElementById('fromLocation').value.trim(),
     to: document.getElementById('toLocation').value.trim(),
     date: document.getElementById('travelDate').value,
+    time: document.getElementById('travelTime').value,
     bus: document.getElementById('busName').value,
-    seats: document.getElementById('seatCount').value
+    maleSeats: document.getElementById('maleSeats').value,
+    femaleSeats: document.getElementById('femaleSeats').value
   };
   
+  const maleSeats = parseInt(formData.maleSeats) || 0;
+  const femaleSeats = parseInt(formData.femaleSeats) || 0;
+  const totalSeats = maleSeats + femaleSeats;
   const pricePerSeat = busPrices[formData.bus] || 0;
-  const totalCost = pricePerSeat * parseInt(formData.seats);
+  const totalCost = pricePerSeat * totalSeats;
   
   // Validation
   if (!formData.name || formData.name.length < 3) {
@@ -4216,18 +4534,25 @@ async function submitBooking() {
     return;
   }
   
+  if (!formData.time) {
+    showToast('Please select preferred time', 'warning');
+    vibrate();
+    return;
+  }
+  
   if (!formData.bus) {
     showToast('Please select a bus service', 'warning');
     vibrate();
     return;
   }
   
-  if (!formData.seats) {
-    showToast('Please select number of seats', 'warning');
+  if (totalSeats === 0) {
+    showToast('Please select at least one seat', 'warning');
     vibrate();
     return;
   }
   
+  // Format date for display
   const dateObj = new Date(formData.date);
   const formattedDate = dateObj.toLocaleDateString('en-GB', {
     weekday: 'short',
@@ -4236,13 +4561,26 @@ async function submitBooking() {
     year: 'numeric'
   });
   
+  // Format date for Excel (MM/DD/YYYY)
+  const excelDate = `${(dateObj.getMonth() + 1).toString().padStart(2, '0')}/${dateObj.getDate().toString().padStart(2, '0')}/${dateObj.getFullYear()}`;
+  
+  // Format time for display
+  const timeDisplay = formData.time.split('(')[1]?.replace(')', '') || formData.time;
+  
+  // Normalize phone number for storage
+  const normalizedPhone = normalizePhoneNumber(formData.phone);
+  
+  // WhatsApp message
   const whatsappMessage = `*NEW LAGAN BUS BOOKING RESERVATION*%0A%0A` +
     `👤 *Passenger:* ${formData.name}%0A` +
     `📱 *Contact:* ${formData.phone}%0A` +
     `📍 *Route:* ${formData.from} → ${formData.to}%0A` +
     `📅 *Date:* ${formattedDate}%0A` +
+    `⏰ *Time:* ${timeDisplay}%0A` +
     `🚌 *Service:* ${formData.bus}%0A` +
-    `💺 *Seats Requested:* ${formData.seats} seat${formData.seats > 1 ? 's' : ''}%0A` +
+    `👨 *Male Seats:* ${maleSeats} seat${maleSeats !== 1 ? 's' : ''}%0A` +
+    `👩 *Female Seats:* ${femaleSeats} seat${femaleSeats !== 1 ? 's' : ''}%0A` +
+    `💺 *Total Seats:* ${totalSeats}%0A` +
     `💰 *Estimated Cost:* LKR ${totalCost.toLocaleString()}%0A%0A` +
     `🏦 *Payment Instructions:*%0A` +
     `Bank: ${bankDetails.bankName}%0A` +
@@ -4252,51 +4590,65 @@ async function submitBooking() {
     `Reference: ${formData.name} - ${formData.phone}%0A%0A` +
     `📎 *Payment Slip:* Please attach payment confirmation%0A` +
     `🚌 *Boarding:* Arrive 15 minutes before departure%0A` +
-    `_Note: Admin will assign exact seat numbers and confirm final amount_%0A` +
+    `_Note: Admin will assign gender-specific seat numbers_%0A` +
     `_Submitted via Lagan Bus Booking System_`;
   
+  // Show confirmation dialog
   const { value: confirm } = await Swal.fire({
     icon: 'info',
     title: 'Booking Summary',
     html: `
       <div style="text-align: left; font-size: 1rem">
         <div style="background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-          <h4 style="color: var(--secondary); margin-bottom: 10px; font-weight: 700;">Estimated Cost</h4>
-          <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
-            <div style="display: flex; justify-content: space-between;">
-              <span style="color: var(--text-primary);">Bus Service:</span>
-              <span style="color: var(--text-primary); font-weight: 600;">${formData.bus}</span>
+          <h4 style="color: var(--secondary); margin-bottom: 10px; font-weight: 700;">Seat Details</h4>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 20px; height: 20px; background: #2563eb; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-mars" style="color: white; font-size: 0.7rem;"></i>
+                </div>
+                <span style="color: var(--text-primary);">Male Seats:</span>
+              </div>
+              <span style="color: #2563eb; font-weight: 700;">${maleSeats}</span>
             </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 20px; height: 20px; background: #db2777; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-venus" style="color: white; font-size: 0.7rem;"></i>
+                </div>
+                <span style="color: var(--text-primary);">Female Seats:</span>
+              </div>
+              <span style="color: #db2777; font-weight: 700;">${femaleSeats}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid rgba(16, 185, 129, 0.2);">
+              <span style="color: var(--text-primary); font-weight: 700;">Total Seats:</span>
+              <span style="color: var(--secondary); font-weight: 800; font-size: 1.1rem;">${totalSeats}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div style="background: rgba(37, 99, 235, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+          <h4 style="color: var(--primary); margin-bottom: 10px; font-weight: 700;">Estimated Cost</h4>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
             <div style="display: flex; justify-content: space-between;">
               <span style="color: var(--text-primary);">Price per Seat:</span>
               <span style="color: var(--primary); font-weight: 600;">LKR ${pricePerSeat.toLocaleString()}</span>
             </div>
-            <div style="display: flex; justify-content: space-between;">
-              <span style="color: var(--text-primary);">Seats Requested:</span>
-              <span style="color: var(--primary); font-weight: 600;">${formData.seats}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px solid rgba(16, 185, 129, 0.2);">
+            <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px solid rgba(37, 99, 235, 0.2);">
               <span style="color: var(--text-primary); font-weight: 700;">Estimated Total:</span>
               <span style="color: var(--secondary); font-weight: 800; font-size: 1.1rem;">LKR ${totalCost.toLocaleString()}</span>
             </div>
           </div>
-          <div style="margin-top: 10px; padding: 8px; background: rgba(245, 158, 11, 0.1); border-radius: 6px;">
-            <p style="color: var(--warning); font-size: 0.85rem; margin: 0;">
-              <i class="fas fa-info-circle"></i> Admin will assign exact seat numbers and confirm final amount
-            </p>
-          </div>
         </div>
         
         <div style="background: rgba(245, 158, 11, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #F59E0B;">
-          <strong style="color: var(--warning);">Important Steps:</strong>
+          <strong style="color: var(--warning);">Important Notes:</strong>
           <div style="margin-top: 8px;">
             <p style="margin-bottom: 5px; font-size: 0.95rem;">
-              <strong>1.</strong> Transfer <strong>LKR ${totalCost.toLocaleString()}</strong> to the provided account
+              • Admin will assign <strong>gender-specific seat numbers</strong>
             </p>
-            <p style="margin-top: 8px; font-size: 0.95rem;">
-              <strong>2.</strong> Take screenshot of payment slip<br>
-              <strong>3.</strong> Attach it to WhatsApp message<br>
-              <strong>4.</strong> Then send the complete message
+            <p style="margin-bottom: 5px; font-size: 0.95rem;">
+              • Male and female seats may be in <strong>separate areas</strong>
             </p>
             <p style="margin-top: 8px; font-size: 0.95rem; color: var(--warning); font-weight: 600;">
               <i class="fas fa-clock"></i> Arrive 15 minutes before departure at pickup point
@@ -4319,6 +4671,9 @@ async function submitBooking() {
     showLoading('Submitting booking...');
     
     try {
+      // Store phone with leading 0 for consistency
+      const phoneForStorage = normalizedPhone.startsWith('0') ? normalizedPhone : '0' + normalizedPhone;
+      
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         headers: {
@@ -4327,12 +4682,15 @@ async function submitBooking() {
         body: new URLSearchParams({
           method: 'add',
           name: formData.name,
-          phone: formData.phone,
+          phone: phoneForStorage, // Store with leading 0
           from: formData.from,
           to: formData.to,
-          date: formData.date,
+          date: excelDate,
+          time: formData.time,
           bus: formData.bus,
-          seats: formData.seats
+          maleSeats: maleSeats,
+          femaleSeats: femaleSeats,
+          total: totalCost
         })
       });
       
@@ -4341,15 +4699,21 @@ async function submitBooking() {
       if (data.success) {
         const bookingId = data.bookingId || 'LGN-' + Date.now().toString().slice(-6);
         
+        // Reset form
         document.getElementById('bookingForm').reset();
         document.getElementById('totalCostDisplay').innerHTML = '';
+        document.getElementById('maleSeats').value = '0';
+        document.getElementById('femaleSeats').value = '0';
         
+        // Set default date to tomorrow
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         document.getElementById('travelDate').value = tomorrow.toISOString().split('T')[0];
+        document.getElementById('travelTime').value = '';
         
         hideLoading();
         
+        // Open WhatsApp
         const whatsappUrl = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${whatsappMessage}`;
         const newWindow = window.open(whatsappUrl, '_blank');
         
@@ -4377,6 +4741,12 @@ async function submitBooking() {
               <p style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 15px;">
                 Booking ID: <strong>${bookingId}</strong>
               </p>
+              <p style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 10px;">
+                <span style="color: #2563eb; font-weight: 700;">Male Seats:</span> ${maleSeats}
+              </p>
+              <p style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 15px;">
+                <span style="color: #db2777; font-weight: 700;">Female Seats:</span> ${femaleSeats}
+              </p>
               <p style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 15px;">
                 Estimated Amount: <strong>LKR ${totalCost.toLocaleString()}</strong>
               </p>
@@ -4384,13 +4754,10 @@ async function submitBooking() {
                 <strong>Next:</strong> Complete payment and attach slip on WhatsApp
               </div>
               <div style="background: rgba(245, 158, 11, 0.1); padding: 12px; border-radius: 8px; margin: 15px 0; font-size: 0.9rem;">
-                <strong>Note:</strong> Admin will assign exact seat numbers and confirm final amount
+                <strong>Note:</strong> Admin will assign gender-specific seat numbers
               </div>
               <p style="font-size: 0.9rem; color: var(--text-secondary);">
-                🚌 <strong>Remember:</strong> Arrive 15 minutes before departure at pickup point
-              </p>
-              <p style="font-size: 0.9rem; color: var(--text-secondary);">
-                Our team will confirm once payment is verified
+                🚌 <strong>Remember:</strong> Arrive 15 minutes before departure
               </p>
             </div>
           `,
@@ -4439,30 +4806,27 @@ async function downloadTicket() {
   showLoading('Generating ticket PDF...');
   
   try {
-    // Use jsPDF library (already included in your HTML)
     const { jsPDF } = window.jspdf;
     
-    // Check if jsPDF is loaded
     if (!jsPDF) {
       throw new Error('PDF library not loaded. Please refresh the page.');
     }
     
-    // Create PDF document
     const pdf = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
-      format: 'a5' // Smaller format for tickets
+      format: 'a5'
     });
     
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
     
     // Add header with gradient background
-    pdf.setFillColor(11, 31, 58); // Dark blue
+    pdf.setFillColor(11, 31, 58);
     pdf.rect(0, 0, pageWidth, 20, 'F');
     
     // Add gold accent
-    pdf.setFillColor(216, 179, 93); // Gold
+    pdf.setFillColor(216, 179, 93);
     pdf.rect(0, 0, pageWidth, 3, 'F');
     
     // Add title
@@ -4513,9 +4877,17 @@ async function downloadTicket() {
     yPos += 6;
     pdf.text(`Date: ${currentBookingData.date}`, 15, yPos);
     yPos += 6;
+    if (currentBookingData.time) {
+      pdf.text(`Time: ${currentBookingData.time}`, 15, yPos);
+      yPos += 6;
+    }
     pdf.text(`Route: ${currentBookingData.route}`, 15, yPos);
     yPos += 6;
-    pdf.text(`Seats: ${currentBookingData.seatNumbers}`, 15, yPos);
+    
+    // Gender-based seat numbers
+    pdf.text(`Male Seats: ${currentBookingData.maleSeats || 'To be assigned'}`, 15, yPos);
+    yPos += 6;
+    pdf.text(`Female Seats: ${currentBookingData.femaleSeats || 'To be assigned'}`, 15, yPos);
     
     yPos += 10;
     
@@ -4528,19 +4900,19 @@ async function downloadTicket() {
     
     pdf.setFontSize(10);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(`Amount: ${currentBookingData.totalAmount ? 'LKR ' + currentBookingData.totalAmount.toLocaleString() : 'N/A'}`, 15, yPos);
+    pdf.text(`Amount: ${currentBookingData.totalAmount ? 'LKR ' + currentBookingData.totalAmount.toLocaleString() : currentBookingData.payment || 'N/A'}`, 15, yPos);
     yPos += 6;
     pdf.text(`Status: ${currentBookingData.paymentStatus}`, 15, yPos);
     
     yPos += 10;
     
     // Important Notes
-    pdf.setFillColor(255, 248, 225); // Light gold background
+    pdf.setFillColor(255, 248, 225);
     pdf.rect(10, yPos, pageWidth - 20, 40, 'F');
     
     pdf.setFontSize(11);
     pdf.setFont('helvetica', 'bold');
-    pdf.setTextColor(180, 83, 9); // Dark gold
+    pdf.setTextColor(180, 83, 9);
     pdf.text('📌 IMPORTANT NOTES:', 15, yPos + 7);
     
     yPos += 12;
@@ -4552,7 +4924,9 @@ async function downloadTicket() {
     yPos += 5;
     pdf.text('• Show this ticket to conductor', 15, yPos);
     yPos += 5;
-    pdf.text('• Seat Numbers: ' + (currentBookingData.seatNumbers || 'To be assigned'), 15, yPos);
+    pdf.text(`• Male Seats: ${currentBookingData.maleSeats || 'To be assigned'}`, 15, yPos);
+    yPos += 5;
+    pdf.text(`• Female Seats: ${currentBookingData.femaleSeats || 'To be assigned'}`, 15, yPos);
     yPos += 5;
     pdf.text('• Keep ID proof ready for verification', 15, yPos);
     yPos += 5;
