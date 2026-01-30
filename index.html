@@ -3011,6 +3011,53 @@ button:disabled {
     font-size: 0.85rem;
   }
 }
+
+/* ===================== UNIVERSAL RESPONSIVE FIX ===================== */
+* {
+  max-width: 100%;
+}
+
+.booking-portal,
+.portal-tab-content,
+.booking-form-section {
+  padding: clamp(1rem, 4vw, 2rem);
+}
+
+.form-grid,
+.gender-seats-container,
+.new-booking-grid {
+  grid-template-columns: 1fr;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding-left: 3rem;
+  font-size: 0.95rem;
+}
+
+.form-icon-left {
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.portal-wrapper,
+.instructions-section,
+.booking-form-section {
+  border-radius: 1rem;
+}
+
+@media (min-width: 640px) {
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 </style>
 </head>
 <body>
