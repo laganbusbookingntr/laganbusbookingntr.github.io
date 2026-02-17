@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -58,6 +58,7 @@
   --text-secondary: #4a5568;
   --border: #e2e8f0;
   --icon-color: #d8b35d;
+  --nav-text: rgba(255, 255, 255, 0.9);
 }
 
 [data-theme="dark"] {
@@ -77,6 +78,7 @@
   --text-secondary: #cbd5e1;
   --border: #334155;
   --icon-color: #d4af37;
+  --nav-text: rgba(255, 255, 255, 0.9);
 }
 
 /* ===================== SCROLLING YELLOW LINE ===================== */
@@ -134,6 +136,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   touch-action: manipulation;
   transition: all 0.5s;
+  padding-top: 80px;
 }
 
 @keyframes pageFadeIn {
@@ -259,26 +262,28 @@ body {
 /* ===================== ELITE NAVIGATION ===================== */
 .elite-nav {
   position: fixed;
-  top: 4px; /* Below scrolling line */
+  top: 4px;
   left: 0;
   right: 0;
   z-index: 1000;
   padding: 1rem 2rem;
   transition: all 0.5s ease;
-  background: transparent;
+  background: var(--primary);
   backdrop-filter: blur(10px);
-}
-
-.elite-nav.scrolled {
-  background: rgba(11, 31, 58, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
+.elite-nav.scrolled {
+  background: var(--primary-dark);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
 .dark .elite-nav.scrolled {
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(15, 23, 42, 0.95);
 }
 
 .nav-container {
@@ -323,7 +328,7 @@ body {
 .nav-brand-text {
   font-size: 1.75rem;
   font-weight: 900;
-  color: white;
+  color: var(--nav-text);
 }
 
 .nav-brand-text span {
@@ -346,11 +351,12 @@ body {
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--nav-text);
   text-decoration: none;
   transition: color 0.3s;
   position: relative;
   padding: 0.5rem 0;
+  cursor: pointer;
 }
 
 .nav-link:hover {
@@ -385,7 +391,7 @@ body {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-  color: white;
+  color: var(--nav-text);
   font-size: 1.25rem;
   cursor: pointer;
   display: flex;
@@ -437,10 +443,10 @@ body {
   z-index: 1001;
 }
 
-/* ===================== ENHANCED ELITE HERO WITH ANIMATIONS ===================== */
+/* ===================== ENHANCED ELITE HERO ===================== */
 .elite-hero {
   position: relative;
-  min-height: 100vh;
+  min-height: calc(100vh - 80px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -488,7 +494,6 @@ body {
   }
 }
 
-/* Enhanced ambient light effect */
 .hero-background::after {
   content: '';
   position: absolute;
@@ -539,7 +544,6 @@ body {
   }
 }
 
-/* Light beams animation */
 .hero-background::before {
   content: '';
   position: absolute;
@@ -563,7 +567,6 @@ body {
   100% { transform: rotate(360deg) translateX(-50%); }
 }
 
-/* Floating particles effect */
 .particles {
   position: absolute;
   top: 0;
@@ -1558,7 +1561,7 @@ body {
   border-color: var(--primary);
 }
 
-/* ===================== NEW BOOKING TAB ===================== */
+/* ===================== NEW BOOKING TAB — FIXED ICON ALIGNMENT ===================== */
 .new-booking-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -1634,21 +1637,26 @@ body {
 }
 
 .form-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
   margin-bottom: 1.5rem;
 }
 
 @media (min-width: 768px) {
   .form-grid {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
   }
 }
 
+/* ===== FIXED FORM GROUP WITH PROPER ICON ALIGNMENT ===== */
 .form-group {
   position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-label {
@@ -1672,12 +1680,20 @@ body {
 .form-label i {
   color: var(--icon-color);
   flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+}
+
+/* Input wrapper for better icon positioning */
+.form-input-wrapper {
+  position: relative;
+  width: 100%;
 }
 
 .form-input,
 .form-select {
   width: 100%;
-  padding: 0.875rem 0.875rem 0.875rem 3rem;
+  padding: 1rem 1rem 1rem 3.2rem !important;
   background: var(--card);
   border: 2px solid var(--border);
   border-radius: 1rem;
@@ -1686,16 +1702,9 @@ body {
   color: var(--text-primary);
   transition: all 0.3s;
   appearance: none;
-  min-height: 52px;
+  min-height: 56px;
   box-sizing: border-box;
-}
-
-@media (min-width: 768px) {
-  .form-input,
-  .form-select {
-    padding: 1.125rem 1.125rem 1.125rem 3.5rem;
-    min-height: 56px;
-  }
+  line-height: 1.5;
 }
 
 .form-input:focus,
@@ -1705,40 +1714,54 @@ body {
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
 }
 
+/* FIXED: Icon container with perfect centering */
+.form-icon-left {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--icon-color);
+  font-size: 1.2rem;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  z-index: 2;
+}
+
+/* Fix for select dropdown arrow */
 .form-select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%232563eb' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 0.875rem center;
+  background-position: right 1rem center;
   background-size: 1rem;
   padding-right: 2.5rem;
-}
-
-@media (min-width: 768px) {
-  .form-select {
-    background-position: right 1.125rem center;
-    background-size: 1.125rem;
-    padding-right: 3rem;
-  }
 }
 
 .dark .form-select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
 }
 
-.form-icon-left {
+/* Fix for date input calendar icon */
+input[type="date"]::-webkit-calendar-picker-indicator {
   position: absolute;
-  left: 0.875rem;
+  right: 0.8rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--icon-color);
-  font-size: 1.25rem;
-  pointer-events: none;
+  opacity: 0.6;
+  cursor: pointer;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
 }
 
-@media (min-width: 768px) {
-  .form-icon-left {
-    left: 1.125rem;
-  }
+/* Placeholder styling */
+.form-input::placeholder,
+.form-select:invalid {
+  color: var(--text-secondary);
+  opacity: 0.7;
 }
 
 /* Gender seat selector */
@@ -1807,6 +1830,12 @@ body {
   font-weight: 700;
   font-size: 0.9rem;
   color: var(--text-primary);
+}
+
+/* Gender select dropdowns */
+.gender-seat-group .form-select {
+  padding-left: 1rem !important;
+  background-position: right 1rem center;
 }
 
 .total-cost-display {
@@ -2162,60 +2191,97 @@ body {
   box-shadow: 0 12px 32px rgba(37, 211, 102, 0.3);
 }
 
+/* ===================== PAGE CONTAINER ===================== */
+.page-container {
+  min-height: 100vh;
+  padding-top: 80px;
+  background: var(--surface);
+}
+
+/* ===================== PAGE HEADER ===================== */
+.page-header {
+  background: var(--primary-gradient);
+  padding: 4rem 1rem 3rem;
+  text-align: center;
+  color: white;
+  margin-bottom: 2rem;
+  margin-top: -80px;
+  padding-top: calc(80px + 2rem);
+}
+
+@media (min-width: 768px) {
+  .page-header {
+    padding: 6rem 2rem 4rem;
+    margin-bottom: 4rem;
+    padding-top: calc(80px + 3rem);
+  }
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  font-family: 'Playfair Display', serif;
+}
+
+@media (min-width: 768px) {
+  .page-title {
+    font-size: 4rem;
+  }
+}
+
+.page-description {
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .page-description {
+    font-size: 1.125rem;
+  }
+}
+
+.back-to-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.back-to-home:hover {
+  background: rgba(216, 179, 93, 0.3);
+  transform: translateX(-5px);
+}
+
+.back-to-home i {
+  color: var(--gold);
+}
+
 /* ===================== MODERN ROUTES BOXES ===================== */
 .routes-section {
-  padding: 4rem 1rem;
+  padding: 2rem 1rem 4rem;
   max-width: 1400px;
-  margin: 0 auto 4rem;
+  margin: 0 auto;
 }
 
 @media (min-width: 768px) {
   .routes-section {
-    padding: 6rem 2rem;
-    margin-bottom: 6rem;
-  }
-}
-
-.routes-header {
-  text-align: center;
-  max-width: 48rem;
-  margin: 0 auto 3rem;
-}
-
-@media (min-width: 768px) {
-  .routes-header {
-    margin-bottom: 5rem;
-  }
-}
-
-.routes-title {
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  line-height: 1.2;
-}
-
-@media (min-width: 768px) {
-  .routes-title {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
-  }
-}
-
-.routes-subtitle {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  max-width: 36rem;
-  margin: 0 auto;
-  line-height: 1.6;
-  padding: 0 1rem;
-}
-
-@media (min-width: 768px) {
-  .routes-subtitle {
-    font-size: 1.125rem;
-    padding: 0;
+    padding: 4rem 2rem 6rem;
   }
 }
 
@@ -2387,83 +2453,16 @@ body {
   font-weight: 600;
 }
 
-.route-box-1::before {
-  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-}
-
-.route-box-2::before {
-  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
-}
-
-.route-box-3::before {
-  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
-}
-
-.route-box-4::before {
-  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-}
-
-.route-box-5::before {
-  background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
-}
-
 /* ===================== MODERN FLEET SECTION ===================== */
 .fleet-section {
-  padding: 4rem 1rem;
+  padding: 2rem 1rem 4rem;
   max-width: 1400px;
-  margin: 0 auto 4rem;
-  background: var(--gradient-light);
-  border-radius: 2rem;
+  margin: 0 auto;
 }
 
 @media (min-width: 768px) {
   .fleet-section {
-    padding: 6rem 2rem;
-    margin-bottom: 6rem;
-    border-radius: 3rem;
-  }
-}
-
-.fleet-header {
-  text-align: center;
-  max-width: 48rem;
-  margin: 0 auto 3rem;
-}
-
-@media (min-width: 768px) {
-  .fleet-header {
-    margin-bottom: 5rem;
-  }
-}
-
-.fleet-title {
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  line-height: 1.2;
-}
-
-@media (min-width: 768px) {
-  .fleet-title {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
-  }
-}
-
-.fleet-subtitle {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  max-width: 36rem;
-  margin: 0 auto;
-  line-height: 1.6;
-  padding: 0 1rem;
-}
-
-@media (min-width: 768px) {
-  .fleet-subtitle {
-    font-size: 1.125rem;
-    padding: 0;
+    padding: 4rem 2rem 6rem;
   }
 }
 
@@ -2576,58 +2575,14 @@ body {
 
 /* ===================== MODERN SAFETY SECTION ===================== */
 .safety-section {
-  padding: 4rem 1rem;
+  padding: 2rem 1rem 4rem;
   max-width: 1400px;
-  margin: 0 auto 4rem;
+  margin: 0 auto;
 }
 
 @media (min-width: 768px) {
   .safety-section {
-    padding: 6rem 2rem;
-    margin-bottom: 6rem;
-  }
-}
-
-.safety-header {
-  text-align: center;
-  max-width: 48rem;
-  margin: 0 auto 3rem;
-}
-
-@media (min-width: 768px) {
-  .safety-header {
-    margin-bottom: 5rem;
-  }
-}
-
-.safety-title {
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  line-height: 1.2;
-}
-
-@media (min-width: 768px) {
-  .safety-title {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
-  }
-}
-
-.safety-subtitle {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  max-width: 36rem;
-  margin: 0 auto;
-  line-height: 1.6;
-  padding: 0 1rem;
-}
-
-@media (min-width: 768px) {
-  .safety-subtitle {
-    font-size: 1.125rem;
-    padding: 0;
+    padding: 4rem 2rem 6rem;
   }
 }
 
@@ -2736,18 +2691,19 @@ body {
   transform: scaleX(1);
 }
 
-/* ===================== FOOTER ===================== */
+/* ===================== FOOTER — REDESIGNED COMPACT & COLOR-MATCHED ===================== */
 .elite-footer {
-  background: var(--slate-950);
+  background: var(--slate-950);  /* deep navy */
   color: white;
-  padding: 4rem 1rem 2rem;
-  margin-top: 4rem;
+  padding: 2.5rem 1rem 1.5rem;
+  margin-top: 3rem;
+  border-top: 4px solid var(--gold);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
 }
 
 @media (min-width: 768px) {
   .elite-footer {
-    padding: 8rem 2rem 4rem;
-    margin-top: 6rem;
+    padding: 3rem 2rem 1.8rem;
   }
 }
 
@@ -2756,39 +2712,27 @@ body {
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 3rem;
-  margin-bottom: 3rem;
+  gap: 2rem;
+  margin-bottom: 2rem;
 }
 
 @media (min-width: 768px) {
   .footer-content {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 5rem;
-    margin-bottom: 5rem;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
   }
 }
 
 .footer-brand {
-  grid-column: 1 / -1;
-}
-
-@media (min-width: 768px) {
-  .footer-brand {
-    grid-column: span 2;
-  }
+  display: flex;
+  flex-direction: column;
 }
 
 .footer-logo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .footer-logo {
-    margin-bottom: 2.5rem;
-  }
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .footer-logo-icon {
@@ -2796,22 +2740,10 @@ body {
   color: var(--gold);
 }
 
-@media (min-width: 768px) {
-  .footer-logo-icon {
-    font-size: 2.5rem;
-  }
-}
-
 .footer-logo-text {
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 900;
   color: white;
-}
-
-@media (min-width: 768px) {
-  .footer-logo-text {
-    font-size: 2.5rem;
-  }
 }
 
 .footer-logo-text span {
@@ -2820,47 +2752,31 @@ body {
 
 .footer-description {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 1rem;
-  line-height: 1.6;
-  max-width: 28rem;
-  margin-bottom: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .footer-description {
-    font-size: 1.125rem;
-    margin-bottom: 2.5rem;
-  }
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 320px;
+  margin-bottom: 1rem;
 }
 
 .footer-social {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 
 .social-link {
-  width: 3rem;
-  height: 3rem;
+  width: 2.5rem;
+  height: 2.5rem;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
+  border: 1px solid rgba(216, 179, 93, 0.3);
+  border-radius: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 900;
+  font-size: 0.9rem;
   color: white;
   text-decoration: none;
   transition: all 0.3s;
-}
-
-@media (min-width: 768px) {
-  .social-link {
-    width: 3.5rem;
-    height: 3.5rem;
-    font-size: 0.875rem;
-  }
 }
 
 .social-link:hover {
@@ -2870,19 +2786,12 @@ body {
 }
 
 .footer-column h4 {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.2em;
   color: var(--gold);
-  margin-bottom: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .footer-column h4 {
-    font-size: 0.75rem;
-    margin-bottom: 2.5rem;
-  }
+  margin-bottom: 1.2rem;
 }
 
 .footer-links {
@@ -2890,29 +2799,16 @@ body {
 }
 
 .footer-links li {
-  margin-bottom: 0.75rem;
-}
-
-@media (min-width: 768px) {
-  .footer-links li {
-    margin-bottom: 1rem;
-  }
+  margin-bottom: 0.6rem;
 }
 
 .footer-links a {
   color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   font-size: 0.8rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
+  font-weight: 600;
   transition: color 0.3s;
-}
-
-@media (min-width: 768px) {
-  .footer-links a {
-    font-size: 0.875rem;
-  }
+  cursor: pointer;
 }
 
 .footer-links a:hover {
@@ -2922,133 +2818,95 @@ body {
 .footer-contact {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .footer-contact {
-    gap: 2rem;
-  }
+  gap: 1rem;
 }
 
 .contact-item {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .contact-divider {
   width: 0.25rem;
-  height: 2.5rem;
+  height: 2rem;
   background: var(--gold);
   border-radius: 9999px;
   flex-shrink: 0;
 }
 
-@media (min-width: 768px) {
-  .contact-divider {
-    height: 3rem;
-  }
-}
-
 .contact-text {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 0.85rem;
-  line-height: 1.5;
-}
-
-@media (min-width: 768px) {
-  .contact-text {
-    font-size: 0.875rem;
-  }
+  font-size: 0.8rem;
+  line-height: 1.4;
 }
 
 .contact-phone {
-  font-size: 1.25rem;
-  font-weight: 900;
+  font-size: 1.1rem;
+  font-weight: 800;
   color: white;
-}
-
-@media (min-width: 768px) {
-  .contact-phone {
-    font-size: 1.5rem;
-  }
 }
 
 .footer-bottom {
   max-width: 1200px;
   margin: 0 auto;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(216, 179, 93, 0.2);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   align-items: center;
   justify-content: space-between;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .footer-bottom {
-    padding-top: 4rem;
     flex-direction: row;
-    gap: 2rem;
   }
 }
 
 .copyright {
-  font-size: 0.6rem;
-  font-weight: 900;
+  font-size: 0.65rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.5);
   text-align: center;
-}
-
-@media (min-width: 768px) {
-  .copyright {
-    font-size: 0.625rem;
-    text-align: left;
-  }
 }
 
 .developer-badge {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.75rem 1.25rem;
-  border-radius: 1rem;
-  font-size: 0.6rem;
-  font-weight: 900;
+  background: rgba(216, 179, 93, 0.1);
+  border: 1px solid rgba(216, 179, 93, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.65rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.1em;
+  color: var(--gold);
   cursor: pointer;
   transition: all 0.3s ease;
-  text-align: center;
-}
-
-@media (min-width: 768px) {
-  .developer-badge {
-    font-size: 0.625rem;
-    gap: 0.75rem;
-    padding: 0.75rem 1.5rem;
-    text-align: left;
-  }
+  white-space: nowrap;
 }
 
 .developer-badge:hover {
-  background: rgba(216, 179, 93, 0.2);
+  background: var(--gold);
+  color: var(--slate-950);
   transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(216, 179, 93, 0.4);
 }
 
 .developer-badge i {
-  color: var(--gold);
+  font-size: 0.8rem;
+  color: inherit;
 }
 
 .developer-badge strong {
-  color: var(--gold);
+  font-weight: 900;
+  color: inherit;
 }
 
 /* ===================== LOADING OVERLAY ===================== */
@@ -3075,7 +2933,6 @@ body {
   pointer-events: all;
 }
 
-/* Original Bus Loader */
 .bus-loader {
   position: relative;
   width: 180px;
@@ -3278,30 +3135,6 @@ body {
 }
 
 /* ===================== UTILITIES ===================== */
-.spinner {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background: transparent;
-  position: relative;
-}
-
-.spinner::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d8b35d'%3E%3Cpath d='M18 17H6v-2h12v2zm0-4H6v-2h12v2zm0-4H6V7h12v2z'/%3E%3C/svg%3E") no-repeat center;
-  animation: busPulse 1s ease-in-out infinite;
-}
-
-@keyframes busPulse {
-  0%, 100% { transform: scale(1) translateX(0); }
-  50% { transform: scale(1.1) translateX(2px); }
-}
-
 .hidden {
   display: none;
 }
@@ -3310,7 +3143,7 @@ body {
 .mobile-nav-links {
   display: none;
   position: fixed;
-  top: 70px;
+  top: 80px;
   left: 0;
   right: 0;
   background: var(--glass);
@@ -3340,6 +3173,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  color: var(--text-primary);
 }
 
 .mobile-nav-links .nav-link:last-child {
@@ -3379,12 +3213,16 @@ body {
     font-size: 14px;
   }
   
+  body {
+    padding-top: 70px;
+  }
+  
   .scrolling-line {
     height: 3px;
   }
   
   .elite-hero {
-    min-height: 90vh;
+    min-height: calc(90vh - 70px);
     padding: 1rem;
   }
   
@@ -3459,6 +3297,16 @@ body {
     display: none;
   }
   
+  .mobile-nav-links {
+    top: 70px;
+  }
+  
+  /* Page header mobile fixes */
+  .page-header {
+    margin-top: -70px;
+    padding-top: calc(70px + 2rem);
+  }
+  
   /* Form elements mobile fixes */
   .phone-input,
   .phone-input-enhanced,
@@ -3466,7 +3314,7 @@ body {
   .form-select {
     font-size: 16px !important;
     min-height: 56px !important;
-    padding: 1rem 1rem 1rem 3.5rem !important;
+    padding: 1rem 1rem 1rem 3.2rem !important;
     border-radius: 0.75rem !important;
   }
   
@@ -3477,12 +3325,14 @@ body {
   
   .form-icon-left {
     left: 1rem !important;
-    font-size: 1.25rem !important;
+    font-size: 1.2rem !important;
+    width: 22px !important;
+    height: 22px !important;
   }
   
   .phone-input-icon {
     left: 1rem !important;
-    font-size: 1.25rem !important;
+    font-size: 1.2rem !important;
   }
   
   /* Admin contact button and reserve button */
@@ -3598,6 +3448,8 @@ body {
   .form-icon-left {
     left: 0.875rem !important;
     font-size: 1.125rem !important;
+    width: 20px !important;
+    height: 20px !important;
   }
   
   .admin-contact-badge {
@@ -3878,12 +3730,14 @@ button {
     font-size: 12pt !important;
     color: #000 !important;
     background: #fff !important;
+    padding-top: 0 !important;
   }
   
   .ticket-card {
     box-shadow: none !important;
     border: 1px solid #000 !important;
   }
+  
 }
 </style>
 </head>
@@ -3934,9 +3788,6 @@ button {
   <button class="support-toggle" onclick="toggleSupportPanel()">
     <i class="fas fa-headset"></i>
   </button>
-  <div class="support-header">
-    <h3><i class="fas fa-life-ring"></i> Support Center</h3>
-  </div>
   <div class="support-content">
     <div class="support-item">
       <i class="fas fa-user-tie"></i>
@@ -3972,7 +3823,7 @@ button {
 <!-- Elite Navigation -->
 <nav class="elite-nav" id="eliteNav">
   <div class="nav-container">
-    <div class="nav-brand" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    <div class="nav-brand" onclick="showHomePage()">
       <div class="nav-logo">
         <i class="fas fa-bus"></i>
       </div>
@@ -3981,9 +3832,9 @@ button {
     
     <!-- Desktop Navigation -->
     <div class="nav-links">
-      <a href="#routes" class="nav-link">Routes</a>
-      <a href="#fleet" class="nav-link">Fleet</a>
-      <a href="#safety" class="nav-link">Safety</a>
+      <a onclick="showRoutesPage()" class="nav-link">Routes</a>
+      <a onclick="showFleetPage()" class="nav-link">Fleet</a>
+      <a onclick="showSafetyPage()" class="nav-link">Safety</a>
       <a href="#support" class="nav-link" onclick="toggleSupportPanel(); return false;">Support</a>
     </div>
     
@@ -3996,7 +3847,7 @@ button {
       <button class="theme-toggle-btn" id="themeToggle">
         <i class="fas fa-moon" id="themeIcon"></i>
       </button>
-      <button class="nav-book-btn" onclick="switchTab('newTab')">
+      <button class="nav-book-btn" onclick="showHomePage(); switchTab('newTab')">
         Book Seat
       </button>
     </div>
@@ -4004,697 +3855,1055 @@ button {
   
   <!-- Mobile Navigation Links -->
   <div class="mobile-nav-links" id="mobileNavLinks">
-    <a href="#routes" class="nav-link" onclick="closeMobileMenu()">
+    <a onclick="showRoutesPage(); closeMobileMenu();" class="nav-link">
       <i class="fas fa-route"></i> Routes
     </a>
-    <a href="#fleet" class="nav-link" onclick="closeMobileMenu()">
+    <a onclick="showFleetPage(); closeMobileMenu();" class="nav-link">
       <i class="fas fa-bus"></i> Fleet
     </a>
-    <a href="#safety" class="nav-link" onclick="closeMobileMenu()">
+    <a onclick="showSafetyPage(); closeMobileMenu();" class="nav-link">
       <i class="fas fa-shield-alt"></i> Safety
     </a>
     <a href="#support" class="nav-link" onclick="toggleSupportPanel(); closeMobileMenu();">
       <i class="fas fa-headset"></i> Support
     </a>
-    <a href="#booking-portal" class="nav-link" onclick="switchTab('newTab'); closeMobileMenu();">
+    <a onclick="showHomePage(); switchTab('newTab'); closeMobileMenu();" class="nav-link">
       <i class="fas fa-ticket-alt"></i> Book Seat
     </a>
   </div>
 </nav>
 
-<!-- Elite Hero Section -->
-<header class="elite-hero">
-  <div class="particles" id="particles"></div>
-  <div class="hero-background"></div>
-  <div class="hero-content">
-    <div class="hero-badge">
-      <i class="fas fa-star"></i>
-      Voted #1 Luxury Experience 2024
-    </div>
-    
-    <h1 class="hero-title">
-      Travel In <br/>
-      <span>Elite Class.</span>
-    </h1>
-    
-    <p class="hero-subtitle">
-      Sri Lanka's premier long-distance coach service. Redefining comfort, safety, and punctuality for the modern traveler.
-    </p>
-    
-    <div class="hero-actions">
-      <button class="admin-contact-badge" onclick="openAdminWhatsApp()">
-        <i class="fas fa-phone-alt"></i>
-        <span>Admin: +94 701 362 527</span>
-      </button>
-      
-      <button class="hero-primary-btn" onclick="switchTab('newTab')">
-        Reserve Now
-        <i class="fas fa-arrow-right"></i>
-      </button>
-    </div>
-    
-    <div class="scroll-indicator">
-      <a href="#booking-portal">
-        <i class="fas fa-chevron-down"></i>
-        <span>Scroll to Book</span>
-      </a>
-    </div>
-  </div>
-</header>
-
-
-<!-- Booking Portal -->
-<section class="booking-portal" id="booking-portal">
-  <div class="portal-wrapper">
-    <div class="portal-tabs">
-      <button class="portal-tab active" onclick="switchTab('newTab')">
-        <i class="fas fa-calendar-plus"></i>
-        <div>
-          <div class="tab-label">New Journey</div>
-          <div class="tab-title">Reservation</div>
-        </div>
-      </button>
-      <button class="portal-tab" onclick="switchTab('checkTab')">
-        <i class="fas fa-search"></i>
-        <div>
-          <div class="tab-label">Track Ticket</div>
-          <div class="tab-title">Verify Status</div>
-        </div>
-      </button>
-    </div>
-    
-    <!-- New Booking Tab -->
-    <div id="newTab" class="portal-tab-content">
-      <div class="new-booking-grid">
-        <!-- Booking Form -->
-        <div class="booking-form-section">
-          <div class="form-header">
-            <div class="form-icon">
-              <i class="fas fa-calendar-plus"></i>
-            </div>
-            <h2 class="form-title">New Reservation</h2>
-          </div>
-          
-          <form id="bookingForm" onsubmit="return false;">
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label" for="passengerName">
-                  <i class="fas fa-user"></i>
-                  Full Name
-                </label>
-                <div class="form-icon-left">
-                  <i class="fas fa-user"></i>
-                </div>
-                <input type="text" id="passengerName" class="form-input" 
-                       placeholder="Enter your full name" required>
-              </div>
-              
-              <div class="form-group">
-                <label class="form-label" for="passengerPhone">
-                  <i class="fas fa-phone"></i>
-                  WhatsApp Number
-                </label>
-                <div class="form-icon-left">
-                  <i class="fas fa-mobile-alt"></i>
-                </div>
-                <input type="tel" id="passengerPhone" class="form-input phone-input-enhanced" 
-                       placeholder="077XXXXXXX" 
-                       maxlength="12"
-                       inputmode="numeric"
-                       pattern="[0-9]*"
-                       required>
-              </div>
-              
-              <div class="form-group">
-                <label class="form-label" for="fromLocation">
-                  <i class="fas fa-map-marker-alt"></i>
-                  From (Origin)
-                </label>
-                <div class="form-icon-left">
-                  <i class="fas fa-location-arrow"></i>
-                </div>
-                <select id="fromLocation" class="form-select" required>
-                  <option value="">Select origin city</option>
-                  <option value="Sammanthurai">Sammanthurai</option>
-                  <option value="Nintavur">Nintavur</option>
-                  <option value="Kalmunai">Kalmunai</option>
-                  <option value="Maruthamunai">Maruthamunai</option>
-                  <option value="Batticaloa">Batticaloa</option>
-                  <option value="Polonaruwa">Polonaruwa</option>
-                  <option value="Kattunayaka Airport">Kattunayaka Airport</option>
-                  <option value="Akkaraipattu">Akkaraipattu</option>
-                  <option value="Colombo">Colombo</option>
-                  <option value="Orugudwaththa">Orugudwaththa</option>
-                  <option value="Wellampitiya">Wellampitiya</option>
-                  <option value="Kolonnawa">Kolonnawa</option>
-                  <option value="Rajagiriya">Rajagiriya</option>
-                  <option value="Mardana">Mardana</option>
-                  <option value="Kolluppitiya">Kolluppitiya</option>
-                  <option value="Wellwaththa">Wellwaththa</option>
-                  <option value="Dehiwala">Dehiwala</option>
-                </select>
-              </div>
-              
-              <div class="form-group">
-                <label class="form-label" for="toLocation">
-                  <i class="fas fa-map-marker-alt"></i>
-                  To (Destination)
-                </label>
-                <div class="form-icon-left">
-                  <i class="fas fa-flag-checkered"></i>
-                </div>
-                <select id="toLocation" class="form-select" required>
-                  <option value="">Select destination city</option>
-                  <option value="Sammanthurai">Sammanthurai</option>
-                  <option value="Nintavur">Nintavur</option>
-                  <option value="Kalmunai">Kalmunai</option>
-                  <option value="Maruthamunai">Maruthamunai</option>
-                  <option value="Batticaloa">Batticaloa</option>
-                  <option value="Polonaruwa">Polonaruwa</option>
-                  <option value="Kattunayaka Airport">Kattunayaka Airport</option>
-                  <option value="Akkaraipattu">Akkaraipattu</option>
-                  <option value="Colombo">Colombo</option>
-                  <option value="Orugudwaththa">Orugudwaththa</option>
-                  <option value="Wellampitiya">Wellampitiya</option>
-                  <option value="Kolonnawa">Kolonnawa</option>
-                  <option value="Rajagiriya">Rajagiriya</option>
-                  <option value="Mardana">Mardana</option>
-                  <option value="Kolluppitiya">Kolluppitiya</option>
-                  <option value="Wellwaththa">Wellwaththa</option>
-                  <option value="Dehiwala">Dehiwala</option>
-                </select>
-              </div>
-              
-              <div class="form-group">
-                <label class="form-label" for="travelDate">
-                  <i class="fas fa-calendar-alt"></i>
-                  Travel Date
-                </label>
-                <div class="form-icon-left">
-                  <i class="far fa-calendar"></i>
-                </div>
-                <input type="date" id="travelDate" class="form-input" required>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="busName">
-                  <i class="fas fa-bus"></i>
-                  Preferred Bus
-                </label>
-                <div class="form-icon-left">
-                  <i class="fas fa-bus"></i>
-                </div>
-                <select id="busName" class="form-select" required onchange="calculateTotalCost(); updateTravelTime(this.value);">
-                  <option value="">Select bus service</option>
-                  <option value="Sakeer Express">Sakeer Express - LKR 2,700</option>
-                  <option value="RS Express">RS Express - LKR 2,900</option>
-                  <option value="Myown Express">Myown Express - LKR 2,700</option>
-                  <option value="Al Ahla">Al Ahla - LKR 2,800</option>
-                  <option value="Al Rashith">Al Rashith - LKR 2,700</option>
-                  <option value="Star Travels">Star Travels - LKR 1,600</option>
-                  <option value="Lloyds Travels">Lloyds Travels - LKR 2,700</option>
-                  <option value="Super Line">Super Line - LKR 2,700</option>
-                </select>
-              </div>
-              
-              <div class="form-group">
-                <label class="form-label" for="travelTime">
-                  <i class="fas fa-clock"></i>
-                  Preferred Time
-                </label>
-                <div class="form-icon-left">
-                  <i class="far fa-clock"></i>
-                </div>
-                <select id="travelTime" class="form-select" required>
-                  
-                </select>
-              </div>
-              
-              
-              
-              <!-- Gender-based Seat Selection -->
-              <div class="form-group" style="grid-column: span 2;">
-                <label class="form-label">
-                  <i class="fas fa-users"></i>
-                  Seats Required (Separate by Gender)
-                </label>
-                <div class="gender-seats-container">
-                  <!-- Male Seats -->
-                  <div class="gender-seat-group">
-                    <div class="gender-header">
-                      <div class="gender-icon male-icon">
-                        <i class="fas fa-mars"></i>
-                      </div>
-                      <div class="gender-title">Male Seats</div>
-                    </div>
-                    <select id="maleSeats" class="form-select" onchange="calculateTotalCost()">
-                      <option value="0">0 Seat</option>
-                      <option value="1">1 Seat</option>
-                      <option value="2">2 Seats</option>
-                      <option value="3">3 Seats</option>
-                      <option value="4">4 Seats</option>
-                      <option value="5">5 Seats</option>
-                      <option value="6">6 Seats</option>
-                      <option value="7">7 Seats</option>
-                      <option value="8">8 Seats</option>
-                      <option value="9">9 Seats</option>
-                      <option value="10">10 Seats</option>
-                    </select>
-                  </div>
-                  
-                  <!-- Female Seats -->
-                  <div class="gender-seat-group">
-                    <div class="gender-header">
-                      <div class="gender-icon female-icon">
-                        <i class="fas fa-venus"></i>
-                      </div>
-                      <div class="gender-title">Female Seats</div>
-                    </div>
-                    <select id="femaleSeats" class="form-select" onchange="calculateTotalCost()">
-                      <option value="0">0 Seat</option>
-                      <option value="1">1 Seat</option>
-                      <option value="2">2 Seats</option>
-                      <option value="3">3 Seats</option>
-                      <option value="4">4 Seats</option>
-                      <option value="5">5 Seats</option>
-                      <option value="6">6 Seats</option>
-                      <option value="7">7 Seats</option>
-                      <option value="8">8 Seats</option>
-                      <option value="9">9 Seats</option>
-                      <option value="10">10 Seats</option>
-                    </select>
-                  </div>
-                </div>
-                <div style="margin-top: 10px; font-size: 0.85rem; color: var(--text-secondary);">
-                  <i class="fas fa-info-circle" style="color: var(--gold);"></i>
-                  Admin will assign specific seat numbers based on gender
-                </div>
-              </div>
-            </div>
-            
-            <!-- Total Cost Display -->
-            <div id="totalCostDisplay" class="total-cost-display"></div>
-            
-            <!-- Bank Details Button -->
-            <button type="button" id="showBankDetailsBtn" class="bank-details-btn">
-              <i class="fas fa-university"></i> View Bank Payment Details
-            </button>
-            
-            <button type="button" id="whatsappSubmitBtn" class="whatsapp-btn">
-              <i class="fab fa-whatsapp"></i> Send Booking via WhatsApp
-            </button>
-          </form>
+<!-- Main Content Container -->
+<div id="mainContent">
+  <!-- Home Page -->
+  <div id="homePage">
+    <!-- Elite Hero Section -->
+    <header class="elite-hero">
+      <div class="particles" id="particles"></div>
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-star"></i>
+          Voted #1 Luxury Experience 2024
         </div>
         
-        <!-- Instructions Card -->
-        <div class="instructions-section">
-          <div class="instructions-header">
-            <div class="instructions-icon">
-              <i class="fas fa-graduation-cap"></i>
-            </div>
-            <h2 class="instructions-title">How to Book</h2>
-          </div>
-          
-          <div class="steps-list">
-            <div class="step-item">
-              <div class="step-number">1</div>
-              <div class="step-content">
-                <h3 class="step-title">Fill Booking Form</h3>
-                <p class="step-description">Complete all details accurately in the form above</p>
-              </div>
-            </div>
-            
-            <div class="step-item">
-              <div class="step-number">2</div>
-              <div class="step-content">
-                <h3 class="step-title">Submit via WhatsApp</h3>
-                <p class="step-description">Click the WhatsApp button to send your request</p>
-              </div>
-            </div>
-            
-            <div class="step-item">
-              <div class="step-number">3</div>
-              <div class="step-content">
-                <div class="highlight-step">
-                  <h4 class="step-title">
-                    <i class="fas fa-exclamation-circle"></i>
-                    Important Step
-                  </h4>
-                  <p class="step-description">
-                    When WhatsApp opens, <strong>manually attach your payment slip photo/screenshot</strong> before sending
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <div class="step-item">
-              <div class="step-number">4</div>
-              <div class="step-content">
-                <h3 class="step-title">Wait for Confirmation</h3>
-                <p class="step-description">Our team will verify and confirm within 24 hours</p>
-              </div>
-            </div>
-            
-            <div class="step-item">
-              <div class="step-number">5</div>
-              <div class="step-content">
-                <h3 class="step-title">Check Your Booking</h3>
-                <p class="step-description">Use the "Verify Status" tab to view confirmed details</p>
-                <div class="highlight-step" style="margin-top: 10px;">
-                  <h4 class="step-title">
-                    <i class="fas fa-search"></i>
-                    How to Find My Booking
-                  </h4>
-                  <p class="step-description">
-                    • Go to "Verify Status" tab<br>
-                    • Enter your WhatsApp number<br>
-                    • Click "Check Booking Status"<br>
-                    • View your booking details
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <div class="step-item">
-              <div class="step-number">6</div>
-              <div class="step-content">
-                <div class="highlight-step">
-                  <h4 class="step-title">
-                    <i class="fas fa-clock"></i>
-                    Boarding Instructions
-                  </h4>
-                  <p class="step-description">
-                    <strong>Arrive 15 minutes before departure</strong> at the pickup point. Keep your booking confirmation ready. Be punctual to ensure smooth boarding.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="whatsapp-contact">
-            <h3 class="contact-title">
-              <i class="fab fa-whatsapp"></i> Need Immediate Help?
-            </h3>
-            <a href="https://wa.me/94701362527" target="_blank" class="contact-link">
-              <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Check Booking Tab -->
-    <div id="checkTab" class="portal-tab-content">
-      <div class="check-booking-grid">
-        <!-- Search Section -->
-        <div class="search-section">
-          <div class="search-header">
-            <div class="search-icon">
-              <i class="fas fa-search"></i>
-            </div>
-            <h2 class="search-title">Find Your Booking</h2>
-          </div>
-          
-          <div class="phone-input-wrapper">
-            <div class="phone-input-icon">
-              <i class="fas fa-phone"></i>
-            </div>
-            <input type="tel" id="checkPhone" class="phone-input phone-input-enhanced" 
-                   placeholder="0XXXXXXXXX or 94XXXXXXXXX" 
-                   maxlength="12"
-                   inputmode="numeric"
-                   pattern="[0-9]*">
-          </div>
-          
-          <button id="checkBtn" class="search-btn" type="button">
-            <i class="fas fa-search"></i> Check Booking Status
+        <h1 class="hero-title">
+          Travel In <br/>
+          <span>Elite Class.</span>
+        </h1>
+        
+        <p class="hero-subtitle">
+          Sri Lanka's premier long-distance coach service. Redefining comfort, safety, and punctuality for the modern traveler.
+        </p>
+        
+        <div class="hero-actions">
+          <button class="admin-contact-badge" onclick="openAdminWhatsApp()">
+            <i class="fas fa-phone-alt"></i>
+            <span>Admin: +94 701 362 527</span>
           </button>
           
-          <!-- Instructions for finding booking -->
-          <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(216, 179, 93, 0.1); border-radius: 0.75rem; border-left: 3px solid var(--gold);">
-            <h4 style="color: var(--text-primary); font-size: 0.9rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-              <i class="fas fa-lightbulb"></i> How to find your booking:
-            </h4>
-            <ul style="color: var(--text-secondary); font-size: 0.85rem; padding-left: 1.2rem; line-height: 1.5;">
-              <li>Enter your WhatsApp number used for booking</li>
-              <li>Click "Check Booking Status"</li>
-              <li>View all your travel details</li>
-              <li>Download your ticket if confirmed</li>
-            </ul>
-            <div style="margin-top: 10px; padding: 8px; background: rgba(37, 99, 235, 0.1); border-radius: 6px; font-size: 0.8rem; color: var(--primary);">
-              <i class="fas fa-info-circle"></i> <strong>Note:</strong> Accepts 0XXXXXXXXX, 94XXXXXXXXX, or XXXXXXXXX formats
+          <button class="hero-primary-btn" onclick="switchTab('newTab')">
+            Reserve Now
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+        
+        <div class="scroll-indicator">
+          <a href="#booking-portal">
+            <i class="fas fa-chevron-down"></i>
+            <span>Scroll to Book</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Booking Portal -->
+    <section class="booking-portal" id="booking-portal">
+      <div class="portal-wrapper">
+        <div class="portal-tabs">
+          <button class="portal-tab active" onclick="switchTab('newTab')">
+            <i class="fas fa-calendar-plus"></i>
+            <div>
+              <div class="tab-label">New Journey</div>
+              <div class="tab-title">Reservation</div>
+            </div>
+          </button>
+          <button class="portal-tab" onclick="switchTab('checkTab')">
+            <i class="fas fa-search"></i>
+            <div>
+              <div class="tab-label">Track Ticket</div>
+              <div class="tab-title">Verify Status</div>
+            </div>
+          </button>
+        </div>
+        
+        <!-- New Booking Tab -->
+        <div id="newTab" class="portal-tab-content">
+          <div class="new-booking-grid">
+            <!-- Booking Form -->
+            <div class="booking-form-section">
+              <div class="form-header">
+                <div class="form-icon">
+                  <i class="fas fa-calendar-plus"></i>
+                </div>
+                <h2 class="form-title">New Reservation</h2>
+              </div>
+              
+              <form id="bookingForm" onsubmit="return false;">
+                <div class="form-grid">
+                  <!-- Full Name -->
+                  <div class="form-group">
+                    <label class="form-label" for="passengerName">
+                      <i class="fas fa-user"></i>
+                      Full Name
+                    </label>
+                    <div style="position: relative; width: 100%;">
+                      <div class="form-icon-left">
+                        <i class="fas fa-user"></i>
+                      </div>
+                      <input type="text" id="passengerName" class="form-input" 
+                             placeholder="Enter your full name" required>
+                    </div>
+                  </div>
+                  
+                  <!-- WhatsApp Number -->
+                  <div class="form-group">
+                    <label class="form-label" for="passengerPhone">
+                      <i class="fas fa-phone"></i>
+                      WhatsApp Number
+                    </label>
+                    <div style="position: relative; width: 100%;">
+                      <div class="form-icon-left">
+                        <i class="fas fa-mobile-alt"></i>
+                      </div>
+                      <input type="tel" id="passengerPhone" class="form-input phone-input-enhanced" 
+                             placeholder="077XXXXXXX" 
+                             maxlength="12"
+                             inputmode="numeric"
+                             pattern="[0-9]*"
+                             required>
+                    </div>
+                  </div>
+                  
+                  <!-- From (Origin) -->
+                  <div class="form-group">
+                    <label class="form-label" for="fromLocation">
+                      <i class="fas fa-map-marker-alt"></i>
+                      From (Origin)
+                    </label>
+                    <div style="position: relative; width: 100%;">
+                      <div class="form-icon-left">
+                        <i class="fas fa-location-arrow"></i>
+                      </div>
+                      <select id="fromLocation" class="form-select" required>
+                        <option value="">Select origin city</option>
+                        <option value="Sammanthurai">Sammanthurai</option>
+                        <option value="Nintavur">Nintavur</option>
+                        <option value="Kalmunai">Kalmunai</option>
+                        <option value="Maruthamunai">Maruthamunai</option>
+                        <option value="Batticaloa">Batticaloa</option>
+                        <option value="Polonaruwa">Polonaruwa</option>
+                        <option value="Kattunayaka Airport">Kattunayaka Airport</option>
+                        <option value="Akkaraipattu">Akkaraipattu</option>
+                        <option value="Colombo">Colombo</option>
+                        <option value="Orugudwaththa">Orugudwaththa</option>
+                        <option value="Wellampitiya">Wellampitiya</option>
+                        <option value="Kolonnawa">Kolonnawa</option>
+                        <option value="Rajagiriya">Rajagiriya</option>
+                        <option value="Mardana">Mardana</option>
+                        <option value="Kolluppitiya">Kolluppitiya</option>
+                        <option value="Wellwaththa">Wellwaththa</option>
+                        <option value="Dehiwala">Dehiwala</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <!-- To (Destination) -->
+                  <div class="form-group">
+                    <label class="form-label" for="toLocation">
+                      <i class="fas fa-map-marker-alt"></i>
+                      To (Destination)
+                    </label>
+                    <div style="position: relative; width: 100%;">
+                      <div class="form-icon-left">
+                        <i class="fas fa-flag-checkered"></i>
+                      </div>
+                      <select id="toLocation" class="form-select" required>
+                        <option value="">Select destination city</option>
+                        <option value="Sammanthurai">Sammanthurai</option>
+                        <option value="Nintavur">Nintavur</option>
+                        <option value="Kalmunai">Kalmunai</option>
+                        <option value="Maruthamunai">Maruthamunai</option>
+                        <option value="Batticaloa">Batticaloa</option>
+                        <option value="Polonaruwa">Polonaruwa</option>
+                        <option value="Kattunayaka Airport">Kattunayaka Airport</option>
+                        <option value="Akkaraipattu">Akkaraipattu</option>
+                        <option value="Colombo">Colombo</option>
+                        <option value="Orugudwaththa">Orugudwaththa</option>
+                        <option value="Wellampitiya">Wellampitiya</option>
+                        <option value="Kolonnawa">Kolonnawa</option>
+                        <option value="Rajagiriya">Rajagiriya</option>
+                        <option value="Mardana">Mardana</option>
+                        <option value="Kolluppitiya">Kolluppitiya</option>
+                        <option value="Wellwaththa">Wellwaththa</option>
+                        <option value="Dehiwala">Dehiwala</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <!-- Travel Date -->
+                  <div class="form-group">
+                    <label class="form-label" for="travelDate">
+                      <i class="fas fa-calendar-alt"></i>
+                      Travel Date
+                    </label>
+                    <div style="position: relative; width: 100%;">
+                      <div class="form-icon-left">
+                        <i class="far fa-calendar"></i>
+                      </div>
+                      <input type="date" id="travelDate" class="form-input" required>
+                    </div>
+                  </div>
+
+                  <!-- Preferred Bus -->
+                  <div class="form-group">
+                    <label class="form-label" for="busName">
+                      <i class="fas fa-bus"></i>
+                      Preferred Bus
+                    </label>
+                    <div style="position: relative; width: 100%;">
+                      <div class="form-icon-left">
+                        <i class="fas fa-bus"></i>
+                      </div>
+                      <select id="busName" class="form-select" required onchange="calculateTotalCost(); updateTravelTime(this.value);">
+                        <option value="">Select bus service</option>
+                        <option value="Sakeer Express">Sakeer Express - LKR 2,700</option>
+                        <option value="RS Express">RS Express - LKR 2,900</option>
+                        <option value="Myown Express">Myown Express - LKR 2,700</option>
+                        <option value="Al Ahla">Al Ahla - LKR 2,800</option>
+                        <option value="Al Rashith">Al Rashith - LKR 2,700</option>
+                        <option value="Star Travels">Star Travels - LKR 1,600</option>
+                        <option value="Lloyds Travels">Lloyds Travels - LKR 2,700</option>
+                        <option value="Super Line">Super Line - LKR 2,700</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <!-- Preferred Time -->
+                  <div class="form-group">
+                    <label class="form-label" for="travelTime">
+                      <i class="fas fa-clock"></i>
+                      Preferred Time
+                    </label>
+                    <div style="position: relative; width: 100%;">
+                      <div class="form-icon-left">
+                        <i class="far fa-clock"></i>
+                      </div>
+                      <select id="travelTime" class="form-select" required>
+                        
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <!-- Gender-based Seat Selection -->
+                  <div class="form-group" style="grid-column: span 2; width:100%;">
+                    <label class="form-label">
+                      <i class="fas fa-users"></i>
+                      Seats Required (Separate by Gender)
+                    </label>
+                    <div class="gender-seats-container">
+                      <!-- Male Seats -->
+                      <div class="gender-seat-group">
+                        <div class="gender-header">
+                          <div class="gender-icon male-icon">
+                            <i class="fas fa-mars"></i>
+                          </div>
+                          <div class="gender-title">Male Seats</div>
+                        </div>
+                        <select id="maleSeats" class="form-select" onchange="calculateTotalCost()">
+                          <option value="0">0 Seat</option>
+                          <option value="1">1 Seat</option>
+                          <option value="2">2 Seats</option>
+                          <option value="3">3 Seats</option>
+                          <option value="4">4 Seats</option>
+                          <option value="5">5 Seats</option>
+                          <option value="6">6 Seats</option>
+                          <option value="7">7 Seats</option>
+                          <option value="8">8 Seats</option>
+                          <option value="9">9 Seats</option>
+                          <option value="10">10 Seats</option>
+                        </select>
+                      </div>
+                      
+                      <!-- Female Seats -->
+                      <div class="gender-seat-group">
+                        <div class="gender-header">
+                          <div class="gender-icon female-icon">
+                            <i class="fas fa-venus"></i>
+                          </div>
+                          <div class="gender-title">Female Seats</div>
+                        </div>
+                        <select id="femaleSeats" class="form-select" onchange="calculateTotalCost()">
+                          <option value="0">0 Seat</option>
+                          <option value="1">1 Seat</option>
+                          <option value="2">2 Seats</option>
+                          <option value="3">3 Seats</option>
+                          <option value="4">4 Seats</option>
+                          <option value="5">5 Seats</option>
+                          <option value="6">6 Seats</option>
+                          <option value="7">7 Seats</option>
+                          <option value="8">8 Seats</option>
+                          <option value="9">9 Seats</option>
+                          <option value="10">10 Seats</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 0.85rem; color: var(--text-secondary);">
+                      <i class="fas fa-info-circle" style="color: var(--gold);"></i>
+                      Admin will assign specific seat numbers based on gender
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Total Cost Display -->
+                <div id="totalCostDisplay" class="total-cost-display"></div>
+                
+                <!-- Bank Details Button -->
+                <button type="button" id="showBankDetailsBtn" class="bank-details-btn">
+                  <i class="fas fa-university"></i> View Bank Payment Details
+                </button>
+                
+                <button type="button" id="whatsappSubmitBtn" class="whatsapp-btn">
+                  <i class="fab fa-whatsapp"></i> Send Booking via WhatsApp
+                </button>
+              </form>
+            </div>
+            
+            <!-- Instructions Card -->
+            <div class="instructions-section">
+              <div class="instructions-header">
+                <div class="instructions-icon">
+                  <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h2 class="instructions-title">How to Book</h2>
+              </div>
+              
+              <div class="steps-list">
+                <div class="step-item">
+                  <div class="step-number">1</div>
+                  <div class="step-content">
+                    <h3 class="step-title">Fill Booking Form</h3>
+                    <p class="step-description">Complete all details accurately in the form above</p>
+                  </div>
+                </div>
+                
+                <div class="step-item">
+                  <div class="step-number">2</div>
+                  <div class="step-content">
+                    <h3 class="step-title">Submit via WhatsApp</h3>
+                    <p class="step-description">Click the WhatsApp button to send your request</p>
+                  </div>
+                </div>
+                
+                <div class="step-item">
+                  <div class="step-number">3</div>
+                  <div class="step-content">
+                    <div class="highlight-step">
+                      <h4 class="step-title">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Important Step
+                      </h4>
+                      <p class="step-description">
+                        When WhatsApp opens, <strong>manually attach your payment slip photo/screenshot</strong> before sending
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="step-item">
+                  <div class="step-number">4</div>
+                  <div class="step-content">
+                    <h3 class="step-title">Wait for Confirmation</h3>
+                    <p class="step-description">Our team will verify and confirm within 24 hours</p>
+                  </div>
+                </div>
+                
+                <div class="step-item">
+                  <div class="step-number">5</div>
+                  <div class="step-content">
+                    <h3 class="step-title">Check Your Booking</h3>
+                    <p class="step-description">Use the "Verify Status" tab to view confirmed details</p>
+                    <div class="highlight-step" style="margin-top: 10px;">
+                      <h4 class="step-title">
+                        <i class="fas fa-search"></i>
+                        How to Find My Booking
+                      </h4>
+                      <p class="step-description">
+                        • Go to "Verify Status" tab<br>
+                        • Enter your WhatsApp number<br>
+                        • Click "Check Booking Status"<br>
+                        • View your booking details
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="step-item">
+                  <div class="step-number">6</div>
+                  <div class="step-content">
+                    <div class="highlight-step">
+                      <h4 class="step-title">
+                        <i class="fas fa-clock"></i>
+                        Boarding Instructions
+                      </h4>
+                      <p class="step-description">
+                        <strong>Arrive 15 minutes before departure</strong> at the pickup point. Keep your booking confirmation ready. Be punctual to ensure smooth boarding.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="whatsapp-contact">
+                <h3 class="contact-title">
+                  <i class="fab fa-whatsapp"></i> Need Immediate Help?
+                </h3>
+                <a href="https://wa.me/94701362527" target="_blank" class="contact-link">
+                  <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                </a>
+              </div>
             </div>
           </div>
         </div>
         
-        <!-- Results Section -->
-        <div class="results-section" id="resultsSection">
-          <!-- Initial State -->
-          <div id="initialState" class="no-booking">
-            <i class="fas fa-ticket-alt"></i>
-            <h3>No Booking Selected</h3>
-            <p>Enter your WhatsApp number to check your booking status and view all travel details.</p>
-          </div>
-          
-          <!-- Ticket Card -->
-          <div class="ticket-card" id="ticketCard" style="display: none;">
-            <div class="ticket-header">
-              <h3 class="ticket-title">Travel Ticket</h3>
-              <p class="ticket-subtitle">Safe travels with Lagan Bus Services</p>
+        <!-- Check Booking Tab -->
+        <div id="checkTab" class="portal-tab-content">
+          <div class="check-booking-grid">
+            <!-- Search Section -->
+            <div class="search-section">
+              <div class="search-header">
+                <div class="search-icon">
+                  <i class="fas fa-search"></i>
+                </div>
+                <h2 class="search-title">Find Your Booking</h2>
+              </div>
+              
+              <div class="phone-input-wrapper">
+                <div class="phone-input-icon">
+                  <i class="fas fa-phone"></i>
+                </div>
+                <input type="tel" id="checkPhone" class="phone-input phone-input-enhanced" 
+                       placeholder="0XXXXXXXXX or 94XXXXXXXXX" 
+                       maxlength="12"
+                       inputmode="numeric"
+                       pattern="[0-9]*">
+              </div>
+              
+              <button id="checkBtn" class="search-btn" type="button">
+                <i class="fas fa-search"></i> Check Booking Status
+              </button>
+              
+              <!-- Instructions for finding booking -->
+              <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(216, 179, 93, 0.1); border-radius: 0.75rem; border-left: 3px solid var(--gold);">
+                <h4 style="color: var(--text-primary); font-size: 0.9rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                  <i class="fas fa-lightbulb"></i> How to find your booking:
+                </h4>
+                <ul style="color: var(--text-secondary); font-size: 0.85rem; padding-left: 1.2rem; line-height: 1.5;">
+                  <li>Enter your WhatsApp number used for booking</li>
+                  <li>Click "Check Booking Status"</li>
+                  <li>View all your travel details</li>
+                  <li>Download your ticket if confirmed</li>
+                </ul>
+                <div style="margin-top: 10px; padding: 8px; background: rgba(37, 99, 235, 0.1); border-radius: 6px; font-size: 0.8rem; color: var(--primary);">
+                  <i class="fas fa-info-circle"></i> <strong>Note:</strong> Accepts 0XXXXXXXXX, 94XXXXXXXXX, or XXXXXXXXX formats
+                </div>
+              </div>
             </div>
             
-            <div class="ticket-body">
-              <div class="passenger-section">
-                <div class="passenger-avatar">
-                  <i class="fas fa-user"></i>
-                </div>
-                <h3 id="displayPassengerName" class="passenger-name">-</h3>
-                <p id="displayBookingId" class="booking-id">Booking ID: -</p>
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection">
+              <!-- Initial State -->
+              <div id="initialState" class="no-booking">
+                <i class="fas fa-ticket-alt"></i>
+                <h3>No Booking Selected</h3>
+                <p>Enter your WhatsApp number to check your booking status and view all travel details.</p>
               </div>
               
-              <div class="details-grid">
-                <div class="detail-card">
-                  <div class="detail-icon">
-                    <i class="fas fa-bus"></i>
-                  </div>
-                  <div class="detail-label">Bus Service</div>
-                  <div id="displayBusName" class="detail-value">-</div>
+              <!-- Ticket Card -->
+              <div class="ticket-card" id="ticketCard" style="display: none;">
+                <div class="ticket-header">
+                  <h3 class="ticket-title">Travel Ticket</h3>
+                  <p class="ticket-subtitle">Safe travels with Lagan Bus Services</p>
                 </div>
                 
-                <div class="detail-card">
-                  <div class="detail-icon">
-                    <i class="far fa-calendar-alt"></i>
+                <div class="ticket-body">
+                  <div class="passenger-section">
+                    <div class="passenger-avatar">
+                      <i class="fas fa-user"></i>
+                    </div>
+                    <h3 id="displayPassengerName" class="passenger-name">-</h3>
+                    <p id="displayBookingId" class="booking-id">Booking ID: -</p>
                   </div>
-                  <div class="detail-label">Travel Date & Time</div>
-                  <div id="displayDateTime" class="detail-value">-</div>
-                </div>
-                
-                <div class="detail-card">
-                  <div class="detail-icon">
-                    <i class="fas fa-map-marker-alt"></i>
+                  
+                  <div class="details-grid">
+                    <div class="detail-card">
+                      <div class="detail-icon">
+                        <i class="fas fa-bus"></i>
+                      </div>
+                      <div class="detail-label">Bus Service</div>
+                      <div id="displayBusName" class="detail-value">-</div>
+                    </div>
+                    
+                    <div class="detail-card">
+                      <div class="detail-icon">
+                        <i class="far fa-calendar-alt"></i>
+                      </div>
+                      <div class="detail-label">Travel Date & Time</div>
+                      <div id="displayDateTime" class="detail-value">-</div>
+                    </div>
+                    
+                    <div class="detail-card">
+                      <div class="detail-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                      </div>
+                      <div class="detail-label">Route</div>
+                      <div id="displayRoute" class="detail-value">-</div>
+                    </div>
+                    
+                    <!-- Payment Status Card -->
+                    <div class="detail-card">
+                      <div class="detail-icon">
+                        <i class="fas fa-check-circle"></i>
+                      </div>
+                      <div class="detail-label">Payment Status</div>
+                      <div id="displayPaymentStatus" class="detail-value pending">-</div>
+                    </div>
+                    
+                    <!-- Male Seats Card -->
+                    <div class="detail-card">
+                      <div class="detail-icon male-seat-icon">
+                        <i class="fas fa-mars"></i>
+                      </div>
+                      <div class="detail-label">Male Seats</div>
+                      <div id="displayMaleSeats" class="detail-value male-seat-value">To be assigned</div>
+                    </div>
+                    
+                    <!-- Female Seats Card -->
+                    <div class="detail-card">
+                      <div class="detail-icon female-seat-icon">
+                        <i class="fas fa-venus"></i>
+                      </div>
+                      <div class="detail-label">Female Seats</div>
+                      <div id="displayFemaleSeats" class="detail-value female-seat-value">To be assigned</div>
+                    </div>
+                    
+                    <!-- Total Amount Card -->
+                    <div class="detail-card">
+                      <div class="detail-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                      </div>
+                      <div class="detail-label">Total Amount</div>
+                      <div id="displayTotalAmount" class="detail-value">-</div>
+                    </div>
                   </div>
-                  <div class="detail-label">Route</div>
-                  <div id="displayRoute" class="detail-value">-</div>
-                </div>
-                
-                <!-- Payment Status Card -->
-                <div class="detail-card">
-                  <div class="detail-icon">
-                    <i class="fas fa-check-circle"></i>
+                  
+                  <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 0.75rem; margin: 1.5rem 0; border-left: 3px solid #F59E0B;">
+                    <p style="color: var(--warning); font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                      <i class="fas fa-clock"></i> Important Reminder:
+                    </p>
+                    <p style="color: var(--text-primary); font-size: 0.95rem;">
+                      <strong>Be there before 15 minutes at the pickup point.</strong> Arrive early to ensure smooth boarding and avoid delays.
+                    </p>
                   </div>
-                  <div class="detail-label">Payment Status</div>
-                  <div id="displayPaymentStatus" class="detail-value pending">-</div>
-                </div>
-                
-                <!-- Male Seats Card -->
-                <div class="detail-card">
-                  <div class="detail-icon male-seat-icon">
-                    <i class="fas fa-mars"></i>
+                  
+                  <div class="ticket-actions">
+                    <button id="downloadTicketBtn" class="btn btn-primary" type="button">
+                      <i class="fas fa-download"></i> Download Ticket
+                    </button>
+                    <button class="btn btn-secondary" type="button" onclick="switchTab('newTab')">
+                      <i class="fas fa-plus"></i> New Booking
+                    </button>
                   </div>
-                  <div class="detail-label">Male Seats</div>
-                  <div id="displayMaleSeats" class="detail-value male-seat-value">To be assigned</div>
                 </div>
-                
-                <!-- Female Seats Card -->
-                <div class="detail-card">
-                  <div class="detail-icon female-seat-icon">
-                    <i class="fas fa-venus"></i>
-                  </div>
-                  <div class="detail-label">Female Seats</div>
-                  <div id="displayFemaleSeats" class="detail-value female-seat-value">To be assigned</div>
-                </div>
-                
-                <!-- Total Amount Card -->
-                <div class="detail-card">
-                  <div class="detail-icon">
-                    <i class="fas fa-money-bill-wave"></i>
-                  </div>
-                  <div class="detail-label">Total Amount</div>
-                  <div id="displayTotalAmount" class="detail-value">-</div>
-                </div>
-              </div>
-              
-              <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 0.75rem; margin: 1.5rem 0; border-left: 3px solid #F59E0B;">
-                <p style="color: var(--warning); font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                  <i class="fas fa-clock"></i> Important Reminder:
-                </p>
-                <p style="color: var(--text-primary); font-size: 0.95rem;">
-                  <strong>Be there before 15 minutes at the pickup point.</strong> Arrive early to ensure smooth boarding and avoid delays.
-                </p>
-              </div>
-              
-              <div class="ticket-actions">
-                <button id="downloadTicketBtn" class="btn btn-primary" type="button">
-                  <i class="fas fa-download"></i> Download Ticket
-                </button>
-                <button class="btn btn-secondary" type="button" onclick="switchTab('newTab')">
-                  <i class="fas fa-plus"></i> New Booking
-                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- Fleet Section -->
-<section class="fleet-section" id="fleet">
-  <div class="fleet-header">
-    <h2 class="fleet-title">Modern Fleet & Amenities</h2>
-    <p class="fleet-subtitle">State-of-the-art coaches equipped with premium features for your comfort and safety</p>
+    </section>
   </div>
   
-  <div class="fleet-grid">
-    <div class="fleet-card">
-      <div class="fleet-card-icon">
-        <i class="fas fa-couch"></i>
-      </div>
-      <h3 class="fleet-card-title">Premium Seating</h3>
-      <p class="fleet-card-description">Ergonomic reclining seats with extra legroom, adjustable headrests, and premium upholstery for maximum comfort during long journeys.</p>
-      <div class="fleet-card-features">
-        <span class="fleet-feature">Reclining</span>
-        <span class="fleet-feature">Legroom</span>
-        <span class="fleet-feature">Comfort</span>
-      </div>
+  <!-- Routes Page (Initially Hidden) -->
+  <div id="routesPage" style="display: none;">
+    <div class="page-header">
+      <h1 class="page-title">Our Popular Routes</h1>
+      <p class="page-description">Discover our extensive network connecting major cities across Sri Lanka with comfort and reliability.</p>
+      <button class="back-to-home" onclick="showHomePage()">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </button>
     </div>
     
-    <div class="fleet-card">
-      <div class="fleet-card-icon">
-        <i class="fas fa-wifi"></i>
-      </div>
-      <h3 class="fleet-card-title">Connectivity</h3>
-      <p class="fleet-card-description">High-speed WiFi, USB charging ports at every seat, and entertainment systems with movies and music for your journey.</p>
-      <div class="fleet-card-features">
-        <span class="fleet-feature">WiFi</span>
-        <span class="fleet-feature">Charging</span>
-        <span class="fleet-feature">Entertainment</span>
+    <div class="routes-section">
+      <div class="routes-grid">
+        <!-- Route 1: Colombo to Batticaloa -->
+        <div class="route-box route-box-1">
+          <div class="route-box-header">
+            <div class="route-box-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <span class="route-box-price">From LKR 1,600</span>
+          </div>
+          <h3 class="route-box-title">Colombo → Batticaloa</h3>
+          <div class="route-box-stops">
+            <div class="route-stop">
+              <i class="fas fa-circle"></i>
+              <span>Colombo (Pettah, Wellampitiya, Rajagiriya)</span>
+            </div>
+            <div class="route-stop">
+              <i class="fas fa-circle"></i>
+              <span>Polonnaruwa (Stopover - 20 mins)</span>
+            </div>
+            <div class="route-stop">
+              <i class="fas fa-flag-checkered"></i>
+              <span>Batticaloa (Kallady, City Center)</span>
+            </div>
+          </div>
+          <div class="route-box-highlights">
+            <p><i class="fas fa-clock"></i> Duration: 7-8 hours • Night Service Available</p>
+          </div>
+          <div class="route-box-features">
+            <span class="route-feature">AC Luxury</span>
+            <span class="route-feature">Refreshments</span>
+            <span class="route-feature">USB Charging</span>
+          </div>
+        </div>
+        
+        <!-- Route 2: Colombo to Kalmunai -->
+        <div class="route-box route-box-2">
+          <div class="route-box-header">
+            <div class="route-box-icon">
+              <i class="fas fa-umbrella-beach"></i>
+            </div>
+            <span class="route-box-price">From LKR 2,500</span>
+          </div>
+          <h3 class="route-box-title">Colombo → Kalmunai</h3>
+          <div class="route-box-stops">
+            <div class="route-stop">
+              <i class="fas fa-circle"></i>
+              <span>Colombo (Orugudwaththa, Wellawatta)</span>
+            </div>
+            <div class="route-stop">
+              <i class="fas fa-circle"></i>
+              <span>Akkaraipattu (Main Stop)</span>
+            </div>
+            <div class="route-stop">
+              <i class="fas fa-flag-checkered"></i>
+              <span>Kalmunai (Main City, Maruthamunai)</span>
+            </div>
+          </div>
+          <div class="route-box-highlights">
+            <p><i class="fas fa-clock"></i> Duration: 8-9 hours • Direct Service</p>
+          </div>
+          <div class="route-box-features">
+            <span class="route-feature">AC Luxury</span>
+            <span class="route-feature">Snacks</span>
+            <span class="route-feature">WiFi</span>
+          </div>
+        </div>
+        
+        <!-- Route 3: Colombo to Nintavur -->
+        <div class="route-box route-box-3">
+          <div class="route-box-header">
+            <div class="route-box-icon">
+              <i class="fas fa-mosque"></i>
+            </div>
+            <span class="route-box-price">From LKR 2,400</span>
+          </div>
+          <h3 class="route-box-title">Colombo → Nintavur</h3>
+          <div class="route-box-stops">
+            <div class="route-stop">
+              <i class="fas fa-circle"></i>
+              <span>Colombo (Kolluppitiya, Dehiwala)</span>
+            </div>
+            <div class="route-stop">
+              <i class="fas fa-circle"></i>
+              <span>Sammanthurai (Main Junction)</span>
+            </div>
+            <div class="route-stop">
+              <i class="fas fa-flag-checkered"></i>
+              <span>Nintavur (Main Road, Town Center)</span>
+            </div>
+          </div>
+          <div class="route-box-highlights">
+            <p><i class="fas fa-clock"></i> Duration: 8 hours • Daily Service</p>
+          </div>
+          <div class="route-box-features">
+            <span class="route-feature">Premium Seats</span>
+            <span class="route-feature">Water Bottle</span>
+            <span class="route-feature">Entertainment</span>
+          </div>
+        </div>
+        
+        <!-- Route 4: Colombo to Akkaraipattu -->
+        <div class="route-box route-box-4">
+          <div class="route-box-header">
+            <div class="route-box-icon">
+              <i class="fas fa-farm"></i>
+            </div>
+            <span class="route-box-price">From LKR 2,300</span>
+          </div>
+          <h3 class="route-box-title">Colombo → Akkaraipattu</h3>
+          <div class="route-box-stops">
+            <div class="route-stop">
+              <i class="fas fa-circle"></i>
+              <span>Colombo (Mardana, Kolonnawa)</span>
+            </div>
+            <div class="route-stop">
+              <i class="fas fa-circle"></i>
+              <span>Kalmunai (Stopover)</span>
+            </div>
+            <div class="route-stop">
+              <i class="fas fa-flag-checkered"></i>
+              <span>Akkaraipattu (Main Bus Stand)</span>
+            </div>
+          </div>
+          <div class="route-box-highlights">
+            <p><i class="fas fa-clock"></i> Duration: 7.5-8.5 hours • Multiple Departures</p>
+          </div>
+          <div class="route-box-features">
+            <span class="route-feature">Sleeper Option</span>
+            <span class="route-feature">AC</span>
+            <span class="route-feature">Rest Stops</span>
+          </div>
+        </div>
+        
+        <!-- Route 5: Batticaloa to Colombo -->
+        <div class="route-box route-box-5">
+          <div class="route-box-header">
+            <div class="route-box-icon">
+              <i class="fas fa-city"></i>
+            </div>
+            <span class="route-box-price">From LKR 1,600</span>
+          </div>
+          <h3 class="route-box-title">Batticaloa → Colombo</h3>
+          <div class="route-box-stops">
+            <div class="route-stop">
+              <i class="fas fa-circle"></i>
+              <span>Batticaloa (Kallady, Bus Stand)</span>
+            </div>
+            <div class="route-stop">
+              <i class="fas fa-circle"></i>
+              <span>Polonnaruwa (Break Stop)</span>
+            </div>
+            <div class="route-stop">
+              <i class="fas fa-flag-checkered"></i>
+              <span>Colombo (Pettah, Wellampitiya)</span>
+            </div>
+          </div>
+          <div class="route-box-highlights">
+            <p><i class="fas fa-clock"></i> Duration: 7-8 hours • Night Service Available</p>
+          </div>
+          <div class="route-box-features">
+            <span class="route-feature">Express</span>
+            <span class="route-feature">Charging Points</span>
+            <span class="route-feature">Comfort Seats</span>
+          </div>
+        </div>
+        
+        <!-- Route 6: Colombo to Kattunayaka Airport -->
+        <div class="route-box route-box-1">
+          <div class="route-box-header">
+            <div class="route-box-icon">
+              <i class="fas fa-plane-departure"></i>
+            </div>
+            <span class="route-box-price">From LKR 3,500</span>
+          </div>
+          <h3 class="route-box-title">Colombo → Kattunayaka Airport</h3>
+          <div class="route-box-stops">
+            <div class="route-stop">
+              <i class="fas fa-circle"></i>
+              <span>Colombo (Fort, Maradana)</span>
+            </div>
+            <div class="route-stop">
+              <i class="fas fa-circle"></i>
+              <span>Ja-Ela (Stop on Request)</span>
+            </div>
+            <div class="route-stop">
+              <i class="fas fa-flag-checkered"></i>
+              <span>Bandaranaike International Airport</span>
+            </div>
+          </div>
+          <div class="route-box-highlights">
+            <p><i class="fas fa-clock"></i> Duration: 1.5 hours • Premium Airport Service</p>
+          </div>
+          <div class="route-box-features">
+            <span class="route-feature">Luggage Space</span>
+            <span class="route-feature">AC Luxury</span>
+            <span class="route-feature">Direct</span>
+          </div>
+        </div>
       </div>
     </div>
-    
-    <div class="fleet-card">
-      <div class="fleet-card-icon">
-        <i class="fas fa-snowflake"></i>
-      </div>
-      <h3 class="fleet-card-title">Climate Control</h3>
-      <p class="fleet-card-description">Advanced air conditioning systems with individual zone controls to maintain perfect temperature throughout your journey.</p>
-      <div class="fleet-card-features">
-        <span class="fleet-feature">AC</span>
-        <span class="fleet-feature">Climate</span>
-        <span class="fleet-feature">Comfort</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Safety Section -->
-<section class="safety-section" id="safety">
-  <div class="safety-header">
-    <h2 class="safety-title">Premium Safety Standards</h2>
-    <p class="safety-subtitle">Your safety is our top priority with comprehensive measures and modern technology</p>
   </div>
   
-  <div class="safety-grid">
-    <div class="safety-card">
-      <div class="safety-card-icon">
-        <i class="fas fa-shield-alt"></i>
-      </div>
-      <h3 class="safety-card-title">GPS Tracking</h3>
-      <p class="safety-card-description">Real-time GPS tracking on all buses with live monitoring for enhanced security and accurate arrival predictions.</p>
+  <!-- Fleet Page (Initially Hidden) -->
+  <div id="fleetPage" style="display: none;">
+    <div class="page-header">
+      <h1 class="page-title">Our Premium Fleet</h1>
+      <p class="page-description">Experience luxury travel with our modern, well-maintained buses equipped with the latest amenities.</p>
+      <button class="back-to-home" onclick="showHomePage()">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </button>
     </div>
     
-    <div class="safety-card">
-      <div class="safety-card-icon">
-        <i class="fas fa-user-tie"></i>
+    <div class="fleet-section">
+      <div class="fleet-grid">
+        <!-- Fleet Card 1: Sakeer Express -->
+        <div class="fleet-card">
+          <div class="fleet-card-icon">
+            <i class="fas fa-bus"></i>
+          </div>
+          <h3 class="fleet-card-title">Sakeer Express</h3>
+          <p class="fleet-card-description">Luxury AC bus with reclining seats, personal entertainment screens, and onboard refreshments. Perfect for long-distance comfort.</p>
+          <div class="fleet-card-features">
+            <span class="fleet-feature">40 Seats</span>
+            <span class="fleet-feature">AC</span>
+            <span class="fleet-feature">USB Charging</span>
+            <span class="fleet-feature">Entertainment</span>
+            <span class="fleet-feature">Restroom</span>
+          </div>
+        </div>
+        
+        <!-- Fleet Card 2: RS Express -->
+        <div class="fleet-card">
+          <div class="fleet-card-icon">
+            <i class="fas fa-bus-alt"></i>
+          </div>
+          <h3 class="fleet-card-title">RS Express</h3>
+          <p class="fleet-card-description">Semi-sleeper luxury coach with extra legroom, individual reading lights, and complimentary water. Ideal for overnight journeys.</p>
+          <div class="fleet-card-features">
+            <span class="fleet-feature">36 Seats</span>
+            <span class="fleet-feature">Semi-Sleeper</span>
+            <span class="fleet-feature">WiFi</span>
+            <span class="fleet-feature">Snacks</span>
+            <span class="fleet-feature">AC</span>
+          </div>
+        </div>
+        
+        <!-- Fleet Card 3: Myown Express -->
+        <div class="fleet-card">
+          <div class="fleet-card-icon">
+            <i class="fas fa-bus"></i>
+          </div>
+          <h3 class="fleet-card-title">Myown Express</h3>
+          <p class="fleet-card-description">Executive class bus with spacious seating, panoramic windows, and climate control. Features onboard entertainment system.</p>
+          <div class="fleet-card-features">
+            <span class="fleet-feature">45 Seats</span>
+            <span class="fleet-feature">AC</span>
+            <span class="fleet-feature">TV Screens</span>
+            <span class="fleet-feature">Water</span>
+            <span class="fleet-feature">Charging</span>
+          </div>
+        </div>
+        
+        <!-- Fleet Card 4: Al Ahla -->
+        <div class="fleet-card">
+          <div class="fleet-card-icon">
+            <i class="fas fa-bus"></i>
+          </div>
+          <h3 class="fleet-card-title">Al Ahla</h3>
+          <p class="fleet-card-description">Premium service with leather seats, footrests, and personalized service. Includes refreshments and newspaper.</p>
+          <div class="fleet-card-features">
+            <span class="fleet-feature">38 Seats</span>
+            <span class="fleet-feature">Leather Seats</span>
+            <span class="fleet-feature">AC</span>
+            <span class="fleet-feature">Refreshments</span>
+            <span class="fleet-feature">USB</span>
+          </div>
+        </div>
+        
+        <!-- Fleet Card 5: Al Rashith -->
+        <div class="fleet-card">
+          <div class="fleet-card-icon">
+            <i class="fas fa-bus"></i>
+          </div>
+          <h3 class="fleet-card-title">Al Rashith</h3>
+          <p class="fleet-card-description">Comfort class with ample legroom, overhead luggage space, and individual air conditioning vents. Reliable and punctual.</p>
+          <div class="fleet-card-features">
+            <span class="fleet-feature">42 Seats</span>
+            <span class="fleet-feature">AC</span>
+            <span class="fleet-feature">Reading Lights</span>
+            <span class="fleet-feature">CCTV</span>
+            <span class="fleet-feature">First Aid</span>
+          </div>
+        </div>
+        
+        <!-- Fleet Card 6: Star Travels -->
+        <div class="fleet-card">
+          <div class="fleet-card-icon">
+            <i class="fas fa-bus"></i>
+          </div>
+          <h3 class="fleet-card-title">Star Travels</h3>
+          <p class="fleet-card-description">Economy plus with great value. Clean, comfortable buses with basic amenities for a pleasant journey at affordable rates.</p>
+          <div class="fleet-card-features">
+            <span class="fleet-feature">50 Seats</span>
+            <span class="fleet-feature">AC</span>
+            <span class="fleet-feature">Water</span>
+            <span class="fleet-feature">Charging</span>
+            <span class="fleet-feature">Luggage</span>
+          </div>
+        </div>
       </div>
-      <h3 class="safety-card-title">Professional Drivers</h3>
-      <p class="safety-card-description">Experienced and certified drivers with comprehensive training and regular health check-ups for your safety.</p>
-    </div>
-    
-    <div class="safety-card">
-      <div class="safety-card-icon">
-        <i class="fas fa-ambulance"></i>
-      </div>
-      <h3 class="safety-card-title">Emergency Response</h3>
-      <p class="safety-card-description">24/7 emergency support, first aid kits on all buses, and direct contact with emergency services when needed.</p>
     </div>
   </div>
-</section>
+  
+  <!-- Safety Page (Initially Hidden) -->
+  <div id="safetyPage" style="display: none;">
+    <div class="page-header">
+      <h1 class="page-title">Safety First</h1>
+      <p class="page-description">Your safety is our top priority. We maintain the highest standards of safety and hygiene across our entire fleet.</p>
+      <button class="back-to-home" onclick="showHomePage()">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </button>
+    </div>
+    
+    <div class="safety-section">
+      <div class="safety-grid">
+        <!-- Safety Card 1 -->
+        <div class="safety-card">
+          <div class="safety-card-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3 class="safety-card-title">Professional Drivers</h3>
+          <p class="safety-card-description">All our drivers are licensed, experienced, and undergo regular training. They follow strict rest schedules to ensure alertness throughout the journey.</p>
+        </div>
+        
+        <!-- Safety Card 2 -->
+        <div class="safety-card">
+          <div class="safety-card-icon">
+            <i class="fas fa-video"></i>
+          </div>
+          <h3 class="safety-card-title">CCTV Surveillance</h3>
+          <p class="safety-card-description">All buses are equipped with CCTV cameras for passenger safety and security. Live monitoring ensures quick response to any situation.</p>
+        </div>
+        
+        <!-- Safety Card 3 -->
+        <div class="safety-card">
+          <div class="safety-card-icon">
+            <i class="fas fa-first-aid"></i>
+          </div>
+          <h3 class="safety-card-title">First Aid Ready</h3>
+          <p class="safety-card-description">Every bus carries a fully stocked first aid kit. Our staff is trained in basic first aid to handle medical emergencies until professional help arrives.</p>
+        </div>
+        
+        <!-- Safety Card 4 -->
+        <div class="safety-card">
+          <div class="safety-card-icon">
+            <i class="fas fa-fire-extinguisher"></i>
+          </div>
+          <h3 class="safety-card-title">Fire Safety</h3>
+          <p class="safety-card-description">All buses are equipped with fire extinguishers and emergency exits. Regular safety drills ensure staff readiness in case of emergencies.</p>
+        </div>
+        
+        <!-- Safety Card 5 -->
+        <div class="safety-card">
+          <div class="safety-card-icon">
+            <i class="fas fa-hand-sanitizer"></i>
+          </div>
+          <h3 class="safety-card-title">Hygiene Standards</h3>
+          <p class="safety-card-description">Buses are thoroughly sanitized before each trip. Hand sanitizers are available for passengers, and high-touch surfaces are regularly cleaned.</p>
+        </div>
+        
+        <!-- Safety Card 6 -->
+        <div class="safety-card">
+          <div class="safety-card-icon">
+            <i class="fas fa-map-signs"></i>
+          </div>
+          <h3 class="safety-card-title">GPS Tracking</h3>
+          <p class="safety-card-description">Real-time GPS tracking allows our control room to monitor bus locations, speed, and route adherence, ensuring safe and timely travel.</p>
+        </div>
+        
+        <!-- Safety Card 7 -->
+        <div class="safety-card">
+          <div class="safety-card-icon">
+            <i class="fas fa-tools"></i>
+          </div>
+          <h3 class="safety-card-title">Regular Maintenance</h3>
+          <p class="safety-card-description">Our fleet undergoes strict maintenance checks before and after each journey. All mechanical systems are inspected to prevent breakdowns.</p>
+        </div>
+        
+        <!-- Safety Card 8 -->
+        <div class="safety-card">
+          <div class="safety-card-icon">
+            <i class="fas fa-id-card"></i>
+          </div>
+          <h3 class="safety-card-title">Insurance Coverage</h3>
+          <p class="safety-card-description">All passengers are covered by comprehensive travel insurance. In the unlikely event of an incident, you and your belongings are protected.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<!-- Footer -->
+<!-- Footer — Compact & Color‑matched -->
 <footer class="elite-footer">
   <div class="footer-content">
+    <!-- Brand column -->
     <div class="footer-brand">
       <div class="footer-logo">
         <i class="fas fa-bus footer-logo-icon"></i>
         <span class="footer-logo-text">LAGAN<span>BUS</span></span>
       </div>
       <p class="footer-description">
-        Pioneering luxury travel in Sri Lanka. We don't just move people; we create memories through comfort and reliability since 2010.
+        Sri Lanka's premier bus service, connecting Eastern Province & Colombo with luxury & safety.
       </p>
       <div class="footer-social">
-        <a href="#" class="social-link">FB</a>
-        <a href="#" class="social-link">IG</a>
-        <a href="#" class="social-link">TW</a>
-        <a href="#" class="social-link">LI</a>
+        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
       </div>
     </div>
     
+    <!-- Quick links -->
     <div class="footer-column">
-      <h4>Navigation</h4>
+      <h4>Explore</h4>
       <ul class="footer-links">
-        <li><a href="#routes">Routes</a></li>
-        <li><a href="#fleet">Fleet</a></li>
-        <li><a href="#safety">Safety</a></li>
-        <li><a href="#support" onclick="toggleSupportPanel(); return false;">Support</a></li>
+        <li><a onclick="showRoutesPage()">Routes</a></li>
+        <li><a onclick="showFleetPage()">Fleet</a></li>
+        <li><a onclick="showSafetyPage()">Safety</a></li>
+        <li><a onclick="showHomePage(); switchTab('newTab')">Book Now</a></li>
       </ul>
     </div>
     
+    <!-- Contact info (important) -->
     <div class="footer-column">
-      <h4>Headquarters</h4>
+      <h4>Contact</h4>
       <div class="footer-contact">
         <div class="contact-item">
           <div class="contact-divider"></div>
           <div class="contact-text">
-            Nintavur Main Road,<br/>
-            In front of HNB Bank,<br/>
-            Eastern Province
+            Nintavur Main Road,<br>Eastern Province, Sri Lanka
           </div>
         </div>
         <div class="contact-item">
           <div class="contact-divider"></div>
-          <div class="contact-phone">+94 701 362 527</div>
+          <div class="contact-text">
+            <span class="contact-phone">+94 70 136 2527</span><br>
+            24/7 WhatsApp Support
+          </div>
         </div>
       </div>
     </div>
   </div>
   
   <div class="footer-bottom">
-    <p class="copyright">© 2024 Lagan Bus Services. All Rights Reserved.</p>
+    <p class="copyright">
+      © 2026 Lagan Bus Services. All rights reserved.
+    </p>
     <div class="developer-badge" onclick="window.open('https://wedoxa2025-info.github.io/wedoxa/', '_blank')">
       <i class="fas fa-code"></i>
-      Designed by <strong>Wedoxa Intelligence</strong>
+      <span>Designed by <strong>Wedoxa Intelligence</strong></span>
     </div>
   </div>
 </footer>
@@ -4740,6 +4949,42 @@ const bankDetails = {
 // State management
 let currentBookingData = null;
 let isLoading = false;
+
+// ============ PAGE NAVIGATION FUNCTIONS ============
+function showHomePage() {
+  document.getElementById('homePage').style.display = 'block';
+  document.getElementById('routesPage').style.display = 'none';
+  document.getElementById('fleetPage').style.display = 'none';
+  document.getElementById('safetyPage').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showRoutesPage() {
+  document.getElementById('homePage').style.display = 'none';
+  document.getElementById('routesPage').style.display = 'block';
+  document.getElementById('fleetPage').style.display = 'none';
+  document.getElementById('safetyPage').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  closeMobileMenu();
+}
+
+function showFleetPage() {
+  document.getElementById('homePage').style.display = 'none';
+  document.getElementById('routesPage').style.display = 'none';
+  document.getElementById('fleetPage').style.display = 'block';
+  document.getElementById('safetyPage').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  closeMobileMenu();
+}
+
+function showSafetyPage() {
+  document.getElementById('homePage').style.display = 'none';
+  document.getElementById('routesPage').style.display = 'none';
+  document.getElementById('fleetPage').style.display = 'none';
+  document.getElementById('safetyPage').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  closeMobileMenu();
+}
 
 // ============ INITIALIZATION ============
 document.addEventListener('DOMContentLoaded', function() {
@@ -4885,7 +5130,6 @@ function closeMobileMenu() {
   }
 }
 
-// New function to update travel time based on bus selection
 function updateTravelTime(busService) {
   const travelTimeSelect = document.getElementById('travelTime');
   
@@ -4923,9 +5167,6 @@ function updateTravelTime(busService) {
     
     // Show a small notification
     showToast(`${busService} is scheduled to depart at ${time}`, 'info');
-
-  } else {
-   
   }
 }
 
@@ -5738,6 +5979,7 @@ async function submitBooking() {
           color: 'var(--text-primary)',
           backdrop: 'rgba(0, 0, 0, 0.3)'
         }).then(() => {
+          showHomePage();
           switchTab('checkTab');
           const checkPhoneInput = document.getElementById('checkPhone');
           if (checkPhoneInput) {
