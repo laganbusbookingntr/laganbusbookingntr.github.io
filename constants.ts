@@ -28,4 +28,7 @@ export const BUS_SERVICES: Record<string, BusService> = {
   "Al Rashith": { name: "Al Rashith", price: 2700, time: "8:00 PM" },
   "Star Travels": { name: "Star Travels", price: 1600, time: "9:30 PM" },
   "Lloyds Travels": { name: "Lloyds Travels", price: 2700, time: "9:00 PM" }
+  , "Super Line": { name: "Super Line", price: 2800, time: "9:00 PM" }
+  , "RN Express": { name: "RN Express", price: 2500, time: "8:30 PM" }
+  , "Anaaf Travels": { name: "Anaaf Travels", price: 2700, time: "9:00 PM" }
 };
