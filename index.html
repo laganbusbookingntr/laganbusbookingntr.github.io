@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+    <title>Lagan Bus Booking | Elite Travel Sri Lanka</title>
+    <meta name="description" content="Sri Lanka's premier long-distance coach service. Book seats online for Colombo, Batticaloa, Kalmunai, and more." />
+    
+    <!-- Favicon & Apple Touch Icon -->
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/HrNWCGHr/a179cd34-794f-4108-9b99-70e752b3da3b-removebg-preview.png">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/HrNWCGHr/a179cd34-794f-4108-9b99-70e752b3da3b-removebg-preview.png">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./assets/manifest-B9Sh_Cu2.json">
+    
+    <!-- Preload Hero Image for Speed -->
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=2560&q=80">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+              display: ['"Playfair Display"', 'serif'],
+            },
+            colors: {
+              primary: {
+                DEFAULT: '#0066FF',
+                light: '#4D94FF',
+                dark: '#0047B3',
+                vibrant: '#2563EB',
+              },
+              silver: {
+                50: '#F8FAFC',
+                100: '#F1F5F9',
+                200: '#E2E8F0',
+                300: '#CBD5E1',
+                400: '#94A3B8',
+                500: '#64748B',
+              },
+              dark: {
+                bg: '#020617',
+                card: '#0F172A',
+              }
+            },
+            boxShadow: {
+              'soft': '0 20px 40px -10px rgba(0,0,0,0.05)',
+              'glow': '0 0 20px rgba(0, 102, 255, 0.4)',
+              'neon': '0 0 10px rgba(0, 102, 255, 0.5), 0 0 20px rgba(0, 102, 255, 0.3)',
+              'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+            },
+            backgroundImage: {
+              'noise': "url('https://grainy-gradients.vercel.app/noise.svg')",
+            },
+            animation: {
+              'float': 'float 6s ease-in-out infinite',
+              'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'logo-reveal': 'logoReveal 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards',
+              'text-slide': 'textSlide 0.8s ease-out 0.5s forwards',
+              'loader': 'loader 2.5s cubic-bezier(0.65, 0, 0.35, 1) forwards',
+              'blob': 'blob 10s infinite',
+              'shimmer': 'shimmer 2.5s linear infinite',
+              'drive': 'drive 0.6s ease-in-out infinite',
+              'fume': 'fume 1.5s ease-out infinite',
+              'road-move': 'roadMove 1s linear infinite',
+              'bus-cross': 'busCross 2.5s linear infinite',
+              'ken-burns': 'kenBurns 20s ease-out infinite alternate',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              logoReveal: {
+                '0%': { opacity: '0', transform: 'scale(0.8) translateY(20px)' },
+                '100%': { opacity: '1', transform: 'scale(1) translateY(0)' },
+              },
+              textSlide: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              loader: {
+                '0%': { width: '0%' },
+                '100%': { width: '100%' },
+              },
+              blob: {
+                '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                '100%': { transform: 'translate(0px, 0px) scale(1)' },
+              },
+              shimmer: {
+                '0%': { backgroundPosition: '200% 0' },
+                '100%': { backgroundPosition: '-200% 0' },
+              },
+              drive: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-3px)' },
+              },
+              fume: {
+                '0%': { transform: 'translate(0, 0) scale(0.5)', opacity: '0' },
+                '20%': { opacity: '0.6' },
+                '100%': { transform: 'translate(-20px, -15px) scale(2)', opacity: '0' },
+              },
+              roadMove: {
+                '0%': { backgroundPosition: '0 0' },
+                '100%': { backgroundPosition: '-30px 0' }
+              },
+              busCross: {
+                '0%': { left: '-10%' },
+                '100%': { left: '110%' }
+              },
+              kenBurns: {
+                '0%': { transform: 'scale(1)' },
+                '100%': { transform: 'scale(1.1)' }
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #020617; }
+      ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+      ::-webkit-scrollbar-thumb:hover { background: #0066FF; }
+      
+      html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+      }
+      
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        width: 100%;
+        overflow-x: hidden;
+      }
+
+      /* Reduce Paint Costs & Enable Hardware Acceleration */
+      .glass-card {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+        transform: translateZ(0); /* Force GPU layer */
+      }
+      .dark .glass-card {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+      }
+      
+      .bg-noise {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      }
+      .dark .bg-noise {
+        opacity: 0.04;
+      }
+
+      /* Optimized Animations */
+      .animate-blob, 
+      .animate-float, 
+      .animate-fade-in-up, 
+      .animate-shimmer,
+      .animate-ken-burns {
+        will-change: transform, opacity;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        perspective: 1000px;
+      }
+
+      .animation-delay-2000 { animation-delay: 2s; }
+      .animation-delay-4000 { animation-delay: 4s; }
+      
+      /* Input autofill fix */
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover, 
+      input:-webkit-autofill:focus, 
+      input:-webkit-autofill:active{
+          -webkit-box-shadow: 0 0 0 30px white inset !important;
+          -webkit-text-fill-color: #0F172A !important;
+          transition: background-color 5000s ease-in-out 0s;
+      }
+      .dark input:-webkit-autofill,
+      .dark input:-webkit-autofill:hover, 
+      .dark input:-webkit-autofill:focus, 
+      .dark input:-webkit-autofill:active{
+          -webkit-box-shadow: 0 0 0 30px #0F172A inset !important;
+          -webkit-text-fill-color: white !important;
+      }
+      
+      /* Disable highlight on tap for mobile */
+      * {
+        -webkit-tap-highlight-color: transparent;
+      }
+    </style>
+
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "lucide-react": "https://esm.sh/lucide-react@^0.575.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.4",
+    "jspdf": "https://esm.sh/jspdf@^4.2.0",
+    "sweetalert2": "https://esm.sh/sweetalert2@^11.26.19"
+  }
+}
+</script>
+  <script type="module" crossorigin src="./assets/index-B74wmJay.js"></script>
+</head>
+  <body class="bg-silver-50 dark:bg-dark-bg text-slate-900 dark:text-white antialiased transition-colors duration-500 selection:bg-primary/30 selection:text-primary-dark">
+    <div id="root"></div>
+  </body>
+</html>
