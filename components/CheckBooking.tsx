@@ -168,9 +168,9 @@ const CheckBooking: React.FC<CheckBookingProps> = ({ onCheck, isLoading }) => {
                     <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-silver-100 dark:bg-dark-bg -mr-6 md:-mr-7 z-10"></div>
                 </div>
 
-                {/* Footer: 3-column layout - Booking Status / Payment / Total */}
-                <div className="p-5 md:p-6 bg-slate-50 dark:bg-slate-900/30 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                   <div>
+                {/* Footer: 3-column layout - Booking Status / Payment / Total (inline on mobile) */}
+                <div className="p-5 md:p-6 bg-slate-50 dark:bg-slate-900/30 flex items-center justify-between flex-wrap gap-4">
+                   <div className="flex-1 text-left min-w-[90px]">
                     <p className="text-[10px] md:text-xs text-slate-400 uppercase tracking-wider mb-1">Status</p>
                     <span className={`inline-block px-2.5 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold ${
                       String(ticket.Status || ticket.status || '').toLowerCase().includes('confirmed') 
@@ -180,7 +180,7 @@ const CheckBooking: React.FC<CheckBookingProps> = ({ onCheck, isLoading }) => {
                       {ticket.Status || ticket.status || 'Pending'}
                     </span>
                    </div>
-                   <div className="text-center">
+                   <div className="flex-1 text-center min-w-[90px]">
                     <p className="text-[10px] md:text-xs text-slate-400 uppercase tracking-wider mb-1">Payment</p>
                     <span className={`inline-block px-2.5 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold ${
                       String(ticket.Payment || ticket.payment).toLowerCase().includes('paid') 
@@ -190,7 +190,7 @@ const CheckBooking: React.FC<CheckBookingProps> = ({ onCheck, isLoading }) => {
                       {ticket.Payment || ticket.payment || 'Pending'}
                     </span>
                    </div>
-                   <div className="text-right">
+                   <div className="flex-1 text-right min-w-[90px]">
                      <p className="text-[10px] md:text-xs text-slate-400 uppercase tracking-wider mb-1">Total</p>
                      <p className="text-xl md:text-2xl font-black text-slate-900 dark:text-white">
                        LKR {(ticket.Total || ticket.totalAmount || ticket.estimatedTotal || 0).toLocaleString()}

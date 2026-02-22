@@ -584,6 +584,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
             'destination': String(editingBooking.Destination || editingBooking.destination || ''),
             'maleSeats': String(editingBooking["Male Seat"] || editingBooking.maleSeats || ''),
             'femaleSeats': String(editingBooking["Female Seat"] || editingBooking.femaleSeats || ''),
+            'busNumber': String(editingBooking['Bus Number'] || editingBooking.busNumber || ''),
+            'conductor': String(editingBooking.Conductor || editingBooking.conductor || ''),
             'payment': String(editingBooking.Payment || editingBooking.payment || 'Pending'),
             'total': cleanTotal,
         };
