@@ -69,18 +69,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
 
   // Add Booking State
   const [showAddModal, setShowAddModal] = useState(false);
-  const [newBooking, setNewBooking] = useState({
-    name: '',
-    phone: '',
-    bus: '',
-    date: '',
-    time: '',
-    pickup: '',
-    destination: '',
-    maleSeats: '',
-    femaleSeats: '',
-    totalAmount: ''
-  });
+    const [newBooking, setNewBooking] = useState({
+        name: '',
+        phone: '',
+        bus: '',
+        date: '',
+        time: '',
+        pickup: '',
+        destination: '',
+        maleSeats: '',
+        femaleSeats: '',
+        totalAmount: '',
+        busNumber: '',
+        conductor: ''
+    });
   const [newBookingPayment, setNewBookingPayment] = useState('Paid');
 
   // Helper: Format Time Strict (9:00 PM -> 09.00 PM)
@@ -392,6 +394,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
       const text = `Lagan Bus Booking Confirmed! 🚍\n` +
                    `Ref: ${id}\n` +
                    `Bus: ${booking.Bus || booking.bus}\n` +
+                   `Bus Number: ${booking['Bus Number'] || booking.busNumber || ''}\n` +
+                   `Conductor: ${booking.Conductor || booking.conductor || ''}\n` +
                    `Date: ${dateDisp}\n` +
                    `Time: ${booking.Time || booking.time}\n` +
                    `From: ${booking.Pickup || booking.pickup}\n` +
@@ -706,6 +710,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
         params.append('femaleSeats', newBooking.femaleSeats);
         params.append('pickup', newBooking.pickup || '');
         params.append('destination', newBooking.destination || '');
+        params.append('busNumber', newBooking.busNumber || '');
+        params.append('conductor', newBooking.conductor || '');
         params.append('payment', newBookingPayment);
         params.append('total', String(totalCost).replace(/,/g, ''));
         params.append('status', 'Confirmed'); // Always Confirmed for Admin Add
@@ -727,7 +733,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
         });
 
         setShowAddModal(false);
-        setNewBooking({ name: '', phone: '', bus: '', date: '', time: '', pickup: '', destination: '', maleSeats: '', femaleSeats: '', totalAmount: '' });
+        setNewBooking({ name: '', phone: '', bus: '', date: '', time: '', pickup: '', destination: '', maleSeats: '', femaleSeats: '', totalAmount: '', busNumber: '', conductor: '' });
         setTimeout(fetchBookings, 2000);
 
     } catch (error) {
@@ -780,9 +786,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
         else if (field === 'Destination' || field === 'destination') { newState.Destination = value; newState.destination = value; }
         else if (field === 'Male Seat' || field === 'maleSeats') { newState["Male Seat"] = value; newState.maleSeats = value; }
         else if (field === 'Female Seat' || field === 'femaleSeats') { newState["Female Seat"] = value; newState.femaleSeats = value; }
-        else if (field === 'Total' || field === 'totalAmount') { newState.Total = value; newState.totalAmount = value; }
-        else if (field === 'Status' || field === 'status') { newState.Status = value; newState.status = value; }
-        else if (field === 'Payment' || field === 'payment') { newState.Payment = value; newState.payment = value; }
+                else if (field === 'Total' || field === 'totalAmount') { newState.Total = value; newState.totalAmount = value; }
+                else if (field === 'Bus Number' || field === 'busNumber') { newState['Bus Number'] = value; newState.busNumber = value; }
+                else if (field === 'Conductor' || field === 'conductor') { newState.Conductor = value; newState.conductor = value; }
+                else if (field === 'Status' || field === 'status') { newState.Status = value; newState.status = value; }
+                else if (field === 'Payment' || field === 'payment') { newState.Payment = value; newState.payment = value; }
         return newState;
     });
   };
@@ -1403,6 +1411,28 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                                               />
                                           </div>
                                       </div>
+                                              <div className="grid grid-cols-2 gap-4 mt-4">
+                                                  <div>
+                                                      <label className="block text-sm font-medium text-slate-700 mb-1.5">Bus Number</label>
+                                                      <input
+                                                          type="text"
+                                                          value={editingBooking['Bus Number'] || editingBooking.busNumber || ''}
+                                                          onChange={e => handleEditChange('Bus Number', e.target.value)}
+                                                          className="w-full p-3.5 rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-primary/50 focus:bg-white transition-all font-medium text-slate-900"
+                                                          placeholder="e.g. NG - 9601"
+                                                      />
+                                                  </div>
+                                                  <div>
+                                                      <label className="block text-sm font-medium text-slate-700 mb-1.5">Conductor Phone</label>
+                                                      <input
+                                                          type="text"
+                                                          value={editingBooking.Conductor || editingBooking.conductor || ''}
+                                                          onChange={e => handleEditChange('Conductor', e.target.value)}
+                                                          className="w-full p-3.5 rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-primary/50 focus:bg-white transition-all font-medium text-slate-900"
+                                                          placeholder="e.g. 0771234567"
+                                                      />
+                                                  </div>
+                                              </div>
                                   </div>
                               </div>
 
@@ -1627,6 +1657,28 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                                               />
                                           </div>
                                       </div>
+                                          <div className="grid grid-cols-2 gap-4 mt-4">
+                                              <div>
+                                                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Bus Number</label>
+                                                  <input
+                                                      type="text"
+                                                      value={newBooking.busNumber}
+                                                      onChange={e => handleNewBookingChange('busNumber', e.target.value)}
+                                                      className="w-full p-3.5 rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-primary/50 focus:bg-white transition-all font-medium text-slate-900"
+                                                      placeholder="e.g. NG - 9601"
+                                                  />
+                                              </div>
+                                              <div>
+                                                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Conductor Phone</label>
+                                                  <input
+                                                      type="text"
+                                                      value={newBooking.conductor}
+                                                      onChange={e => handleNewBookingChange('conductor', e.target.value)}
+                                                      className="w-full p-3.5 rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-primary/50 focus:bg-white transition-all font-medium text-slate-900"
+                                                      placeholder="e.g. 0771234567"
+                                                  />
+                                              </div>
+                                          </div>
                                   </div>
                               </div>
 

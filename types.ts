@@ -46,6 +46,10 @@ export interface BookingResponse {
   "Booked Date"?: string;
   Status?: string;
   status?: string;
+  "Bus Number"?: string;
+  busNumber?: string;
+  Conductor?: string;
+  conductor?: string;
 }
 
 export interface ApiResponse {

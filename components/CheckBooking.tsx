@@ -90,6 +90,10 @@ const CheckBooking: React.FC<CheckBookingProps> = ({ onCheck, isLoading }) => {
                     <div className="relative z-10">
                         <p className="text-primary-light text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1">Boarding Pass</p>
                         <h3 className="text-xl md:text-2xl font-black">{ticket.Bus || ticket.bus}</h3>
+                      <div className="text-sm md:text-sm mt-1">
+                        {(ticket['Bus Number'] || ticket.busNumber) && <span className="mr-3">Bus No: <strong>{ticket['Bus Number'] || ticket.busNumber}</strong></span>}
+                        {(ticket.Conductor || ticket.conductor) && <span>Conductor: <strong>{ticket.Conductor || ticket.conductor}</strong></span>}
+                      </div>
                     </div>
                     <div className="text-right relative z-10">
                         <p className="text-2xl md:text-3xl font-black">{ticket.Time || ticket.time}</p>
