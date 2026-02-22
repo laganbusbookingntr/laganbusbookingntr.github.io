@@ -403,7 +403,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                    `Seats (M): ${maleSeats}\n` +
                    `Seats (F): ${femaleSeats}\n` +
                    `Total: ${booking.Total || booking.totalAmount}\n` +
-                   `Please arrive 15 mins early.`;
+                   `Please arrive 15 mins early.`
+                   `Visit: https://laganbusbooking.lk to check or book tickets!`;
 
       const encodedText = encodeURIComponent(text);
       
