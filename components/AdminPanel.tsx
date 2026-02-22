@@ -1090,6 +1090,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                             <th className="px-6 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Schedule</th>
                             <th className="px-6 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Assigned Seats</th>
                             <th className="px-6 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status</th>
+                            <th className="px-6 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Payment</th>
                             <th className="px-8 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Actions</th>
                         </tr>
                     </thead>
@@ -1119,8 +1120,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                                 const maleSeats = booking["Male Seat"] || booking.maleSeats;
                                 const femaleSeats = booking["Female Seat"] || booking.femaleSeats;
                                 const total = booking.Total || booking.totalAmount || 0;
-                                const payment = String(booking.Payment || booking.payment || '').toLowerCase();
-                                const isPaid = payment.includes('paid');
+                                const paymentRaw = String(booking.Payment || booking.payment || '').toLowerCase();
+                                const isPaid = paymentRaw.includes('paid');
+                                const bookingStatus = String(booking.Status || booking.status || '').toLowerCase();
 
                                 // Short ID
                                 const shortId = id?.split('-').pop() || idx + 1;
@@ -1192,9 +1194,16 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                                         <td className="px-6 py-5">
                                             <div className="flex flex-col items-start gap-1">
                                                 <span className={`inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide border ${
-                                                    isPaid 
-                                                    ? 'bg-green-50 text-green-600 border-green-100' 
-                                                    : 'bg-yellow-50 text-yellow-600 border-yellow-100'
+                                                    bookingStatus.includes('confirmed') ? 'bg-green-50 text-green-600 border-green-100' : bookingStatus.includes('cancel') ? 'bg-red-50 text-red-600 border-red-100' : 'bg-yellow-50 text-yellow-600 border-yellow-100'
+                                                }`}>
+                                                    {bookingStatus ? bookingStatus.charAt(0).toUpperCase() + bookingStatus.slice(1) : 'Pending'}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-5">
+                                            <div className="flex flex-col items-start gap-1">
+                                                <span className={`inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide border ${
+                                                    isPaid ? 'bg-green-50 text-green-600 border-green-100' : 'bg-yellow-50 text-yellow-600 border-yellow-100'
                                                 }`}>
                                                     {isPaid ? 'Paid' : 'Pending'}
                                                 </span>
