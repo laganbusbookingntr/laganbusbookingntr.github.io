@@ -1,0 +1,15 @@
+{
+  "name": "Lagan Bus Booking",
+  "short_name": "Lagan Bus",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#0066FF",
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/HrNWCGHr/a179cd34-794f-4108-9b99-70e752b3da3b-removebg-preview.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
