@@ -375,31 +375,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
 
       const dateDisp = formatDateDisplay(booking.Date || booking.dateFormatted);
 
-      // Construct message
-      let text = `Lagan Bus Booking Confirmed! 🚍\n` +
-                   `Ref: ${id}\n` +
-                   `Bus: ${booking.Bus || booking.bus}\n` +
-                   `Date: ${dateDisp}\n` +
-                   `Time: ${booking.Time || booking.time}\n` +
-                   `From: ${booking.Pickup || booking.pickup}\n` +
-                   `To: ${booking.Destination || booking.destination}\n` +
-                   `Seats (M): ${maleSeats}\n` +
-                   `Seats (F): ${femaleSeats}\n`;
-                   
-      if (busNumber) {
-          text += `Bus No: ${busNumber}\n`;
-      }
-      if (conductorNumber) {
-          text += `Conductor: ${conductorNumber}\n`;
-      }
-      
-      text += `Total: Rs. ${booking.Total || booking.totalAmount}\n` +
-              `Please arrive 15 mins early.\n\n` +
-              `Visit & Book / Check Bookings:\n` +
-              `https://laganbusbooking.lk/`;
+      // Shortened SMS message for faster loading
+            let text = `Booking Confirmed!\n` +
+                `${booking.Bus || booking.bus} | ${busNumber || '-'} | ${conductorNumber || '-'}\n` +
+                `${booking.Time || booking.time} | ${dateDisp}\n` +
+                `${booking.Pickup || booking.pickup} → ${booking.Destination || booking.destination} | Rs.${booking.Total || booking.totalAmount}\n` +
+                `https://laganbusbooking.lk/`;
 
       const encodedText = encodeURIComponent(text);
-      
       window.open(`sms:${phone}?body=${encodedText}`, '_blank');
   };
 

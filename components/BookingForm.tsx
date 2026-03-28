@@ -213,12 +213,17 @@ const BookingForm: React.FC<BookingFormProps> = ({ onSubmit, busServices, cities
                     >
                         <option value="" disabled>Select Bus Service</option>
                         {Object.keys(busServices).map(bus => {
-                            const isBlocked = blockedBuses.some(b => b.bus === bus && b.date === formData.date);
-                            return (
-                                <option key={bus} value={bus} disabled={isBlocked}>
-                                    {bus} ({busServices[bus].time}) - LKR {busServices[bus].price} {isBlocked ? '(Fully Booked)' : ''}
-                                </option>
-                            );
+                          const isBlocked = blockedBuses.some(b => b.bus === bus && b.date === formData.date);
+                          const isOffer = ["Al Ahla", "Sakeer Express", "Al Rasith"].some(
+                            offerBus => bus.toLowerCase().includes(offerBus.toLowerCase())
+                          );
+                          return (
+                            <option key={bus} value={bus} disabled={isBlocked}>
+                              {bus} ({busServices[bus].time}) - LKR {busServices[bus].price}
+                              {isOffer && '  [Offer -100]'}
+                              {isBlocked ? ' (Fully Booked)' : ''}
+                            </option>
+                          );
                         })}
                     </select>
                  </div>
