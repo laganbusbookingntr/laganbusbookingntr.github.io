@@ -22,13 +22,13 @@ export const CITIES = [
 
 export const BUS_SERVICES: Record<string, BusService> = {
   "Sakeer Express": { name: "Sakeer Express", price: 3000, time: "9:00 PM", quota: 10 },
-  "RS Express": { name: "RS Express", price: 3200, time: "9:00 PM", quota: 10 },
+  "RS Express": { name: "RS Express", price: 3000, time: "9:00 PM", quota: 10 },
   "Myown Express": { name: "Myown Express", price: 3000, time: "8:45 PM", quota: 10 },
-  "Al Ahla": { name: "Al Ahla", price: 2800, time: "8:30 PM", quota: 10 },
+  "Al Ahla": { name: "Al Ahla", price: 3200, time: "8:30 PM", quota: 10 },
   "Al Rashith": { name: "Al Rashith", price: 3000, time: "8:00 PM", quota: 10 },
   "Star Travels": { name: "Star Travels", price: 1800, time: "9:30 PM", quota: 10 },
   "Lloyds Travels": { name: "Lloyds Travels", price: 3000, time: "9:00 PM", quota: 10 },
-  "Super Line": { name: "Super Line", price: 2800, time: "9:00 PM", quota: 10 },
-  "RN Express": { name: "RN Express", price: 2800, time: "8:30 PM", quota: 10 },
+  "Super Line": { name: "Super Line", price: 3000, time: "9:00 PM", quota: 10 },
+  "RN Express": { name: "RN Express", price: 3000, time: "8:30 PM", quota: 10 },
   "Anaaf Travels": { name: "Anaaf Travels", price: 3000, time: "9:00 PM", quota: 10 }
 };
