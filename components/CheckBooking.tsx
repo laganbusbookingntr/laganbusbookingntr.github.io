@@ -55,6 +55,13 @@ const CheckBooking: React.FC<CheckBookingProps> = ({ onCheck, isLoading }) => {
           <p className="text-slate-500 mt-2 text-sm md:text-base">Enter your registered mobile number</p>
         </div>
 
+        <div className="max-w-2xl mx-auto mb-8 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-2xl">
+          <p className="text-sm md:text-base text-blue-800 dark:text-blue-300">
+            <span className="font-bold block mb-2">📋 Important:</span>
+            Confirmed bookings can be checked after <b>12:00 PM</b> on your travelling day. Admin will assign bus details before that time. If you cannot reach us, call our hotline.
+          </p>
+        </div>
+
         <form onSubmit={handleSearch} className="max-w-xl mx-auto mb-10 md:mb-12">
           <div className="relative group">
             <input

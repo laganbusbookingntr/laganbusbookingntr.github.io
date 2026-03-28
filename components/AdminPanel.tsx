@@ -56,6 +56,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
   
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDate, setFilterDate] = useState('');
+  const [filterBus, setFilterBus] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
+  const [filterPayment, setFilterPayment] = useState('');
   
   // View Mode: Pending, Active, Archive, Blocked
   const [viewMode, setViewMode] = useState<'pending' | 'active' | 'archive' | 'blocked'>('active');
@@ -329,7 +332,19 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
         }
     }
 
-    return matchesSearch && matchesDate;
+    // Bus Filtering
+    const matchesBus = !filterBus || 
+      String(b.Bus || b.bus || '').toLowerCase().includes(filterBus.toLowerCase());
+    
+    // Status Filtering
+    const matchesStatus = !filterStatus || 
+      String(b.Status || b.status || 'Confirmed').toLowerCase() === filterStatus.toLowerCase();
+    
+    // Payment Filtering
+    const matchesPayment = !filterPayment || 
+      String(b.Payment || b.payment || '').toLowerCase().includes(filterPayment.toLowerCase());
+
+    return matchesSearch && matchesDate && matchesBus && matchesStatus && matchesPayment;
   });
 
   const totalRevenue = [...activeBookings, ...archivedBookings].reduce((acc, curr) => {
@@ -1229,7 +1244,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+        <div className="flex flex-col gap-4 mb-6">
             <div className="relative w-full group">
                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" size={20} />
                 <input 
@@ -1241,24 +1256,56 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                 />
             </div>
             
-            <div className="flex items-center gap-3 w-full md:w-auto shrink-0">
-                 <div className="relative flex items-center gap-3 bg-white border border-slate-200 rounded-2xl px-5 py-3 shadow-sm hover:border-primary/50 transition-colors">
-                     <Filter size={18} className="text-slate-400" />
-                     <input 
-                       type="date"
-                       value={filterDate}
-                       onChange={e => setFilterDate(e.target.value)}
-                       className="text-sm font-medium text-slate-700 focus:outline-none bg-transparent cursor-pointer w-full md:w-auto"
-                     />
-                 </div>
-                 {viewMode === 'archive' && (
-                    <button 
-                        onClick={handleClearArchive}
-                        className="px-5 py-3.5 bg-red-50 text-red-600 font-bold text-sm rounded-2xl hover:bg-red-100 transition-colors flex items-center gap-2 shadow-sm border border-red-100 shrink-0"
-                    >
-                        <Trash2 size={18} />
-                    </button>
-                 )}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                <div className="relative flex items-center gap-3 bg-white border border-slate-200 rounded-2xl px-5 py-3 shadow-sm hover:border-primary/50 transition-colors">
+                    <Filter size={18} className="text-slate-400" />
+                    <input 
+                      type="date"
+                      value={filterDate}
+                      onChange={e => setFilterDate(e.target.value)}
+                      className="text-sm font-medium text-slate-700 focus:outline-none bg-transparent cursor-pointer w-full"
+                    />
+                </div>
+                
+                <select 
+                    value={filterBus}
+                    onChange={e => setFilterBus(e.target.value)}
+                    className="px-5 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-4 focus:ring-slate-100 focus:border-primary/50 shadow-sm transition-all"
+                >
+                    <option value="">All Buses</option>
+                    {Object.keys(BUS_SERVICES).map(bus => (
+                        <option key={bus} value={bus}>{bus}</option>
+                    ))}
+                </select>
+                
+                <select 
+                    value={filterStatus}
+                    onChange={e => setFilterStatus(e.target.value)}
+                    className="px-5 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-4 focus:ring-slate-100 focus:border-primary/50 shadow-sm transition-all"
+                >
+                    <option value="">All Status</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Pending">Pending</option>
+                </select>
+                
+                <select 
+                    value={filterPayment}
+                    onChange={e => setFilterPayment(e.target.value)}
+                    className="px-5 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-4 focus:ring-slate-100 focus:border-primary/50 shadow-sm transition-all"
+                >
+                    <option value="">All Payments</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Pending">Pending</option>
+                </select>
+                
+                {viewMode === 'archive' && (
+                   <button 
+                       onClick={handleClearArchive}
+                       className="px-5 py-3.5 bg-red-50 text-red-600 font-bold text-sm rounded-2xl hover:bg-red-100 transition-colors flex items-center justify-center gap-2 shadow-sm border border-red-100"
+                   >
+                       <Trash2 size={18} />
+                   </button>
+                )}
             </div>
         </div>
 
