@@ -14,13 +14,10 @@ import { GOOGLE_SCRIPT_URL, ADMIN_WHATSAPP_NUMBER, BUS_SERVICES, BANK_DETAILS, C
 
 const App: React.FC = () => {
   const [showIntro, setShowIntro] = useState(true);
-  const [showOffer, setShowOffer] = useState(false);
-    // Show offer popup only on first visit (per browser)
+  const [showOffer, setShowOffer] = useState(true);
+    // Show offer popup on every visit
     useEffect(() => {
-      if (!localStorage.getItem('lagan_offer_shown')) {
-        setShowOffer(true);
-        localStorage.setItem('lagan_offer_shown', '1');
-      }
+      setShowOffer(true);
     }, []);
   const [currentPage, setCurrentPage] = useState('home');
   const [activeTab, setActiveTab] = useState<'new' | 'check'>('new');
