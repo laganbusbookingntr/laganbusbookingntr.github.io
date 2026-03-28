@@ -380,6 +380,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                 `${booking.Bus || booking.bus} | ${busNumber || '-'} | ${conductorNumber || '-'}\n` +
                 `${booking.Time || booking.time} | ${dateDisp}\n` +
                 `${booking.Pickup || booking.pickup} → ${booking.Destination || booking.destination} | Rs.${booking.Total || booking.totalAmount}\n` +
+                `Seats: M${booking["Male Seat"] || booking.maleSeats || 0} F${booking["Female Seat"] || booking.femaleSeats || 0}\n` +
                 `https://laganbusbooking.lk/`;
 
       const encodedText = encodeURIComponent(text);
