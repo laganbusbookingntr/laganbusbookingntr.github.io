@@ -443,7 +443,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
         html:
           '<div class="mb-4 text-left"><label class="block text-sm font-medium text-slate-700 mb-1">Bus Number</label><input id="swal-input1" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="e.g. NF-7441"></div>' +
           '<div class="mb-4 text-left"><label class="block text-sm font-medium text-slate-700 mb-1">Conductor Number</label><input id="swal-input2" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="e.g. 0771234567"></div>' +
-          '<div class="text-left"><label class="block text-sm font-medium text-slate-700 mb-1">Seat Numbers (Optional)</label><input id="swal-input3" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="e.g. A1, A2"></div>',
+          '<div class="mb-4 text-left"><label class="block text-sm font-medium text-slate-700 mb-1">Seat Numbers (Optional)</label><input id="swal-input3" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="e.g. A1, A2"></div>' +
+          '<div class="text-left"><label class="block text-sm font-medium text-slate-700 mb-1">Payment Status</label><select id="swal-input4" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"><option value="Pending">Pending</option><option value="Paid">Paid</option></select></div>',
         focusConfirm: false,
         showCancelButton: true,
         confirmButtonText: 'Approve & Save',
@@ -453,14 +454,15 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
           return [
             (document.getElementById('swal-input1') as HTMLInputElement).value,
             (document.getElementById('swal-input2') as HTMLInputElement).value,
-            (document.getElementById('swal-input3') as HTMLInputElement).value
+            (document.getElementById('swal-input3') as HTMLInputElement).value,
+            (document.getElementById('swal-input4') as HTMLSelectElement).value
           ]
         }
       });
 
       if (!formValues) return;
 
-      const [busNumber, conductorNumber, seatNumbers] = formValues;
+      const [busNumber, conductorNumber, seatNumbers, paymentStatus] = formValues;
 
       setIsLoading(true);
       try {
@@ -516,8 +518,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
               
               'feedback': String(booking.Feedback || booking.feedback || ''),
               'Feedback': String(booking.Feedback || booking.feedback || ''),
-              'payment': String(booking.Payment || booking.payment || 'Pending'),
-              'Payment': String(booking.Payment || booking.payment || 'Pending'),
+              'payment': paymentStatus || String(booking.Payment || booking.payment || 'Pending'),
+              'Payment': paymentStatus || String(booking.Payment || booking.payment || 'Pending'),
               
               'total': cleanTotal,
               'Total': cleanTotal,
@@ -562,19 +564,31 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
           // Send WhatsApp notification
           sendBusAssignmentNotification(updatedBooking);
 
-          const smsResult = await Swal.fire({
+          const notificationResult = await Swal.fire({
               title: 'Approved!',
-              text: 'Booking moved to Active list. Send confirmation SMS now?',
+              text: 'Booking moved to Active list. Send confirmation to passenger?',
               icon: 'success',
               showCancelButton: true,
+              showDenyButton: true,
               confirmButtonText: 'Send SMS',
-              cancelButtonText: 'No',
+              denyButtonText: 'Send WhatsApp',
+              cancelButtonText: 'Cancel',
               confirmButtonColor: '#0066FF',
               customClass: { popup: 'rounded-3xl' }
           });
 
-          if (smsResult.isConfirmed) {
+          if (notificationResult.isConfirmed) {
               handleSendSMS(updatedBooking);
+          } else if (notificationResult.isDenied) {
+              // Extract phone and create WhatsApp message
+              const phone = updatedBooking.Phone || updatedBooking.phone;
+              const smsText = `Booking Confirmed!\n${updatedBooking.Bus || updatedBooking.bus} | ${busNumber || '-'} | ${conductorNumber || '-'}\n${updatedBooking.Time || updatedBooking.time} | ${formatDateDisplay(updatedBooking.Date || updatedBooking.dateFormatted)}\n${updatedBooking.Pickup || updatedBooking.pickup} → ${updatedBooking.Destination || updatedBooking.destination} | Rs.${updatedBooking.Total || updatedBooking.totalAmount}\nSeats: M${updatedBooking["Male Seat"] || updatedBooking.maleSeats || 0} F${updatedBooking["Female Seat"] || updatedBooking.femaleSeats || 0}\nhttps://laganbusbooking.lk/`;
+              const encodedMessage = encodeURIComponent(smsText);
+              if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                  window.open(`whatsapp://send?phone=${phone.replace(/\D/g, '')}&text=${encodedMessage}`, '_blank');
+              } else {
+                  window.open(`https://web.whatsapp.com/send?phone=${phone.replace(/\D/g, '')}&text=${encodedMessage}`, '_blank');
+              }
           }
 
       } catch (error) {
