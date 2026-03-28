@@ -582,6 +582,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
           } else if (notificationResult.isDenied) {
               // Extract phone and create WhatsApp message
               const phone = updatedBooking.Phone || updatedBooking.phone;
+              if (!phone) {
+                  Swal.fire('Error', 'No phone number available', 'error');
+                  return;
+              }
               const smsText = `Booking Confirmed!\n${updatedBooking.Bus || updatedBooking.bus} | ${busNumber || '-'} | ${conductorNumber || '-'}\n${updatedBooking.Time || updatedBooking.time} | ${formatDateDisplay(updatedBooking.Date || updatedBooking.dateFormatted)}\n${updatedBooking.Pickup || updatedBooking.pickup} → ${updatedBooking.Destination || updatedBooking.destination} | Rs.${updatedBooking.Total || updatedBooking.totalAmount}\nSeats: M${updatedBooking["Male Seat"] || updatedBooking.maleSeats || 0} F${updatedBooking["Female Seat"] || updatedBooking.femaleSeats || 0}\nhttps://laganbusbooking.lk/`;
               const encodedMessage = encodeURIComponent(smsText);
               if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
