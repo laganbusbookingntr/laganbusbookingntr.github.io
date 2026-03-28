@@ -359,7 +359,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
   };
 
   const handleSendSMS = (booking: AdminBooking) => {
-      const id = booking["Booking ID"] || booking["Booking Id"];
       const phone = booking.Phone || booking.phone;
       
       // Get seat strings directly
@@ -380,7 +379,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                 `${booking.Bus || booking.bus} | ${busNumber || '-'} | ${conductorNumber || '-'}\n` +
                 `${booking.Time || booking.time} | ${dateDisp}\n` +
                 `${booking.Pickup || booking.pickup} → ${booking.Destination || booking.destination} | Rs.${booking.Total || booking.totalAmount}\n` +
-                `Seats: M${booking["Male Seat"] || booking.maleSeats || 0} F${booking["Female Seat"] || booking.femaleSeats || 0}\n` +
+                `Seats: M${maleSeats} F${femaleSeats}\n` +
                 `https://laganbusbooking.lk/`;
 
       const encodedText = encodeURIComponent(text);
