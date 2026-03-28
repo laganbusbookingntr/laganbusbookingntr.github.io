@@ -7,12 +7,21 @@ import InfoSection from './components/InfoSection';
 import Intro from './components/Intro';
 import AdminPanel from './components/AdminPanel';
 import BusLoader from './components/BusLoader';
+import OfferPopup from './components/OfferPopup';
 import Swal from 'sweetalert2';
 import { BookingFormData, BookingResponse } from './types';
 import { GOOGLE_SCRIPT_URL, ADMIN_WHATSAPP_NUMBER, BUS_SERVICES, BANK_DETAILS, CITIES } from './constants';
 
 const App: React.FC = () => {
   const [showIntro, setShowIntro] = useState(true);
+  const [showOffer, setShowOffer] = useState(false);
+    // Show offer popup only on first visit (per browser)
+    useEffect(() => {
+      if (!localStorage.getItem('lagan_offer_shown')) {
+        setShowOffer(true);
+        localStorage.setItem('lagan_offer_shown', '1');
+      }
+    }, []);
   const [currentPage, setCurrentPage] = useState('home');
   const [activeTab, setActiveTab] = useState<'new' | 'check'>('new');
   const [isLoading, setIsLoading] = useState(false);
@@ -319,6 +328,9 @@ const App: React.FC = () => {
 
       {/* Loading Overlay */}
       {isLoading && <BusLoader variant="overlay" text="Processing..." />}
+
+      {/* Offer Popup */}
+      {showOffer && <OfferPopup onClose={() => setShowOffer(false)} />}
 
       {/* Ambient Background - Optimized for Mobile */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
