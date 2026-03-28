@@ -433,7 +433,7 @@ const App: React.FC = () => {
               </p>
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <a 
-                  href="https://wedoxa2025-info.github.io/wedoxa-gen-z-it-solutions" 
+                  href="https://wedoxa.netlify.app/#/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="hover:text-primary transition-colors flex items-center gap-1 opacity-60 hover:opacity-100"
