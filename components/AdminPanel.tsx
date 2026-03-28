@@ -32,6 +32,7 @@ import { BookingResponse } from '../types';
 import { GOOGLE_SCRIPT_URL, ADMIN_PASSWORD, ADMIN_SECURITY_PIN, BUS_SERVICES, CITIES } from '../constants';
 import BusLoader from './BusLoader';
 import { generateTicketPDF } from '../services/pdfGenerator';
+import { sendBusAssignmentNotification } from '../services/notificationService';
 
 interface AdminPanelProps {
   onExit: () => void;
@@ -557,6 +558,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
               return b.rowIndex !== row;
           }));
           setActiveBookings(prev => [updatedBooking, ...prev]);
+
+          // Send WhatsApp notification
+          sendBusAssignmentNotification(updatedBooking);
 
           const smsResult = await Swal.fire({
               title: 'Approved!',
