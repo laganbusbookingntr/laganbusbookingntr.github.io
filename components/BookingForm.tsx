@@ -21,8 +21,11 @@ const BookingForm: React.FC<BookingFormProps> = ({ onSubmit, busServices, cities
     time: '',
     bus: '',
     maleSeats: 0,
-    femaleSeats: 0
+    femaleSeats: 0,
+    feedback: ''
   });
+  const [infoNoticeShown, setInfoNoticeShown] = useState(false);
+  const [showNotice, setShowNotice] = useState(true);
 
   useEffect(() => {
     if (formData.bus && formData.date) {
@@ -103,6 +106,28 @@ const BookingForm: React.FC<BookingFormProps> = ({ onSubmit, busServices, cities
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/0 via-primary to-primary/0 opacity-50"></div>
       
       <div className="p-5 md:p-12">
+        {showNotice && (
+          <div className="flex items-start justify-between mb-4 p-4 rounded-2xl border border-amber-200 bg-amber-50 text-amber-800">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide">Important Notice (English / Tamil / Sinhala)</p>
+              <p className="text-sm leading-relaxed mt-1">
+                English: Please contact the hotline to confirm your booking and verify payment. For inquiries, use hotline.
+                <br />
+                Tamil: தயவுசெய்து முன்பதிவு உறுதி மற்றும் பணப்பரிமாற்றத்தை சரிபார்க்க ஹாட்லைன் தொடர்பு கொள்ளவும். மேலதிக விசாரணைகள் ஹாட்லைனை பயன்படுத்தவும்.
+                <br />
+                Sinhala: කරුණාකර වෙන්කිරීම තහවුරු කිරීම සහ ගෙවීම් සනාථ කිරීම සඳහා හොට්ලයින් අමතන්න. අමතර සෙවීම් සඳහා හොට්ලයින් භාවිතා කරන්න.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowNotice(false)}
+              className="ml-4 text-amber-700 hover:text-amber-900 rounded-full p-1"
+              aria-label="Close notice"
+            >
+              ✕
+            </button>
+          </div>
+        )}
         <div className="flex items-center justify-between mb-6 md:mb-12">
           <div className="flex items-center gap-4 md:gap-5">
              <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white flex items-center justify-center shadow-lg shadow-primary/25 transform -rotate-3">
@@ -230,6 +255,21 @@ const BookingForm: React.FC<BookingFormProps> = ({ onSubmit, busServices, cities
                         type="text"
                         placeholder="Full Name"
                         value={formData.name}
+                        onFocus={() => {
+                          if (!infoNoticeShown) {
+                            setInfoNoticeShown(true);
+                            Swal.fire({
+                              icon: 'info',
+                              title: 'Note before booking',
+                              text: 'Contact hotline to confirm booking and verify payment. Further inquiries via hotline.',
+                              toast: true,
+                              position: 'top-end',
+                              timer: 5000,
+                              showConfirmButton: false,
+                              customClass: { popup: 'rounded-2xl' }
+                            });
+                          }
+                        }}
                         onChange={e => setFormData({...formData, name: e.target.value})}
                         className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-900/50 border-2 border-slate-100 dark:border-slate-800 rounded-2xl focus:border-primary/50 focus:bg-white dark:focus:bg-slate-900 outline-none transition-all font-medium text-base text-slate-700 dark:text-slate-200 placeholder:text-slate-400"
                         required
@@ -246,6 +286,16 @@ const BookingForm: React.FC<BookingFormProps> = ({ onSubmit, busServices, cities
                         onChange={e => setFormData({...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10)})}
                         className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-900/50 border-2 border-slate-100 dark:border-slate-800 rounded-2xl focus:border-primary/50 focus:bg-white dark:focus:bg-slate-900 outline-none transition-all font-medium text-base text-slate-700 dark:text-slate-200 placeholder:text-slate-400"
                         required
+                    />
+                  </div>
+
+                  <div className="relative group">
+                    <label className="text-xs text-slate-500 font-medium">Feedback / Review (Optional)</label>
+                    <textarea
+                       placeholder="Enter your experience or any requests..."
+                       value={formData.feedback || ''}
+                       onChange={e => setFormData({...formData, feedback: e.target.value})}
+                       className="mt-2 w-full min-h-[90px] resize-none p-3 bg-slate-50 dark:bg-slate-900/50 border-2 border-slate-100 dark:border-slate-800 rounded-2xl focus:border-primary/50 focus:bg-white dark:focus:bg-slate-900 outline-none transition-all font-medium text-base text-slate-700 dark:text-slate-200"
                     />
                   </div>
               </div>

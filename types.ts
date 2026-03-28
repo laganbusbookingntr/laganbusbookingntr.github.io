@@ -15,6 +15,7 @@ export interface BookingFormData {
   bus: string;
   maleSeats: number;
   femaleSeats: number;
+  feedback?: string;
   seatSelections?: { id: string, type: 'male' | 'female' }[];
 }
 
@@ -55,6 +56,8 @@ export interface BookingResponse {
   conductorNumber?: string;
   "Seat Numbers"?: string;
   seatNumbers?: string;
+  Feedback?: string;
+  feedback?: string;
 }
 
 export interface ApiResponse {

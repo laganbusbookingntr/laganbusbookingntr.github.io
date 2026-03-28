@@ -81,6 +81,7 @@ function handleAdd(params) {
     else if (header === "Booked Date") rowData[index] = bookedDate;
     else if (header === "Bus Number") rowData[index] = params['Bus Number'] || "";
     else if (header === "Conductor Number") rowData[index] = params['Conductor Number'] || "";
+    else if (header === "Feedback") rowData[index] = params.feedback || params.Feedback || "";
     else if (header === "Status" || header === "status") rowData[index] = params.status || "Pending";
   });
 
@@ -141,6 +142,8 @@ function handleUpdate(params) {
       if (key === 'time') headerName = 'Time';
       if (key === 'pickup') headerName = 'Pickup';
       if (key === 'destination') headerName = 'Destination';
+      if (key === 'feedback') headerName = 'Feedback';
+      if (key === 'Feedback') headerName = 'Feedback';
       if (key === 'payment') headerName = 'Payment';
       if (key === 'total') headerName = 'Total';
       if (key === 'maleSeats') headerName = 'Male Seat';

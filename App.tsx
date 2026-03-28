@@ -17,7 +17,7 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'new' | 'check'>('new');
   const [isLoading, setIsLoading] = useState(false);
   const [blockedBuses, setBlockedBuses] = useState<{bus: string, date: string}[]>([]);
-  
+
   // Secret Admin Access State
   const [adminClickCount, setAdminClickCount] = useState(0);
   const [lastClickTime, setLastClickTime] = useState(0);
@@ -195,7 +195,10 @@ const App: React.FC = () => {
       `💺 *Seats:* M:${data.maleSeats} / F:${data.femaleSeats}%0A` +
       `💰 *Total:* LKR ${totalCost.toLocaleString()}%0A%0A`;
     
-    waMessage += `_Please attach payment slip for ${BANK_DETAILS.bankName} account_`;
+    if (data.feedback) {
+      waMessage += `%0A%0A📝 *Customer Feedback:* ${encodeURIComponent(data.feedback)}`;
+    }
+    waMessage += `%0A%0A_Please attach payment slip for ${BANK_DETAILS.bankName} account_`;
 
     const result = await Swal.fire({
       title: 'Confirm Booking',
@@ -231,6 +234,7 @@ const App: React.FC = () => {
         params.append('payment', 'Pending');
         params.append('total', totalCost.toString());
         params.append('destination', data.to);
+        params.append('feedback', data.feedback || '');
         
         await fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
@@ -382,8 +386,7 @@ const App: React.FC = () => {
                 </div>
               </section>
               
-              <InfoSection id="routes" />
-              <InfoSection id="fleet" />
+              {/* Routes and Fleet sections are now on their dedicated pages, avoid home duplication */}
               <InfoSection id="safety" />
             </>
           )}

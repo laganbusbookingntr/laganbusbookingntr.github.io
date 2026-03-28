@@ -76,6 +76,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
     destination: '',
     maleSeats: '',
     femaleSeats: '',
+    feedback: '',
     totalAmount: '',
     busNumber: '',
     conductorNumber: ''
@@ -514,6 +515,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
               'Conductor Number': conductorNumber || String(booking["Conductor Number"] || booking.conductorNumber || ''),
               'Seat Numbers': seatNumbers || String(booking["Seat Numbers"] || booking.seatNumbers || ''),
               
+              'feedback': String(booking.Feedback || booking.feedback || ''),
+              'Feedback': String(booking.Feedback || booking.feedback || ''),
               'payment': String(booking.Payment || booking.payment || 'Pending'),
               'Payment': String(booking.Payment || booking.payment || 'Pending'),
               
@@ -731,6 +734,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
             'destination': String(editingBooking.Destination || editingBooking.destination || ''),
             'Destination': String(editingBooking.Destination || editingBooking.destination || ''),
             
+            'feedback': String(editingBooking.Feedback || editingBooking.feedback || ''),
+            'Feedback': String(editingBooking.Feedback || editingBooking.feedback || ''),
             'maleSeats': String(editingBooking["Male Seat"] || editingBooking.maleSeats || ''),
             'Male Seat': String(editingBooking["Male Seat"] || editingBooking.maleSeats || ''),
             
@@ -854,6 +859,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
         params.append('femaleSeats', newBooking.femaleSeats);
         params.append('pickup', newBooking.pickup || '');
         params.append('destination', newBooking.destination || '');
+        params.append('Feedback', (newBooking as any).feedback || '');
+        params.append('feedback', (newBooking as any).feedback || '');
         params.append('Bus Number', newBooking.busNumber || '');
         params.append('Conductor Number', newBooking.conductorNumber || '');
         params.append('Seat Numbers', (newBooking as any).seatNumbers || '');
@@ -878,7 +885,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
         });
 
         setShowAddModal(false);
-        setNewBooking({ name: '', phone: '', bus: '', date: '', time: '', pickup: '', destination: '', maleSeats: '', femaleSeats: '', totalAmount: '', busNumber: '', conductorNumber: '' });
+        setNewBooking({ name: '', phone: '', bus: '', date: '', time: '', pickup: '', destination: '', maleSeats: '', femaleSeats: '', feedback: '', totalAmount: '', busNumber: '', conductorNumber: '' });
         setTimeout(fetchBookings, 2000);
 
     } catch (error) {
@@ -979,6 +986,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
         else if (field === 'Total' || field === 'totalAmount') { newState.Total = value; newState.totalAmount = value; }
         else if (field === 'Status' || field === 'status') { newState.Status = value; newState.status = value; }
         else if (field === 'Payment' || field === 'payment') { newState.Payment = value; newState.payment = value; }
+        else if (field === 'Feedback' || field === 'feedback') { newState.Feedback = value; newState.feedback = value; }
         else if (field === 'Seat Numbers' || field === 'seatNumbers') { newState["Seat Numbers"] = value; newState.seatNumbers = value; }
         return newState;
     });
@@ -1350,6 +1358,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                             <th className="px-6 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Schedule</th>
                             <th className="px-6 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Assigned Seats</th>
                             <th className="px-6 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Bus Details</th>
+                            <th className="px-6 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Feedback</th>
                             <th className="px-6 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status</th>
                             <th className="px-6 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Payment</th>
                             <th className="px-8 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Actions</th>
@@ -1465,6 +1474,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                                                     <span className="text-xs text-slate-400 italic">No Contact</span>
                                                 )}
                                             </div>
+                                        </td>
+                                        <td className="px-6 py-5">
+                                            <span className="text-xs text-slate-700 font-medium block h-14 overflow-hidden text-ellipsis">
+                                                {booking.Feedback || booking.feedback || '—'}
+                                            </span>
                                         </td>
                                         <td className="px-6 py-5">
                                             <span className={`inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide border ${
@@ -2036,6 +2050,15 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                                                   placeholder="e.g. 9:00 PM"
                                               />
                                           </div>
+                                      </div>
+                                      <div>
+                                          <label className="block text-sm font-medium text-slate-700 mb-1.5">Feedback / Review</label>
+                                          <textarea
+                                              value={(newBooking as any).feedback || ''}
+                                              onChange={e => handleNewBookingChange('feedback', e.target.value)}
+                                              className="w-full p-3.5 rounded-xl h-24 resize-none bg-slate-50 border border-slate-200 outline-none focus:border-primary/50 focus:bg-white transition-all font-medium text-slate-900"
+                                              placeholder="Optional customer review or notes"
+                                          />
                                       </div>
                                   </div>
                               </div>

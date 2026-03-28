@@ -24,20 +24,17 @@ const InfoSection: React.FC<InfoSectionProps> = ({ id }) => {
           
           <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             {[
-              { from: 'Colombo', to: 'Batticaloa', price: '1,600', time: '8h 30m' },
-              { from: 'Colombo', to: 'Kalmunai', price: '2,500', time: '7h 45m' },
-              { from: 'Colombo', to: 'Nintavur', price: '2,400', time: '7h 30m' }
+              { from: 'Colombo', to: 'Batticaloa', time: '8h 30m' },
+              { from: 'Colombo', to: 'Kalmunai', time: '7h 45m' },
+              { from: 'Colombo', to: 'Nintavur', time: '7h 30m' }
             ].map((route, i) => (
               <div key={i} className="group bg-white/50 dark:bg-slate-900/50 backdrop-blur-md rounded-3xl md:rounded-[2rem] p-6 md:p-8 shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 border border-slate-200 dark:border-slate-800 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-primary/5 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-700"></div>
                 
-                <div className="flex justify-between items-start mb-6 md:mb-8 relative">
+                <div className="flex justify-start items-start mb-6 md:mb-8 relative">
                   <div className="p-3 md:p-4 bg-primary/10 text-primary rounded-2xl group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                     <MapPin className="w-5 h-5 md:w-6 md:h-6" />
                   </div>
-                  <span className="bg-white/80 dark:bg-slate-800/80 text-slate-900 dark:text-white text-xs md:text-sm font-bold px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
-                    LKR {route.price}
-                  </span>
                 </div>
                 
                 <div className="space-y-4 mb-6 md:mb-8">

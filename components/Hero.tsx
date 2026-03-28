@@ -52,7 +52,7 @@ const Hero: React.FC<HeroProps> = ({ onBookNow }) => {
             </p>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto opacity-0 animate-fade-in-up [animation-delay:1000ms] px-2 sm:px-4" style={{ animationFillMode: 'forwards' }}>
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 w-full sm:w-auto opacity-0 animate-fade-in-up [animation-delay:1000ms] px-2 sm:px-4" style={{ animationFillMode: 'forwards' }}>
                 <button 
                     onClick={onBookNow}
                     className="w-full sm:w-auto px-8 md:px-10 py-4 md:py-5 rounded-full bg-primary hover:bg-primary-dark text-white font-bold text-lg shadow-[0_20px_40px_-15px_rgba(0,102,255,0.5)] hover:shadow-[0_25px_50px_-12px_rgba(0,102,255,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3 group"
