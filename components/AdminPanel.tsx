@@ -561,9 +561,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
           }));
           setActiveBookings(prev => [updatedBooking, ...prev]);
 
-          // Send WhatsApp notification
+          // Send automatic WhatsApp notification in background
           sendBusAssignmentNotification(updatedBooking);
 
+          // Show notification options AFTER successful booking approval
           const notificationResult = await Swal.fire({
               title: 'Approved!',
               text: 'Booking moved to Active list. Send confirmation to passenger?',
@@ -584,14 +585,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
               const phone = updatedBooking.Phone || updatedBooking.phone;
               if (!phone) {
                   Swal.fire('Error', 'No phone number available', 'error');
-                  return;
-              }
-              const smsText = `Booking Confirmed!\n${updatedBooking.Bus || updatedBooking.bus} | ${busNumber || '-'} | ${conductorNumber || '-'}\n${updatedBooking.Time || updatedBooking.time} | ${formatDateDisplay(updatedBooking.Date || updatedBooking.dateFormatted)}\n${updatedBooking.Pickup || updatedBooking.pickup} → ${updatedBooking.Destination || updatedBooking.destination} | Rs.${updatedBooking.Total || updatedBooking.totalAmount}\nSeats: M${updatedBooking["Male Seat"] || updatedBooking.maleSeats || 0} F${updatedBooking["Female Seat"] || updatedBooking.femaleSeats || 0}\nhttps://laganbusbooking.lk/`;
-              const encodedMessage = encodeURIComponent(smsText);
-              if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                  window.open(`whatsapp://send?phone=${phone.replace(/\D/g, '')}&text=${encodedMessage}`, '_blank');
               } else {
-                  window.open(`https://web.whatsapp.com/send?phone=${phone.replace(/\D/g, '')}&text=${encodedMessage}`, '_blank');
+                  const smsText = `Booking Confirmed!\n${updatedBooking.Bus || updatedBooking.bus} | ${busNumber || '-'} | ${conductorNumber || '-'}\n${updatedBooking.Time || updatedBooking.time} | ${formatDateDisplay(updatedBooking.Date || updatedBooking.dateFormatted)}\n${updatedBooking.Pickup || updatedBooking.pickup} → ${updatedBooking.Destination || updatedBooking.destination} | Rs.${updatedBooking.Total || updatedBooking.totalAmount}\nSeats: M${updatedBooking["Male Seat"] || updatedBooking.maleSeats || 0} F${updatedBooking["Female Seat"] || updatedBooking.femaleSeats || 0}\nhttps://laganbusbooking.lk/`;
+                  const encodedMessage = encodeURIComponent(smsText);
+                  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                      window.open(`whatsapp://send?phone=${phone.replace(/\D/g, '')}&text=${encodedMessage}`, '_blank');
+                  } else {
+                      window.open(`https://web.whatsapp.com/send?phone=${phone.replace(/\D/g, '')}&text=${encodedMessage}`, '_blank');
+                  }
               }
           }
 
