@@ -273,6 +273,33 @@ function handleCheck(phone) {
   return createJsonResponse({ success: false, error: "No booking found" });
 }
 
+function parseDate(dateStr) {
+  if (!dateStr) return null;
+  
+  const s = String(dateStr).trim();
+  
+  // Handle weird format: MM/DDT.../YYYY (e.g. 03/27T18:30:00.000Z/2026)
+  const weirdFormatMatch = s.match(/^(\d{2})\/(\d{2})T.*\/(\d{4})$/);
+  if (weirdFormatMatch) {
+    const [_, month, day, year] = weirdFormatMatch;
+    // Create date in YYYY-MM-DD format to avoid timezone issues
+    return new Date(`${year}-${month}-${day}T00:00:00Z`);
+  }
+  
+  // Try ISO format YYYY-MM-DD
+  if (s.match(/^\d{4}-\d{2}-\d{2}/)) {
+    return new Date(s);
+  }
+  
+  // Try standard Date parse
+  const d = new Date(s);
+  if (!isNaN(d.getTime())) {
+    return d;
+  }
+  
+  return null;
+}
+
 function handleAutoArchive() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const activeSheet = ss.getSheetByName(SHEET_ACTIVE);
@@ -314,9 +341,9 @@ function handleAutoArchive() {
       
       rowsProcessed++;
       
-      const rowDate = new Date(rowDateStr);
-      if (isNaN(rowDate.getTime())) {
-        Logger.log(`${sheetName}: Invalid date at row ${i+1}: ${rowDateStr}`);
+      const rowDate = parseDate(rowDateStr);
+      if (!rowDate) {
+        Logger.log(`${sheetName}: Could not parse date at row ${i+1}: ${rowDateStr}`);
         continue;
       }
       
