@@ -284,27 +284,41 @@ function handleAutoArchive() {
   }
   
   const now = new Date();
-  let rowsDeleted = 0;
+  let totalRowsArchived = 0;
 
-  function archiveOldBookings(sourceSheet) {
-    if (!sourceSheet) return;
+  function archiveOldBookings(sourceSheet, sheetName) {
+    if (!sourceSheet) return 0;
+    
     const data = sourceSheet.getDataRange().getValues();
-    if (data.length < 2) return;
+    if (data.length < 2) return 0;
     
     const headers = data[0].map(h => String(h).trim());
     const dateCol = headers.indexOf("Date");
-    if (dateCol === -1) return;
+    const statusCol = headers.indexOf("Status");
+    
+    if (dateCol === -1) {
+      Logger.log(`${sheetName}: Date column not found`);
+      return 0;
+    }
     
     const destHeaders = archiveSheet.getRange(1, 1, 1, archiveSheet.getLastColumn()).getValues()[0].map(h => String(h).trim());
     
-    const rowsToDelete = []; // Collect rows to delete
+    const rowsToDelete = [];
+    let rowsProcessed = 0;
     
     for (let i = data.length - 1; i >= 1; i--) {
       const rowDateStr = data[i][dateCol];
+      const rowStatus = data[i][statusCol];
+      
       if (!rowDateStr) continue;
       
+      rowsProcessed++;
+      
       const rowDate = new Date(rowDateStr);
-      if (isNaN(rowDate.getTime())) continue;
+      if (isNaN(rowDate.getTime())) {
+        Logger.log(`${sheetName}: Invalid date at row ${i+1}: ${rowDateStr}`);
+        continue;
+      }
       
       // Cutoff is 5:30 AM the day AFTER the journey date
       const cutoffDate = new Date(rowDate);
@@ -323,23 +337,33 @@ function handleAutoArchive() {
         });
         
         archiveSheet.appendRow(destData);
-        rowsToDelete.push(i + 1); // Store sheet row number (1-based)
-        rowsDeleted++;
+        rowsToDelete.push(i + 1);
+        Logger.log(`${sheetName}: Will archive row ${i+1} (date: ${rowDateStr}, status: ${rowStatus})`);
       }
     }
     
     // Delete rows in reverse order (highest row first) to avoid index shifting issues
-    rowsToDelete.sort((a, b) => b - a); // Sort descending
+    rowsToDelete.sort((a, b) => b - a);
     for (let i = 0; i < rowsToDelete.length; i++) {
       sourceSheet.deleteRow(rowsToDelete[i]);
     }
+    
+    Logger.log(`${sheetName}: Processed ${rowsProcessed} rows, archived ${rowsToDelete.length}`);
+    return rowsToDelete.length;
   }
 
   // Archive from both Active and Pending sheets
-  archiveOldBookings(activeSheet);
-  archiveOldBookings(pendingSheet);
+  const activeArchived = archiveOldBookings(activeSheet, "Active");
+  const pendingArchived = archiveOldBookings(pendingSheet, "Pending");
   
-  return createJsonResponse({ success: true, message: `Archived ${rowsDeleted} bookings` });
+  totalRowsArchived = activeArchived + pendingArchived;
+  Logger.log(`Auto-Archive Complete: ${totalRowsArchived} total rows archived`);
+  
+  return createJsonResponse({ 
+    success: true, 
+    message: `Archived ${totalRowsArchived} bookings (${activeArchived} from Active, ${pendingArchived} from Pending)`,
+    details: { activeArchived, pendingArchived, totalRowsArchived }
+  });
 }
 
 function handleBlockBus(params) {

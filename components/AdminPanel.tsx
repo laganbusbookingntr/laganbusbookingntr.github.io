@@ -432,6 +432,39 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
       }
   };
 
+  const handleRunAutoArchive = async () => {
+      const result = await Swal.fire({
+          title: 'Run Auto-Archive?',
+          text: "Move all past journey bookings to archive (after 5:30 AM next day)?",
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonColor: '#0066FF',
+          confirmButtonText: 'Yes, Archive Now',
+          customClass: { popup: 'rounded-3xl' }
+      });
+
+      if (result.isConfirmed) {
+          setIsLoading(true);
+          try {
+              const response = await fetch(`${GOOGLE_SCRIPT_URL}?method=autoArchive`);
+              const data = await response.json();
+              
+              if (data.success) {
+                  Swal.fire('Success!', data.message || 'Auto-archive completed.', 'success');
+                  // Reload bookings to refresh the list
+                  fetchBookings(['pending', 'active', 'blocked', 'archive']);
+              } else {
+                  Swal.fire('Error', data.error || 'Auto-archive failed.', 'error');
+              }
+          } catch (e) {
+              Swal.fire('Error', 'Failed to run auto-archive.', 'error');
+              console.error('Auto-archive error:', e);
+          } finally {
+              setIsLoading(false);
+          }
+      }
+  };
+
   const handleApprove = async (booking: AdminBooking) => {
       const id = booking["Booking ID"] || booking["Booking Id"];
       const row = booking.rowIndex;
@@ -1223,6 +1256,13 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                 className="flex items-center gap-2 px-4 py-2.5 bg-primary hover:bg-primary-dark text-white rounded-xl text-xs md:text-sm font-bold transition-all shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-95"
              >
                 <Plus size={18} /> <span className="hidden md:inline">Add Booking</span>
+             </button>
+             <button 
+                onClick={handleRunAutoArchive}
+                className="flex items-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs md:text-sm font-bold transition-all shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 active:scale-95"
+                title="Auto-archive past bookings"
+             >
+                <span className="hidden md:inline">Auto-Archive</span>
              </button>
              <button 
                 onClick={() => fetchBookings(['pending', 'active', 'blocked'])}
