@@ -9,18 +9,26 @@ export const sendWhatsAppNotification = async (
     const encodedMessage = encodeURIComponent(message);
     
     // Format phone number for WhatsApp (Sri Lanka country code +94)
-    let whatsappPhone = phone.replace(/\D/g, ''); // Remove non-digits
+    let whatsappPhone = String(phone).replace(/\D/g, '').trim(); // Remove non-digits
     if (whatsappPhone.startsWith('0')) {
-      whatsappPhone = '94' + whatsappPhone.slice(1); // Replace leading 0 with 94
+      whatsappPhone = '94' + whatsappPhone.substring(1); // Replace leading 0 with 94
     } else if (!whatsappPhone.startsWith('94')) {
       whatsappPhone = '94' + whatsappPhone; // Add 94 if not present
     }
     
-    // For mobile: Open WhatsApp app
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      window.open(`whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`, '_blank');
+    // Ensure valid phone format (11+ digits with country code)
+    if (whatsappPhone.length < 11) {
+      console.error('Invalid phone number format:', phone);
+      return false;
+    }
+    
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobileDevice) {
+      // Mobile: Use wa.me API (more reliable)
+      window.open(`https://wa.me/${whatsappPhone}?text=${encodedMessage}`, '_blank');
     } else {
-      // For desktop: Open WhatsApp Web
+      // Desktop: Use WhatsApp Web
       window.open(`https://web.whatsapp.com/send?phone=${whatsappPhone}&text=${encodedMessage}`, '_blank');
     }
     

@@ -472,17 +472,34 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
           window.open(`sms:${phone}?body=${encodedText}`, '_blank');
       } else if (result.isDenied) {
           // Send WhatsApp
-          let whatsappPhone = phone.replace(/\D/g, '');
+          // Clean phone number: remove all non-digits, spaces, and symbols
+          let whatsappPhone = String(phone).replace(/\D/g, '').trim();
+          
+          // Handle Sri Lanka phone numbers
           if (whatsappPhone.startsWith('0')) {
-              whatsappPhone = '94' + whatsappPhone.slice(1);
+              // Convert 0771234567 to 94771234567
+              whatsappPhone = '94' + whatsappPhone.substring(1);
           } else if (!whatsappPhone.startsWith('94')) {
+              // If it's just 771234567, add 94
               whatsappPhone = '94' + whatsappPhone;
           }
           
+          // Ensure valid phone length (should be 94 + 9 digits = 11 digits minimum)
+          if (whatsappPhone.length < 11) {
+              Swal.fire('Error', 'Invalid phone number format', 'error');
+              return;
+          }
+          
           const encodedMessage = encodeURIComponent(messageText);
-          if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-              window.open(`whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`, '_blank');
+          
+          // Try to detect device type and open appropriate WhatsApp
+          const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          
+          if (isMobileDevice) {
+              // Mobile: Use WhatsApp app deep link
+              window.open(`https://wa.me/${whatsappPhone}?text=${encodedMessage}`, '_blank');
           } else {
+              // Desktop: Use WhatsApp Web
               window.open(`https://web.whatsapp.com/send?phone=${whatsappPhone}&text=${encodedMessage}`, '_blank');
           }
       }
@@ -709,17 +726,26 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                   const encodedMessage = encodeURIComponent(smsText);
                   
                   // Format phone number for WhatsApp (Sri Lanka country code +94)
-                  let whatsappPhone = phone.replace(/\D/g, ''); // Remove non-digits
+                  let whatsappPhone = String(phone).replace(/\D/g, '').trim(); // Remove non-digits
                   if (whatsappPhone.startsWith('0')) {
-                      whatsappPhone = '94' + whatsappPhone.slice(1); // Replace leading 0 with 94
+                      whatsappPhone = '94' + whatsappPhone.substring(1); // Replace leading 0 with 94
                   } else if (!whatsappPhone.startsWith('94')) {
                       whatsappPhone = '94' + whatsappPhone; // Add 94 if not present
                   }
                   
-                  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                      window.open(`whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`, '_blank');
+                  // Ensure valid phone format
+                  if (whatsappPhone.length >= 11) {
+                      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                      
+                      if (isMobileDevice) {
+                          // Mobile: Use wa.me for better compatibility
+                          window.open(`https://wa.me/${whatsappPhone}?text=${encodedMessage}`, '_blank');
+                      } else {
+                          // Desktop: Use WhatsApp Web
+                          window.open(`https://web.whatsapp.com/send?phone=${whatsappPhone}&text=${encodedMessage}`, '_blank');
+                      }
                   } else {
-                      window.open(`https://web.whatsapp.com/send?phone=${whatsappPhone}&text=${encodedMessage}`, '_blank');
+                      Swal.fire('Error', 'Invalid phone number format for WhatsApp', 'error');
                   }
               }
           }
