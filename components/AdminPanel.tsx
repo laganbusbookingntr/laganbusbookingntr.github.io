@@ -588,10 +588,19 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
               } else {
                   const smsText = `Booking Confirmed!\n${updatedBooking.Bus || updatedBooking.bus} | ${busNumber || '-'} | ${conductorNumber || '-'}\n${updatedBooking.Time || updatedBooking.time} | ${formatDateDisplay(updatedBooking.Date || updatedBooking.dateFormatted)}\n${updatedBooking.Pickup || updatedBooking.pickup} → ${updatedBooking.Destination || updatedBooking.destination} | Rs.${updatedBooking.Total || updatedBooking.totalAmount}\nSeats: M${updatedBooking["Male Seat"] || updatedBooking.maleSeats || 0} F${updatedBooking["Female Seat"] || updatedBooking.femaleSeats || 0}\nhttps://laganbusbooking.lk/`;
                   const encodedMessage = encodeURIComponent(smsText);
+                  
+                  // Format phone number for WhatsApp (Sri Lanka country code +94)
+                  let whatsappPhone = phone.replace(/\D/g, ''); // Remove non-digits
+                  if (whatsappPhone.startsWith('0')) {
+                      whatsappPhone = '94' + whatsappPhone.slice(1); // Replace leading 0 with 94
+                  } else if (!whatsappPhone.startsWith('94')) {
+                      whatsappPhone = '94' + whatsappPhone; // Add 94 if not present
+                  }
+                  
                   if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                      window.open(`whatsapp://send?phone=${phone.replace(/\D/g, '')}&text=${encodedMessage}`, '_blank');
+                      window.open(`whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`, '_blank');
                   } else {
-                      window.open(`https://web.whatsapp.com/send?phone=${phone.replace(/\D/g, '')}&text=${encodedMessage}`, '_blank');
+                      window.open(`https://web.whatsapp.com/send?phone=${whatsappPhone}&text=${encodedMessage}`, '_blank');
                   }
               }
           }

@@ -8,12 +8,20 @@ export const sendWhatsAppNotification = async (
     // Open WhatsApp with pre-filled message (client-side fallback)
     const encodedMessage = encodeURIComponent(message);
     
+    // Format phone number for WhatsApp (Sri Lanka country code +94)
+    let whatsappPhone = phone.replace(/\D/g, ''); // Remove non-digits
+    if (whatsappPhone.startsWith('0')) {
+      whatsappPhone = '94' + whatsappPhone.slice(1); // Replace leading 0 with 94
+    } else if (!whatsappPhone.startsWith('94')) {
+      whatsappPhone = '94' + whatsappPhone; // Add 94 if not present
+    }
+    
     // For mobile: Open WhatsApp app
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      window.open(`whatsapp://send?phone=${phone.replace(/\D/g, '')}&text=${encodedMessage}`, '_blank');
+      window.open(`whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`, '_blank');
     } else {
       // For desktop: Open WhatsApp Web
-      window.open(`https://web.whatsapp.com/send?phone=${phone.replace(/\D/g, '')}&text=${encodedMessage}`, '_blank');
+      window.open(`https://web.whatsapp.com/send?phone=${whatsappPhone}&text=${encodedMessage}`, '_blank');
     }
     
     return true;
