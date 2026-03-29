@@ -289,6 +289,34 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
       }
   }, [viewMode, isAuthenticated]);
 
+  // Auto-archive old bookings every 5 minutes
+  useEffect(() => {
+      if (!isAuthenticated) return;
+
+      const runAutoArchive = () => {
+          fetch(`${GOOGLE_SCRIPT_URL}?method=autoArchive`)
+              .then(res => res.json())
+              .then(data => {
+                  if (data.success && data.details?.totalRowsArchived > 0) {
+                      console.log(`Auto-archived ${data.details.totalRowsArchived} bookings`);
+                      // Only refresh if we archived something
+                      if (viewMode === 'active' || viewMode === 'pending') {
+                          fetchBookings(['pending', 'active']);
+                      } else if (viewMode === 'archive') {
+                          fetchBookings(['archive']);
+                      }
+                  }
+              })
+              .catch(e => console.error("Auto-archive interval failed", e));
+      };
+
+      // Run immediately on auth, then every 5 minutes (300,000 ms)
+      runAutoArchive();
+      const interval = setInterval(runAutoArchive, 300000);
+
+      return () => clearInterval(interval);
+  }, [isAuthenticated, viewMode]);
+
   // Compute actual lists by filtering out blocked buses
   const isBlockedBooking = (b: any) => {
     const status = String(b.Status || b.status || '').toLowerCase().trim();
