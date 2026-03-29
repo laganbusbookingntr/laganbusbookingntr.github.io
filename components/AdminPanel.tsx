@@ -430,6 +430,63 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
       window.open(`sms:${phone}?body=${encodedText}`, '_blank');
   };
 
+  const handleSendMessage = async (booking: AdminBooking) => {
+      const phone = booking.Phone || booking.phone;
+      
+      if (!phone) {
+          Swal.fire('Error', 'No phone number available', 'error');
+          return;
+      }
+
+      // Get seat strings directly
+      const maleSeats = booking["Male Seat"] || booking.maleSeats || "0";
+      const femaleSeats = booking["Female Seat"] || booking.femaleSeats || "0";
+      const busNumber = booking["Bus Number"] || booking.busNumber;
+      const conductorNumber = booking["Conductor Number"] || booking.conductorNumber;
+      const dateDisp = formatDateDisplay(booking.Date || booking.dateFormatted);
+
+      const messageText = `Booking Confirmed!\n` +
+          `${booking.Bus || booking.bus} | ${busNumber || '-'} | ${conductorNumber || '-'}\n` +
+          `${booking.Time || booking.time} | ${dateDisp}\n` +
+          `${booking.Pickup || booking.pickup} → ${booking.Destination || booking.destination} | Rs.${booking.Total || booking.totalAmount}\n` +
+          `Seats: M${maleSeats} F${femaleSeats}\n` +
+          `https://laganbusbooking.lk/`;
+
+      const result = await Swal.fire({
+          title: 'Send Booking Details',
+          text: 'Choose how to send passenger details:',
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonText: 'Send via SMS',
+          denyButtonText: 'Send via WhatsApp',
+          cancelButtonText: 'Cancel',
+          confirmButtonColor: '#0066FF',
+          denyButtonColor: '#25D366',
+          customClass: { popup: 'rounded-3xl' }
+      });
+
+      if (result.isConfirmed) {
+          // Send SMS
+          const encodedText = encodeURIComponent(messageText);
+          window.open(`sms:${phone}?body=${encodedText}`, '_blank');
+      } else if (result.isDenied) {
+          // Send WhatsApp
+          let whatsappPhone = phone.replace(/\D/g, '');
+          if (whatsappPhone.startsWith('0')) {
+              whatsappPhone = '94' + whatsappPhone.slice(1);
+          } else if (!whatsappPhone.startsWith('94')) {
+              whatsappPhone = '94' + whatsappPhone;
+          }
+          
+          const encodedMessage = encodeURIComponent(messageText);
+          if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+              window.open(`whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`, '_blank');
+          } else {
+              window.open(`https://web.whatsapp.com/send?phone=${whatsappPhone}&text=${encodedMessage}`, '_blank');
+          }
+      }
+  };
+
   const handleClearArchive = async () => {
       const result = await Swal.fire({
           title: 'Clear History?',
@@ -1648,9 +1705,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                                                 )}
 
                                                 <button 
-                                                    onClick={() => handleSendSMS(booking)}
+                                                    onClick={() => handleSendMessage(booking)}
                                                     className="p-2 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                                                    title="Send SMS"
+                                                    title="Send SMS / WhatsApp"
                                                 >
                                                     <MessageCircle size={16} />
                                                 </button>
