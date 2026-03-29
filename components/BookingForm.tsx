@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-import { Calendar, MapPin, User, Phone, Bus, CreditCard, ChevronDown, Plus, Minus, MessageCircle } from 'lucide-react';
+import { Calendar, MapPin, User, Phone, Bus, CreditCard, ChevronDown, Plus, Minus, MessageCircle, Clock } from 'lucide-react';
 import { BANK_DETAILS } from '../constants';
 import { BookingFormData, BusService } from '../types';
 
@@ -107,21 +107,17 @@ const BookingForm: React.FC<BookingFormProps> = ({ onSubmit, busServices, cities
       
       <div className="p-5 md:p-12">
         {showNotice && (
-          <div className="flex items-start justify-between mb-4 p-4 rounded-2xl border border-amber-200 bg-amber-50 text-amber-800">
+          <div className="flex items-start justify-between mb-4 p-4 rounded-2xl border border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-900/30 text-red-800 dark:text-red-300">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide">Important Notice (English / Tamil / Sinhala)</p>
+              <p className="text-xs font-bold uppercase tracking-wide">Important Notice</p>
               <p className="text-sm leading-relaxed mt-1">
-                English: Please contact the hotline to confirm your booking and verify payment. For inquiries, use hotline.
-                <br />
-                Tamil: தயவுசெய்து முன்பதிவு உறுதி மற்றும் பணப்பரிமாற்றத்தை சரிபார்க்க ஹாட்லைன் தொடர்பு கொள்ளவும். மேலதிக விசாரணைகள் ஹாட்லைனை பயன்படுத்தவும்.
-                <br />
-                Sinhala: කරුණාකර වෙන්කිරීම තහවුරු කිරීම සහ ගෙවීම් සනාථ කිරීම සඳහා හොට්ලයින් අමතන්න. අමතර සෙවීම් සඳහා හොට්ලයින් භාවිතා කරන්න.
+                Your booking is confirmed only after the admin verifies your payment slip on WhatsApp. Expected confirmation: <span className="font-bold">within 1 hour</span> during operating hours (Weekdays/Weekends: 12 PM - 10 PM). If not confirmed within 2 hours, your booking will be automatically cancelled. Contact: +94 77 740 2886 or laganbusbooking@gmail.com
               </p>
             </div>
             <button
               type="button"
               onClick={() => setShowNotice(false)}
-              className="ml-4 text-amber-700 hover:text-amber-900 rounded-full p-1"
+              className="ml-4 text-red-700 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 rounded-full p-1"
               aria-label="Close notice"
             >
               ✕
@@ -265,8 +261,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ onSubmit, busServices, cities
                             setInfoNoticeShown(true);
                             Swal.fire({
                               icon: 'info',
-                              title: 'Note before booking',
-                              text: 'Contact hotline to confirm booking and verify payment. Further inquiries via hotline.',
+                              title: 'Booking Confirmation Process',
+                              text: 'Your booking will be confirmed within 1 hour after payment verification. If not confirmed within 2 hours, the booking will be automatically cancelled.',
                               toast: true,
                               position: 'top-end',
                               timer: 5000,
@@ -398,6 +394,45 @@ const BookingForm: React.FC<BookingFormProps> = ({ onSubmit, busServices, cities
                     </div>
                     <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-500 italic text-center md:text-left">
                         * Please attach your payment slip when sending details on WhatsApp.
+                    </div>
+                 </div>
+             </div>
+
+             {/* Booking Confirmation Timeline */}
+             <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 p-5 rounded-2xl border border-green-200 dark:border-green-900/30 relative overflow-hidden">
+                 <div className="absolute right-0 top-0 w-32 h-32 bg-green-500/5 rounded-full -mr-16 -mt-16 pointer-events-none"></div>
+                 <div className="relative z-10">
+                    <div className="flex items-center gap-2 text-green-700 dark:text-green-400 font-bold mb-4">
+                        <Clock size={18} />
+                        <span>Booking Confirmation Timeline</span>
+                    </div>
+                    <div className="space-y-3 text-sm">
+                         <div className="flex gap-3">
+                             <div className="text-2xl font-black text-green-600 dark:text-green-400 leading-none">1.</div>
+                             <div>
+                                 <p className="font-bold text-slate-900 dark:text-white">Submit Booking via WhatsApp</p>
+                                 <p className="text-slate-600 dark:text-slate-300 text-xs mt-0.5">Your booking form is sent to our admin immediately.</p>
+                             </div>
+                         </div>
+                         <div className="flex gap-3">
+                             <div className="text-2xl font-black text-amber-600 dark:text-amber-400 leading-none">2.</div>
+                             <div>
+                                 <p className="font-bold text-slate-900 dark:text-white">Verify Payment Slip (Within 1 Hour)</p>
+                                 <p className="text-slate-600 dark:text-slate-300 text-xs mt-0.5">Admin checks your payment slip and verifies the transfer. During operating hours: Weekdays/Weekends 12 PM - 10 PM</p>
+                             </div>
+                         </div>
+                         <div className="flex gap-3">
+                             <div className="text-2xl font-black text-blue-600 dark:text-blue-400 leading-none">3.</div>
+                             <div>
+                                 <p className="font-bold text-slate-900 dark:text-white">Booking Confirmed on WhatsApp</p>
+                                 <p className="text-slate-600 dark:text-slate-300 text-xs mt-0.5">You'll receive confirmation message with ticket details on the same WhatsApp number.</p>
+                             </div>
+                         </div>
+                    </div>
+                    <div className="mt-4 pt-4 border-t border-green-200 dark:border-green-900/30">
+                        <p className="text-xs text-slate-600 dark:text-slate-300">
+                            <span className="font-bold">⏱️ Important:</span> If your booking is not confirmed within <span className="font-bold text-orange-600 dark:text-orange-400">2 hours</span>, it will be automatically cancelled. For inquiries, contact us at <span className="font-bold">+94 77 740 2886</span> or <span className="font-bold">laganbusbooking@gmail.com</span>
+                        </p>
                     </div>
                  </div>
              </div>

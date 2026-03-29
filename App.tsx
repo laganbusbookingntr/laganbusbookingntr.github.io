@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import BookingForm from './components/BookingForm';
 import CheckBooking from './components/CheckBooking';
 import InfoSection from './components/InfoSection';
+import FAQSection from './components/FAQSection';
 import Intro from './components/Intro';
 import AdminPanel from './components/AdminPanel';
 import BusLoader from './components/BusLoader';
@@ -403,6 +404,7 @@ const App: React.FC = () => {
           {currentPage === 'routes' && <InfoSection id="routes" />}
           {currentPage === 'fleet' && <InfoSection id="fleet" />}
           {currentPage === 'safety' && <InfoSection id="safety" />}
+          {currentPage === 'faq' && <FAQSection />}
         </main>
 
         <footer className="bg-dark-bg/80 backdrop-blur-2xl text-white py-16 md:py-24 border-t border-white/5 relative z-20">
