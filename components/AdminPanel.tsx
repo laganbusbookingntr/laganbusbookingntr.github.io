@@ -1750,7 +1750,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                                               <label className="block text-sm font-medium text-slate-700 mb-1.5">Date</label>
                                               <input 
                                                   type="text" 
-                                                  value={editingBooking.Date || editingBooking.dateFormatted || ''}
+                                                  value={formatDateDisplay(editingBooking.Date || editingBooking.dateFormatted || '')}
                                                   onChange={e => handleEditChange('Date', e.target.value)}
                                                   className="w-full p-3.5 rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-primary/50 focus:bg-white transition-all font-medium text-slate-900"
                                               />
