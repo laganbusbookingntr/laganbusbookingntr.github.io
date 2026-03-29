@@ -297,6 +297,8 @@ function handleAutoArchive() {
     
     const destHeaders = archiveSheet.getRange(1, 1, 1, archiveSheet.getLastColumn()).getValues()[0].map(h => String(h).trim());
     
+    const rowsToDelete = []; // Collect rows to delete
+    
     for (let i = data.length - 1; i >= 1; i--) {
       const rowDateStr = data[i][dateCol];
       if (!rowDateStr) continue;
@@ -321,9 +323,15 @@ function handleAutoArchive() {
         });
         
         archiveSheet.appendRow(destData);
-        sourceSheet.deleteRow(i + 1);
+        rowsToDelete.push(i + 1); // Store sheet row number (1-based)
         rowsDeleted++;
       }
+    }
+    
+    // Delete rows in reverse order (highest row first) to avoid index shifting issues
+    rowsToDelete.sort((a, b) => b - a); // Sort descending
+    for (let i = 0; i < rowsToDelete.length; i++) {
+      sourceSheet.deleteRow(rowsToDelete[i]);
     }
   }
 
