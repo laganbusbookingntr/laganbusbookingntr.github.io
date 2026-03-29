@@ -457,6 +457,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
           text: 'Choose how to send passenger details:',
           icon: 'info',
           showCancelButton: true,
+          showDenyButton: true,
           confirmButtonText: 'Send via SMS',
           denyButtonText: 'Send via WhatsApp',
           cancelButtonText: 'Cancel',
